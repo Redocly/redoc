@@ -1,0 +1,56 @@
+openapi: 3.2.0
+info:
+  title: Redocly Cafe
+  version: 1.0.0
+security:
+  - ApiKey: []
+  - OAuth2_Implicit:
+      - menu:read
+paths:
+  /orders:
+    post:
+      operationId: createOrder
+      security:
+        - OAuth2:
+            - orders:write
+        - OAuth2_Implicit: []
+      responses:
+        '201':
+          description: Order placed.
+components:
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      in: query
+      name: key
+    BasicAuth:
+      type: http
+      description: Staff login.
+      scheme: basic
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.cafe.example.test/authorize
+          tokenUrl: https://auth.cafe.example.test/token
+          scopes:
+            orders:write: Place orders.
+    OAuth2Password:
+      type: oauth2
+      flows:
+        password:
+          tokenUrl: https://auth.cafe.example.test/token
+          scopes: {}
+    OAuth2Client:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: /
+          scopes: {}
+    OAuth2_Implicit:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://auth.cafe.example.test/authorize
+          scopes:
+            menu:read: See the menu.

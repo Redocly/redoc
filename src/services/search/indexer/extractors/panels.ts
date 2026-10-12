@@ -15,7 +15,6 @@ import { makeParam } from '../param.js';
 import { METADATA_PLACE, OVERVIEW_PLACE, SERVER_PLACE, SERVER_VARIABLES_PLACE } from '../places.js';
 import { addRow, describe } from './context.js';
 
-type Flags = { isMockServer?: boolean };
 type ServerVariables = ServersPanelItem['servers'][number]['variables'];
 
 /** One row per server variable, on the overview page only, so a variable leads to the servers panel there. */
@@ -47,8 +46,7 @@ export function extractPanelRows(container: ContainerNode, ctx: ExtractContext):
       switch (child.kind) {
         case panelKind.SERVERS:
           for (const server of (child as ServersPanelItem).servers) {
-            const flags = server as Flags;
-            if (flags.isMockServer || hasRbacScope(flags)) continue;
+            if (hasRbacScope(server)) continue;
             addRow(
               ctx,
               makeParam({
@@ -107,7 +105,7 @@ export function extractPanelRows(container: ContainerNode, ctx: ExtractContext):
   }
 }
 
-/** One row per key/value of the overview's `x-metadata` table. */
+/** One row per key/value of the overview's metadata table. */
 export function extractInfoMetadataRows(node: InfoMetadataNode, ctx: ExtractContext): void {
   for (const row of node.rows) {
     addRow(

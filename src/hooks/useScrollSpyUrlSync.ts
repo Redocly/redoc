@@ -19,7 +19,7 @@ function replaceUrlSilently(url: string): void {
 }
 
 /** Silently rewrites the URL to the section under the viewport while scrolling.
- *  Mounted once in `RouterSubscribers` so it runs in both the portal and standalone. */
+ *  Mounted once in `RouterSubscribers` so it runs in every host. */
 export function useScrollSpyUrlSync(): void {
   const location = useLocation();
   const setActiveScrollSection = useSetAtom(activeScrollSectionAtom);

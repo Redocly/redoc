@@ -148,7 +148,7 @@ export function resolveMarkdocHeadingDeepSuffix(
   return deepSuffix;
 }
 
-// TODO: remove once the portal no longer re-runs buildItems twice
+// Ids may arrive already prefixed when items are built more than once for the same document.
 function stripBasePrefixes(id: string, ...bases: Array<string | undefined>): string {
   let result = id.toLowerCase();
   for (const base of bases) {
@@ -330,9 +330,12 @@ export function extractMarkdownSections(
 export function buildMarkdownSectionItem({
   heading,
   basePath,
+  withContent = true,
 }: {
   heading: MarkdownHeading;
   basePath: string;
+  /** `false` builds the navigation entry only: `content` is null. */
+  withContent?: boolean;
 }): ApiItem {
   const hasChildren = heading.items.length > 0;
   const slug = joinWithSeparator(basePath, heading.id).toLowerCase();
@@ -342,6 +345,7 @@ export function buildMarkdownSectionItem({
         buildMarkdownSectionItem({
           heading: child,
           basePath,
+          withContent,
         }),
       )
     : [];
@@ -352,7 +356,7 @@ export function buildMarkdownSectionItem({
     link: slug,
     routeSlug: slug,
     items: hasChildren ? childItems : undefined,
-    content: buildSectionContent(heading),
+    content: withContent ? buildSectionContent(heading) : null,
   };
 }
 
@@ -414,7 +418,7 @@ function buildSectionItemWithChildren(
 const HTML_TAG =
   /<\/?(?:a|b|i|em|strong|code|pre|br|hr|p|span|div|small|sup|sub|img|ul|ol|li|dl|dt|dd|table|thead|tbody|tr|td|th|blockquote|h[1-6])(?:\s[^>]*)?\/?>/gi;
 
-export function stripMarkdown(text: string): string {
+function stripMarkdown(text: string): string {
   return text
     .replace(/```[^\n]*(?:\n([\s\S]*?))?```/g, '$1')
     .replace(HTML_TAG, '')
@@ -483,21 +487,6 @@ export function extractSummaryText(
   return text ? (text.length === 50 ? text + '…' : text) : undefined;
 }
 
-export function extractSeoDescriptionText(
-  description: string | Node | Node[] | undefined | null,
-  options?: ParseMarkdownOptions,
-): string | undefined {
-  if (!description) {
-    return;
-  }
-
-  const ast = parseMarkdown(description, options);
-  if (!ast) {
-    return;
-  }
-
-  return extractFirstParagraphText(ast, Number.POSITIVE_INFINITY);
-}
 
 function isMarkdocNode(value: unknown): value is Node {
   return !!value && typeof value === 'object' && '$$mdtype' in value;
@@ -510,10 +499,19 @@ export function isMarkdocAst(value: unknown): value is Node | Node[] {
     : isMarkdocNode(value);
 }
 
+function isRawHtmlCode(node: Node): boolean {
+  return (
+    node.type === 'tag' &&
+    node.tag === 'html' &&
+    (node.attributes.name === 'script' || node.attributes.name === 'style')
+  );
+}
+
 export function collectTextContent(node: Node): string {
   const parts: string[] = [];
 
   function walk(current: Node): void {
+    if (isRawHtmlCode(current)) return;
     if (typeof current.attributes?.content === 'string') {
       parts.push(current.attributes.content);
     }
@@ -538,7 +536,7 @@ export function collectMarkdownPlainText(ast: Node | Node[] | string): string {
     .trim();
 }
 
-export function unescapeHTMLChars(str: string): string {
+function unescapeHTMLChars(str: string): string {
   return str
     .replace(/&#(\d+);/g, (_m, code) => String.fromCharCode(parseInt(code, 10)))
     .replace(/&quot;/g, '"')

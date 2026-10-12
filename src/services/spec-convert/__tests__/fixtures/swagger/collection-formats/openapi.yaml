@@ -1,0 +1,63 @@
+openapi: 3.2.0
+info:
+  title: Redocly Cafe
+  version: 1.0.0
+paths:
+  /menu/{categories}:
+    get:
+      operationId: listMenuItems
+      parameters:
+        - name: categories
+          in: path
+          required: true
+          style: simple
+          schema:
+            type: array
+            items:
+              type: string
+        - name: X-Diets
+          in: header
+          style: simple
+          schema:
+            type: array
+            items:
+              type: string
+        - name: toppings
+          in: query
+          style: pipeDelimited
+          schema:
+            type: array
+            items:
+              type: string
+        - name: milk
+          in: query
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: syrups
+          in: query
+          style: spaceDelimited
+          schema:
+            type: array
+            items:
+              type: string
+        - name: sizes
+          in: query
+          style: form
+          explode: false
+          schema:
+            type: array
+            items:
+              type: integer
+        - name: X-Ticket-Codes
+          in: header
+          x-collectionFormat: tsv
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        default:
+          description: Matching menu items.

@@ -52,6 +52,54 @@ describe('SecurityFlowDetail rendering', () => {
     expect(screen.getByText('X-Api-Key')).toBeInTheDocument();
   });
 
+  it('labels an httpApiKey scheme by its location', () => {
+    render(
+      <SecurityFlowDetail
+        scheme={
+          {
+            name: 'gatewayKey',
+            type: 'httpApiKey',
+            in: 'header',
+            paramName: 'X-Api-Key',
+          } as SecurityScheme
+        }
+      />,
+    );
+    expect(screen.getByText('Header parameter name:')).toBeInTheDocument();
+    expect(screen.getByText('X-Api-Key')).toBeInTheDocument();
+  });
+
+  it('shows the type and location of an apiKey scheme without a parameter name', () => {
+    render(
+      <SecurityFlowDetail
+        scheme={{ name: 'brokerKey', type: 'apiKey', in: 'user' } as SecurityScheme}
+      />,
+    );
+    expect(screen.getByText('Scheme type:')).toBeInTheDocument();
+    expect(screen.getByText('apiKey')).toBeInTheDocument();
+    expect(screen.getByText('Location:')).toBeInTheDocument();
+    expect(screen.getByText('user')).toBeInTheDocument();
+  });
+
+  it.each(['userPassword', 'X509', 'scramSha256', 'gssapi'])(
+    'shows the scheme type and required scopes for a %s scheme',
+    (type) => {
+      render(
+        <SecurityFlowDetail
+          scheme={{ name: 'brokerAuth', type, scopes: ['orders:read'] } as SecurityScheme}
+        />,
+      );
+      expect(screen.getByText('Scheme type:')).toBeInTheDocument();
+      expect(screen.getByText(type)).toBeInTheDocument();
+      expect(screen.getByText('Required scopes')).toBeInTheDocument();
+    },
+  );
+
+  it('adds no scheme type row for a mutualTLS scheme', () => {
+    render(<SecurityFlowDetail scheme={{ name: 'mtls', type: 'mutualTLS' } as SecurityScheme} />);
+    expect(screen.queryByText('Scheme type:')).toBeNull();
+  });
+
   it('renders the OAuth2 Metadata URL row when oauth2MetadataUrl is set', () => {
     render(
       <SecurityFlowDetail

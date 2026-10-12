@@ -50,12 +50,15 @@ test.describe('Message section Component', () => {
     await expect(messages.locator('.schema-name', { hasText: /^pickupLocation$/ })).toBeVisible();
   });
 
-  test('should show the payload example of the selected message in the right panel', async () => {
+  test('should show the header values and the payload of the selected example in the right panel', async () => {
     const example = apiDocs.messageExamplePanel(CHANNEL);
     await expect(
       example.getByText('Example of a typical ride request for a standard vehicle').first(),
     ).toBeVisible();
-    await expect(example.locator('[data-testid="source-code"]')).toContainText('passengerId');
+    const samples = example.locator('[data-testid="source-code"]');
+    await expect(samples).toHaveCount(2);
+    await expect(samples.first()).toContainText('timestamp');
+    await expect(samples.last()).toContainText('passengerId');
   });
 
   test('should update the payload and the bindings panel when switching messages', async () => {
@@ -116,5 +119,23 @@ test.describe('Message section Component', () => {
     );
 
     expect(Math.abs(secondTop - firstTop)).toBeLessThan(24);
+  });
+});
+
+test.describe('Message correlation ID', () => {
+  test('should show the location and description of a referenced correlation ID', async ({
+    page,
+  }) => {
+    const apiDocs = new ApiDocsPage(page);
+    await goto(page, '/asyncapi/payments/topics/paymentsprocessing');
+    await apiDocs.waitForChannelLoad('Payment Processing Topic');
+    await apiDocs.messageTab('paymentsprocessing/messages', 'Payment Completed').click();
+
+    const messages = apiDocs.messagesBlock('paymentsprocessing/messages');
+    await expect(messages.getByText('Correlation ID', { exact: true })).toBeVisible();
+    await expect(messages.getByText('$message.header#/transactionId')).toBeVisible();
+    await expect(
+      messages.getByText('Correlates every event of one payment transaction.'),
+    ).toBeVisible();
   });
 });

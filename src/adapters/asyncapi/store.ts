@@ -1,20 +1,24 @@
 import type { ApiStore, StoreContext } from '../../types/store.js';
-import type { AsyncApiDefinition } from '../../types/asyncapi.js';
+import type { AsyncApiDefinition, AsyncApiSecurityScheme } from '../../types/asyncapi.js';
+import type { ApiDocsOptions } from '../../types/options.js';
 
 import { schemaKind } from '../../types/common.js';
-import { registerSchema, registerExample } from '../helpers.js';
+import { registerSchema, registerExample, registerSecurityScheme } from '../helpers.js';
 import { readRbacScope, rbacProp, splitRbacSection } from '../rbac.js';
 import { resolveAsyncApiSchema } from './utils/resolve-schema.js';
+import { resolveInDoc } from './utils/resolveInDoc.js';
+import { buildSecuritySchemeEntry } from './utils/security.js';
 
 export function populateAsyncApiStore(
   document: AsyncApiDefinition,
   existingCtx: StoreContext,
+  options: ApiDocsOptions,
 ): ApiStore {
-  const { schemaStore, exampleStore, hashIndex } = existingCtx;
+  const { schemaStore, exampleStore, securitySchemeStore, hashIndex } = existingCtx;
 
   const components = document.components;
   if (!components) {
-    return { schemaStore, exampleStore, securitySchemeStore: {} };
+    return { schemaStore, exampleStore, securitySchemeStore };
   }
 
   if (components.schemas) {
@@ -77,5 +81,17 @@ export function populateAsyncApiStore(
     }
   }
 
-  return { schemaStore, exampleStore, securitySchemeStore: {} };
+  if (components.securitySchemes) {
+    const { sectionRbac, entries } = splitRbacSection(components.securitySchemes);
+    for (const [name, rawScheme] of entries) {
+      const scheme = resolveInDoc<AsyncApiSecurityScheme>(document, rawScheme);
+      if (!scheme?.type) continue;
+      registerSecurityScheme(securitySchemeStore, {
+        ...buildSecuritySchemeEntry(name, scheme, options),
+        ...rbacProp(readRbacScope(rawScheme) ?? readRbacScope(scheme) ?? sectionRbac),
+      });
+    }
+  }
+
+  return { schemaStore, exampleStore, securitySchemeStore };
 }

@@ -6,18 +6,10 @@ import '@testing-library/jest-dom/vitest';
 import type { ServerEntry } from '../ServerDropdown.js';
 
 import { ServerDropdown } from '../ServerDropdown.js';
-import { appStore, environmentAtom, environmentsAtom } from '../../../../jotai/app.js';
+import { appStore, environmentAtom } from '../../../../jotai/app.js';
 
 const SERVERS: ServerEntry[] = [
   { url: 'https://rest.test.example.com', description: 'Test env' },
-  { url: 'https://rest.prod.example.com', description: 'Prod env' },
-];
-
-const VAR_SERVERS: ServerEntry[] = [
-  {
-    url: 'https://{region}.vars.example.com',
-    variables: { region: { default: 'eu' } },
-  },
   { url: 'https://rest.prod.example.com', description: 'Prod env' },
 ];
 
@@ -105,7 +97,7 @@ describe('ServerDropdown', () => {
     renderDropdown(SERVERS, store);
 
     const [env, envName] = store.get(environmentAtom);
-    expect(store.get(environmentsAtom)['Prod env']).toEqual({
+    expect(store.get(appStore).environments['Prod env']).toEqual({
       server: 'https://rest.prod.example.com',
     });
     expect(envName).toBe('Prod env');
@@ -125,4 +117,5 @@ describe('ServerDropdown', () => {
     // …while the persisted name stays untouched for the api it belongs to.
     expect(store.get(appStore).environment).toBe('Other api env');
   });
+
 });

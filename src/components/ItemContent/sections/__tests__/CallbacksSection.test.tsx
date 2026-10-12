@@ -48,7 +48,7 @@ function renderCallbacksSection(hash: string) {
   const utils = render(
     <MemoryRouter initialEntries={[{ pathname: `/${ITEM_ID}`, hash }]}>
       <JotaiProvider store={store}>
-        <MarkdownAdapterProvider adapter={createMarkdocAdapter()}>
+        <MarkdownAdapterProvider value={createMarkdocAdapter()}>
           <ItemIdContext.Provider value={ITEM_ID}>
             <CallbacksSection node={callbackNode()} />
           </ItemIdContext.Provider>
@@ -100,7 +100,7 @@ describe('CallbacksSection', () => {
     render(
       <MemoryRouter initialEntries={[{ pathname: `/${ITEM_ID}`, hash: `#${CALLBACK_SCOPE}` }]}>
         <JotaiProvider store={store}>
-          <MarkdownAdapterProvider adapter={createMarkdocAdapter()}>
+          <MarkdownAdapterProvider value={createMarkdocAdapter()}>
             <ItemIdContext.Provider value={ITEM_ID}>
               <CallbacksSection node={callbackNode()} />
             </ItemIdContext.Provider>

@@ -30,7 +30,7 @@ export function stripLeadingSlash(path: string): string {
 
 /**
  * The relative item slug used as the wrapper element id (e.g. `pet/getpetbyid`).
- * Legacy openapi-docs stamped this id, and e2e/consumer locators depend on it.
+ * e2e and consumer locators depend on it.
  */
 export function toElementId(itemPath: string, basePath: string): string | undefined {
   return stripLeadingSlash(toRelativePath(itemPath, basePath)) || undefined;

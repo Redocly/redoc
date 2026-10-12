@@ -35,7 +35,6 @@ function renderPropertyFieldRow(
     items: [],
     store: emptyStore,
     options,
-    replayDefinition: null,
   });
 
   return render(

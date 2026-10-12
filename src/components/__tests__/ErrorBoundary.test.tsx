@@ -170,5 +170,6 @@ describe('ErrorBoundary', () => {
       screen.getByText('Something went wrong rendering the API documentation.'),
     ).toBeInTheDocument();
     expect(screen.getByText('entry page crashed')).toBeInTheDocument();
+    expect(document.querySelectorAll('symbol')).toHaveLength(1);
   });
 });

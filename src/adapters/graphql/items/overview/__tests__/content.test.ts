@@ -23,7 +23,7 @@ describe('buildOverviewContent', () => {
         metadata: {
           title: 'Ignored in table',
           description: 'Also ignored',
-          apiId: 'catalog-123',
+          apiId: 'inventory-123',
         },
       } as ApiDocsOptions,
       markdoc,
@@ -35,7 +35,6 @@ describe('buildOverviewContent', () => {
     const overviewSection = container.children[0] as OverviewSectionWrapperNode;
 
     expect(result.contentType).toBe(contentType.OVERVIEW);
-    expect(result.seo).toEqual({ title: 'My API', description: 'Great API' });
 
     expect(overviewSection).toMatchObject({
       nodeType: nodeTypes.OVERVIEW_SECTION_WRAPPER,
@@ -57,7 +56,7 @@ describe('buildOverviewContent', () => {
 
     expect(overviewSection.children[2]).toMatchObject({
       nodeType: nodeTypes.INFO_METADATA,
-      rows: [{ key: 'apiId', value: 'catalog-123' }],
+      rows: [{ key: 'apiId', value: 'inventory-123' }],
     });
 
     expect(container.panels?.[0]?.children[0]).toMatchObject({
@@ -89,5 +88,22 @@ describe('buildOverviewContent', () => {
       label: 'My API (1.0.0)',
       labelTranslationKey: undefined,
     });
+  });
+
+  it('omits the download panel when hideDownloadButtons is true', () => {
+    const result = buildOverviewContent({
+      options: {
+        info: { title: 'My API' },
+        downloadUrls: [{ title: 'JSON', url: '/spec.json' }],
+        hideDownloadButtons: true,
+      } as ApiDocsOptions,
+      sectionChildren: [],
+      basePath: '/graphql',
+    });
+
+    const container = result.children[0] as ContainerNode;
+    expect(
+      container.panels?.some((p) => p.children.some((item) => item.kind === panelKind.DOWNLOAD)),
+    ).toBe(false);
   });
 });

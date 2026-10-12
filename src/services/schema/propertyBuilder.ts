@@ -60,7 +60,7 @@ export function schemaHasType(type: string | string[], target: string): boolean 
   return type === target || (Array.isArray(type) && type.includes(target));
 }
 
-export function isArrayTypedSchema(schema: SchemaNode): boolean {
+function isArrayTypedSchema(schema: SchemaNode): boolean {
   return schemaHasType(schema.type || detectJsonSchemaType(schema), 'array');
 }
 

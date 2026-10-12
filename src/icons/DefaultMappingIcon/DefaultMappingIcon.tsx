@@ -1,8 +1,8 @@
-type IconProps = React.SVGProps<SVGSVGElement>;
+type IconProps = React.SVGProps<SVGSVGElement> & { 'data-component-name'?: string };
 
 import { styled } from 'styled-components';
 
-export const Icon = (props: IconProps) => (
+const Icon = (props: IconProps) => (
   <svg
     width="12"
     height="12"
@@ -19,9 +19,9 @@ export const Icon = (props: IconProps) => (
   </svg>
 );
 
-export const DefaultMappingIcon = styled(Icon)<IconProps>`
-  datacomponentname: icons/DefaultMappingIcon;
-
+export const DefaultMappingIcon = styled(Icon).attrs({
+  'data-component-name': 'icons/DefaultMappingIcon/DefaultMappingIcon',
+})<IconProps>`
   path {
     fill: var(--color-warm-grey-11);
     html.dark & {

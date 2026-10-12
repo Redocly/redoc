@@ -156,8 +156,8 @@ describe('useRouterHashBridge', () => {
     renderBridge('/docs#section/foo');
     const before = reassertToken;
 
-    // A host that re-lands on the current URL without routing (the portal skips the router
-    // when nothing in the URL changed) signals it with a hashchange the browser never fires.
+    // A host that re-lands on the current URL without routing signals it with a hashchange
+    // the browser never fires.
     act(() => {
       window.dispatchEvent(new HashChangeEvent('hashchange'));
     });

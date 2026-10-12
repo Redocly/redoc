@@ -168,11 +168,3 @@ export const VariablesTitle = styled.div`
 export const ExampleDescriptionWrap = styled.div`
   margin: 0 var(--spacing-md) var(--spacing-sm);
 `;
-
-export const TryItPanelFooter = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  border-top: var(--panel-border);
-  padding: var(--spacing-xs) var(--spacing-md) var(--spacing-sm) var(--spacing-md);
-`;

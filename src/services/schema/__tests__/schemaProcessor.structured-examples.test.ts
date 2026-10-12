@@ -15,8 +15,7 @@ function makeDocument(components: Record<string, unknown>): Document {
 
 const emptyDoc = makeDocument({});
 
-// Parity with openapi-docs (fix/improve-displaying-exmaples): structured
-// example values stay raw so the UI can render them as pretty-printed JSON,
+// Structured example values stay raw so the UI can render them as pretty-printed JSON,
 // while scalar examples remain serialized strings.
 describe('schemaProcessor structured example values', () => {
   it('preserves object examples as structured values', () => {

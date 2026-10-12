@@ -19,9 +19,9 @@ const median = (xs: number[]) => [...xs].sort((a, b) => a - b)[Math.floor(xs.len
 const ms = (x: number) => x.toFixed(2).padStart(7);
 
 bench('query split', async () => {
-  const definition = JSON.parse(
-    readFileSync(process.env.SEARCH_BENCH_SPEC ?? '../playground/specs/test.json', 'utf8'),
-  );
+  const specPath = process.env.SEARCH_BENCH_SPEC;
+  if (!specPath) throw new Error('SEARCH_BENCH_SPEC must point at a large OpenAPI JSON file');
+  const definition = JSON.parse(readFileSync(specPath, 'utf8'));
   const prepared = await prepareApiDocs({
     definition,
     specType: 'openapi',

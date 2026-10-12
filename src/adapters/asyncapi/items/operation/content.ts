@@ -23,6 +23,7 @@ import { normalizePath, toRelativePath } from '../../../../utils/url.js';
 import { JsonPointer } from '../../../openapi/utils/JsonPointer.js';
 import { componentLabelsByProtocol } from '../../utils/get-protocol-labels.js';
 import { resolveInDoc } from '../../utils/resolveInDoc.js';
+import { buildSecurityRequirements } from '../../utils/security.js';
 import { resolveAsyncApiSchema } from '../../utils/resolve-schema.js';
 import { asyncApiContext } from '../../buildContext.js';
 
@@ -95,6 +96,16 @@ export function buildOperationContent(
     });
   }
 
+  const requirements = buildSecurityRequirements(
+    operation.security ?? [],
+    asyncApiContext.get().storeCtx,
+    document,
+    options,
+  );
+  if (requirements.length > 0) {
+    containerChildren.push({ nodeType: nodeTypes.SECURITY, requirements });
+  }
+
   const resolvedChannel = operation.channel
     ? resolveInDoc<AsyncApiChannel>(document, operation.channel)
     : undefined;
@@ -107,19 +118,20 @@ export function buildOperationContent(
     const messageLinks = operation.messages
       .map((message) => {
         const ref = (message as { $ref?: string }).$ref;
-        const refTail = typeof ref === 'string' ? ref.split('/messages/').pop() : undefined;
-        let messageKey =
-          Object.keys(channelMessages).find((key) => {
-            const channelRefTail = (channelMessages[key] as { $ref?: string }).$ref
-              ?.split('/messages/')
-              .pop();
-            return channelRefTail !== undefined && channelRefTail === refTail;
-          }) ?? refTail;
-        let current: AsyncApiMessage | undefined = message as AsyncApiMessage;
-        for (let depth = 0; depth < 4 && (current as { $ref?: string })?.$ref; depth++) {
-          current = resolveInDoc<AsyncApiMessage>(document, current);
-        }
-        const resolved = current ?? (message as AsyncApiMessage);
+        const refTail = typeof ref === 'string' ? JsonPointer.baseName(ref) : undefined;
+        const pointsIntoChannel =
+          typeof ref === 'string' &&
+          ref.startsWith('#/channels/') &&
+          JsonPointer.parse(ref).at(-2) === 'messages' &&
+          refTail !== undefined &&
+          refTail in channelMessages;
+        let messageKey = pointsIntoChannel
+          ? refTail
+          : (Object.keys(channelMessages).find((key) => {
+              const channelRef = (channelMessages[key] as { $ref?: string }).$ref;
+              return channelRef !== undefined && JsonPointer.baseName(channelRef) === refTail;
+            }) ?? refTail);
+        const resolved = resolveInDoc<AsyncApiMessage>(document, message) ?? message;
 
         if (!messageKey) {
           const inlinePayloadRef = (resolved.payload as { $ref?: string } | undefined)?.$ref;
@@ -270,10 +282,6 @@ export function buildOperationContent(
       action: operation.action,
       actionLabel,
       channelBindings,
-    },
-    seo: {
-      title: operationTitle,
-      description: asString(operation.description),
     },
     children,
     showDivider,

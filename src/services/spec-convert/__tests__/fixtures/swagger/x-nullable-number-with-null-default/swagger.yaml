@@ -1,0 +1,17 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Redocly Cafe
+produces:
+  - application/json
+paths:
+  /orders/total:
+    get:
+      operationId: getOrderTotal
+      responses:
+        '200':
+          description: Total of the open tab, if any.
+          schema:
+            type: number
+            x-nullable: true
+            default: null

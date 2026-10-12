@@ -7,7 +7,6 @@ import { DEFAULT_WEBHOOKS_TAG_NAME } from '../../constants/openapi.js';
 import { collectComponentClosure, buildComponentsFromClosure } from './component-closure.js';
 import { cloneStrip } from './clone-strip.js';
 
-import type { OpenAPIPath } from '../../types/openapi.js';
 import type { SpecSliceScope } from './types.js';
 
 const SLICE_ROOT_FIELDS = [
@@ -152,11 +151,7 @@ function resolvePathItem(
 ): Record<string, unknown> | undefined {
   if (!isRecord(rawItem)) return undefined;
   try {
-    const resolved = resolvePathItemRef(
-      document,
-      rawItem as OpenAPIPath,
-      document.openapi as string,
-    );
+    const resolved = resolvePathItemRef(document, rawItem, document.openapi as string);
     return isRecord(resolved) ? resolved : undefined;
   } catch {
     return undefined;
@@ -203,9 +198,10 @@ function operationMatchesTag(
   tagName: string,
   isWebhook: boolean,
 ): boolean {
-  const tags = Array.isArray(operation.tags)
-    ? operation.tags
-    : [isWebhook ? DEFAULT_WEBHOOKS_TAG_NAME : ''];
+  const tags =
+    Array.isArray(operation.tags) && operation.tags.length > 0
+      ? operation.tags
+      : [isWebhook ? DEFAULT_WEBHOOKS_TAG_NAME : ''];
   return tags.includes(tagName);
 }
 

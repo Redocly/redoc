@@ -139,10 +139,6 @@ export function buildOperationContent(
       returnType: operation.type.toString(),
       deprecated: !!operation.deprecationReason,
     },
-    seo: {
-      title: rootTypeName,
-      description: operation.description || undefined,
-    },
     children: [{ nodeType: nodeTypes.CONTAINER, children, panels }],
   };
 }

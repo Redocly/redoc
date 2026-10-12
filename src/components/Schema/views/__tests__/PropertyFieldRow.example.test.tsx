@@ -30,7 +30,6 @@ function renderPropertyFieldRow(property: PropertyType): RenderResult {
     items: [],
     store: emptyStore,
     options,
-    replayDefinition: null,
   });
 
   return render(

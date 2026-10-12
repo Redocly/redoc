@@ -43,7 +43,6 @@ export const RESOURCES = {
   switchExampleButton: uiResource('button', 'switchExampleButton'),
   switchMessageButton: uiResource('button', 'switchMessageButton'),
   switchServersButton: uiResource('button', 'switchServersButton'),
-  tryItButton: uiResource('button', 'tryItButton'),
 } as const;
 
 /** Item for `downloadDefinition.clicked`: the constant resource when `PAGE_URI` is set, so no host, URL or label is sent; otherwise the resolved download URL. */

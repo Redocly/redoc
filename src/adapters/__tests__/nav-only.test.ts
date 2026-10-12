@@ -9,7 +9,6 @@ import type { AsyncApiDefinition } from '../../types/asyncapi.js';
 import { processOpenApiDocument } from '../openapi/index.js';
 import { processGraphqlDocument } from '../graphql/index.js';
 import { processAsyncApiDocument } from '../asyncapi/index.js';
-import { buildItems, buildNavItems } from '../build.js';
 import { readFixture, collectAllItems } from './utils.js';
 import { CONST_PROTOCOL_VARIANT } from '../../types/asyncapi.js';
 import { contentType, itemVariant } from '../../types/common.js';
@@ -56,16 +55,6 @@ function expectNavOnlyContentNull(items: ApiItem[]): void {
   });
 }
 
-async function measureAverage(run: () => Promise<unknown>, iterations: number): Promise<number> {
-  await run();
-  const samples: number[] = [];
-  for (let i = 0; i < iterations; i++) {
-    const start = performance.now();
-    await run();
-    samples.push(performance.now() - start);
-  }
-  return samples.reduce((a, b) => a + b, 0) / samples.length;
-}
 
 describe('Nav-only adapter mode (processContent: false)', () => {
   afterEach(() => {
@@ -112,9 +101,7 @@ describe('Nav-only adapter mode (processContent: false)', () => {
       const navLinks = collectAllItems(navRun.items)
         .filter((i) => i.type === 'link' || i.type === 'group')
         .map((i) => i.link);
-      for (const link of navLinks) {
-        expect(fullLinks).toContain(link);
-      }
+      expect(navLinks).toEqual(fullLinks);
     });
 
     it('does not populate the schema/example store in nav-only mode', async () => {
@@ -254,9 +241,7 @@ describe('Nav-only adapter mode (processContent: false)', () => {
       const navLinks = collectAllItems(navRun.items)
         .filter((i) => i.type === 'link' || i.type === 'group')
         .map((i) => i.link);
-      for (const link of navLinks) {
-        expect(fullLinks).toContain(link);
-      }
+      expect(navLinks).toEqual(fullLinks);
     });
 
     it('does not populate the schema/example store in nav-only mode', () => {
@@ -286,94 +271,4 @@ describe('Nav-only adapter mode (processContent: false)', () => {
     });
   });
 
-  describe('buildNavItems integration', () => {
-    it('returns nav-only items with content: null for OpenAPI', async () => {
-      const document = yaml.load(readFixture('openapi/schema.yaml')) as OpenAPIDefinition;
-      const { items, specType } = await buildNavItems({
-        type: 'openapi',
-        document,
-        basePath: '/',
-        options: { specType: 'openapi', downloadUrls: [], metadata: {} },
-        markdownParser: markdocParser,
-      });
-
-      expect(specType).toBe('openapi');
-      expect(items.length).toBeGreaterThan(0);
-      expectNavOnlyContentNull(items);
-    });
-
-    it('returns nav-only items with content: null for GraphQL', async () => {
-      const document = parseGraphQL(readFixture('graphql/schema.graphql'));
-      const { items, specType } = await buildNavItems({
-        type: 'graphql',
-        document,
-        basePath: '/',
-        options: { specType: 'graphql', downloadUrls: [], metadata: {} },
-        markdownParser: markdocParser,
-      });
-
-      expect(specType).toBe('graphql');
-      expect(items.length).toBeGreaterThan(0);
-      expectAllContentNull(items);
-    });
-
-    it('returns nav-only items with content: null for AsyncAPI', async () => {
-      const document = yaml.load(readFixture('asyncapi/schema.yaml')) as AsyncApiDefinition;
-      const { items, specType } = await buildNavItems({
-        type: 'asyncapi',
-        document,
-        basePath: '/',
-        options: { specType: 'asyncapi', downloadUrls: [], metadata: {} },
-        markdownParser: markdocParser,
-      });
-
-      expect(specType).toBe('asyncapi');
-      expect(items.length).toBeGreaterThan(0);
-      expectAllContentNull(items);
-    });
-  });
-
-  describe('buildItems vs buildNavItems', () => {
-    const ITERATIONS = 3;
-
-    it('buildNavItems is faster than buildItems on OpenAPI and produces no deep content', async () => {
-      const document = yaml.load(readFixture('openapi/schema.yaml')) as OpenAPIDefinition;
-      const baseProps = {
-        type: 'openapi' as const,
-        document,
-        basePath: '/',
-        options: { specType: 'openapi' as const, downloadUrls: [], metadata: {} },
-        markdownParser: markdocParser,
-      };
-
-      const fullAvgMs = await measureAverage(() => buildItems(baseProps), ITERATIONS);
-      const navAvgMs = await measureAverage(() => buildNavItems(baseProps), ITERATIONS);
-
-      const { items: navItems } = await buildNavItems(baseProps);
-      const { items: fullItems } = await buildItems(baseProps);
-
-      let navNodeCount = 0;
-      let navNonNullContentCount = 0;
-      walkItemsDeep(navItems, (item) => {
-        navNodeCount++;
-        if (item.content !== null && !isOverviewLandingContent(item.content)) {
-          navNonNullContentCount++;
-        }
-      });
-      expect(navNodeCount).toBeGreaterThan(0);
-      expect(navNonNullContentCount).toBe(0);
-
-      let fullNonNullContentCount = 0;
-      walkItemsDeep(fullItems, (item) => {
-        if (item.content !== null) fullNonNullContentCount++;
-      });
-      expect(fullNonNullContentCount).toBeGreaterThan(0);
-
-      console.info(
-        `[buildItems vs buildNavItems] full=${fullAvgMs.toFixed(2)}ms nav=${navAvgMs.toFixed(2)}ms (avg over ${ITERATIONS} runs)`,
-      );
-
-      expect(navAvgMs).toBeLessThan(fullAvgMs);
-    });
-  });
 });

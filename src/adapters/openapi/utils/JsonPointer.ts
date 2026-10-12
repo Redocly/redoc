@@ -89,4 +89,3 @@ export class JsonPointer {
 
 (JsonPointerLib as unknown as { parse: typeof JsonPointer.parse }).parse = JsonPointer.parse;
 Object.assign(JsonPointer, JsonPointerLib);
-export default JsonPointer;

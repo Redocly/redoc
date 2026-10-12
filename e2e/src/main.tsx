@@ -1,4 +1,3 @@
-/** Drops the `/pluggable/<component>` harness, which has no counterpart in this build. */
 import { createRoot } from 'react-dom/client';
 
 import type { RawApiDocsOptions, ApiSpecType } from './api.js';

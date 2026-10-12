@@ -38,7 +38,6 @@ function renderArray(property: PropertyType, fieldParentsName: string[]): Render
     items: [],
     store: emptyStore,
     options,
-    replayDefinition: null,
   });
 
   return render(

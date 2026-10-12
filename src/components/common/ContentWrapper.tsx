@@ -55,7 +55,7 @@ const ContentWrapperComponent = ({ children, panels, sectionId }: ContentWrapper
 
 export const ContentWrapper = memo(ContentWrapperComponent);
 
-export const Row = styled.div<{
+const Row = styled.div<{
   $layout?: LayoutVariant;
 }>`
   display: flex;
@@ -124,7 +124,7 @@ export const MiddlePanel = styled.div<{
   }
 `;
 
-export const RightPanel = styled.div<{ $isStacked: boolean }>`
+const RightPanel = styled.div<{ $isStacked: boolean }>`
   margin-left: auto;
   --code-block-padding: var(--spacing-xs) 0 var(--spacing-xs) 20px;
   color: var(--panel-samples-text-color);

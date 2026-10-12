@@ -19,7 +19,7 @@ export type AgentToolResult = {
 };
 
 /** Hints an agent uses to decide whether a tool is safe to call unattended. */
-export type AgentToolAnnotations = {
+type AgentToolAnnotations = {
   readOnlyHint?: boolean;
   untrustedContentHint?: boolean;
   /** The tool changes something outside the page, so an agent should confirm before calling it. */

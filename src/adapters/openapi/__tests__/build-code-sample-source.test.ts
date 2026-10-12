@@ -79,23 +79,6 @@ describe('buildCodeSampleSource', () => {
       expect(source.parameters.query).toEqual([]);
     });
 
-    it('overrides a parameter example with a per-server requestValues override', () => {
-      const storeCtx = createStoreContext(spec);
-      const operationInfo = makeOperation({
-        parameters: [{ name: 'x-trace', in: 'header', schema: { type: 'string' } }],
-        requestValues: {
-          serverRequestValues: {
-            'https://op.example.com': { headers: { 'x-trace': 'server-override' } },
-          },
-        },
-      } as Partial<OperationInfo>);
-
-      const source = buildCodeSampleSource(operationInfo, storeCtx, options);
-
-      expect(source.parameters.header[0]?.serverValues).toEqual({
-        'https://op.example.com': { example: 'server-override' },
-      });
-    });
   });
 
   describe('security', () => {
@@ -161,36 +144,4 @@ describe('buildCodeSampleSource', () => {
     });
   });
 
-  describe('request values', () => {
-    it('surfaces structured envVariables and a per-server body override', () => {
-      const storeCtx = createStoreContext(spec);
-      const operationInfo = makeOperation({
-        requestValues: {
-          envVariables: { values: { API_KEY: 'abc' }, serverValues: {} } as unknown as Record<
-            string,
-            string
-          >,
-          serverRequestValues: {
-            'https://op.example.com': { body: { name: 'from-server' } },
-          },
-        },
-      } as Partial<OperationInfo>);
-
-      const source = buildCodeSampleSource(operationInfo, storeCtx, options);
-
-      expect(source.requestValues?.envVariables).toEqual({ API_KEY: 'abc' });
-      expect(source.requestValues?.serverBody).toEqual({
-        'https://op.example.com': { name: 'from-server' },
-      });
-    });
-
-    it('omits requestValues entirely when nothing was configured', () => {
-      const storeCtx = createStoreContext(spec);
-      const operationInfo = makeOperation();
-
-      const source = buildCodeSampleSource(operationInfo, storeCtx, options);
-
-      expect(source.requestValues).toBeUndefined();
-    });
-  });
 });

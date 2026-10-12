@@ -20,7 +20,7 @@ export const TextBadge = styled(Tag)`
 export const StyledBadge = styled(Tag)<{
   color?: string;
   $deprecated?: boolean;
-  webhook?: boolean;
+  $webhook?: boolean;
 }>`
   margin-left: 0;
   ${({ $deprecated }) =>
@@ -30,8 +30,8 @@ export const StyledBadge = styled(Tag)<{
       background-color: var(--badge-deprecated-bg-color);
       border-radius: var(--badge-deprecated-border-radius);
     `};
-  ${({ webhook }) =>
-    webhook &&
+  ${({ $webhook }) =>
+    $webhook &&
     css`
       color: var(--badge-webhook-text-color);
       background-color: var(--badge-webhook-bg-color);

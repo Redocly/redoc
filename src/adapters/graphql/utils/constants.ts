@@ -39,7 +39,7 @@ export const GRAPHQL_VARIANTS = [
   itemVariant.SCALAR,
 ] as const;
 
-export const menuGroupFilterKey = {
+const menuGroupFilterKey = {
   ITEMS: 'items',
   QUERIES: 'queries',
   MUTATIONS: 'mutations',

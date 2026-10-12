@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest';
 
 // `styled.<tag>` targets forward every prop to the DOM unless it is transient (`$`-prefixed).
 // The standalone renders without a `shouldForwardProp` filter, so a CSS-only prop reaches the
-// element and React warns. See brain/styled-dom-props.md.
+// element and React warns.
 const SRC = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const DECLARATION =
   /styled\.(?<tag>[a-z][a-z0-9]*)(?:\.(?:attrs|withConfig)\((?:[^()]|\([^()]*\))*\))*(?:<(?:[^<>]|<[^<>]*>)*>)?\s*`/g;

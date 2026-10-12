@@ -25,8 +25,6 @@ export type RouteIndex = {
   routeIndexByPath: Map<string, number>;
   rootPage: RouteItem | undefined;
   tags: RouteItem[];
-  /** Ids of overview headings rendered from partials; they have no route of their own. */
-  overviewPartialSectionIds?: ReadonlySet<string>;
 };
 
 type CollectRoutesParams = {
@@ -75,7 +73,7 @@ export function buildRouteIndex(
   };
 }
 
-const INDEX_DOCUMENT_RE = /\/index(\.(ya?ml|json|graphql|gql))?$/;
+const DIRECTORY_INDEX_RE = /\/(index(\.(ya?ml|json|graphql|gql|html?))?)?$/;
 
 export function resolveRouteByPathname(
   routeIndex: RouteIndex,
@@ -86,7 +84,7 @@ export function resolveRouteByPathname(
   const index = routeIndex.routeIndexByPath.get(normalized);
   if (index !== undefined) return routeIndex.allRoutes[index];
 
-  const withoutIndex = normalized.replace(INDEX_DOCUMENT_RE, '');
+  const withoutIndex = normalized.replace(DIRECTORY_INDEX_RE, '');
   if (withoutIndex !== normalized) {
     const indexFallback = routeIndex.routeIndexByPath.get(withoutIndex || '/');
     if (indexFallback !== undefined) return routeIndex.allRoutes[indexFallback];

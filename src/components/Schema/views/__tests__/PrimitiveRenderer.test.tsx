@@ -14,7 +14,6 @@ function renderPrimitive(property: PropertyType, options?: Partial<ApiDocsOption
   const jotaiStore = createStore();
   jotaiStore.set(globalStoreAtom, {
     items: [],
-    replayDefinition: null,
     store: { schemaStore: {}, exampleStore: {}, securitySchemeStore: {} },
     options: { ...(options ?? {}) } as ApiDocsOptions,
   } as GlobalStoreAtom);

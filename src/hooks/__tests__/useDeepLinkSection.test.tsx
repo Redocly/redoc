@@ -13,7 +13,6 @@ function makeWrapper(itemId: string, basePath: string) {
   const store = createStore();
   store.set(globalStoreAtom, {
     items: [],
-    replayDefinition: null,
     store: { schemaStore: {}, exampleStore: {}, securitySchemeStore: {} },
     options: normalizeOptions({ specType: 'openapi', downloadUrls: [], metadata: {}, basePath }),
   } as GlobalStoreAtom);

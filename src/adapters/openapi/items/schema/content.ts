@@ -39,7 +39,6 @@ export function buildSchemaDefinitionContent(
     contentType: contentType.ITEM,
     itemVariant: itemVariant.SCHEMA,
     meta: { name: schemaName },
-    seo: { title: label },
     children,
   };
 }

@@ -4,13 +4,11 @@ import { schemaKind } from '../../../types/common.js';
 import {
   applyActiveVariantsToSchema,
   applyActiveVariantsToStore,
-  applyDiscriminatorValue,
   collectNestedVariantAxes,
   findEffectiveDiscriminator,
   findSchemaVariantAxis,
-  hoistActiveVariantSchemaForSampling,
   resolveActiveVariantIndex,
-  resolveActiveVariantSchemaId,
+  samplesVariantThroughHost,
 } from '../discriminator.js';
 import type { SchemaEntry } from '../../../types/store.js';
 import type { SchemaVariantAxis } from '../discriminator.js';
@@ -92,9 +90,7 @@ describe('findEffectiveDiscriminator', () => {
     const store: Record<string, SchemaEntry> = {
       a: { id: 'a', kind: schemaKind.JSON_SCHEMA, data: { type: 'object' } },
     };
-    expect(
-      findEffectiveDiscriminator({ allOf: [{ $ref: '#/a' }] } as Record<string, unknown>, store),
-    ).toBeUndefined();
+    expect(findEffectiveDiscriminator({ allOf: [{ $ref: '#/a' }] }, store)).toBeUndefined();
   });
 
   it('does not infinite-loop on circular allOf refs', () => {
@@ -718,39 +714,6 @@ describe('resolveActiveVariantIndex', () => {
   });
 });
 
-describe('resolveActiveVariantSchemaId', () => {
-  const store: Record<string, SchemaEntry> = {
-    body: entry('body', {
-      oneOf: [{ $ref: '#/components/schemas/Cat' }, { $ref: '#/components/schemas/Dog' }],
-    }),
-    'components/schemas/Cat': entry('components/schemas/Cat', { title: 'Cat' }),
-    'components/schemas/Dog': entry('components/schemas/Dog', { title: 'Dog' }),
-  };
-
-  it('returns the input id when the schema has no variant axis', () => {
-    const plainStore: Record<string, SchemaEntry> = {
-      plain: entry('plain', { type: 'object' }),
-    };
-    expect(resolveActiveVariantSchemaId('plain', plainStore)).toBe('plain');
-  });
-
-  it('returns the first variant id when no selection is made', () => {
-    expect(resolveActiveVariantSchemaId('body', store)).toBe('components/schemas/Cat');
-  });
-
-  it('returns the variant id at the selected index', () => {
-    expect(resolveActiveVariantSchemaId('body', store, undefined, { 'One of:': 1 })).toBe(
-      'components/schemas/Dog',
-    );
-  });
-
-  it('accepts a single nested oneOf key as fallback for root oneOf resolution', () => {
-    expect(resolveActiveVariantSchemaId('body', store, undefined, { 'payload/One of:': 1 })).toBe(
-      'components/schemas/Dog',
-    );
-  });
-});
-
 describe('sampler-safety: nested oneOf must not replace parent body', () => {
   const taxRefId = 'components/schemas/Tax';
   const detailedTaxId = 'components/schemas/DetailedTax';
@@ -783,18 +746,6 @@ describe('sampler-safety: nested oneOf must not replace parent body', () => {
     };
   }
 
-  it('resolveActiveVariantSchemaId still returns body id (does NOT drill into nested oneOf)', () => {
-    const store = makeNestedTaxStore();
-    expect(resolveActiveVariantSchemaId('body', store)).toBe('body');
-    expect(resolveActiveVariantSchemaId('body', store, undefined, { 'tax/One of:': 1 })).toBe(
-      'body',
-    );
-  });
-
-  it('hoistActiveVariantSchemaForSampling returns undefined for a body that has no root variant axis', () => {
-    const store = makeNestedTaxStore();
-    expect(hoistActiveVariantSchemaForSampling('body', store)).toBeUndefined();
-  });
 
   it('applyActiveVariantsToStore preserves the body schema unchanged', () => {
     const store = makeNestedTaxStore();
@@ -803,184 +754,6 @@ describe('sampler-safety: nested oneOf must not replace parent body', () => {
   });
 });
 
-describe('hoistActiveVariantSchemaForSampling', () => {
-  it('reports the selected mapping key so the sampler can stamp it', () => {
-    const store: Record<string, SchemaEntry> = {
-      body: entry('body', {
-        type: 'object',
-        properties: { method: { type: 'string' } },
-        discriminator: {
-          propertyName: 'method',
-          mapping: {
-            ApplePay: '#/components/schemas/ApplePay',
-            Fallback: '#/components/schemas/UnknownWallet',
-          },
-          defaultMapping: '#/components/schemas/UnknownWallet',
-        },
-      }),
-      'components/schemas/ApplePay': entry('components/schemas/ApplePay', { title: 'ApplePay' }),
-      'components/schemas/UnknownWallet': entry('components/schemas/UnknownWallet', {
-        title: 'UnknownWallet',
-      }),
-    };
-
-    // options are [ApplePay, Fallback, Default mapping]; pick Fallback
-    const hoisted = hoistActiveVariantSchemaForSampling('body', store, { method: 1 });
-
-    expect(hoisted?.variantSchemaId).toBe('components/schemas/UnknownWallet');
-    expect(hoisted?.mappingKey).toBe('Fallback');
-
-    // 'Default mapping' points at the same schema but carries no outgoing value
-    const asDefault = hoistActiveVariantSchemaForSampling('body', store, { method: 2 });
-    expect(asDefault?.variantSchemaId).toBe('components/schemas/UnknownWallet');
-    expect(asDefault?.mappingKey).toBeUndefined();
-  });
-
-  it('reads from activeOneOf for plain oneOf bodies', () => {
-    const store: Record<string, SchemaEntry> = {
-      body: entry('body', {
-        oneOf: [{ $ref: '#/components/schemas/Cat' }, { $ref: '#/components/schemas/Dog' }],
-      }),
-      'components/schemas/Cat': entry('components/schemas/Cat', { title: 'Cat' }),
-      'components/schemas/Dog': entry('components/schemas/Dog', { title: 'Dog' }),
-    };
-
-    const result = hoistActiveVariantSchemaForSampling('body', store, undefined, {
-      'One of:': 1,
-    });
-    expect(result?.variantSchemaId).toBe('components/schemas/Dog');
-  });
-
-  it('reads from activeOneOf for plain anyOf bodies', () => {
-    const store: Record<string, SchemaEntry> = {
-      body: entry('body', {
-        anyOf: [{ $ref: '#/components/schemas/Cat' }, { $ref: '#/components/schemas/Dog' }],
-      }),
-      'components/schemas/Cat': entry('components/schemas/Cat', { title: 'Cat' }),
-      'components/schemas/Dog': entry('components/schemas/Dog', { title: 'Dog' }),
-    };
-
-    const result = hoistActiveVariantSchemaForSampling('body', store, undefined, {
-      'Any of:': 1,
-    });
-    expect(result?.variantSchemaId).toBe('components/schemas/Dog');
-  });
-
-  it('reads from activeDiscriminator for discriminator bodies', () => {
-    const store: Record<string, SchemaEntry> = {
-      body: entry('body', {
-        type: 'object',
-        discriminator: {
-          propertyName: 'kind',
-          mapping: {
-            cat: '#/components/schemas/Cat',
-            dog: '#/components/schemas/Dog',
-          },
-        },
-      }),
-      'components/schemas/Cat': entry('components/schemas/Cat', { title: 'Cat' }),
-      'components/schemas/Dog': entry('components/schemas/Dog', { title: 'Dog' }),
-    };
-
-    const result = hoistActiveVariantSchemaForSampling('body', store, { kind: 1 });
-    expect(result?.variantSchemaId).toBe('components/schemas/Dog');
-  });
-
-  it('keeps root oneOf sibling properties when variants are $ref ids', () => {
-    const store: Record<string, SchemaEntry> = {
-      body: entry('body', {
-        type: 'object',
-        properties: { common: { type: 'string' } },
-        required: ['common'],
-        oneOf: [{ $ref: '#/components/schemas/Cat' }, { $ref: '#/components/schemas/Dog' }],
-      }),
-      'components/schemas/Cat': entry('components/schemas/Cat', {
-        type: 'object',
-        title: 'Cat',
-        properties: { meow: { type: 'string' } },
-      }),
-      'components/schemas/Dog': entry('components/schemas/Dog', {
-        type: 'object',
-        title: 'Dog',
-        properties: { bark: { type: 'string' } },
-      }),
-    };
-
-    const result = hoistActiveVariantSchemaForSampling('body', store);
-
-    expect(result?.variantSchemaId).toBe('components/schemas/Cat');
-    expect(result?.schema).toEqual({
-      type: 'object',
-      title: 'Cat',
-      properties: { meow: { type: 'string' } },
-      allOf: [{ type: 'object', properties: { common: { type: 'string' } }, required: ['common'] }],
-    });
-  });
-
-  it('keeps root anyOf sibling properties when variants are $ref ids', () => {
-    const store: Record<string, SchemaEntry> = {
-      body: entry('body', {
-        type: 'object',
-        properties: { common: { type: 'string' } },
-        required: ['common'],
-        anyOf: [{ $ref: '#/components/schemas/Cat' }, { $ref: '#/components/schemas/Dog' }],
-      }),
-      'components/schemas/Cat': entry('components/schemas/Cat', {
-        type: 'object',
-        title: 'Cat',
-        properties: { meow: { type: 'string' } },
-      }),
-      'components/schemas/Dog': entry('components/schemas/Dog', {
-        type: 'object',
-        title: 'Dog',
-        properties: { bark: { type: 'string' } },
-      }),
-    };
-
-    const result = hoistActiveVariantSchemaForSampling('body', store);
-
-    expect(result?.variantSchemaId).toBe('components/schemas/Cat');
-    expect(result?.schema).toEqual({
-      type: 'object',
-      title: 'Cat',
-      properties: { meow: { type: 'string' } },
-      allOf: [{ type: 'object', properties: { common: { type: 'string' } }, required: ['common'] }],
-    });
-  });
-
-  it('hoists the first anyOf variant when variants are wrapped in allOf', () => {
-    const store: Record<string, SchemaEntry> = {
-      body: entry('body', {
-        allOf: [
-          { type: 'object', properties: { common: { type: 'string' } } },
-          {
-            anyOf: [{ $ref: '#/components/schemas/Cat' }, { $ref: '#/components/schemas/Dog' }],
-          },
-        ],
-      }),
-      'components/schemas/Cat': entry('components/schemas/Cat', {
-        type: 'object',
-        title: 'Cat',
-        properties: { meow: { type: 'string' } },
-      }),
-      'components/schemas/Dog': entry('components/schemas/Dog', {
-        type: 'object',
-        title: 'Dog',
-        properties: { bark: { type: 'string' } },
-      }),
-    };
-
-    const result = hoistActiveVariantSchemaForSampling('body', store);
-
-    expect(result?.variantSchemaId).toBe('components/schemas/Cat');
-    expect(result?.schema).toEqual({
-      type: 'object',
-      title: 'Cat',
-      properties: { meow: { type: 'string' } },
-      allOf: [{ type: 'object', properties: { common: { type: 'string' } } }],
-    });
-  });
-});
 
 describe('applyActiveVariantsToStore', () => {
   it('returns the original data for schemas with no variant axis', () => {
@@ -1024,7 +797,7 @@ describe('applyActiveVariantsToStore', () => {
     // sampler emits the mapping key for the discriminator property. The first
     // allOf entry is the variant body itself. The host's top-level `type` is
     // preserved so the sampler's circular-$ref fallback samples back-references
-    // into the host as `{}` (legacy parity), not `null`.
+    // into the host as `{}`, not `null`.
     expect(resolved.body).toEqual({
       type: 'object',
       allOf: [{ type: 'object', title: 'Dog' }, { properties: { kind: { enum: ['dog'] } } }],
@@ -1086,7 +859,9 @@ describe('applyActiveVariantsToStore', () => {
 
     const resolved = applyActiveVariantsToStore(store, { vehicleType: 1 }, {});
 
-    expect(resolved['components/schemas/Vehicle'].properties).toHaveProperty('doors');
+    const allOf = resolved['components/schemas/Vehicle'].allOf as Array<Record<string, unknown>>;
+    expect(allOf[0].properties).toHaveProperty('vehicleType');
+    expect(allOf[1].properties).toHaveProperty('doors');
   });
 
   it('ignores activeOneOf state for a mapping-less discriminator host', () => {
@@ -1111,7 +886,9 @@ describe('applyActiveVariantsToStore', () => {
 
     const resolved = applyActiveVariantsToStore(store, {}, { 'One of:': 1 });
 
-    expect(resolved['components/schemas/Vehicle'].properties).toHaveProperty('gears');
+    const allOf = resolved['components/schemas/Vehicle'].allOf as Array<Record<string, unknown>>;
+    expect(allOf[0].properties).toHaveProperty('vehicleType');
+    expect(allOf[1].properties).toHaveProperty('gears');
   });
 
   it('rewrites root oneOf schemas to the selected variant body', () => {
@@ -1184,7 +961,7 @@ describe('applyActiveVariantsToStore', () => {
 
     const resolved = applyActiveVariantsToStore(store);
 
-    const hostResolved = resolved['components/schemas/GatewayAccount'] as Record<string, unknown>;
+    const hostResolved = resolved['components/schemas/GatewayAccount'];
     const allOf = hostResolved.allOf as Array<Record<string, unknown>>;
 
     expect(allOf[0]).not.toHaveProperty('$ref');
@@ -1226,8 +1003,7 @@ describe('applyActiveVariantsToStore', () => {
     };
 
     const resolved = applyActiveVariantsToStore(store);
-    const bodyResolved = resolved.body as Record<string, unknown>;
-    const allOf = bodyResolved.allOf as Array<Record<string, unknown>>;
+    const allOf = resolved.body.allOf as Array<Record<string, unknown>>;
 
     expect(allOf[0]).not.toHaveProperty('$ref');
     expect(allOf[0]).toMatchObject({
@@ -1285,8 +1061,7 @@ describe('applyActiveVariantsToStore', () => {
     };
 
     const resolved = applyActiveVariantsToStore(store);
-    const bodyResolved = resolved.body as Record<string, unknown>;
-    const allOf = bodyResolved.allOf as Array<Record<string, unknown>>;
+    const allOf = resolved.body.allOf as Array<Record<string, unknown>>;
 
     expect(allOf[0]).not.toHaveProperty('$ref');
     expect(allOf[0]).toMatchObject({
@@ -1295,6 +1070,114 @@ describe('applyActiveVariantsToStore', () => {
     });
     expect(allOf[0]).not.toHaveProperty('anyOf');
   });
+
+  function paymentStore(withDiscriminator: boolean): Record<string, SchemaEntry> {
+    return {
+      'components/schemas/Payment': entry('components/schemas/Payment', {
+        type: 'object',
+        required: ['amount'],
+        properties: {
+          method: { type: 'string', description: 'Payment method' },
+          amount: { type: 'number', example: 4.2 },
+        },
+        oneOf: [{ $ref: '#/components/schemas/Card' }, { $ref: '#/components/schemas/Bank' }],
+        ...(withDiscriminator
+          ? {
+              discriminator: {
+                propertyName: 'method',
+                mapping: {
+                  card: '#/components/schemas/Card',
+                  bank: '#/components/schemas/Bank',
+                },
+              },
+            }
+          : {}),
+      }),
+      'components/schemas/Card': entry('components/schemas/Card', {
+        type: 'object',
+        required: ['method'],
+        properties: { method: { const: 'card' }, last4: { type: 'string', example: '4242' } },
+      }),
+      'components/schemas/Bank': entry('components/schemas/Bank', {
+        type: 'object',
+        required: ['method'],
+        properties: {
+          method: { const: 'bank' },
+          iban: { type: 'string', example: 'DE89370400440532013000' },
+        },
+      }),
+    };
+  }
+
+  it('keeps the host own properties next to the selected discriminator variant', () => {
+    const store = paymentStore(true);
+
+    const resolved = applyActiveVariantsToStore(store, { method: 0 });
+
+    expect(resolved['components/schemas/Payment']).toEqual({
+      type: 'object',
+      allOf: [
+        {
+          type: 'object',
+          required: ['amount'],
+          properties: {
+            method: { type: 'string', description: 'Payment method' },
+            amount: { type: 'number', example: 4.2 },
+          },
+        },
+        store['components/schemas/Card'].data,
+        { properties: { method: { enum: ['card'] } } },
+      ],
+    });
+  });
+
+  it('keeps the host own properties next to the selected plain oneOf variant', () => {
+    const store = paymentStore(false);
+
+    const resolved = applyActiveVariantsToStore(store);
+
+    expect(resolved['components/schemas/Payment']).toEqual({
+      type: 'object',
+      allOf: [
+        {
+          type: 'object',
+          required: ['amount'],
+          properties: {
+            method: { type: 'string', description: 'Payment method' },
+            amount: { type: 'number', example: 4.2 },
+          },
+        },
+        store['components/schemas/Card'].data,
+      ],
+    });
+  });
+
+
+  it('does not merge a host example into the selected variant', () => {
+    const store = paymentStore(true);
+    const payment = store['components/schemas/Payment'];
+    store['components/schemas/Payment'] = {
+      ...payment,
+      data: { ...payment.data, example: { method: 'card', last4: '1111' }, default: {} },
+    };
+
+    const resolved = applyActiveVariantsToStore(store, { method: 1 });
+    const host = (resolved['components/schemas/Payment'].allOf as Record<string, unknown>[])[0];
+
+    expect(host).not.toHaveProperty('example');
+    expect(host).not.toHaveProperty('default');
+  });
+
+  it('keeps the selected variant XML name on the rewritten host', () => {
+    const store = paymentStore(true);
+    const bank = store['components/schemas/Bank'];
+    store['components/schemas/Bank'] = { ...bank, data: { ...bank.data, xml: { name: 'Bank' } } };
+
+    const resolved = applyActiveVariantsToStore(store, { method: 1 });
+
+    expect(resolved['components/schemas/Payment'].xml).toEqual({ name: 'Bank' });
+  });
+
 
   it('prefers oneOf over anyOf when both are present at the root', () => {
     const store: Record<string, SchemaEntry> = {
@@ -1323,99 +1206,6 @@ describe('applyActiveVariantsToStore', () => {
   });
 });
 
-describe('applyDiscriminatorValue', () => {
-  function hostStore(discExtras: Record<string, unknown> = {}): Record<string, SchemaEntry> {
-    return {
-      'components/schemas/Wallet': entry('components/schemas/Wallet', {
-        type: 'object',
-        properties: { method: { type: 'string' } },
-        discriminator: {
-          propertyName: 'method',
-          mapping: {
-            ApplePay: '#/components/schemas/ApplePay',
-            GooglePay: '#/components/schemas/GooglePay',
-          },
-          ...discExtras,
-        },
-      }),
-      'components/schemas/ApplePay': entry('components/schemas/ApplePay', {}),
-      'components/schemas/GooglePay': entry('components/schemas/GooglePay', {}),
-      'components/schemas/UnknownWallet': entry('components/schemas/UnknownWallet', {}),
-    };
-  }
-
-  it('stamps the mapping key when the variant matches a regular mapping entry', () => {
-    const sample: Record<string, unknown> = { method: 'string' };
-    applyDiscriminatorValue(sample, 'components/schemas/ApplePay', hostStore());
-    expect(sample.method).toBe('ApplePay');
-  });
-
-  it('leaves the sample untouched when the variant matches no mapping entry', () => {
-    const sample: Record<string, unknown> = { method: 'string' };
-    applyDiscriminatorValue(sample, 'components/schemas/UnknownWallet', hostStore());
-    expect(sample.method).toBe('string');
-  });
-
-  it('leaves the sample untouched when the variant is the defaultMapping target (OAS 3.2)', () => {
-    const sample: Record<string, unknown> = { method: 'string' };
-    const store = hostStore({ defaultMapping: '#/components/schemas/UnknownWallet' });
-    applyDiscriminatorValue(sample, 'components/schemas/UnknownWallet', store);
-    expect(sample.method).toBe('string');
-  });
-
-  it('does NOT stamp a regular mapping key when the variant ALSO appears as defaultMapping target', () => {
-    // Same schema is reachable both via a regular mapping key and defaultMapping.
-    // Without a selected mapping key the caller is the "Default mapping" option,
-    // which has no canonical outgoing value — so nothing is stamped. The
-    // selected-key case is covered by the two tests below.
-    const store: Record<string, SchemaEntry> = {
-      'components/schemas/Wallet': entry('components/schemas/Wallet', {
-        type: 'object',
-        properties: { method: { type: 'string' } },
-        discriminator: {
-          propertyName: 'method',
-          mapping: {
-            ApplePay: '#/components/schemas/ApplePay',
-            Fallback: '#/components/schemas/UnknownWallet',
-          },
-          defaultMapping: '#/components/schemas/UnknownWallet',
-        },
-      }),
-      'components/schemas/ApplePay': entry('components/schemas/ApplePay', {}),
-      'components/schemas/UnknownWallet': entry('components/schemas/UnknownWallet', {}),
-    };
-
-    const sample: Record<string, unknown> = { method: 'string' };
-    applyDiscriminatorValue(sample, 'components/schemas/UnknownWallet', store);
-    expect(sample.method).toBe('string');
-  });
-
-  it('stamps the selected mapping key even when that schema is also the defaultMapping target', () => {
-    const store = hostStore({
-      mapping: {
-        ApplePay: '#/components/schemas/ApplePay',
-        Fallback: '#/components/schemas/UnknownWallet',
-      },
-      defaultMapping: '#/components/schemas/UnknownWallet',
-    });
-
-    const sample: Record<string, unknown> = { method: 'string' };
-    applyDiscriminatorValue(sample, 'components/schemas/UnknownWallet', store, 'Fallback');
-    expect(sample.method).toBe('Fallback');
-  });
-
-  it('leaves the placeholder when the selected key does not map to the sampled variant', () => {
-    const sample: Record<string, unknown> = { method: 'string' };
-    applyDiscriminatorValue(sample, 'components/schemas/GooglePay', hostStore(), 'ApplePay');
-    expect(sample.method).toBe('string');
-  });
-
-  it('does nothing when the host propertyName is not in the sample', () => {
-    const sample: Record<string, unknown> = { other: 'x' };
-    applyDiscriminatorValue(sample, 'components/schemas/ApplePay', hostStore());
-    expect(sample).toEqual({ other: 'x' });
-  });
-});
 
 describe('applyActiveVariantsToSchema', () => {
   const bodyWithNestedOneOf = () => ({
@@ -1710,45 +1500,29 @@ describe('applyActiveVariantsToStore (nested inline discriminator)', () => {
   });
 });
 
-describe('hoistActiveVariantSchemaForSampling (oneOf nested in a oneOf variant)', () => {
-  const store: Record<string, SchemaEntry> = {
-    'components/schemas/OtpVerified': entry('components/schemas/OtpVerified', {
-      type: 'object',
-      properties: { message: { type: 'string' } },
-    }),
-    'components/schemas/OtpFailed': entry('components/schemas/OtpFailed', {
-      type: 'object',
-      properties: { sessionId: { type: 'string' } },
-    }),
-    'components/schemas/Answers': entry('components/schemas/Answers', { type: 'object' }),
-    'components/schemas/Otp': entry('components/schemas/Otp', {
-      oneOf: [
-        { $ref: '#/components/schemas/OtpVerified' },
-        { $ref: '#/components/schemas/OtpFailed' },
-      ],
-    }),
-    body: entry('body', {
-      oneOf: [{ $ref: '#/components/schemas/Otp' }, { $ref: '#/components/schemas/Answers' }],
-    }),
-  };
 
-  it('hoists the active leaf, not the parent sibling at the nested index', () => {
-    const result = hoistActiveVariantSchemaForSampling('body', store, undefined, {
-      '&oneof=0/One of:': 1,
-    });
-    expect(result?.variantSchemaId).toBe('components/schemas/OtpFailed');
+describe('samplesVariantThroughHost', () => {
+  const variant = { type: 'object', properties: { last4: { type: 'string' } } };
+
+  it('samples through a host that declares oneOf/anyOf or a discriminator mapping', () => {
+    expect(samplesVariantThroughHost({ oneOf: [] }, variant)).toBe(true);
+    expect(samplesVariantThroughHost({ anyOf: [] }, variant)).toBe(true);
+    expect(
+      samplesVariantThroughHost(
+        { discriminator: { propertyName: 'kind', mapping: { a: '#/A' } } },
+        variant,
+      ),
+    ).toBe(true);
   });
 
-  it('hoists the parent variant when the nested options are inline', () => {
-    const inlineStore = {
-      ...store,
-      'components/schemas/Otp': entry('components/schemas/Otp', {
-        oneOf: [{ type: 'object' }, { type: 'string' }],
-      }),
-    };
-    const result = hoistActiveVariantSchemaForSampling('body', inlineStore, undefined, {
-      '&oneof=0/One of:': 1,
-    });
-    expect(result?.variantSchemaId).toBe('components/schemas/Otp');
+  it('samples the variant alone when the host inherits the discriminator through allOf', () => {
+    expect(
+      samplesVariantThroughHost({ allOf: [{ $ref: '#/components/schemas/Pet' }] }, variant),
+    ).toBe(false);
+  });
+
+  it('samples the variant alone when the variant is a discriminator host itself', () => {
+    const nestedHost = { discriminator: { propertyName: 'petType', mapping: { cat: '#/Cat' } } };
+    expect(samplesVariantThroughHost({ oneOf: [] }, nestedHost)).toBe(false);
   });
 });

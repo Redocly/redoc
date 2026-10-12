@@ -109,7 +109,7 @@ describe('useIsDeepLinkTarget', () => {
     expect(result.current).toBe(true);
   });
 
-  // Legacy openapi-docs deep links carry no `[]` array markers.
+  // Legacy deep links carry no `[]` array markers.
   describe('legacy hashes without [] array markers', () => {
     it('matches a fieldPath containing [] against a legacy hash (slash suffix)', () => {
       const hash =
@@ -407,7 +407,6 @@ describe('CollapsibleNestedFields default expansion driven by schemasExpansionLe
       items: [],
       store: emptyStore,
       options,
-      replayDefinition: null,
     });
 
     return render(
@@ -466,7 +465,6 @@ describe('CollapsibleNestedFields required-driven default expansion', () => {
       items: [],
       store: emptyStore,
       options,
-      replayDefinition: null,
     });
 
     return render(
@@ -525,7 +523,6 @@ describe('CollapsibleNestedFields section "Expand all" baseline', () => {
       items: [],
       store: emptyStore,
       options: normalizeOptions({ specType: 'openapi', downloadUrls: [], metadata: {} }),
-      replayDefinition: null,
     });
     if (initialBaseline !== undefined) {
       jotaiStore.set(itemStoreAtom(ITEM_ID), {
@@ -673,7 +670,6 @@ describe('CollapsibleNestedFields lazy-mounts nested children', () => {
       items: [],
       store: emptyStore,
       options: normalizeOptions({ specType: 'openapi', downloadUrls: [], metadata: {} }),
-      replayDefinition: null,
     });
     jotaiStore.set(itemStoreAtom(ITEM_ID), { expandableSections: { [BASELINE_KEY]: true } });
 

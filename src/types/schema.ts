@@ -145,12 +145,19 @@ export const switcherLabel = {
 
 export type SwitcherLabel = ObjectValues<typeof switcherLabel>;
 
+export type OneOfChangeParams = {
+  pointer: string;
+  index: number;
+};
+
 export type SwitcherType = {
   type: 'discriminator' | 'oneOf';
   label: SwitcherLabel;
   propertyName?: string;
   jsonPointer?: string;
   options: Record<string, SwitcherOptionType>;
+  /** The host is itself one of the variants: only its discriminator property is shared. */
+  sharesOnlyDiscriminator?: boolean;
 };
 
 export type SwitcherOptionType = {

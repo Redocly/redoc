@@ -1,7 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
 import {
-  encodeExampleForMediaType,
   isJsonLikeMediaType,
   isSequentialMediaType,
   langFromMime,
@@ -82,50 +81,3 @@ describe('normalizeLanguageForHighlight', () => {
   });
 });
 
-describe('encodeExampleForMediaType', () => {
-  it('returns an empty string for undefined', () => {
-    expect(encodeExampleForMediaType(undefined, 'application/json')).toBe('');
-  });
-
-  it('pretty-prints JSON objects for JSON media types', () => {
-    expect(encodeExampleForMediaType({ a: 1, b: 'x' }, 'application/json')).toBe(
-      '{\n  "a": 1,\n  "b": "x"\n}',
-    );
-  });
-
-  it('re-formats a JSON string for JSON media types', () => {
-    expect(encodeExampleForMediaType('{"a":1}', 'application/json')).toBe('{\n  "a": 1\n}');
-  });
-
-  it('returns the raw string when a JSON media type carries non-JSON text', () => {
-    expect(encodeExampleForMediaType('not json', 'application/json')).toBe('not json');
-  });
-
-  it('does not pretty-print sequential JSON media types', () => {
-    expect(encodeExampleForMediaType({ a: 1 }, 'application/jsonl')).toBe('{\n  "a": 1\n}');
-  });
-
-  it('form-encodes objects for x-www-form-urlencoded', () => {
-    expect(
-      encodeExampleForMediaType(
-        { name: 'Museum Visitor', tier: 'premium' },
-        'application/x-www-form-urlencoded',
-      ),
-    ).toBe('name=Museum%20Visitor&tier=premium');
-  });
-
-  it('renders XML for XML media types', () => {
-    const xml = encodeExampleForMediaType({ id: '1' }, 'application/xml');
-    expect(xml).toContain('<root>');
-    expect(xml).toContain('<id>1</id>');
-  });
-
-  it('falls back to JSON for an object on a non-JSON/XML/form media type', () => {
-    expect(encodeExampleForMediaType({ a: 1 }, 'text/plain')).toBe('{\n  "a": 1\n}');
-  });
-
-  it('stringifies primitive values', () => {
-    expect(encodeExampleForMediaType(42, 'text/plain')).toBe('42');
-    expect(encodeExampleForMediaType('hello', 'text/plain')).toBe('hello');
-  });
-});

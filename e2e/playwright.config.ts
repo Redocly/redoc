@@ -1,9 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
 
 /**
- * Drops the shared OTel reporter, which posts to a collector that only exists in the monorepo.
- * No screenshot tests: pixel comparison stays with the enterprise suite. `toMatchAriaSnapshot`
- * is unaffected — those snapshots are inline text, not images.
+ * No screenshot tests. `toMatchAriaSnapshot` is unaffected — those snapshots are inline text,
+ * not images.
  */
 const shard =
   process.env.SHARD_INDEX && process.env.SHARD_TOTAL

@@ -319,6 +319,30 @@ describe('GraphQL store population', () => {
     });
   });
 
+  describe('@oneOf input types', () => {
+    it('writes isOneOf only for an input type with @oneOf', () => {
+      const { store } = process(`
+        input UserBy @oneOf {
+          id: ID
+          email: String
+        }
+
+        input UserFilter {
+          name: String
+        }
+
+        type Query {
+          user(by: UserBy!, filter: UserFilter): String
+        }
+      `);
+
+      expect(getTypeEntryData(store, 'UserBy').isOneOf).toBe(true);
+      expect(JSON.parse(JSON.stringify(getTypeEntryData(store, 'UserFilter')))).not.toHaveProperty(
+        'isOneOf',
+      );
+    });
+  });
+
   describe('github schema fixture', () => {
     let store: ApiStore;
     let items: ApiItem[];
@@ -347,14 +371,14 @@ describe('GraphQL store population', () => {
       }
     });
 
-    it('matches graphql-js for every serialized type (parity harness)', () => {
+    it('matches graphql-js for every serialized type (reference comparison)', () => {
       const namedTypes = Object.values(schema.getTypeMap()).filter(
         (type) => !type.name.startsWith('__'),
       );
 
       for (const type of namedTypes) {
         const data = getTypeEntryData(store, type.name);
-        expect(summarizeStoredType(data), `parity mismatch for type "${type.name}"`).toEqual(
+        expect(summarizeStoredType(data), `mismatch for type "${type.name}"`).toEqual(
           summarizeGraphqlJsType(type),
         );
       }

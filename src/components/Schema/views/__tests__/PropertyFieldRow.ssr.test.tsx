@@ -31,7 +31,6 @@ function renderRowToHtml(section: DeepLinkSectionValue | null) {
       maxDisplayedEnumValues: 10,
       basePath: '',
     }),
-    replayDefinition: null,
   });
 
   const property: PropertyType = { type: 'string' };

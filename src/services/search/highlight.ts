@@ -1,5 +1,3 @@
-// The portal keeps a twin of this module and text-match.ts under
-// packages/portal/src/server/utils/search/; its highlight-parity test fails when they drift.
 import {
   MIN_INFIX_MATCH_LENGTH,
   MIN_QUERY_WORD_LENGTH,

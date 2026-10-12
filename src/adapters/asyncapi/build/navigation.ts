@@ -71,21 +71,20 @@ export function buildNavigationItems(): ApiItem[] {
     }
   }
 
-  if (processContent) {
-    for (const group of Object.keys(context.groups)) {
-      const tag = tagsComponents[group];
-      for (const section of extractMarkdownSections(
-        tag?.description,
-        context.options,
-        safeSlugify(group).toLowerCase(),
-      )) {
-        context.groups[group].push(
-          buildMarkdownSectionItem({
-            heading: section,
-            basePath,
-          }),
-        );
-      }
+  for (const group of Object.keys(context.groups)) {
+    const tag = tagsComponents[group];
+    for (const section of extractMarkdownSections(
+      tag?.description,
+      context.options,
+      safeSlugify(group).toLowerCase(),
+    )) {
+      context.groups[group].push(
+        buildMarkdownSectionItem({
+          heading: section,
+          basePath,
+          withContent: processContent,
+        }),
+      );
     }
   }
 

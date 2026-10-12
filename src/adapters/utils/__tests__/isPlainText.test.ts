@@ -27,7 +27,7 @@ describe('isPlainText', () => {
       ['html entity', 'a &amp; b'],
       ['link', '[link](https://example.com)'],
       ['markdoc tag', 'before {% tag %} after'],
-      // Non-ASCII text is conservatively parsed (matches the portal's simpleNonMdRegex).
+      // Non-ASCII text is conservatively parsed.
       ['cyrillic', 'Опис ресурсу для документації'],
       ['cjk', '説明テキストです'],
       ['accented latin', 'Détails de la requête'],

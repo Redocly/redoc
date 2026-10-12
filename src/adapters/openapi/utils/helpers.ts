@@ -7,10 +7,6 @@ export function stripTrailingSlash(path: string): string {
   return path;
 }
 
-export function isNumeric(value: unknown): value is number {
-  return !isNaN(parseFloat(value as string)) && isFinite(value as number);
-}
-
 export function isAbsoluteUrl(url: string): boolean {
   return /(?:^[a-z][a-z0-9+.-]*:|\/\/)/i.test(url);
 }
@@ -65,19 +61,6 @@ export function escapeHTMLAttrChars(str: string): string {
 export function sanitizeItemId(id: string): string {
   // we probably need to replace other symbols too
   return id && id.replace(/#/g, '_').toLowerCase();
-}
-
-export function get<T = unknown>(
-  object: GenericObject = {},
-  path: string | Array<string>,
-  defval?: T,
-): T | unknown {
-  if (typeof path === 'string') path = path.split('.');
-  return path.reduce<unknown>(
-    (xs: unknown, x: string) =>
-      xs && typeof xs === 'object' && x in xs ? (xs as GenericObject)[x] : defval,
-    object,
-  );
 }
 
 const DEFINITION_NAME_REGEX = /^#\/components\/(schemas|pathItems)\/([^/]+)$/;

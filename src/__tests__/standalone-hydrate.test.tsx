@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { createElement } from 'react';
 import { renderToString } from 'react-dom/server';
 import { MemoryRouter } from 'react-router';
@@ -9,6 +9,19 @@ import { prepareApiDocs } from '../RedocStandalone.js';
 import { hydrate } from '../standalone.js';
 
 Element.prototype.scrollIntoView = Element.prototype.scrollIntoView ?? (() => {});
+
+// init()/hydrate() mount real roots outside RTL's render, so updates are awaited with waitFor, not act.
+const actEnv = globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean };
+let previousActEnv: boolean | undefined;
+
+beforeAll(() => {
+  previousActEnv = actEnv.IS_REACT_ACT_ENVIRONMENT;
+  actEnv.IS_REACT_ACT_ENVIRONMENT = false;
+});
+
+afterAll(() => {
+  actEnv.IS_REACT_ACT_ENVIRONMENT = previousActEnv;
+});
 
 const definition = {
   openapi: '3.1.0',
@@ -42,6 +55,14 @@ async function renderServerMarkup(): Promise<string> {
     ),
   );
 }
+
+describe('prepareApiDocs()', () => {
+  it('builds the same items for an unnormalized basePath', async () => {
+    const raw = await prepareApiDocs({ spec: definition, basePath: 'docs/' });
+    const normalized = await prepareApiDocs({ spec: definition, basePath: '/docs' });
+    expect(raw.items).toEqual(normalized.items);
+  });
+});
 
 describe('standalone hydrate()', () => {
   let host: HTMLElement;

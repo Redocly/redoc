@@ -1,8 +1,5 @@
-import type { FormFieldEncoding } from './form-urlencoded.js';
 
 import { MediaTypes } from '../constants/openapi.js';
-import { formUrlEncodeValue } from './form-urlencoded.js';
-import { jsonToXml } from './xml.js';
 
 const SEQUENTIAL_MEDIA_TYPES: ReadonlySet<string> = new Set([
   MediaTypes.JSONL,
@@ -50,54 +47,7 @@ export function normalizeLanguageForHighlight(language: string | undefined): str
   return normalized;
 }
 
-function isXmlLikeMediaType(contentType: string): boolean {
-  return /xml/i.test(contentType);
+export function isFormUrlEncodedMediaType(contentType: string | undefined): boolean {
+  return !!contentType && contentType.toLowerCase().includes(MediaTypes.URL_ENCODED);
 }
 
-function isFormUrlEncodedMediaType(contentType: string): boolean {
-  return contentType.toLowerCase().includes(MediaTypes.URL_ENCODED);
-}
-
-function isMultipartFormDataMediaType(contentType: string): boolean {
-  return contentType.toLowerCase().includes(MediaTypes.MULTIPART);
-}
-
-export function isSampleableMediaType(contentType: string | undefined): boolean {
-  if (!contentType) return false;
-  return (
-    isJsonLikeMediaType(contentType) ||
-    isXmlLikeMediaType(contentType) ||
-    isSequentialMediaType(contentType) ||
-    isFormUrlEncodedMediaType(contentType) ||
-    isMultipartFormDataMediaType(contentType)
-  );
-}
-
-export function encodeExampleForMediaType(
-  value: unknown,
-  mimeType: string,
-  encoding?: Record<string, FormFieldEncoding>,
-): string {
-  if (value === undefined) return '';
-
-  if (isJsonLikeMediaType(mimeType) && !isSequentialMediaType(mimeType)) {
-    try {
-      return JSON.stringify(typeof value === 'string' ? JSON.parse(value) : value, null, 2) ?? '';
-    } catch {
-      return String(value);
-    }
-  }
-
-  if (typeof value === 'object' && value !== null) {
-    if (isFormUrlEncodedMediaType(mimeType)) {
-      return formUrlEncodeValue(value, encoding);
-    }
-    if (isXmlLikeMediaType(mimeType)) {
-      return jsonToXml(value);
-    }
-    // example may have been cached as JSON but used as a non-JSON media type
-    return JSON.stringify(value, null, 2);
-  }
-
-  return String(value);
-}

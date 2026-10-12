@@ -254,6 +254,14 @@ function MessageDetail({ message }: { message: MessageData }): ReactElement {
           />
         </MessageExternalDocs>
       )}
+      {message.correlationId && (
+        <MessageDescription>
+          <strong>Correlation ID</strong> <code>{message.correlationId.location}</code>
+          {message.correlationId.description && (
+            <Markdown source={message.correlationId.description} />
+          )}
+        </MessageDescription>
+      )}
 
       {(message.headerSchemaId || isRecord(message.headers)) && (
         <SchemaBlock id={getDeepLinkId(headersDeepLink)}>

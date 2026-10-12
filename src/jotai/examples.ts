@@ -139,7 +139,7 @@ export const generatedExampleAtom = atomFamily((paramKey: string) => {
     try {
       const sampleContext: SampleContext = {
         context,
-        skipNonRequired: context === 'request' && onlyRequiredInSamples,
+        skipNonRequired: context !== 'response' && onlyRequiredInSamples,
         maxSampleDepth: generatedSamplesMaxDepth,
         isXml,
       };

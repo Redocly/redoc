@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { useState, useRef } from 'react';
+import { useId, useState, useRef } from 'react';
 
 import type { BrokerData } from '../../../../types/asyncapi.js';
 
@@ -10,9 +10,9 @@ import { CloseIcon } from '@redocly/theme/icons/CloseIcon/CloseIcon';
 import { DatabaseIcon } from '@redocly/theme/icons/DatabaseIcon/DatabaseIcon';
 import { KafkaIcon } from '@redocly/theme/icons/KafkaIcon/KafkaIcon';
 import { RabbitMQIcon } from '@redocly/theme/icons/RabbitMQIcon/RabbitMQIcon';
-import { useOutsideClick } from '@redocly/theme/core/hooks';
 import { useFocusTrap } from '@redocly/theme/core/openapi';
 
+import { useModalDismiss } from '../../../../hooks/useModalDismiss.js';
 import { BrokerOverviewSection } from './BrokerOverviewSection.js';
 import { BrokerBindingsSection } from './BrokerBindingsSection.js';
 
@@ -45,8 +45,9 @@ const BrokerIcon = ({ protocol }: { protocol: Protocol }) => {
 export const BrokerModal = ({ broker, onClose, panelLabel }: BrokerModalProps) => {
   const [selectedBlock, setSelectedBlock] = useState(0);
   const modalRef = useRef<HTMLDivElement>(null);
+  const titleId = useId();
 
-  useOutsideClick(modalRef, onClose);
+  useModalDismiss(modalRef, onClose);
   useFocusTrap(modalRef);
 
   const options = [...SEGMENT_OPTIONS];
@@ -57,11 +58,17 @@ export const BrokerModal = ({ broker, onClose, panelLabel }: BrokerModalProps) =
 
   return (
     <StyledBackground data-component-name="BrokerModal/BrokerModal">
-      <Wrapper ref={modalRef} tabIndex={0}>
+      <Wrapper
+        ref={modalRef}
+        tabIndex={0}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+      >
         <Close onClick={onClose} data-testid="close" variant="ghost" icon={<CloseIcon />} />
-        <Title>
+        <Title id={titleId}>
           <BrokerIcon protocol={broker.protocol || ''} />
-          <Protocol>{broker.protocol}</Protocol>: {broker.name}
+          {broker.protocol}: {broker.name}
         </Title>
         <Segmented
           value={selectedBlock}
@@ -126,10 +133,6 @@ const Title = styled(Typography)`
   svg {
     margin-right: var(--spacing-xs);
   }
-`;
-
-const Protocol = styled.span`
-  text-transform: capitalize;
 `;
 
 const SegmentWrapper = styled.div`

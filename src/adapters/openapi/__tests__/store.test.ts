@@ -8,7 +8,7 @@ type SecuritySchemeData = Partial<OpenAPISecurityScheme> & { type: OpenAPISecuri
 import { populateOpenApiStore } from '../store.js';
 import { normalizeOptions } from '../../../options/normalizeOptions.js';
 import { markdocParser } from '../../../components/markdoc/markdocParser.js';
-import { createStoreContext, resetStoreCounters, toRecord } from '../../helpers.js';
+import { createStoreContext, toRecord } from '../../helpers.js';
 
 const defaultOptions = {
   ...normalizeOptions({
@@ -43,10 +43,6 @@ function securitySchemes(schemes: Record<string, SecuritySchemeData>) {
 }
 
 describe('populateOpenApiStore', () => {
-  beforeEach(() => {
-    resetStoreCounters();
-  });
-
   it('returns empty stores when document has no components', () => {
     const result = populate(makeDoc());
 
@@ -347,37 +343,6 @@ describe('populateOpenApiStore', () => {
     );
   });
 
-  it('includes x-defaultClientId when present on security scheme', () => {
-    const doc = makeDoc({
-      components: {
-        securitySchemes: securitySchemes({
-          oauth2: {
-            type: 'oauth2',
-            'x-defaultClientId': 'my-client-id',
-            flows: {},
-          },
-        }),
-      },
-    });
-
-    const result = populate(doc);
-
-    expect(result.securitySchemeStore['oauth2']['x-defaultClientId']).toBe('my-client-id');
-  });
-
-  it('omits x-defaultClientId when not present on security scheme', () => {
-    const doc = makeDoc({
-      components: {
-        securitySchemes: securitySchemes({
-          apiKey: { type: 'apiKey', name: 'key', in: 'query' },
-        }),
-      },
-    });
-
-    const result = populate(doc);
-
-    expect(result.securitySchemeStore['apiKey']).not.toHaveProperty('x-defaultClientId');
-  });
 
   it('parses markdown description for security schemes', () => {
     const doc = makeDoc({

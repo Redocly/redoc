@@ -1,0 +1,29 @@
+openapi: 3.2.0
+info:
+  title: Redocly Cafe
+  version: 1.0.0
+paths:
+  /menu:
+    get:
+      operationId: listMenuItems
+      responses:
+        '200':
+          description: The menu.
+      servers:
+        - url: http://cafe.example.test/v1
+  /orders:
+    get:
+      operationId: listOrders
+      responses:
+        '200':
+          description: Orders.
+  /order-items:
+    get:
+      operationId: listOrderItems
+      responses:
+        '200':
+          description: Order items.
+      servers:
+        - url: https://items.cafe.example.test
+servers:
+  - url: https://Cafe.Example.Test/v1

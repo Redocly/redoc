@@ -1,166 +1,128 @@
-import Prism from 'prismjs';
-// Prism component imports are order-sensitive: each grammar that uses
-// `Prism.languages.extend(parent, ...)` must be imported AFTER its parent,
-// otherwise the parent is undefined at load time and the resulting grammar
-// is missing every inherited token. Keep the base grammars at the top, then
-// their descendants, and do not "sort" this list alphabetically.
+import { allLanguages, createHighlighter, escapeHtml, renderTokens } from '@tanstack/highlight';
 
-// Base grammars (no Prism dependencies).
-import 'prismjs/components/prism-clike.js';
-import 'prismjs/components/prism-markup.js'; // xml; also used by markup-templating at runtime
-import 'prismjs/components/prism-markup-templating.js'; // dep of php; references markup at runtime
-import 'prismjs/components/prism-bash.js';
-import 'prismjs/components/prism-http.js';
-import 'prismjs/components/prism-lua.js';
-import 'prismjs/components/prism-perl.js';
-import 'prismjs/components/prism-python.js';
-import 'prismjs/components/prism-q.js';
-import 'prismjs/components/prism-sql.js';
-import 'prismjs/components/prism-swift.js';
-import 'prismjs/components/prism-yaml.js';
-import 'prismjs/components/prism-csv.js';
+import type { HighlightRenderNode } from '@tanstack/highlight';
 
-// Grammars that extend `clike`.
-import 'prismjs/components/prism-c.js';
-import 'prismjs/components/prism-csharp.js';
-import 'prismjs/components/prism-go.js';
-import 'prismjs/components/prism-java.js';
-import 'prismjs/components/prism-javascript.js';
-import 'prismjs/components/prism-ruby.js';
-
-// Grammars that extend a non-`clike` parent imported above.
-import 'prismjs/components/prism-cpp.js'; // extends c
-import 'prismjs/components/prism-objectivec.js'; // extends c
-import 'prismjs/components/prism-scala.js'; // extends java
-import 'prismjs/components/prism-coffeescript.js'; // extends javascript
-import 'prismjs/components/prism-php.js'; // uses markup-templating at runtime
-
+import { extraLanguages } from './code-highlight-languages.js';
 import { normalizeLanguageForHighlight } from '../utils/media-type.js';
 
-const DEFAULT_LANG = 'clike';
+const highlighter = createHighlighter({ languages: [...allLanguages, ...extraLanguages] });
 
-// Prism is loaded as a CJS module under Node ESM via portal SSR. Some bundlers
-// surface it as a namespace where the real export sits on `.default`, so we
-// normalize before touching `languages`.
-const PrismLib: typeof Prism = (Prism as unknown as { default?: typeof Prism }).default ?? Prism;
+/** Names that reach the hook (media types, sample labels, legacy grammar names) → grammar. */
+const LANGUAGE_ALIASES: Record<string, string> = {
+  'application/json-seq': 'json',
+  clike: 'plaintext',
+  curl: 'shell',
+  'json-seq': 'json',
+  jsonl: 'json',
+  'multipart-mixed': 'http',
+  'multipart/mixed': 'http',
+  ndjson: 'json',
+  'node.js': 'js',
+  sse: 'yaml',
+  viml: 'plaintext',
+};
 
-let prismCustomGrammarsRegistered = false;
+const TOKEN_COLOR_VARIABLES: Record<string, string> = {
+  attr: '--code-block-tokens-attr-name-color',
+  'code-inline': '--code-block-tokens-default-color',
+  command: '--code-block-tokens-function-color',
+  comment: '--code-block-tokens-comment-color',
+  deleted: '--code-block-tokens-deleted-color',
+  function: '--code-block-tokens-function-color',
+  heading: '--code-block-tokens-keyword-color',
+  inserted: '--code-block-tokens-inserted-color',
+  keyword: '--code-block-tokens-keyword-color',
+  link: '--code-block-tokens-link-color',
+  literal: '--code-block-tokens-boolean-color',
+  meta: '--code-block-tokens-comment-color',
+  number: '--code-block-tokens-number-color',
+  operator: '--code-block-tokens-operator-color',
+  property: '--code-block-tokens-property-string-color',
+  selector: '--code-block-tokens-selector-color',
+  string: '--code-block-tokens-string-color',
+  tag: '--code-block-tokens-tag-color',
+  type: '--code-block-tokens-class-name-color',
+  variable: '--code-block-tokens-variable-color',
+};
 
-function registerPrismCustomGrammars(): void {
-  if (prismCustomGrammarsRegistered || !PrismLib?.languages) return;
-  prismCustomGrammarsRegistered = true;
+// YAML keys read as tags (the default text color), not as JSON-style properties.
+const LANGUAGE_TOKEN_COLOR_VARIABLES: Record<string, Record<string, string>> = {
+  yaml: { property: '--code-block-tokens-tag-color' },
+};
 
-  PrismLib.languages.insertBefore('bash', 'operator', {
-    placeholder: {
-      pattern: /<\w+>/,
-      alias: 'string',
-    },
-  });
+export type CodeHighlightOptions = {
+  startLineNumber?: number;
+  withLineNumbers?: boolean;
+};
 
-  PrismLib.languages.insertBefore(
-    'javascript',
-    'string',
-    {
-      'property string': {
-        pattern: /([{,]\s*)"(?:\\.|[^\\"\r\n])*"(?=\s*:)/i,
-        lookbehind: true,
-      },
-    } as any,
-    undefined as any,
-  );
-
-  PrismLib.languages.insertBefore(
-    'javascript',
-    'punctuation',
-    {
-      property: {
-        pattern: /([{,]\s*)[a-z]\w*(?=\s*:)/i,
-        lookbehind: true,
-      },
-    },
-    undefined as any,
-  );
-
-  // JSON-Seq grammar (JSON with record separator 0x1E and line feed 0x0A).
-  PrismLib.languages['json-seq'] = {
-    separator: {
-      pattern: /0x1E|0x0A/g,
-      alias: 'keyword',
-    },
-    ...PrismLib.languages.javascript,
-  };
-
-  // Multipart/Mixed grammar (boundaries, headers, and content).
-  PrismLib.languages['multipart-mixed'] = {
-    boundary: {
-      pattern: /^--[\w-]+(?:--)?$/m,
-      alias: 'keyword',
-    },
-    header: {
-      pattern: /^[\w-]+:\s*\S.*$/m,
-      inside: {
-        'header-name': {
-          pattern: /^[\w-]+/,
-          alias: 'property',
-        },
-        'header-value': {
-          pattern: /^:\s*\S.*$/,
-          alias: 'string',
-        },
-      },
-    },
-    json: {
-      pattern: /\{(?<!\{[^}]*?\{)[\s\S]*?\}|\[(?<!\[[^\]]*?\[)[\s\S]*?\]/,
-      inside: PrismLib.languages.javascript,
-    },
-    placeholder: {
-      pattern: /\[Binary data\]|\[Base64 encoded data\]/g,
-      alias: 'comment',
-    },
-  };
+function mapLanguage(language: string | undefined): string {
+  const name = normalizeLanguageForHighlight(language?.trim());
+  return LANGUAGE_ALIASES[name] ?? name;
 }
 
-/** Map language names to Prism.js names. */
-export function mapLang(lang: string): string {
-  const normalized = normalizeLanguageForHighlight(lang);
-
-  return (
-    {
-      json: 'js',
-      jsonl: 'js',
-      ndjson: 'js',
-      'json-seq': 'json-seq',
-      'multipart-mixed': 'multipart-mixed',
-      sse: 'yaml',
-      'c++': 'cpp',
-      'c#': 'csharp',
-      'objective-c': 'objectivec',
-      shell: 'bash',
-      viml: 'vim',
-    }[normalized] || DEFAULT_LANG
-  );
+function tokenColorVariable(classNames: Array<string>, language: string): string | undefined {
+  for (const className of classNames) {
+    const token = className.slice(3);
+    const variable =
+      LANGUAGE_TOKEN_COLOR_VARIABLES[language]?.[token] ?? TOKEN_COLOR_VARIABLES[token];
+    if (variable) {
+      return variable;
+    }
+  }
+  return undefined;
 }
 
-/** Highlight source code string using Prism.js and return HTML. */
-export function useCodeHighlight(
-  source: string | number | boolean,
-  lang: string = DEFAULT_LANG,
+function renderNodes(
+  nodes: ReadonlyArray<HighlightRenderNode>,
+  options: { language: string; lineNumberOffset?: number },
 ): string {
-  registerPrismCustomGrammars();
+  let html = '';
+  for (const node of nodes) {
+    if (node.type === 'text') {
+      html += escapeHtml(node.value);
+      continue;
+    }
+    const isLine = node.classNames.includes('th-line');
+    const colorVariable = tokenColorVariable(node.classNames, options.language);
+    const style = colorVariable ? ` style="color: var(${colorVariable})"` : '';
+    let attributes = '';
+    for (const [key, value] of Object.entries(node.data ?? {})) {
+      attributes += ` data-${key}="${escapeHtml(value)}"`;
+    }
+    if (options.lineNumberOffset !== undefined && node.data?.line) {
+      attributes += ` data-line-number="${options.lineNumberOffset + Number(node.data.line)}"`;
+    }
+    const classNames = isLine ? [...node.classNames, 'line'] : node.classNames;
+    const className = classNames.map(escapeHtml).join(' ');
+    html += `<span class="${className}"${style}${attributes}>${renderNodes(node.children, options)}</span>`;
+  }
+  return html;
+}
 
-  const normalizedLang = lang.toLowerCase();
-  const mappedLang = mapLang(normalizedLang);
+/**
+ * Highlights `source` as HTML for the code block: `<code class="th-code th-code--<lang>">` with
+ * `th-token th-<class>` spans colored through the theme's `--code-block-tokens-*` variables.
+ * Unknown languages render as escaped plain text.
+ */
+export function highlight(
+  source: string,
+  language?: string,
+  options?: CodeHighlightOptions,
+): string {
+  const { startLineNumber = 1, withLineNumbers } = options ?? {};
+  const result = highlighter.tokenize(source, { lang: mapLanguage(language) });
+  // Every line gets a `.line` span; the number shows only with `lineNumberOffset`.
+  const nodes = renderTokens(result.tokens, { lineNumbers: true });
+  const rendered = renderNodes(nodes, {
+    language: result.lang,
+    lineNumberOffset: withLineNumbers ? startLineNumber - 1 : undefined,
+  });
+  const languageClass = escapeHtml(result.lang);
+  return `<code class="th-code th-code--${languageClass}" data-language="${languageClass}">${rendered}</code>`;
+}
 
-  const grammar =
-    PrismLib.languages[normalizedLang] ||
-    PrismLib.languages[mappedLang] ||
-    PrismLib.languages[DEFAULT_LANG];
+const codeHighlight = { highlight };
 
-  const languageForPrism = PrismLib.languages[mappedLang]
-    ? mappedLang
-    : PrismLib.languages[normalizedLang]
-      ? normalizedLang
-      : DEFAULT_LANG;
-
-  return PrismLib.highlight(source.toString(), grammar, languageForPrism);
+export function useCodeHighlight(): typeof codeHighlight {
+  return codeHighlight;
 }

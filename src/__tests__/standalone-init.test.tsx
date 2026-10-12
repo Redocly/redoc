@@ -1,9 +1,22 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { waitFor } from '@testing-library/react';
 
 import { init } from '../standalone.js';
 
 Element.prototype.scrollIntoView = Element.prototype.scrollIntoView ?? (() => {});
+
+// init()/hydrate() mount real roots outside RTL's render, so updates are awaited with waitFor, not act.
+const actEnv = globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean };
+let previousActEnv: boolean | undefined;
+
+beforeAll(() => {
+  previousActEnv = actEnv.IS_REACT_ACT_ENVIRONMENT;
+  actEnv.IS_REACT_ACT_ENVIRONMENT = false;
+});
+
+afterAll(() => {
+  actEnv.IS_REACT_ACT_ENVIRONMENT = previousActEnv;
+});
 
 const definition = {
   openapi: '3.1.0',
@@ -87,6 +100,38 @@ describe('standalone init()', () => {
     });
   });
 
+  describe('history router', () => {
+    afterEach(() => {
+      window.history.replaceState(null, '', '/');
+    });
+
+    it.each([
+      ['/docs', '/docs'],
+      ['/docs/', '/docs'],
+      ['/docs/index.html', '/docs'],
+      ['/docs', 'docs'],
+      ['/docs', '/docs/'],
+    ])('opens the overview at %s with basePath %s', async (path, basePath) => {
+      window.history.replaceState(null, '', path);
+
+      init(definition, { disableTelemetry: true, router: 'history', basePath }, host);
+
+      await waitFor(() => expect(host.querySelector('[data-section-id="/docs"]')).not.toBeNull());
+      expect(host.querySelector('.not-found-page')).toBeNull();
+    });
+
+    it('opens an operation at its path with a trailing slash', async () => {
+      window.history.replaceState(null, '', '/docs/other/ping/');
+
+      init(definition, { disableTelemetry: true, router: 'history', basePath: '/docs' }, host);
+
+      await waitFor(() =>
+        expect(host.querySelector('[data-section-id="/docs/other/ping"]')).not.toBeNull(),
+      );
+      expect(host.querySelector('.not-found-page')).toBeNull();
+    });
+  });
+
   describe('option precedence', () => {
     it('lets an attribute override the same option passed to init', async () => {
       host.setAttribute('hide-download-buttons', 'false');
@@ -136,6 +181,13 @@ describe('standalone init()', () => {
       init(SPEC_URL, { disableTelemetry: true }, host);
 
       await waitFor(() => expect(host.textContent).toContain('inline.json'));
+    });
+
+    it('loads a spec URL that has surrounding whitespace', async () => {
+      init(`  ${SPEC_URL}\n`, { disableTelemetry: true }, host);
+
+      await waitFor(() => expect(host.textContent).toContain('Inline definition object'));
+      expect(fetch).toHaveBeenCalled();
     });
 
     it('keeps explicit downloadUrls instead of the spec URL', async () => {

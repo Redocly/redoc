@@ -237,7 +237,7 @@ export function SearchDialog({ onClose, search, isReady }: SearchDialogProps) {
     </SearchOverlay>
   );
 
-  // Render the search dialog using a portal to avoid being clipped by the sidebar's overflow
+  // Render the search dialog on document.body to avoid being clipped by the sidebar's overflow
   return createPortal(searchDialogContent, document.body);
 }
 

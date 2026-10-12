@@ -8,7 +8,7 @@ describe('buildGraphqlConfigMetadataRows', () => {
     expect(buildGraphqlConfigMetadataRows(null as never)).toEqual([]);
   });
 
-  it('filters out title and description like graphql-docs Overview', () => {
+  it('filters out title and description like the Overview page', () => {
     expect(
       buildGraphqlConfigMetadataRows({
         title: 'T',

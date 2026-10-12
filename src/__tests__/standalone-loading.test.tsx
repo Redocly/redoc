@@ -3,7 +3,6 @@ import { render, screen, waitFor } from '@testing-library/react';
 
 vi.mock('../adapters/build.js', () => ({
   buildItems: vi.fn(() => new Promise<never>(() => {})),
-  buildNavItems: vi.fn(),
 }));
 
 vi.mock('../utils/loadAndBundleSpec.js', () => ({

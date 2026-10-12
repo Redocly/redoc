@@ -1,5 +1,4 @@
 import type { Node } from '@markdoc/markdoc';
-import type { SecurityDetails as ThemeSecurityDetails } from '@redocly/theme/ext/configure';
 import type {
   OpenAPIRef,
   RawLogo,
@@ -13,15 +12,6 @@ import type { StoreContext } from './store.js';
 import type { ApiDocsOptions, NormalizedDownloadUrl } from './options.js';
 import type { securitySchemeType } from './common.js';
 import type { ExampleType } from './schema.js';
-
-export type MergedOpenAPISchema = OpenAPISchema & {
-  'x-refsStack'?: string[];
-  'x-parentRefs'?: string[];
-  'x-circular-ref'?: boolean;
-  'x-allof-cycle'?: boolean;
-  'x-complex'?: boolean;
-  absolutePointer?: string;
-};
 
 export type OpenAPIDefinition = {
   openapi: string;
@@ -40,7 +30,6 @@ export type OpenAPIDefinition = {
     tags: Array<string>;
   }>;
   'x-keywords'?: unknown;
-  'x-root'?: OpenAPISchema;
 };
 
 export type OpenAPIInfo = {
@@ -59,14 +48,11 @@ export type OpenAPIInfo = {
 export type XLogo = RawLogo;
 
 
-
 export type OpenAPIServer = {
   url: string;
   description?: string | Node | Node[];
   name?: string;
   variables?: OpenAPIServerVariables;
-  /** Set on entries injected by `mergeInMockServer` (never present in specs). */
-  isMockServer?: boolean;
 };
 
 export type OpenAPIServerVariables = {
@@ -149,7 +135,7 @@ export type OpenAPIParameter = {
   schema?: Referenced<OpenAPISchema>;
   example?: unknown;
   examples?: { [media: string]: Referenced<OpenAPIExample> };
-  content?: { [media: string]: OpenAPIMediaType };
+  content?: { [media: string]: Referenced<OpenAPIMediaType> };
   encoding?: Record<string, OpenAPIEncoding>;
   const?: unknown;
 };
@@ -272,7 +258,7 @@ export type OpenAPIRequestBody = {
   $ref?: string;
   description?: string | Node[] | Node;
   required?: boolean;
-  content?: { [mime: string]: OpenAPIMediaType };
+  content?: { [mime: string]: Referenced<OpenAPIMediaType> };
 
   'x-examples'?: { [mime: string]: { [name: string]: Referenced<OpenAPIExample> } };
   'x-example'?: { [mime: string]: unknown };
@@ -285,7 +271,7 @@ export type OpenAPIResponses = {
 export type OpenAPIResponse = {
   description?: string | Node[] | Node;
   headers?: { [name: string]: Referenced<OpenAPIHeader> };
-  content?: { [mime: string]: OpenAPIMediaType };
+  content?: { [mime: string]: Referenced<OpenAPIMediaType> };
   links?: { [name: string]: Referenced<OpenAPILink> };
   $ref?: string;
 
@@ -314,6 +300,7 @@ export type OpenAPIComponents = {
   securitySchemes?: { [name: string]: Referenced<OpenAPISecurityScheme> };
   links?: { [name: string]: Referenced<OpenAPILink> };
   callbacks?: { [name: string]: Referenced<OpenAPICallback> };
+  mediaTypes?: { [name: string]: Referenced<OpenAPIMediaType> };
 };
 
 export type OpenAPISecurityRequirement = {
@@ -327,7 +314,6 @@ export type OpenAPISecurityScheme = {
   in?: SecuritySchemeIn;
   scheme?: string;
   bearerFormat: string;
-  'x-defaultClientId'?: string;
   deprecated?: boolean;
   oauth2MetadataUrl?: string;
   flows: {
@@ -335,33 +321,28 @@ export type OpenAPISecurityScheme = {
       refreshUrl?: string;
       scopes: Record<string, string>;
       authorizationUrl: string;
-      'x-defaultClientId'?: string;
     };
     deviceAuthorization?: {
       deviceAuthorizationUrl: string;
       scopes: Record<string, string>;
       tokenUrl: string;
       refreshUrl?: string;
-      'x-defaultClientId'?: string;
     };
     password?: {
       refreshUrl?: string;
       scopes: Record<string, string>;
       tokenUrl: string;
-      'x-defaultClientId'?: string;
     };
     clientCredentials?: {
       refreshUrl?: string;
       scopes: Record<string, string>;
       tokenUrl: string;
-      'x-defaultClientId'?: string;
     };
     authorizationCode?: {
       refreshUrl?: string;
       scopes: Record<string, string>;
       authorizationUrl: string;
       tokenUrl: string;
-      'x-defaultClientId'?: string;
     };
   };
   openIdConnectUrl?: string;
@@ -460,36 +441,6 @@ export type McpPromptArgument = {
   example?: string;
 };
 
-export type SecurityDetails = {
-  password?: string;
-  username?: string;
-  token?: {
-    token_type?: string;
-    access_token: string;
-  };
-  client_id?: string;
-  client_secret?: string;
-  scopes?: string;
-};
-
-export type RouterType = 'history' | 'memory' | 'hash';
-
-export type OperationRequestValues = {
-  security?: Record<string, ThemeSecurityDetails>;
-  envVariables?: Record<string, string>;
-  body?: unknown;
-  serverRequestValues?: Record<
-    string,
-    {
-      headers?: Record<string, string>;
-      queryString?: Record<string, string>;
-      cookies?: Record<string, string>;
-      security?: Record<string, ThemeSecurityDetails>;
-      envVariables?: Record<string, string>;
-      body?: unknown;
-    }
-  >;
-};
 
 export type OpenAPITagExtended = OpenAPITag & {
   'x-traitTag'?: boolean;
@@ -541,7 +492,6 @@ export type OperationInfo = {
   externalDocs?: ExternalDocsData;
   'x-badges'?: OpenAPIXBadges[];
   'x-codeSamples'?: OpenAPIXCodeSample[];
-  requestValues?: OperationRequestValues;
 };
 
 export type MarkdownHeading = {

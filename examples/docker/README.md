@@ -66,8 +66,8 @@ canonical reference; these are the ones you need to run it:
 | --------------- | ------------------------------------------------ | ------------------------------------------------------------------------- |
 | `SPEC_URL`      | `https://cdn.redocly.com/redoc/museum-api.yaml`  | the API description to render — absolute URL, or a path inside the web root |
 | `PAGE_TITLE`    | `ReDoc`                                          | browser tab title                                                          |
-| `PAGE_FAVICON`  | `favicon.png`                                    | favicon URL                                                               |
-| `BASE_PATH`     | —                                                | path prefix, e.g. `docs` serves the page at `/docs`                        |
+| `PAGE_FAVICON`  | `favicon.png`                                    | favicon: a file name next to the page, or an absolute URL used as given    |
+| `BASE_PATH`     | —                                                | path prefix, e.g. `docs` (or `/docs`, `docs/`) serves the page at `/docs`  |
 | `PORT`          | `80`                                             | nginx port                                                                 |
 | `HOST`          | `localhost`                                      | nginx `server_name`                                                        |
 | `REDOC_OPTIONS` | —                                                | extra `<redoc>` tag attributes, e.g. `router="history"`                    |
@@ -85,11 +85,14 @@ Two notes on the ones that trip people up:
 
 - **`BASE_PATH`** — routing is hash-based by default, so deep links need nothing special. They
   also survive `router="history"`: the image's nginx serves `index.html` for any path that is not
-  a file, and under a prefix it passes `base-path` to Redoc for you. When the description is mounted as a file *and* `BASE_PATH`
-  is set, `SPEC_URL` must carry the prefix too, e.g. `/v1/openapi.yaml`.
+  a file, and under a prefix it passes `base-path` to Redoc for you. When the description is mounted as a file, a relative
+  `SPEC_URL` such as `openapi.yaml` resolves against the web root (under the `BASE_PATH` prefix
+  when it is set) once `BASE_PATH` or `router="history"` is set, so deep links load it too; a path
+  such as `/v1/openapi.yaml` is used as given.
 - **`PORT`** — port `80` is restricted on OpenShift, so set `PORT=8080` there and match it in
   the container spec. The image already runs as an arbitrary UID; `config/docker/README.md`
   explains which directories are group-writable and why.
+- **`--read-only`** — start-up writes only to `/tmp`, so add `--tmpfs /tmp`.
 
 ## Build the image yourself
 

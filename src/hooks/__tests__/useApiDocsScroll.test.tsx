@@ -78,7 +78,6 @@ function renderUseApiDocsScroll(opts: RenderOpts = {}) {
     items: [],
     store: { schemaStore: {}, exampleStore: {}, securitySchemeStore: {} },
     options: { basePath: routingBasePath } as ApiDocsOptions,
-    replayDefinition: null,
   });
 
   const wrapper = ({ children }: { children: ReactNode }) => (
@@ -222,7 +221,7 @@ describe('useApiDocsScroll', () => {
   });
 
   describe('legacy hash without [] array markers', () => {
-    // Legacy openapi-docs deep links carry no `[]` array markers, so the
+    // Legacy deep links carry no `[]` array markers, so the
     // exact getElementById lookup misses; the fallback must find the element
     // whose id differs only by those markers.
     it('scrolls to the element whose id matches after stripping [] markers', () => {
@@ -259,7 +258,7 @@ describe('useApiDocsScroll', () => {
   });
 
   describe('legacy callback hash without the callbacks/ segment', () => {
-    // Legacy openapi-docs prefixed callback sections with a bare `<callbackId>/`;
+    // Legacy links prefixed callback sections with a bare `<callbackId>/`;
     // canonical ids carry a `callbacks/` segment, so the exact lookup misses.
     const renderWithElementId = (id: string, hash: string) => {
       const el = document.createElement('div');

@@ -1,0 +1,16 @@
+---
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Redocly Cafe
+produces:
+  - application/json
+paths:
+  /menu:
+    get:
+      operationId: listMenuItems
+      responses:
+        '200':
+          description: Menu, possibly empty.
+          schema:
+            example: null

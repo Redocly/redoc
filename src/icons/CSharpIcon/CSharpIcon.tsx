@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
 
-export const Icon = () => (
+const Icon = () => (
   <svg width="17" height="18" viewBox="0 0 17 18" fill="none" xmlns="http://www.w3.org/2000/svg">
     <g id="Logo_C_sharp 1" clipPath="url(#clip0_6336_15430)">
       <g id="Group">

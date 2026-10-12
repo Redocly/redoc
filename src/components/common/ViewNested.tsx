@@ -104,7 +104,7 @@ const Wrapper = styled.div<{ $divider?: boolean; $isArrayInsideArray?: boolean }
     `}
 `;
 
-export const LabelValue = styled.span`
+const LabelValue = styled.span`
   padding: 0 var(--spacing-xs);
   border-radius: var(--tag-border-radius);
   border: 1px solid var(--border-color-secondary);

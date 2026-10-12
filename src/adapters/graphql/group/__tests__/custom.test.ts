@@ -210,6 +210,26 @@ describe('groupByCustomMenu', () => {
     expect(labels).toEqual(['Widget', 'Node', 'Thing', 'Color', 'WidgetInput', 'DateTime']);
   });
 
+  it('routes scalars in a custom group under the group path, like the other type kinds', () => {
+    const context = makeContext(
+      {
+        groups: [
+          { name: 'Shop types', types: { includeByName: ['Product', 'Money'] } },
+          { name: 'Other' },
+        ],
+      },
+      `
+        scalar Money
+        type Product { price: Money }
+        type Query { product: Product }
+      `,
+    );
+
+    const result = graphqlContext.run(context, () => groupByCustomMenu());
+    const links = (result[0].items ?? []).map((i) => i.link);
+    expect(links).toEqual(['/test-api/shop-types/product', '/test-api/shop-types/money']);
+  });
+
   it('does not duplicate items across groups', () => {
     const context = makeContext({
       groups: [

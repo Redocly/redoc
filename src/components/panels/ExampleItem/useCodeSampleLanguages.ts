@@ -7,8 +7,7 @@ import { filterAvailableLanguages } from '../../../services/code-samples/languag
 import { DEFAULT_LANGUAGES, getLangKey } from '../../../utils/languages.js';
 import { languageAtom } from '../../../jotai/app.js';
 
-export const PAYLOAD_LANGUAGE =
-  DEFAULT_LANGUAGES.find((l) => l.key === 'payload') ?? DEFAULT_LANGUAGES[0];
+const PAYLOAD_LANGUAGE = DEFAULT_LANGUAGES.find((l) => l.key === 'payload') ?? DEFAULT_LANGUAGES[0];
 
 const PAYLOAD_LANGUAGE_TAB = {
   key: PAYLOAD_LANGUAGE.key,

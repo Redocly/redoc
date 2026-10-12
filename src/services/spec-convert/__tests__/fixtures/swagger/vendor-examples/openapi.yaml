@@ -1,0 +1,54 @@
+openapi: 3.2.0
+info:
+  title: Redocly Cafe
+  version: 1.0.0
+paths:
+  /orders/{orderId}:
+    parameters:
+      - name: orderId
+        in: path
+        required: true
+        examples:
+          Get a brewing order:
+            value: A-17
+        schema:
+          type: string
+    get:
+      operationId: getOrder
+      parameters:
+        - name: expand
+          in: query
+          schema:
+            type: boolean
+          examples:
+            Get a brewing order:
+              value: true
+      responses:
+        '200':
+          description: The order.
+          headers:
+            X-Queue-Length:
+              schema:
+                type: integer
+              example: 2
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+              examples:
+                Get a brewing order:
+                  $ref: '#/components/examples/Get_a_brewing_order'
+components:
+  examples:
+    Get_a_brewing_order:
+      value:
+        id: A-17
+        status: brewing
+  schemas:
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string

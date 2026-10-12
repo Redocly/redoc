@@ -60,7 +60,32 @@ it('should open links in a new tab with download attribute', () => {
   const link = screen.getAllByRole('link', { name: 'Spec' })[0];
   expect(link).toBeInTheDocument();
   expect(link).toHaveAttribute('target', '_blank');
-  expect(link).toHaveAttribute('download');
+  expect(link).toHaveAttribute('download', '');
+});
+
+it('names the saved file after the label only for a generated blob download', () => {
+  render(
+    <DownloadPanelItem
+      node={{
+        children: [
+          {
+            kind: panelKind.DOWNLOAD,
+            label: '/_spec/apis/museum.json?download',
+            url: '/_spec/apis/museum.json?download',
+          },
+          { kind: panelKind.DOWNLOAD, label: 'events.yaml', url: 'blob:http://localhost/1' },
+        ],
+      }}
+    />,
+  );
+
+  expect(
+    screen.getAllByRole('link', { name: '/_spec/apis/museum.json?download' })[0],
+  ).toHaveAttribute('download', '');
+  expect(screen.getAllByRole('link', { name: 'events.yaml' })[0]).toHaveAttribute(
+    'download',
+    'events.yaml',
+  );
 });
 
 it('should show the yaml icon for .yaml files', () => {

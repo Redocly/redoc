@@ -1,24 +1,6 @@
 import type { Node } from '@markdoc/markdoc';
 import type { PropertyType } from '../../types/schema.js';
 
-export type PropertyEnumModel =
-  | { kind: 'none' }
-  | { kind: 'descriptions'; record: Record<string, string | Node | Node[]> }
-  | { kind: 'values'; list: string[] };
-
-export function getPropertyEnumModel(enumValues: PropertyType['enum']): PropertyEnumModel {
-  if (!enumValues) return { kind: 'none' };
-  if (!Array.isArray(enumValues)) return { kind: 'descriptions', record: enumValues };
-  if (enumValues.length === 0) return { kind: 'none' };
-  return { kind: 'values', list: enumValues };
-}
-
-export function splitObjectTypeConstraints(typeLine: string): string[] {
-  const trimmed = typeLine.replace(/^object\s*/, '').trim();
-  if (!trimmed) return [];
-  return trimmed.split(/(?<!\s)\s+(?=[[><=])/).filter(Boolean);
-}
-
 export const LEVEL_COLORS = [
   '#9D00FF',
   '#615CEA',

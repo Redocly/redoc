@@ -17,8 +17,6 @@ type Case = {
   expectHref: string[];
   exactHref?: string;
   notHref?: string;
-  /** Enterprise-only surface (the CE overview has no `x-metadata` table); the portal runner still covers it. */
-  portalOnly?: boolean;
 };
 
 const OPENAPI_CASES: Case[] = [
@@ -249,20 +247,6 @@ const OPENAPI_CASES: Case[] = [
     exactHref: '#/',
   },
   {
-    part: 'overview by metadata value',
-    query: 'Ledger platform guild',
-    expectHref: [],
-    exactHref: '#/',
-    portalOnly: true,
-  },
-  {
-    part: 'overview by metadata token',
-    query: 'gold-lane',
-    expectHref: [],
-    exactHref: '#/',
-    portalOnly: true,
-  },
-  {
     part: 'MCP tool by description',
     query: 'Finds an order by its ledger identifier for an agent',
     expectHref: ['tools/lookuporder'],
@@ -275,13 +259,13 @@ const OPENAPI_CASES: Case[] = [
   },
   {
     part: 'MCP resource by description',
-    query: 'Read-only snapshot of the product catalog for agents',
-    expectHref: ['resources/catalog'],
+    query: 'Read-only snapshot of the product inventory for agents',
+    expectHref: ['resources/inventory'],
   },
   {
     part: 'MCP resource by uri',
-    query: 'cases://catalog',
-    expectHref: ['resources/catalog'],
+    query: 'cases://inventory',
+    expectHref: ['resources/inventory'],
   },
   {
     part: 'MCP prompt by description',
@@ -458,8 +442,7 @@ async function hrefs(results: Locator): Promise<string[]> {
 }
 
 function runCases(pageUrl: string, cases: Case[]): void {
-  for (const { part, query, expectHref, exactHref, notHref, portalOnly } of cases) {
-    if (portalOnly) continue;
+  for (const { part, query, expectHref, exactHref, notHref } of cases) {
     test(`${part}: "${query}"`, async ({ page }) => {
       await new StandalonePage(page).goto(pageUrl);
       const results = await new Search(page).expectHitsFor(query);

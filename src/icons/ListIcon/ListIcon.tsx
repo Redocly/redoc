@@ -5,7 +5,7 @@ type IconProps = React.SVGProps<SVGSVGElement> & {
   size?: string;
 };
 
-export const Icon = (props: IconProps) => {
+const Icon = (props: IconProps) => {
   const clipId = `list-icon-clip-${useId().replace(/[^a-zA-Z0-9-]/g, '')}`;
 
   return (

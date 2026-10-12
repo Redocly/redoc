@@ -40,7 +40,6 @@ function renderSchemaView(schema: OpenAPISchema, schemasExpansionLevel?: number 
     items: [],
     store: emptyStore,
     options,
-    replayDefinition: null,
   });
 
   render(

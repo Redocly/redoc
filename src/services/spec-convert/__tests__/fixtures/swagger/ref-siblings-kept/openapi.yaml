@@ -1,0 +1,43 @@
+openapi: 3.2.0
+info:
+  title: Redocly Cafe
+  version: 1.0.0
+paths:
+  /orders/{orderId}:
+    get:
+      operationId: getOrder
+      parameters:
+        - $ref: '#/components/parameters/orderId'
+      responses:
+        '200':
+          description: The order.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Order'
+                description: Order as the kitchen sees it.
+components:
+  parameters:
+    orderId:
+      name: orderId
+      in: path
+      required: true
+      schema:
+        type: string
+  schemas:
+    Order:
+      type: object
+      properties:
+        lastItem:
+          anyOf:
+            - $ref: '#/components/schemas/OrderItem'
+            - type: 'null'
+          description: Most recently added item.
+        firstItem:
+          $ref: '#/components/schemas/OrderItem'
+          readOnly: true
+    OrderItem:
+      type: object
+      properties:
+        menuItemId:
+          type: string

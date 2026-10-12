@@ -177,7 +177,7 @@ describe('createBuildContext - OpenAPI 3.2 tags', () => {
     expect(premiumTag?.operations).toHaveLength(0);
   });
 
-  it('auto-creates tags referenced by operations but not declared in top-level tags (openapi-docs parity)', () => {
+  it('auto-creates tags referenced by operations but not declared in top-level tags', () => {
     const doc = makeDoc({
       tags: [{ name: 'Accommodations' }] as OpenAPITag[],
       paths: {
@@ -197,6 +197,19 @@ describe('createBuildContext - OpenAPI 3.2 tags', () => {
     expect(attractionsTag).toBeDefined();
     expect(attractionsTag?.operations).toHaveLength(1);
     expect(ctx.collectedTagOrder).toContain('Attractions');
+  });
+
+  it('treats an operation with `tags: []` as untagged, like one with no tags key', () => {
+    const ctx = buildContext(
+      makeDoc({
+        paths: {
+          '/empty': { get: { tags: [], responses: {} } },
+          '/none': { get: { responses: {} } },
+        },
+      }),
+    );
+    const untagged = ctx.tagsMap.get('');
+    expect(untagged?.operations.map((op) => op.pathName)).toEqual(['/empty', '/none']);
   });
 
   it('merges path-item parameter $refs with operation parameter $refs', () => {
@@ -599,10 +612,7 @@ describe('normalizeCallbacks', () => {
     }
 
     const callbacks = { onEvent: { '/callback': pathItem } };
-    const result = normalizeCallbacks(
-      callbacks as unknown as { [name: string]: Referenced<OpenAPICallback> },
-      {},
-    );
+    const result = normalizeCallbacks(callbacks, {});
 
     expect(result?.[0].operations).toHaveLength(methods.length);
     const verbs = result?.[0].operations?.map((op) => op.httpVerb).sort();
@@ -616,10 +626,7 @@ describe('normalizeCallbacks', () => {
       },
     };
 
-    const result = normalizeCallbacks(
-      callbacks as Record<string, Record<string, Record<string, unknown>>>,
-      {},
-    );
+    const result = normalizeCallbacks(callbacks, {});
 
     expect(result).toEqual([{ name: 'onEvent', url: '/callback' }]);
     expect(result?.[0].operations).toBeUndefined();

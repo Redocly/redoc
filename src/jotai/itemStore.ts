@@ -81,6 +81,20 @@ export function itemStoreFieldAtom<K extends ItemStoreKey>(
   return itemStoreKeyAtomFamilyInternal(params) as Atom<ItemStore[K]>;
 }
 
+export type VariantSection = { t?: string; c?: string; cb?: string; schemaId?: string };
+
+export const REQUEST_VARIANT_SECTION: VariantSection = { t: 'request' };
+
+export function buildVariantStoreId(
+  itemId: string,
+  section: VariantSection | null | undefined,
+): string {
+  if (!itemId || !section || (section.t !== 'request' && section.t !== 'response')) return itemId;
+  if (section.schemaId) return `${itemId}#schema=${section.schemaId}`;
+  const scope = [section.cb && `cb=${section.cb}`, `t=${section.t}`, section.c && `c=${section.c}`];
+  return `${itemId}#${scope.filter(Boolean).join('&')}`;
+}
+
 export function buildVariantStateKey(
   parentPath: ReadonlyArray<string> | undefined,
   localPart: string,
@@ -104,6 +118,7 @@ export type DeepLinkSectionData = {
   ct?: string;
   /** When true, nested field deep-links use `path=<field>` only */
   pathOnly?: boolean;
+  schemaId?: string;
   /** AsyncAPI message key */
   messageKey?: string;
   /** AsyncAPI sub-section: "headers" | "payload" | "send" | "receive" | "parameters" | "messages" */

@@ -21,6 +21,26 @@ const SPECS: SpecEntry[] = [
     label: 'Cafe',
     path: '/specs/cafe/openapi.yaml',
     type: apiSpecType.OPENAPI,
+    // Offers every `x-codeSamples` language the demo spec carries (createOrder).
+    options: {
+      codeSamples: {
+        languages: [
+          'curl',
+          'JavaScript',
+          'TypeScript',
+          'Python',
+          'Java',
+          'C#',
+          'PHP',
+          'Go',
+          'Ruby',
+          'Swift',
+          'Kotlin',
+          'C++',
+          'Objective-C',
+        ].map((lang) => ({ lang, label: lang, key: lang.toLowerCase() })),
+      },
+    },
   },
   {
     label: 'Cafe Orders (Kafka)',

@@ -19,11 +19,12 @@ export function encodeBackSlashes(str: string): string {
   return str.replace(/\\/g, '%5C');
 }
 
+const LONE_PERCENT_RE = /%(?![0-9a-f]{2})/gi;
+
 export function tryDecodeURIComponent(str: string): string {
   try {
-    return decodeURIComponent(str);
-  } catch (e) {
-    console.error('Decoding failed: %s', str, e);
+    return decodeURIComponent(str.replace(LONE_PERCENT_RE, '%25'));
+  } catch {
     return str;
   }
 }
@@ -53,13 +54,6 @@ export function safeJsonParse<T = unknown>(str: string, fallback: T = {} as T): 
   } catch {
     return fallback;
   }
-}
-
-/**
- * Generates href from item id
- */
-export function getHref(id: string): string {
-  return encodeBackSlashes(`/${id}`.toLowerCase());
 }
 
 export function getFileExtension(value: string): string {

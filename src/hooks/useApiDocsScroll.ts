@@ -218,9 +218,7 @@ function findElementByHashId(elementId: string): HTMLElement | null {
   return null;
 }
 
-/**
- * Legacy (openapi-docs) deep links support
- */
+/** Legacy deep links: no `[]` array markers, bare `<callbackId>/` callback sections. */
 function findLegacyHashTarget(elementId: string): HTMLElement | null {
   return findLegacyArrayTarget(elementId) ?? findLegacyCallbackTarget(elementId);
 }

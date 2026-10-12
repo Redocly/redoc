@@ -12,10 +12,12 @@ import { switcherLabel } from '../../../../types/schema.js';
 import { PropertyFieldRow } from '../PropertyFieldRow.js';
 
 const propertyRendererLevels: number[] = [];
+const propertyRendererExpandByDefault: (boolean | undefined)[] = [];
 
 vi.mock('../PropertyRenderer.js', () => ({
-  PropertyRenderer: ({ level }: { level: number }) => {
+  PropertyRenderer: ({ level, expandByDefault }: { level: number; expandByDefault?: boolean }) => {
     propertyRendererLevels.push(level);
+    propertyRendererExpandByDefault.push(expandByDefault);
     return <div data-testid={`mock-property-renderer-level-${level}`} />;
   },
 }));
@@ -26,7 +28,11 @@ const emptyStore = {
   securitySchemeStore: {},
 } as GlobalStoreAtom['store'];
 
-function renderPropertyFieldRow(property: PropertyType, level: number): void {
+function renderPropertyFieldRow(
+  property: PropertyType,
+  level: number,
+  expandByDefault = false,
+): void {
   const jotaiStore = createStore();
   const options = normalizeOptions({
     specType: 'openapi',
@@ -39,7 +45,6 @@ function renderPropertyFieldRow(property: PropertyType, level: number): void {
     items: [],
     store: emptyStore,
     options,
-    replayDefinition: null,
   });
 
   render(
@@ -49,7 +54,7 @@ function renderPropertyFieldRow(property: PropertyType, level: number): void {
           name="menuItem"
           property={property}
           level={level}
-          expandByDefault={false}
+          expandByDefault={expandByDefault}
         />
       </Provider>
     </MemoryRouter>,
@@ -59,28 +64,38 @@ function renderPropertyFieldRow(property: PropertyType, level: number): void {
 describe('PropertyFieldRow nested level propagation', () => {
   beforeEach(() => {
     propertyRendererLevels.length = 0;
+    propertyRendererExpandByDefault.length = 0;
   });
 
-  it('passes level + 1 to PropertyRenderer for non-discriminator switchers', () => {
-    const property: PropertyType = {
-      type: 'object',
-      switcher: {
-        type: 'oneOf',
-        label: switcherLabel.ONE_OF,
-        options: {
-          objectVariant: {
-            isDeprecated: false,
-            isDefaultMapping: false,
-            properties: {
-              child: { type: 'string' },
-            },
+  const oneOfProperty: PropertyType = {
+    type: 'object',
+    switcher: {
+      type: 'oneOf',
+      label: switcherLabel.ONE_OF,
+      options: {
+        objectVariant: {
+          isDeprecated: false,
+          isDefaultMapping: false,
+          properties: {
+            child: { type: 'string' },
           },
         },
       },
-    };
+    },
+  };
 
-    renderPropertyFieldRow(property, 3);
+  it('passes level + 1 to PropertyRenderer for non-discriminator switchers', () => {
+    renderPropertyFieldRow(oneOfProperty, 3);
 
     expect(propertyRendererLevels).toEqual([4]);
   });
+
+  it.each([true, false])(
+    'forwards expandByDefault=%s to PropertyRenderer for non-discriminator switchers',
+    (expandByDefault) => {
+      renderPropertyFieldRow(oneOfProperty, 3, expandByDefault);
+
+      expect(propertyRendererExpandByDefault).toEqual([expandByDefault]);
+    },
+  );
 });

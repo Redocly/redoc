@@ -1,6 +1,6 @@
 /**
  * Ambient surface for the built library: `bundles/` is generated, so tsconfig `paths` pointing at
- * its `.d.ts` would break a clean checkout. `ce-build-purity.spec.ts` asserts this exact set.
+ * its `.d.ts` would break a clean checkout. `check-build-purity.mjs` asserts this exact set.
  */
 declare module 'redoc' {
   import type { ComponentType, ReactElement, ReactNode } from 'react';

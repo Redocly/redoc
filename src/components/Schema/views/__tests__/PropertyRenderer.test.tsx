@@ -41,7 +41,6 @@ function renderPropertyRenderer(property: PropertyType, level: number, expandByD
       metadata: {},
       basePath: '',
     }),
-    replayDefinition: null,
   });
 
   return render(

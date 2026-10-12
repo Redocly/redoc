@@ -75,8 +75,9 @@ export function ResponsesSection({ node }: { node: ItemContentNode }): ReactElem
       c: activeCode,
       cb: callbackScope,
       ct: mediaTypes.length > 1 ? currentMediaType : undefined,
+      schemaId: activeSchemaId,
     }),
-    [activeCode, callbackScope, mediaTypes.length, currentMediaType],
+    [activeCode, callbackScope, mediaTypes.length, currentMediaType, activeSchemaId],
   );
 
   if (!responses || responses.length === 0) {

@@ -54,7 +54,7 @@ describe('markdoc adapter lazy parsing of string sources', () => {
     expect(container.querySelectorAll('p')).toHaveLength(2);
   });
 
-  it('passes an already-parsed AST through parse unchanged (portal flow)', () => {
+  it('passes an already-parsed AST through parse unchanged (host flow)', () => {
     const adapter = createMarkdocAdapter();
     const ast = markdocParser('Some **bold** text.');
 
@@ -105,7 +105,7 @@ describe('markdoc adapter lazy parsing of string sources', () => {
 });
 
 describe('headings inside partials', () => {
-  // Hosts hand partials to the renderer as revived document nodes (portal: `parsePartials`).
+  // Hosts hand partials to the renderer as revived document nodes.
   const revive = (source: string) => markdoc.Ast.fromJSON(JSON.stringify(markdoc.parse(source)));
 
   it('scopes a partial heading to the enclosing operation instead of a bare section route', () => {
@@ -142,7 +142,6 @@ describe('headings inside partials', () => {
         metadata: {},
         basePath: '/pet',
       }),
-      replayDefinition: null,
     });
 
     return render(

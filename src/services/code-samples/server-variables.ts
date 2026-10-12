@@ -18,10 +18,3 @@ export function replaceServerVariables(server: ServerWithVariables): string {
   return url;
 }
 
-/** The environment may hold either the raw (templated) or the substituted server URL — match both. */
-export function serverMatchesUrl(server: ServerWithVariables, url: string | undefined): boolean {
-  if (!url) {
-    return false;
-  }
-  return server.url === url || replaceServerVariables(server) === url;
-}

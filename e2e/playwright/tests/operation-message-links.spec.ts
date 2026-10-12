@@ -42,3 +42,30 @@ test.describe('Operation MessageLinks (AsyncAPI)', () => {
     await expect(page.locator(`a[href*="messages&m=requestride"]`).first()).toBeVisible();
   });
 });
+
+test.describe('Operation reply and security (AsyncAPI)', () => {
+  const SECTION =
+    '/asyncapi/payments/topics/paymentsprocessing/operations/publishpaymentauthorization';
+
+  let apiDocs: ApiDocsPage;
+
+  test.beforeEach(async ({ page }) => {
+    apiDocs = new ApiDocsPage(page);
+    await apiDocs.navigateToOperation(
+      'payments/topics/paymentsprocessing',
+      'publishpaymentauthorization',
+    );
+    await apiDocs.waitForPageLoad();
+  });
+
+  test('labels a reply message referenced through a channel message with its title', async () => {
+    const operationSection = apiDocs.getOperationSection(SECTION);
+    await expect(operationSection.getByText('Messages: Payment Completed')).toBeVisible();
+  });
+
+  test('renders the operation security panel with the referenced scheme', async () => {
+    const operationSection = apiDocs.getOperationSection(SECTION);
+    await expect(operationSection.getByText('View security details')).toBeVisible();
+    await expect(operationSection.getByText('brokerAuth', { exact: true })).toBeVisible();
+  });
+});

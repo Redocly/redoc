@@ -713,7 +713,7 @@ describe('schemaProcessor arrays', () => {
       emptyDoc,
     );
 
-    // Example rolls up (parity with openapi-docs), but the array keeps its own type.
+    // Example rolls up, but the array keeps its own type.
     expect(result.example).toEqual([{ id: '123' }]);
     expect(result.type).toBe('Array of objects');
   });
@@ -811,7 +811,7 @@ describe('schemaProcessor circular references', () => {
 describe('schemaProcessor circular references through composition', () => {
   // Recursively detect whether the built tree truncated any edge as circular.
   function hasCircularEdge(node: PropertyType | SwitcherOptionType): boolean {
-    if ((node as PropertyType).isCircular || (node as SwitcherOptionType).isCircular) return true;
+    if (node.isCircular) return true;
     if (node.properties && Object.values(node.properties).some(hasCircularEdge)) return true;
     if (node.items?.some(hasCircularEdge)) return true;
     if (node.switcher && Object.values(node.switcher.options).some(hasCircularEdge)) return true;
@@ -1000,10 +1000,10 @@ describe('schemaProcessor circular references through composition', () => {
   });
 });
 
-// Anonymized rename of a real transport-domain spec (Goods/TransportEquipment/…) that used to
-// crash with "Maximum call stack size exceeded": a large strongly-connected component wired
-// through an implicit-discriminator parent (Cargo), an explicit-mapping discriminator (Carrier,
-// Operation), allOf inheritance, and arrays that all reference back into the component.
+// A large strongly-connected component that used to crash with "Maximum call stack size
+// exceeded": wired through an implicit-discriminator parent (Cargo), an explicit-mapping
+// discriminator (Carrier, Operation), allOf inheritance, and arrays that all reference back
+// into the component.
 describe('schemaProcessor recursive component (transport-domain shape)', () => {
   function countDistinctNodes(root: PropertyType): number {
     const seen = new Set<object>();
@@ -1021,7 +1021,7 @@ describe('schemaProcessor recursive component (transport-domain shape)', () => {
   }
 
   function hasCircularEdge(node: PropertyType | SwitcherOptionType): boolean {
-    if ((node as PropertyType).isCircular || (node as SwitcherOptionType).isCircular) return true;
+    if (node.isCircular) return true;
     if (node.properties && Object.values(node.properties).some(hasCircularEdge)) return true;
     if (node.items?.some(hasCircularEdge)) return true;
     if (node.switcher && Object.values(node.switcher.options).some(hasCircularEdge)) return true;
@@ -1792,6 +1792,121 @@ describe('schemaProcessor discriminator', () => {
     expect(Object.keys(sw.options).sort()).toEqual(['Cat', 'dog']);
     expect(requireProps(sw.options['Cat'])['huntingSkill']).toBeDefined();
     expect(requireProps(sw.options['dog'])['packSize']).toBeDefined();
+  });
+
+  it('shares only the discriminator property when an allOf child is the rendered schema', () => {
+    const doc = makeDocument({
+      Pet: {
+        type: 'object',
+        discriminator: {
+          propertyName: 'petType',
+          mapping: { cat: '#/components/schemas/Cat', dog: '#/components/schemas/Dog' },
+        },
+        properties: { petType: { type: 'string' }, name: { type: 'string' } },
+      },
+      Cat: {
+        allOf: [
+          { $ref: '#/components/schemas/Pet' },
+          { type: 'object', properties: { huntingSkill: { type: 'string' } } },
+        ],
+      },
+      Dog: {
+        allOf: [
+          { $ref: '#/components/schemas/Pet' },
+          { type: 'object', properties: { packSize: { type: 'integer' } } },
+        ],
+      },
+    });
+
+    const result = schemaProcessor({ $ref: '#/components/schemas/Cat' }, doc);
+
+    const sw = requireSw(result);
+    expect(Object.keys(sw.options)).toEqual(['cat', 'dog']);
+    expect(sw.sharesOnlyDiscriminator).toBe(true);
+    expect(Object.keys(requireProps(result))).toEqual(['petType', 'name', 'huntingSkill']);
+  });
+
+  it('shares every host property when the rendered schema declares the discriminator', () => {
+    const doc = makeDocument({
+      Payment: {
+        type: 'object',
+        discriminator: {
+          propertyName: 'method',
+          mapping: { card: '#/components/schemas/Card', bank: '#/components/schemas/Bank' },
+        },
+        oneOf: [{ $ref: '#/components/schemas/Card' }, { $ref: '#/components/schemas/Bank' }],
+        properties: { method: { type: 'string' }, amount: { type: 'number' } },
+      },
+      Card: { type: 'object', properties: { last4: { type: 'string' } } },
+      Bank: { type: 'object', properties: { iban: { type: 'string' } } },
+    });
+
+    const result = schemaProcessor({ $ref: '#/components/schemas/Payment' }, doc);
+
+    expect(requireSw(result).sharesOnlyDiscriminator).toBeUndefined();
+    expect(Object.keys(requireProps(result))).toEqual(['method', 'amount']);
+  });
+
+  it.each([true, false])(
+    'applies the host definition to a property a variant redeclares (discriminator: %s)',
+    (withDiscriminator) => {
+      const doc = makeDocument({
+        Payment: {
+          type: 'object',
+          ...(withDiscriminator && {
+            discriminator: {
+              propertyName: 'method',
+              mapping: { card: '#/components/schemas/Card', bank: '#/components/schemas/Bank' },
+            },
+          }),
+          oneOf: [{ $ref: '#/components/schemas/Card' }, { $ref: '#/components/schemas/Bank' }],
+          properties: { method: { type: 'string', description: 'Payment method' } },
+        },
+        Card: {
+          type: 'object',
+          properties: { method: { const: 'card', description: 'Card payment' } },
+        },
+        Bank: { type: 'object', properties: { method: { const: 'bank' } } },
+      });
+
+      const options = Object.values(
+        requireSw(schemaProcessor({ $ref: '#/components/schemas/Payment' }, doc)).options,
+      );
+
+      expect(options.map((option) => requireProps(option)['method'])).toMatchObject([
+        { type: 'string', description: 'Card payment', const: '"card"' },
+        { type: 'string', description: 'Payment method', const: '"bank"' },
+      ]);
+    },
+  );
+
+  it("keeps a child page's own redeclared property out of its sibling variants", () => {
+    const doc = makeDocument({
+      Pet: {
+        type: 'object',
+        discriminator: {
+          propertyName: 'petType',
+          mapping: { cat: '#/components/schemas/Cat', dog: '#/components/schemas/Dog' },
+        },
+        properties: { petType: { type: 'string' } },
+      },
+      Cat: {
+        allOf: [
+          { $ref: '#/components/schemas/Pet' },
+          { properties: { petType: { const: 'cat' } } },
+        ],
+      },
+      Dog: {
+        allOf: [
+          { $ref: '#/components/schemas/Pet' },
+          { properties: { petType: { const: 'dog' } } },
+        ],
+      },
+    });
+
+    const sw = requireSw(schemaProcessor({ $ref: '#/components/schemas/Cat' }, doc));
+
+    expect(requireProps(sw.options['dog'])['petType'].const).toBe('"dog"');
   });
 
   it("should not offer an unrelated allOf mixin's inheritors as discriminator variants", () => {

@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
 
-export const Icon = () => (
+const Icon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="21" height="19" viewBox="0 0 12 5" fill="none">
     <g clipPath="url(#clip0_6351_16646)">
       <path

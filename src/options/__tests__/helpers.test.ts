@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 
 import {
   argValueToBoolean,
@@ -9,6 +9,7 @@ import {
   normalizeShowExtensions,
   normalizeScrollYOffset,
   normalizeCodeSamples,
+  normalizeDownloadUrls,
 } from '../helpers.js';
 import { DEFAULT_LANGUAGES } from '../../utils/languages.js';
 
@@ -185,5 +186,47 @@ describe('normalizeCodeSamples', () => {
 
   it('keeps an explicitly empty languages list empty', () => {
     expect(normalizeCodeSamples({ languages: [] }).languages).toEqual([]);
+  });
+});
+
+describe('normalizeDownloadUrls', () => {
+  it('reads plain strings in an array as URLs', () => {
+    expect(normalizeDownloadUrls('["cafe.yaml", {"url":"b.json"}]', 'openapi')).toEqual([
+      { url: 'cafe.yaml', title: 'cafe.yaml' },
+      { url: 'b.json', title: 'b.json' },
+    ]);
+  });
+
+  it('parses a JSON array attribute value', () => {
+    expect(normalizeDownloadUrls('[{"url":"cafe.yaml"}]', 'openapi')).toEqual([
+      { url: 'cafe.yaml', title: 'cafe.yaml' },
+    ]);
+  });
+
+  it('parses a single JSON object attribute value', () => {
+    expect(normalizeDownloadUrls('{"url":"/a.json","title":"A"}', 'openapi')).toEqual([
+      { url: '/a.json', title: 'A' },
+    ]);
+  });
+
+  it('treats a plain string as a URL', () => {
+    expect(normalizeDownloadUrls('https://example.com/cafe.yaml', 'openapi')).toEqual([
+      { url: 'https://example.com/cafe.yaml', title: 'cafe.yaml' },
+    ]);
+  });
+
+  it('returns an empty list for a bare attribute', () => {
+    expect(normalizeDownloadUrls('', 'openapi')).toEqual([]);
+  });
+
+  it('drops malformed JSON and entries without a url with a warning', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    expect(normalizeDownloadUrls('[{"url":', 'openapi')).toEqual([]);
+    expect(normalizeDownloadUrls([{ init: 'x' }, { url: 'b.yaml' }], 'asyncapi')).toEqual([
+      { url: 'b.yaml', title: 'b.yaml' },
+    ]);
+    expect(normalizeDownloadUrls(42, 'openapi')).toEqual([]);
+    expect(warn).toHaveBeenCalledTimes(3);
+    warn.mockRestore();
   });
 });

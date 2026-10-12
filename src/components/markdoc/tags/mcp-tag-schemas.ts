@@ -1,4 +1,3 @@
-import type { Node } from '@markdoc/markdoc';
 import type { MarkdocTagSchema } from '@redocly/theme/markdoc/tags/types';
 
 export const mcpTagSchemas: Record<string, MarkdocTagSchema> = {
@@ -8,7 +7,6 @@ export const mcpTagSchemas: Record<string, MarkdocTagSchema> = {
       name: { type: String },
       id: { type: String },
     },
-    renderForLlms: (node: Node) => `MCP Tool: ${node.attributes.name}`,
   },
   mcpResource: {
     render: 'McpResource',
@@ -16,7 +14,6 @@ export const mcpTagSchemas: Record<string, MarkdocTagSchema> = {
       name: { type: String },
       id: { type: String },
     },
-    renderForLlms: (node: Node) => `MCP Resource: ${node.attributes.name}`,
   },
   mcpPrompt: {
     render: 'McpPrompt',
@@ -24,6 +21,5 @@ export const mcpTagSchemas: Record<string, MarkdocTagSchema> = {
       name: { type: String },
       id: { type: String },
     },
-    renderForLlms: (node: Node) => `MCP Prompt: ${node.attributes.name}`,
   },
 };

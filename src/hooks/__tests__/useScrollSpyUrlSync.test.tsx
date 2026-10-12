@@ -31,7 +31,6 @@ function renderUseScrollSpyUrlSync(opts: { routingBasePath?: string; pathname?: 
     items: [],
     store: { schemaStore: {}, exampleStore: {}, securitySchemeStore: {} },
     options: { basePath: routingBasePath } as ApiDocsOptions,
-    replayDefinition: null,
   });
 
   const wrapper = ({ children }: { children: ReactNode }) => (
@@ -50,7 +49,6 @@ function renderUnderHashRouter(routingBasePath = '') {
     items: [],
     store: { schemaStore: {}, exampleStore: {}, securitySchemeStore: {} },
     options: { basePath: routingBasePath } as ApiDocsOptions,
-    replayDefinition: null,
   });
 
   const wrapper = ({ children }: { children: ReactNode }) => (

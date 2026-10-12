@@ -1,0 +1,35 @@
+openapi: 3.2.0
+info:
+  title: Redocly Cafe
+  version: 1.0.0
+paths:
+  /menu:
+    get:
+      operationId: listMenuItems
+      responses:
+        '200':
+          description: The menu of this branch.
+servers:
+  - url: /v1
+  - url: https://{branch}.{region}.cafe.example.test/v1
+    variables:
+      branch:
+        description: Cafe branch, for example downtown.
+        default: none
+      region:
+        enum:
+          - eu
+          - us
+        x-ms-parameter-location: client
+        default: eu
+components:
+  parameters:
+    RegionHost:
+      in: path
+      required: true
+      x-ms-parameter-location: client
+      schema:
+        type: string
+        enum:
+          - eu
+          - us

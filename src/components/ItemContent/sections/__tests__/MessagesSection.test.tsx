@@ -12,6 +12,10 @@ import { itemStoreAtom, itemStoreFieldAtom } from '../../../../jotai/itemStore.j
 import { MessagesSection } from '../MessagesSection.js';
 import { reassertUrlHash } from '../../../../hooks/useUrlHashReassert.js';
 
+vi.mock('../../../common/Markdown.js', () => ({
+  Markdown: ({ source }: { source: unknown }) => <span>{String(source)}</span>,
+}));
+
 const ITEM_ID = 'rides/topics/ride-requests';
 
 function renderMessagesSection(hash: string, store = createStore()) {
@@ -276,5 +280,40 @@ describe('MessagesSection', () => {
     expect(telemetry.sendSwitchMessageClickedMessage.mock.calls[0][0][0]).not.toHaveProperty(
       'message',
     );
+  });
+
+  it('renders the correlation ID location and description', () => {
+    const node = {
+      messages: [
+        {
+          name: 'orderCreated',
+          label: 'Order created',
+          correlationId: {
+            location: '$message.header#/correlationId',
+            description: 'Correlates all events belonging to one order.',
+          },
+        },
+      ],
+    } as ItemContentNode;
+
+    render(
+      <MemoryRouter initialEntries={[{ pathname: `/asyncapi/${ITEM_ID}`, hash: '' }]}>
+        <JotaiProvider store={createStore()}>
+          <ItemIdContext.Provider value={ITEM_ID}>
+            <MessagesSection node={node} />
+          </ItemIdContext.Provider>
+        </JotaiProvider>
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByText('Correlation ID')).toBeInTheDocument();
+    expect(screen.getByText('$message.header#/correlationId').tagName).toBe('CODE');
+    expect(screen.getByText('Correlates all events belonging to one order.')).toBeInTheDocument();
+  });
+
+  it('renders no correlation ID row when the message has none', () => {
+    renderMessagesSection('');
+
+    expect(screen.queryByText('Correlation ID')).not.toBeInTheDocument();
   });
 });

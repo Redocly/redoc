@@ -9,7 +9,7 @@ import { responsesExtractor } from './responses.js';
 import { messagesExtractor } from './asyncapi.js';
 import { examplesExtractor } from './examples.js';
 
-export const extractors: readonly Extractor[] = [
+const extractors: readonly Extractor[] = [
   parametersExtractor,
   graphqlExtractor,
   namedRowsExtractor,

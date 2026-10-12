@@ -1,0 +1,36 @@
+swagger: '2.0'
+info:
+  title: Redocly Cafe
+  version: 1.0.0
+paths:
+  /menu:
+    get:
+      operationId: listMenuItems
+      parameters:
+        - name: search
+          in: query
+          x-example: oat latte
+          x-deprecated: true
+        - name: filter
+          in: query
+          type: string
+          x-ms-skip-url-encoding: true
+        - name: X-Tab-Ids
+          in: header
+          type: array
+          collectionFormat: pipes
+          items:
+            type: integer
+        - name: limit
+          in: query
+          type: integer
+          minimum: 1
+          maximum: 50
+          exclusiveMaximum: true
+          default: 20
+        - name: menuItemId
+          in: path
+          type: string
+      responses:
+        '200':
+          description: Matching items.

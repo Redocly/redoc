@@ -14,8 +14,7 @@ import { useNavigationUrlNormalizer } from './useNormalizeUrl.js';
 
 export const ItemIdContext = createContext<string | undefined>(undefined);
 
-/** Callback id of the enclosing callback panel, if any. See
- *  `brain/legacy-deep-link-back-compat.md` § Callbacks for the id formats. */
+/** Callback id of the enclosing callback panel, if any. */
 export const CallbackScopeContext = createContext<string | undefined>(undefined);
 
 export function useCallbackScope(): string | undefined {
@@ -31,11 +30,6 @@ export function useHashItemId(): string {
   );
 }
 
-/** Marks an `ItemIdContext` value as a synthetic per-mount id (not a route
- *  path). Pluggable components (e.g. `RedocSchema`) provide one purely so the
- *  oneOf/discriminator switchers can key itemStore state — deep-link building
- *  must ignore such ids. */
-export const SYNTHETIC_ITEM_ID_PREFIX = 'synthetic-item:';
 
 /** Section data carried via context to the schema subtree. `id` is omitted —
  *  it comes from `ItemIdContext` separately. `null` means "no section". */
@@ -49,7 +43,7 @@ function useItemDeepLinkUrl(suffix: string, applyCallbackPrefix: boolean): strin
   const routingBasePath = useAtomValue(routingBasePathAtom);
   const normalizeUrl = useNavigationUrlNormalizer();
   return useMemo(() => {
-    if (!itemId || itemId.startsWith(SYNTHETIC_ITEM_ID_PREFIX)) return '';
+    if (!itemId) return '';
     // `itemId` is a full URL path (it equals `route.path`, which includes
     // basePath)
     const slug = routingBasePath ? toRelativePath(itemId, routingBasePath) : itemId;
@@ -64,8 +58,7 @@ function useItemDeepLinkUrl(suffix: string, applyCallbackPrefix: boolean): strin
 /** Build a normalized deep-link URL for a *section* of the current item, using its
  *  `ItemIdContext` and the given suffix. Inside a callback the suffix is prefixed with
  *  `callbacks/<callbackId>` so the section cannot collide with the parent operation's.
- *  Returns `''` when no item is in scope (e.g. rendered outside a page wrapper) or when the
- *  itemId is a synthetic per-mount id (see {@link SYNTHETIC_ITEM_ID_PREFIX}). */
+ *  Returns `''` when no item is in scope (e.g. rendered outside a page wrapper). */
 export function useDeepLinkUrl(suffix: string): string {
   return useItemDeepLinkUrl(suffix, true);
 }

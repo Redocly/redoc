@@ -40,7 +40,6 @@ function renderRow(showExtensions: RedocConfig['showExtensions']): RenderResult 
     items: [],
     store: emptyStore,
     options,
-    replayDefinition: null,
   });
 
   return render(

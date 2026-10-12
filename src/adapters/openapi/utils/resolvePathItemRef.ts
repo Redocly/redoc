@@ -2,8 +2,12 @@ import type { OpenAPIPath } from '../../../types/openapi.js';
 
 import { resolveJsonPointer } from '../../helpers.js';
 
+/** Path Item Reference Objects may carry `summary` / `description` siblings from OpenAPI 3.1 on. */
 function openapiAllowsPathItemRefSiblings(openapi: string | undefined): boolean {
-  return String(openapi ?? '').startsWith('3.1');
+  const [major, minor] = String(openapi ?? '')
+    .split('.')
+    .map((part) => Number.parseInt(part, 10));
+  return major === 3 && minor >= 1;
 }
 
 export function resolvePathItemRef(

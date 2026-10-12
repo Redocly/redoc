@@ -19,7 +19,13 @@ const THEME_CANDIDATES = [
 
 const THEME_PATH = THEME_CANDIDATES.find((p) => existsSync(p)) ?? THEME_CANDIDATES[0];
 
-const FLEXSEARCH_DIST = dirname(createRequire(import.meta.url).resolve('flexsearch'));
+const require = createRequire(import.meta.url);
+const FLEXSEARCH_DIST = dirname(require.resolve('flexsearch'));
+// The monorepo hoists the catalog's js-yaml 4 next to openapi-core's 5; the published repo has
+// one copy. Pin js-yaml to the copy openapi-core resolves so both builds carry one.
+const JS_YAML_PATH = dirname(
+  createRequire(require.resolve('@redocly/openapi-core')).resolve('js-yaml/package.json'),
+);
 
 const BANNER = `/** 
  * @license MIT
@@ -74,16 +80,14 @@ export default defineConfig(({ command, mode }) => {
     ],
     root: command === 'serve' ? resolve(__dirname, 'playground') : undefined,
     resolve: {
-      dedupe: [
-        'react',
-        'react-dom',
-        'react-router',
-        '@redocly/ajv',
-        'yaml',
-        '@redocly/openapi-core',
-      ],
+      dedupe: ['react', 'react-dom', 'react-router', '@redocly/openapi-core'],
       alias: {
-        ajv: '@redocly/ajv',
+        // openapi-core's assertion validator: reachable from `Config`, constructed only by
+        // assertion rules, which the empty config never has. Exact specifiers: a bare
+        // `@redocly/ajv` alias prefix-matches and would corrupt the subpath.
+        '@redocly/ajv/dist/2020.js': resolve(__dirname, 'src/ajv-stub.js'),
+        '@redocly/ajv/dist/draft4.js': resolve(__dirname, 'src/ajv-stub.js'),
+        'ajv-formats': resolve(__dirname, 'src/ajv-stub.js'),
         '@redocly/theme': THEME_PATH,
         '@portal': resolve(THEME_PATH, 'mocks'),
         // Worker support lives only in the full bundle; the global build is what boots inside each worker.
@@ -91,7 +95,7 @@ export default defineConfig(({ command, mode }) => {
         'flexsearch-global?raw': `${resolve(FLEXSEARCH_DIST, 'flexsearch.bundle.min.js')}?raw`,
         crypto: resolve(__dirname, 'src/crypto-compat.js'),
         linkedom: resolve(__dirname, 'src/empty-linkedom.js'),
-        yaml: resolve(__dirname, 'src/yaml-compat.js'),
+        'js-yaml': JS_YAML_PATH,
         picomatch: resolve(__dirname, 'src/empty.js'),
         '@opentelemetry/semantic-conventions': resolve(
           __dirname,
@@ -100,13 +104,6 @@ export default defineConfig(({ command, mode }) => {
         path: 'path-browserify',
         'node:path': 'path-browserify',
         buffer: 'buffer',
-        http: resolve(__dirname, 'src/empty.js'),
-        url: resolve(__dirname, 'src/url-compat.ts'),
-        fs: resolve(__dirname, 'src/empty.js'),
-        os: resolve(__dirname, 'src/empty.js'),
-        tty: resolve(__dirname, 'src/empty.js'),
-        'node-fetch': resolve(__dirname, 'src/empty.js'),
-        'node-fetch-h2': resolve(__dirname, 'src/empty.js'),
       },
     },
     optimizeDeps: {

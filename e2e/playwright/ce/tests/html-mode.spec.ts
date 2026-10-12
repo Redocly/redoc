@@ -84,4 +84,21 @@ test.describe('spec type resolution', () => {
     await expect(apiDocs.section('/').first()).toContainText('Redocly Cafe');
     expect(pageErrors).toEqual([]);
   });
+
+  test('a Swagger 2.0 document is converted on load', async ({ page }) => {
+    const pageErrors: string[] = [];
+    page.on('pageerror', (error) => pageErrors.push(error.message));
+
+    const apiDocs = new StandalonePage(page);
+    await apiDocs.goto(optionsUrl({ 'spec-url': '/fixtures/swagger-2.yaml' }));
+    await expect(page.getByText('https://petstore.example.test/v2')).toBeVisible();
+    await apiDocs.clickThroughMenu('pets', 'Create a pet');
+
+    const operation = apiDocs.section('/pets/createpet').first();
+    await expect(operation).toContainText('api_key');
+    await expect(operation).toContainText('Body');
+    await expect(operation).toContainText('application/json');
+    await expect(operation).toContainText('"name": "Rex"');
+    expect(pageErrors).toEqual([]);
+  });
 });

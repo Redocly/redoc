@@ -2,6 +2,7 @@ import { useContext, useEffect, useMemo, useRef } from 'react';
 import { useAtomValue, useSetAtom } from 'jotai';
 
 import type { ExampleEntry } from '../../types/store.js';
+import type { VariantSection } from '../../jotai/itemStore.js';
 
 import {
   exampleStoreAtom,
@@ -12,7 +13,7 @@ import { convertSampleToString } from '../../services/code-samples/index.js';
 import { isSequentialMediaType } from '../../utils/media-type.js';
 import { schemaStoreAtom } from '../../jotai/schema.js';
 import { mediaTypeOverrideAtom } from '../../jotai/app.js';
-import { itemStoreAtom } from '../../jotai/itemStore.js';
+import { buildVariantStoreId, itemStoreAtom } from '../../jotai/itemStore.js';
 import {
   buildOpenApiSectionSuffix,
   extractDeepLinkParamFromHash,
@@ -38,11 +39,14 @@ export function useResolvedExamples(
   exampleIds: string[] | undefined,
   context?: 'request' | 'response',
   mediaType?: string,
+  section?: VariantSection,
 ): unknown[] {
   const explicit = useExampleEntries(exampleIds);
-  const itemId = useContext(ItemIdContext) ?? '';
+  const variantStoreId = buildVariantStoreId(useContext(ItemIdContext) ?? '', section);
   const normalizedMediaType = mediaType?.toLowerCase();
-  const paramKey = schemaId ? buildExampleAtomKey(schemaId, context, mediaType, itemId) : '';
+  const paramKey = schemaId
+    ? buildExampleAtomKey(schemaId, context, mediaType, variantStoreId)
+    : '';
   const generated = useAtomValue(generatedExampleAtom(paramKey));
   const schemaStore = useAtomValue(schemaStoreAtom);
 
@@ -127,7 +131,7 @@ export function useMediaTypeFromHash(
     () => () => {
       const applied = appliedRef.current;
       if (!applied) return;
-      // Only undo this hook's own write; an authored embed override stays.
+      // Only undo this hook's own write; an override set elsewhere stays.
       setMediaTypeOverride((current) => (current === applied ? undefined : current));
     },
     [setMediaTypeOverride],

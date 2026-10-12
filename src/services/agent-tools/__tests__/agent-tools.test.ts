@@ -3,7 +3,8 @@ import { describe, expect, it, vi } from 'vitest';
 import type { ApiItem, ApiStore } from '../../../types/store.js';
 import type { ApiDocsAgentToolsParams } from '../index.js';
 
-import { MAX_AGENT_RESULT_CHARS, agentTextResult, buildApiDocsAgentTools } from '../index.js';
+import { agentTextResult, buildApiDocsAgentTools } from '../index.js';
+import { MAX_AGENT_RESULT_CHARS } from '../results.js';
 import {
   collectOperations,
   filterOperations,

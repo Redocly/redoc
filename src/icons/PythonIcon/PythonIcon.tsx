@@ -2,7 +2,7 @@ import { styled } from 'styled-components';
 
 import { useUniqueSvgIds } from '@redocly/theme/core/openapi';
 
-export const Icon = () => {
+const Icon = () => {
   const uid = useUniqueSvgIds();
   const id = (name: string): string => uid(name);
 

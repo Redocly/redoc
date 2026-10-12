@@ -1,6 +1,5 @@
 import type { ApiDocsOptions, RawApiDocsOptions } from '../types/options.js';
 
-
 import { WindowReferenceOptions } from '../constants/openapi.js';
 import {
   argValueToBoolean,
@@ -35,7 +34,6 @@ export function normalizeOptions(rawOptions: RawApiDocsOptions): ApiDocsOptions 
     specType: options.specType,
     metadata: options.metadata ?? {},
     downloadUrls: normalizeDownloadUrls(options.downloadUrls ?? [], options.specType),
-    dynamicRequestValues: options.dynamicRequestValues,
     schemaDefinitionsTagName: options.schemaDefinitionsTagName,
     jsonSamplesExpandLevel:
       argValueToExpandLevel(options.jsonSamplesExpandLevel, JSON_SAMPLES_EXPAND_LEVEL_DEFAULT) ??

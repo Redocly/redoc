@@ -21,7 +21,7 @@ type Query {
   menu(
     "Only return items in this category."
     category: MenuCategory
-    "Case-insensitive substring search over item names."
+    "Case-insensitive substring search over item **names**, for example `latte`."
     search: String
     "Maximum number of items to return."
     limit: Int = 20

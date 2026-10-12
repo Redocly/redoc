@@ -39,10 +39,6 @@ export function buildUnionContent(
     contentType: contentType.ITEM,
     itemVariant: itemVariant.UNION,
     meta: { name: union.name },
-    seo: {
-      title: union.name,
-      description: union.description || undefined,
-    },
     children: [
       {
         nodeType: nodeTypes.CONTAINER,

@@ -51,12 +51,10 @@ describe('buildSchemaDefinitionContent', () => {
   it('should fall back to the schema name in the header when title is undefined', () => {
     const content = buildSchemaDefinitionContent('Pet', undefined, options);
     expect(findHeader(content)?.label).toBe('Pet');
-    expect(content.seo?.title).toBe('Pet');
   });
 
   it('should use the provided title in the header when one is given', () => {
     const content = buildSchemaDefinitionContent('Pet', 'A Lovely Pet', options);
     expect(findHeader(content)?.label).toBe('A Lovely Pet');
-    expect(content.seo?.title).toBe('A Lovely Pet');
   });
 });

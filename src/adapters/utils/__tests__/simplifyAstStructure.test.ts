@@ -50,7 +50,7 @@ describe('simplifyAstStructure', () => {
   });
 
   it('keeps structural containers so raw (non-revived) consumers can walk them', () => {
-    // Search indexing (portal to-markdown) walks the stored AST WITHOUT markdoc revival, doing
+    // Search indexing walks the stored AST WITHOUT markdoc revival, doing
     // `for (const child of node.children)` and `node.children.map(...)`. Every node must keep an
     // iterable `children` array and an `attributes` object even when empty.
     const simplified = simplifyAstStructure(

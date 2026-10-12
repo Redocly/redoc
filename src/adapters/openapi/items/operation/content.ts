@@ -15,7 +15,6 @@ import type {
   NormalizedCallbackOperation,
   OpenAPIExample,
   OpenAPIHeader,
-  OpenAPIMediaType,
   OpenAPIRequestBody,
   OpenAPIResponse,
   OpenAPISchema,
@@ -54,9 +53,11 @@ import { isStatusCode } from '../../../../utils/status-code.js';
 import { getExtensionsForDisplay } from '../../../../utils/extract-extensions.js';
 import { openApiContext } from '../../buildContext.js';
 import { buildCodeSampleSource } from '../../build-code-sample-source.js';
-import { pickOperationServers } from '../../utils/merge-mock-server.js';
+import { pickOperationServers } from '../../utils/operation.js';
 import { toRelativePath } from '../../../../utils/url.js';
 import { encodeJsonPointerSegment } from '../../../../utils/refPointer.js';
+import { pickFormEncoding } from '../../../../utils/form-urlencoded.js';
+import { isFormUrlEncodedMediaType } from '../../../../utils/media-type.js';
 import {
   hasOpenApiExampleValue,
   resolveOpenApiExampleValue,
@@ -67,9 +68,9 @@ const RESPONSES_SECTION_DEEPLINK_SUFFIX = 'responses';
 const CALLBACKS_SECTION_DEEPLINK_SUFFIX = 'callbacks';
 
 /**
- * Callback ids in the legacy openapi-docs shape, `<name>/<verb>`, so links shared from it
- * still resolve. One entry is emitted per url expression, so that pair can repeat within an
- * operation — later duplicates take a `~<n>` suffix, which legacy lacked and collided on.
+ * Callback ids in the legacy `<name>/<verb>` shape, so previously shared links still resolve.
+ * One entry is emitted per url expression, so that pair can repeat within an operation —
+ * later duplicates take a `~<n>` suffix.
  *
  * The separator is deliberately not `/`: an id must never be a path-segment prefix of a
  * sibling's, or hash matching would treat `<name>/<verb>` as also naming `<name>/<verb>~1`.
@@ -141,7 +142,6 @@ export function buildItemContent(operationInfo: OperationInfo, pageSlug: string)
       url: s.url ?? '',
       name: s.name,
       description: typeof s.description === 'string' ? s.description : undefined,
-      ...(s.isMockServer && { isMockServer: true }),
       variables:
         s.variables && Object.keys(s.variables).length > 0
           ? Object.fromEntries(
@@ -192,7 +192,7 @@ export function buildItemContent(operationInfo: OperationInfo, pageSlug: string)
           source: codeSampleSource,
           definitionSamples: definitionSamples?.length ? definitionSamples : undefined,
           isWebhook,
-          servers: opServers?.length ? opServers : undefined,
+          servers: !isWebhook && opServers?.length ? opServers : undefined,
           schemaId: bodySchemaId,
           exampleIds: bodyNode?.exampleIds,
           mediaTypes: bodyMediaTypes,
@@ -353,7 +353,6 @@ export function buildItemContent(operationInfo: OperationInfo, pageSlug: string)
     contentType: contentType.ITEM,
     itemVariant: itemVariant.HTTP_ITEM,
     meta: {
-      sourceId: operationInfo.operationId,
       name: operationName,
       deprecated: operationInfo.deprecated,
       isWebhook: operationInfo.isWebhook || false,
@@ -514,18 +513,18 @@ function buildCallbackPayloadPanels(
   const resolvedCbBody =
     resolveRef<OpenAPIRequestBody>(cbDoc, callback.requestBody, ignoreNamedSchemas) ??
     callback.requestBody;
-  const cbBodyContent = resolveContent(cbDoc, resolvedCbBody, ignoreNamedSchemas);
+  const cbBodyContent = resolveContent(cbDoc, resolvedCbBody);
 
   if (!cbBodyContent) return opPanels;
 
   const cbMediaTypes = Object.keys(cbBodyContent);
   let cbHasExamples = false;
-  const cbMediaTypeSchemas: Record<string, { schemaId?: string; exampleIds?: string[] }> = {};
+  const cbMediaTypeSchemas: Record<string, MediaTypeContent> = {};
 
   for (const [mt, mtContent] of Object.entries(cbBodyContent)) {
     let schemaId: string | undefined;
-    if (mtContent.schema) {
-      const resolvedSchema = mtContent.schema as Record<string, unknown>;
+    const resolvedSchema = resolveSchemaRef(mtContent.schema, cbDoc, ignoreNamedSchemas);
+    if (resolvedSchema) {
       schemaId = registerSchema(storeCtx.schemaStore, storeCtx.hashIndex, {
         kind: schemaKind.JSON_SCHEMA,
         data: resolvedSchema,
@@ -559,9 +558,13 @@ function buildCallbackPayloadPanels(
         }
       }
     }
+    const encoding = isFormUrlEncodedMediaType(mt)
+      ? pickFormEncoding(mtContent.encoding)
+      : undefined;
     cbMediaTypeSchemas[mt] = {
       schemaId,
       exampleIds: exIds.length > 0 ? exIds : undefined,
+      ...(encoding && { encoding }),
     };
     if (schemaId) cbHasExamples = true;
   }
@@ -649,7 +652,7 @@ function buildResponseHeadersSchema(
     const resolvedHeader =
       resolveRef<OpenAPIHeader>(doc, rawHeader, ignoreNamedSchemas) ?? (rawHeader as OpenAPIHeader);
 
-    const headerContent = resolvedHeader.content;
+    const headerContent = resolveContent(doc, resolvedHeader);
     const firstContentEntry = headerContent
       ? headerContent[Object.keys(headerContent)[0]]
       : undefined;
@@ -712,7 +715,7 @@ function toParameterData(
     if (rawSchema && typeof rawSchema === 'object') {
       data = rawSchema as Record<string, unknown>;
     } else if (param.content && typeof param.content === 'object') {
-      const contentMap = param.content as Record<string, { schema?: unknown }>;
+      const contentMap = resolveContent(doc, param) ?? {};
       const firstMime = Object.keys(contentMap)[0];
       const inner = firstMime ? contentMap[firstMime]?.schema : undefined;
       if (inner && typeof inner === 'object') {
@@ -836,7 +839,7 @@ function buildRequestChildren(
     }
 
     for (const param of querystringWithContent) {
-      const contentMap = param.content as Record<string, OpenAPIMediaType>;
+      const contentMap = resolveContent(doc, param) ?? {};
       const mediaTypes = Object.keys(contentMap);
       const mediaTypeSchemas: Record<string, MediaTypeContent> = {};
 
@@ -914,7 +917,7 @@ function buildRequestChildren(
     const requestBody =
       resolveRef<OpenAPIRequestBody>(doc, operationInfo.requestBody, ignoreNamedSchemas) ??
       (operationInfo.requestBody as OpenAPIRequestBody);
-    const bodyContent = resolveContent(doc, requestBody, ignoreNamedSchemas);
+    const bodyContent = resolveContent(doc, requestBody);
     const mediaTypes = bodyContent ? Object.keys(bodyContent) : undefined;
 
     let schemaId: string | undefined;
@@ -942,9 +945,13 @@ function buildRequestChildren(
           ignoreNamedSchemas,
           `${operationInfo.pointer}/requestBody/content/${encodeJsonPointerSegment(mediaType)}`,
         );
+        const encoding = isFormUrlEncodedMediaType(mediaType)
+          ? pickFormEncoding(entry.encoding)
+          : undefined;
         mediaTypeSchemas[mediaType] = {
           schemaId: mediaTypeSchemaId,
           exampleIds: mediaTypeExampleIds,
+          ...(encoding && { encoding }),
           ...rbacProp(readRbacScope(schemaSource)),
         };
       }
@@ -999,7 +1006,7 @@ function buildResponsesSection(
         ignoreNamedSchemas,
       ) ?? (rawResponse as OpenAPIResponse);
     let responseRbac = readRbacScope(rawResponse) ?? readRbacScope(response);
-    const responseContent = resolveContent(doc, response, ignoreNamedSchemas);
+    const responseContent = resolveContent(doc, response);
     const allMediaTypes = responseContent ? Object.keys(responseContent) : [];
     const firstMediaType = allMediaTypes[0];
     const firstEntry =
@@ -1081,8 +1088,8 @@ function buildResponsesSection(
         `${RESPONSES_SECTION_DEEPLINK_SUFFIX}/${code}`,
       );
     }
-    // Response `x-summary` renders above the description (parity with legacy
-    // openapi-docs `models/response.ts`). Emit `undefined` when absent to keep the node lean.
+    // Response `x-summary` renders above the description. Emit `undefined` when absent to keep
+    // the node lean.
     const summary = response['x-summary']
       ? parseMarkdown(response['x-summary'], markdownOptions)
       : undefined;

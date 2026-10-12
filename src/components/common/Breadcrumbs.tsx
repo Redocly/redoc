@@ -15,7 +15,7 @@ const DEFAULT_MAX_LENGTH = 25;
 const COLLAPSE_THRESHOLD = 3;
 const PAGE_ACTIONS_GAP = 16;
 
-export type Breadcrumb = {
+type Breadcrumb = {
   name: string;
   href: string;
 };

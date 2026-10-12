@@ -13,6 +13,7 @@ import {
 } from './telemetry/index.js';
 
 import { GlobalStyle as ThemeCommonStyle } from '@redocly/theme/core/openapi';
+import { LinkIconSymbol } from '@redocly/theme/icons/LinkIcon/LinkIconSymbol';
 
 import { useApiDocsRoutes } from './hooks/useApiDocsRoutes.js';
 import { useVisitedChannelsTracker } from './hooks/useVisitedChannelsTracker.js';
@@ -81,6 +82,8 @@ const RedoclyApiDocsBody = ({
       {/* Outside the boundary: a page crash must not unmount the global styles
           that the surrounding layout (e.g. the standalone sidebar) depends on. */}
       <ThemeCommonStyle />
+      {/* One copy of the link icon drawing that every deep link anchor on the page refers to. */}
+      <LinkIconSymbol />
       <ErrorBoundary>
         <EntryPage routeIndex={routeIndex} basePath={basePath} />
       </ErrorBoundary>
@@ -96,4 +99,3 @@ const RedoclyApiDocs = compose(
 
 export { RedoclyApiDocs, RedoclyApiDocsComponent };
 export type { RedoclyApiDocsProps };
-export default RedoclyApiDocs;

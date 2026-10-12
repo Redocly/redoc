@@ -441,7 +441,7 @@ describe('schemaProcessor — nested arrays keep their structure', () => {
     );
 
     expect(result.type).toBe('Array of items');
-    // arrays display their items' format, never their own — matching openapi-docs
+    // arrays display their items' format, never their own
     expect(result.items?.[0].type).toBe('Array of integers');
   });
 

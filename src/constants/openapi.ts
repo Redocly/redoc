@@ -15,11 +15,6 @@ export const DEFAULT_WEBHOOKS_TAG_NAME = 'webhooks';
 export const MAX_NESTING_TAGS_LEVEL = 5;
 export const WEBHOOKS_GROUP_TITLE = 'Webhooks';
 
-export const LOADING_STATE = {
-  NOT_LOADED: 'NOT_LOADED',
-  LOADING: 'LOADING',
-  LOADED: 'LOADED',
-} as const;
 
 export const MediaTypes = {
   OCTET_STREAM: 'application/octet-stream',

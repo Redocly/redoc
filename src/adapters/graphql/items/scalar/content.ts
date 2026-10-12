@@ -42,10 +42,6 @@ export function buildScalarContent(
     contentType: contentType.ITEM,
     itemVariant: itemVariant.SCALAR,
     meta: { name: scalar.name },
-    seo: {
-      title: scalar.name,
-      description: scalar.description || undefined,
-    },
     children: [{ nodeType: nodeTypes.CONTAINER, children: containerChildren, panels }],
   };
 }

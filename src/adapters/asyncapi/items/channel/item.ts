@@ -1,10 +1,11 @@
 import type { ApiItem } from '../../../../types/store.js';
 import type { AsyncApiChannel } from '../../../../types/asyncapi.js';
-import type { ApiDocsOptions } from '../../../../types/options.js';
 
 import { combineUrls } from '@redocly/theme/core/openapi';
 
-import { asString, safeSlugify } from '../../../../utils/string.js';
+import {
+  safeSlugify,
+} from '../../../../utils/string.js';
 import {
   componentLabelsByProtocol,
   itemLabelsByProtocol,
@@ -13,21 +14,18 @@ import { buildChannelContent } from './content.js';
 import { buildOperationItem } from '../operation/item.js';
 import { asyncApiContext } from '../../buildContext.js';
 import { readRbacScope, rbacProp } from '../../../rbac.js';
-import { resolveItemSeo } from '../../../utils/seo.js';
-import { extractSeoDescriptionText } from '../../../utils/markdoc.js';
 import { getChannelLabel } from '../../utils/get-channel-label.js';
 
 function resolveChannelLabelAndSeo(
   channel: AsyncApiChannel,
   channelId: string,
-  options: ApiDocsOptions,
-): { label: string; seo: ReturnType<typeof resolveItemSeo> } {
+): {
+  label: string;
+} {
   const label = getChannelLabel(channel, channelId);
-  // Same as the operation item: the description is markdown (or an already-parsed AST), so it has
-  // to be reduced to plain text before it can serve as a meta description.
-  const description =
-    extractSeoDescriptionText(channel.description, options) ?? asString(channel.summary);
-  return { label, seo: resolveItemSeo(channel, { title: label, description }) };
+  return {
+    label,
+  };
 }
 
 function buildSortedOperationsWithGroupHeaders(
@@ -76,7 +74,12 @@ export function buildTaggedChannelItem({
     send: componentLabels.sendLabel,
     receive: componentLabels.receiveLabel,
   });
-  const { label, seo } = resolveChannelLabelAndSeo(channel, channelId, options);
+  const {
+    label,
+  } = resolveChannelLabelAndSeo(
+    channel,
+    channelId,
+  );
 
   return {
     label,
@@ -85,7 +88,6 @@ export function buildTaggedChannelItem({
     routeSlug: channelLink,
     badges: channel?.['x-badges'] || [],
     httpVerb: labels.channel,
-    metadata: { seo },
     content: processContent
       ? buildChannelContent(channelId, channel, document, options, protocol)
       : null,
@@ -134,7 +136,12 @@ export function buildUntaggedChannelItem({
     send: componentLabels.sendLabel,
     receive: componentLabels.receiveLabel,
   });
-  const { label, seo } = resolveChannelLabelAndSeo(channel, channelId, options);
+  const {
+    label,
+  } = resolveChannelLabelAndSeo(
+    channel,
+    channelId,
+  );
 
   return {
     label,
@@ -143,7 +150,6 @@ export function buildUntaggedChannelItem({
     routeSlug: channelLink,
     httpVerb: labels.channel,
     badges: channel?.['x-badges'] || [],
-    metadata: { seo },
     ...rbacProp(readRbacScope(channel)),
     content: processContent
       ? buildChannelContent(channelId, channel, document, options, protocol)

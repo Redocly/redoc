@@ -49,4 +49,32 @@ describe('HeaderResponseCodeTabs', () => {
       '200',
     );
   });
+
+  it('moves the selection and focus with the arrow, Home and End keys', () => {
+    const { store } = renderTabs();
+    const [okTab, notFoundTab, errorTab] = screen.getAllByRole('tab');
+    const activeCode = () =>
+      store.get(itemStoreFieldAtom({ itemId: ITEM_ID, key: 'activeResponseCode' }));
+
+    expect(okTab).toHaveAttribute('aria-selected', 'true');
+    expect(okTab).toHaveAttribute('tabindex', '0');
+    expect(notFoundTab).toHaveAttribute('tabindex', '-1');
+
+    fireEvent.keyDown(okTab, { key: 'ArrowRight' });
+    expect(activeCode()).toBe('404');
+    expect(notFoundTab).toHaveFocus();
+
+    fireEvent.keyDown(notFoundTab, { key: 'End' });
+    expect(activeCode()).toBe('500');
+    expect(errorTab).toHaveFocus();
+
+    fireEvent.keyDown(errorTab, { key: 'ArrowRight' });
+    expect(activeCode()).toBe('200');
+
+    fireEvent.keyDown(okTab, { key: 'ArrowLeft' });
+    expect(activeCode()).toBe('500');
+
+    fireEvent.keyDown(errorTab, { key: 'Home' });
+    expect(activeCode()).toBe('200');
+  });
 });

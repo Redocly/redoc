@@ -1,0 +1,12 @@
+server {
+  listen       ${PORT};
+  ${LISTEN_IPV6}
+  server_name  ${HOST};
+
+  root /usr/share/nginx/html;
+
+  location / {
+    include /etc/nginx/handle_options.conf;
+    try_files $uri /index.html;
+  }
+}

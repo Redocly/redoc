@@ -1,6 +1,9 @@
 name: Examples
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
     branches:
       - main
@@ -31,3 +34,5 @@ jobs:
         run: npm run build
       - name: Build and smoke-test every example
         run: npm run test:examples
+      - name: Smoke-test the Docker image with each env variant
+        run: npm run test:docker

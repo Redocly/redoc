@@ -130,7 +130,7 @@ function HeaderItemComponent({ node, path, parentNode }: HeaderItemProps): React
               </>
             )}
             {isWebhook && (
-              <StyledBadge webhook>{translate('badges.webhook', 'Webhook')}</StyledBadge>
+              <StyledBadge $webhook>{translate('badges.webhook', 'Webhook')}</StyledBadge>
             )}
           </H2>
         );
@@ -175,7 +175,7 @@ function HeaderItemComponent({ node, path, parentNode }: HeaderItemProps): React
               {renderHeader}
               {graphqlArgs && graphqlArgs.length > 0 && (
                 <ArgsCollapsedWrapper data-testid="collapsed-args" $size="lg">
-                  ({graphqlArgs.length === 1 ? graphqlArgs[0].name : '...args'})
+                  {`(${graphqlArgs.length === 1 ? graphqlArgs[0].name : '...args'})`}
                 </ArgsCollapsedWrapper>
               )}
             </GqlTitleWithArgs>

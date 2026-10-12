@@ -32,9 +32,13 @@ export function buildOverviewContent({
   const ast = extractContentUntilFirstHeading(info?.description, options);
 
   const panels: PanelNode[] = [
-    ...(options.downloadUrls?.length ? [buildDownloadPanelContent(options.downloadUrls)] : []),
+    ...(!options.hideDownloadButtons && options.downloadUrls?.length
+      ? [buildDownloadPanelContent(options.downloadUrls)]
+      : []),
     buildOverviewPanelContent(info),
-    ...(document.servers ? [buildBrokersPanelContent(document.servers, protocol, options)] : []),
+    ...(document.servers
+      ? [buildBrokersPanelContent(document.servers, protocol, options, document)]
+      : []),
   ];
 
   const overviewSection: OverviewSectionWrapperNode = {

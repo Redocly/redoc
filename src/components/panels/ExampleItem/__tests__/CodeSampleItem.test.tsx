@@ -18,13 +18,19 @@ const mocks = vi.hoisted(() => ({
       title: string;
     }>,
   },
-  requestValuesValue: {} as Record<string, Record<string, unknown>>,
+  codeSamplesValue: undefined as
+    | undefined
+    | {
+        withOAuth2Call?: boolean;
+        skipOptionalParameters?: boolean;
+        languages?: { lang: string }[];
+      },
   exampleStoreValue: {} as Record<
     string,
     { id: string; key?: string; value?: unknown; description?: string }
   >,
   // Minimal reactive stand-in for itemStoreAtom/itemStoreFieldAtom so the
-  // shared activeExampleKey round-trip (replay/embed key → panel selection) works.
+  // shared activeExampleKey round-trip (a key set elsewhere → panel selection) works.
   itemStoreState: { activeExampleKey: '' } as Record<string, unknown>,
   itemStoreListeners: new Set<() => void>(),
   setItemStoreState(update: unknown) {
@@ -34,7 +40,6 @@ const mocks = vi.hoisted(() => ({
   atoms: {
     languageAtom: { id: 'languageAtom' },
     environmentAtom: { id: 'environmentAtom' },
-    requestValuesAtom: { id: 'requestValuesAtom' },
     globalOptionsAtom: { id: 'globalOptionsAtom' },
     exampleStoreAtom: { id: 'exampleStoreAtom' },
   },
@@ -50,9 +55,6 @@ vi.mock('jotai', async () => {
       const atomId = (atom as { id?: string }).id;
       if (atomId === 'languageAtom') {
         return [mocks.languageStateValue, mocks.setLanguageMock] as const;
-      }
-      if (atomId === 'selectedSecuritySchemeIdxAtom') {
-        return [0, mocks.setSecuritySchemeIdxMock] as const;
       }
       return [undefined, vi.fn()] as const;
     },
@@ -75,9 +77,6 @@ vi.mock('jotai', async () => {
           generatedSamplesMaxDepth: 2,
           downloadUrls: mocks.downloadUrlsValue,
         };
-      }
-      if (atomId === 'requestValuesAtom') {
-        return mocks.requestValuesValue;
       }
       if (atomId === 'exampleStoreAtom') {
         return mocks.exampleStoreValue;
@@ -102,7 +101,6 @@ vi.mock('../../../../jotai/examples.js', () => ({
 vi.mock('../../../../jotai/app.js', () => ({
   languageAtom: mocks.atoms.languageAtom,
   environmentAtom: mocks.atoms.environmentAtom,
-  requestValuesAtom: mocks.atoms.requestValuesAtom,
   getLangKey: ({ lang, label }: { lang?: string; label?: string } = {}) => {
     const raw = (label || lang || '').toLowerCase();
     const map: Record<string, string> = {
@@ -244,6 +242,7 @@ describe('CodeSampleItem schema id selection for resolved examples', () => {
       ['ex-1'],
       'request',
       'application/json-seq',
+      { t: 'request', schemaId: 'schema.base' },
     );
   });
 
@@ -263,6 +262,7 @@ describe('CodeSampleItem schema id selection for resolved examples', () => {
       ['ex-1'],
       'request',
       'application/json',
+      { t: 'request', schemaId: 'schema.base' },
     );
   });
 
@@ -277,7 +277,10 @@ describe('CodeSampleItem schema id selection for resolved examples', () => {
 
     render(<CodeSampleItem node={makeNode()} />);
 
-    expect(mocks.useSchemaVariantSelectionMock).toHaveBeenCalledWith(undefined);
+    expect(mocks.useSchemaVariantSelectionMock).toHaveBeenCalledWith(undefined, {
+      t: 'request',
+      schemaId: 'schema.base',
+    });
   });
 
   it('resolves the variant selection for a schema-only body', () => {
@@ -291,7 +294,10 @@ describe('CodeSampleItem schema id selection for resolved examples', () => {
 
     render(<CodeSampleItem node={makeNode()} />);
 
-    expect(mocks.useSchemaVariantSelectionMock).toHaveBeenCalledWith('schema.base');
+    expect(mocks.useSchemaVariantSelectionMock).toHaveBeenCalledWith('schema.base', {
+      t: 'request',
+      schemaId: 'schema.base',
+    });
   });
 });
 
@@ -321,7 +327,7 @@ describe('CodeSampleItem variant picker vs spec-provided examples', () => {
     mocks.useResolvedExamplesMock.mockReturnValue([{}]);
   });
 
-  it('hides the discriminator picker when the spec provides its own examples (legacy parity)', () => {
+  it('hides the discriminator picker when the spec provides its own examples (legacy behavior)', () => {
     mocks.useMediaTypeContentMock.mockReturnValue(mediaTypeContent(['ex-1', 'ex-2']));
 
     const { queryByTestId } = render(<CodeSampleItem node={makeNode()} />);
@@ -338,10 +344,6 @@ describe('CodeSampleItem variant picker vs spec-provided examples', () => {
     expect(queryByTestId('variant-picker')).toBeTruthy();
   });
 });
-
-// Enterprise-only: the scenario offers arbitrary configured languages, which the community
-// edition filters down to payload + x-codeSamples. The grammar mapping itself is covered
-// in both editions by `utils/__tests__/languages.test.ts`.
 
 
 describe('CodeSampleItem payload example description', () => {

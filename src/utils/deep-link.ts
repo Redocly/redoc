@@ -7,8 +7,7 @@ import { resolveRouteByPathname } from './routing.js';
 // ── Low-level primitives ────────────────────────────────────────────────────
 
 /**
- * Serialize key-value params into a query-string fragment.
- * Matches openapi-docs `constructFieldDeepFragment` output:
+ * Serialize key-value params into a query-string fragment:
  * keys in insertion order, no encoding, undefined values omitted.
  */
 export function serializeFieldParams(params: Record<string, string | undefined>): string {
@@ -22,8 +21,7 @@ export function serializeFieldParams(params: Record<string, string | undefined>)
 }
 
 /**
- * Build a deep-link path+hash string for a given operation slug and suffix.
- * Semantics match openapi-docs `makeDeepLink`:
+ * Build a deep-link path+hash string for a given operation slug and suffix:
  *   `/{operationId}#{operationId}/{suffix}`  (all lowercased, backslashes encoded).
  *
  * `operationId` must be a basePath-free slug (e.g. `cafe/placeorder`) — a
@@ -84,10 +82,7 @@ interface OpenApiFieldParams {
   path?: string;
 }
 
-/**
- * Build a suffix for an OpenAPI request/response/callback field.
- * Same shape as openapi-docs `constructFieldDeepFragment`.
- */
+/** Build a suffix for an OpenAPI request/response/callback field. */
 export function buildOpenApiFieldSuffix(params: OpenApiFieldParams): string {
   return serializeFieldParams({
     t: params.t,
@@ -242,13 +237,16 @@ const VARIANT_MARKER_RE = /&(?:oneof|d)=\d+/g;
  * marker (e.g. `&d=0`), so callers can skip it in the breadcrumb.
  */
 export function stripVariantMarkers(name: string): string {
-  return name.replace(VARIANT_MARKER_RE, '');
+  let current = name;
+  let previous: string;
+  do {
+    previous = current;
+    current = current.replace(VARIANT_MARKER_RE, '');
+  } while (current !== previous);
+  return current;
 }
 
-/**
- * Remove `[]` array-item markers from a deep-link path piece.
- * Legacy (openapi-docs) support.
- */
+/** Remove `[]` array-item markers from a deep-link path piece; legacy links carry none. */
 export function stripArrayMarkers(value: string): string {
   return value.replace(/\[\]/g, '');
 }
@@ -274,20 +272,20 @@ export function extractDeepLinkParamFromHash(
 ): string | undefined {
   if (!hash) return undefined;
   const raw = tryDecodeURIComponent(hash.startsWith('#') ? hash.slice(1) : hash).toLowerCase();
-  // Media types contain `/` (`ct=application/json`), so `ct` values stop only at `&`.
-  const match = raw.match(new RegExp(`(?:^|[&/])${key}=(${key === 'ct' ? '[^&]+' : '[^/&]+'})`));
+  // Media types (`ct=application/json`) and generated AsyncAPI message ids
+  // (`m=cafe/points.subscribe.message.1`) contain `/`, so those values stop only at `&`.
+  const match = raw.match(
+    new RegExp(`(?:^|[&/])${key}=(${key === 'ct' || key === 'm' ? '[^&]+' : '[^/&]+'})`),
+  );
   return match?.[1];
 }
-
-// Callback deep-link scoping and legacy back-compat: see
-// `brain/legacy-deep-link-back-compat.md` § Callbacks.
 
 /** Section name owning a callback's suffixes: `callbacks/<callbackId>[/…]`. */
 export const CALLBACKS_SECTION = 'callbacks';
 const CALLBACKS_SEGMENT = `${CALLBACKS_SECTION}/`;
 
 /** Sub-section anchors a callback owns. Emitted by `CallbacksSection` and matched here, so
- *  the spelling is a contract — legacy openapi-docs links use these exact names. */
+ *  the spelling is a contract — legacy links use these exact names. */
 export const CALLBACK_REQUEST_SECTION = 'callback-request';
 export const CALLBACK_RESPONSE_SECTION = 'callback-response';
 
@@ -393,7 +391,6 @@ export function resolveLegacyHashToRoute(
   const direct = normalizePath(joinWithSeparator(basePath, id));
   if (resolveRouteByPathname(routeIndex, direct)) return direct;
 
-  if (routeIndex.overviewPartialSectionIds?.has(id)) return `${normalizePath(basePath)}#${id}`;
 
   const legacyHash = getLegacyHash(hash);
   if (!legacyHash) return undefined;

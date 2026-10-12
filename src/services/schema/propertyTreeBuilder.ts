@@ -230,6 +230,9 @@ function attachNestedStructure(
     property.switcher = discriminatorSwitcher;
     hoistVariantExample(property, schema.oneOf ?? schema.anyOf, ctx.exampleSerializer);
     hoistVariantAccessMode(property, schema.oneOf ?? schema.anyOf);
+    if (inheritsDiscriminator(schema, discriminatorSwitcher.propertyName, ctx)) {
+      discriminatorSwitcher.sharesOnlyDiscriminator = true;
+    }
     if (schema.properties) property.properties = buildObjectProperties(schema, ctx, jsonPointer);
     return;
   }
@@ -528,6 +531,15 @@ function hostsDiscriminator(
   return resolved !== undefined && getDiscriminatorObject(resolved)?.propertyName === propertyName;
 }
 
+/** A child schema rendered through a discriminator declared by one of its allOf parents. */
+function inheritsDiscriminator(
+  schema: SchemaNode,
+  propertyName: string | undefined,
+  ctx: SchemaTreeContext,
+): boolean {
+  return (schema['x-parentRefs'] ?? []).some((ref) => hostsDiscriminator(ref, propertyName, ctx));
+}
+
 function stripVariantHostMarkers(variant: SchemaNode, ref: string): SchemaNode {
   delete variant.discriminator;
   delete variant['x-discriminator'];
@@ -568,6 +580,30 @@ function variantOptionBody(
     listed['x-allof-cycle'] !== undefined;
   if (lossy) return resolveMappedVariant(ref, ctx);
   return stripVariantHostMarkers({ ...listed }, ref);
+}
+
+/** A property redeclared by a variant keeps the host's definition too (`const` + host `type`). */
+function withHostPropertyDefinitions(
+  variant: SchemaNode,
+  variantRef: string | undefined,
+  host: SchemaNode,
+  hostRef: string | undefined,
+  ctx: SchemaTreeContext,
+): SchemaNode {
+  const hostProps = host.properties;
+  const variantProps = variant.properties;
+  if (!hostProps || !variantProps) return variant;
+  const hostLineage = new Set([hostRef, ...(host['x-parentRefs'] ?? [])]);
+  const variantLineage = [variantRef, ...(variant['x-parentRefs'] ?? [])];
+  if (variantLineage.some((ref) => ref !== undefined && hostLineage.has(ref))) return variant;
+
+  const shared = Object.keys(variantProps).filter((name) => Object.hasOwn(hostProps, name));
+  if (shared.length === 0) return variant;
+  const properties = { ...variantProps };
+  for (const name of shared) {
+    properties[name] = ctx.prepareVariant({ allOf: [variantProps[name], hostProps[name]] });
+  }
+  return { ...variant, properties };
 }
 
 const DEFAULT_MAPPING_KEY = 'Default mapping';
@@ -614,6 +650,19 @@ function buildDiscriminatorSwitcher(
       : childCtx;
   const compositionKey = schema.oneOf !== undefined ? 'oneOf' : 'anyOf';
   const options: Record<string, SwitcherOptionType> = {};
+  const buildOption = (
+    variant: SchemaNode,
+    ref: string | undefined,
+    isDefaultMapping: boolean,
+    pointer: string,
+  ): SwitcherOptionType =>
+    buildSwitcherOption(
+      withHostPropertyDefinitions(variant, ref, schema, ownRef, ctx),
+      optionCtx(ref),
+      isDefaultMapping,
+      pointer,
+      ref,
+    );
 
   if (Object.keys(mapping).length > 0) {
     for (const [name, ref] of Object.entries(mapping)) {
@@ -621,7 +670,7 @@ function buildDiscriminatorSwitcher(
       const resolved = variantOptionBody(ref, variants[idx], ctx);
       if (!resolved) continue;
       const variantPointer = idx >= 0 ? `${parentPointer}/${compositionKey}/${idx}` : parentPointer;
-      options[name] = buildSwitcherOption(resolved, optionCtx(ref), false, variantPointer, ref);
+      options[name] = buildOption(resolved, ref, false, variantPointer);
     }
   } else {
     for (let i = 0; i < variants.length; i++) {
@@ -631,7 +680,7 @@ function buildDiscriminatorSwitcher(
       if (!resolved) continue;
       const title = variant.title || ref?.split('/').pop() || 'Variant';
       const variantPointer = `${parentPointer}/${compositionKey}/${i}`;
-      options[title] = buildSwitcherOption(resolved, optionCtx(ref), false, variantPointer, ref);
+      options[title] = buildOption(resolved, ref, false, variantPointer);
     }
   }
 
@@ -650,7 +699,7 @@ function buildDiscriminatorSwitcher(
         if (explicitRefs.has(ref) || Object.hasOwn(options, value)) continue;
         const resolved = resolveMappedVariant(ref, ctx);
         if (!resolved) continue;
-        options[value] = buildSwitcherOption(resolved, optionCtx(ref), false, parentPointer, ref);
+        options[value] = buildOption(resolved, ref, false, parentPointer);
       }
     }
   }
@@ -664,13 +713,7 @@ function buildDiscriminatorSwitcher(
     if (implicitName) delete options[implicitName];
     const idx = variants.findIndex((v) => v['x-original-ref'] === defaultRef);
     const variantPointer = idx >= 0 ? `${parentPointer}/${compositionKey}/${idx}` : parentPointer;
-    options[DEFAULT_MAPPING_KEY] = buildSwitcherOption(
-      defaultVariant,
-      optionCtx(defaultRef),
-      true,
-      variantPointer,
-      defaultRef,
-    );
+    options[DEFAULT_MAPPING_KEY] = buildOption(defaultVariant, defaultRef, true, variantPointer);
   }
 
   return {
@@ -692,10 +735,20 @@ function buildOneOfSwitcher(
 ): SwitcherType {
   const options: Record<string, SwitcherOptionType> = {};
   const variantCtx: SchemaTreeContext = { ...ctx, isChild: false };
+  const parentRef = resolveDiscriminatorParentRef(parentSchema, parentPointer);
 
   for (let i = 0; i < variants.length; i++) {
     const variant = variants[i];
-    const variantMergedWithParent = { type: parentSchema.type, ...variant };
+    const variantMergedWithParent = {
+      type: parentSchema.type,
+      ...withHostPropertyDefinitions(
+        variant,
+        variant['x-original-ref'],
+        parentSchema,
+        parentRef,
+        ctx,
+      ),
+    };
     const { label: title, typeLabel } = deriveVariantLabel(variant, parentSchema);
     const variantPointer = `${parentPointer}/${compositionKey}/${i}`;
     const optionKey = options[title] ? `${title} (${i + 1})` : title;

@@ -1,14 +1,14 @@
 import { useCallback, useMemo } from 'react';
 import { useAtomValue } from 'jotai';
 
-import type { TFunction, TOptions } from '@redocly/theme/core/openapi';
+import type { TFunction } from '@redocly/theme/core/openapi';
 import type { ApiSpecType } from '../types/common.js';
 
 import { useThemeHooks } from '@redocly/theme/core/openapi';
 
 import { specTypeAtom } from '../jotai/store.js';
 
-export type { TFunction, TOptions };
+export type { TFunction };
 
 const SPEC_PREFIXES = ['openapi.', 'asyncapi.', 'graphql.'] as const;
 

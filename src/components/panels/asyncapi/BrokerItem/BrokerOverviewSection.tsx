@@ -8,6 +8,9 @@ import { Tag } from '@redocly/theme/components/Tag/Tag';
 
 import { ExternalDocumentation } from '../../../common/ExternalDocumentation.js';
 import { Markdown } from '../../../common/Markdown.js';
+import { collectMarkdownPlainText } from '../../../../adapters/utils/markdoc.js';
+import { Divider as SecurityDivider } from '../../../Security/Divider.js';
+import { SecurityFlowDetail } from '../../../Security/SecurityFlowDetail.js';
 import {
   Block,
   Header,
@@ -40,11 +43,16 @@ const renderInfoSection = (broker: BrokerData) => {
           </Value>
         </Section>
       )}
+      {broker.pathname && (
+        <Section>
+          <Label>Pathname:</Label>
+          <Value>{broker.pathname}</Value>
+        </Section>
+      )}
       <Section>
-        <Label>Protocol{broker.protocolVersion ? ' and version' : ''}:</Label>
+        <Label>{`Protocol${broker.protocolVersion ? ' and version' : ''}:`}</Label>
         <Value>
-          {broker.protocol}
-          {broker.protocolVersion && `, ${broker.protocolVersion}`}
+          {`${broker.protocol}${broker.protocolVersion ? `, ${broker.protocolVersion}` : ''}`}
         </Value>
       </Section>
 
@@ -77,6 +85,20 @@ const renderInfoSection = (broker: BrokerData) => {
           )}
         </>
       )}
+      {broker.externalDocs?.url && (
+        <ExternalDocumentationWrapper>
+          <ExternalDocumentation
+            externalDocs={{
+              url: broker.externalDocs.url,
+              description:
+                broker.externalDocs.description != null
+                  ? collectMarkdownPlainText(broker.externalDocs.description) || undefined
+                  : undefined,
+            }}
+            compact
+          />
+        </ExternalDocumentationWrapper>
+      )}
     </Block>
   );
 };
@@ -93,7 +115,7 @@ const renderVariablesSection = (
           {value.default && (
             <Variable>
               Default
-              <Tag size="small" borderless>
+              <Tag size="small" borderless textTransform="none">
                 {value.default}
               </Tag>
             </Variable>
@@ -111,7 +133,7 @@ const renderVariablesSection = (
               Enum
               <TagWrapper>
                 {value.enum.map((el: string) => (
-                  <Tag key={el} size="small" borderless>
+                  <Tag key={el} size="small" borderless textTransform="none">
                     {el}
                   </Tag>
                 ))}
@@ -160,6 +182,23 @@ const renderTagsSection = (tags: AsyncApiTag[]) => (
   </Block>
 );
 
+const renderSecuritySection = (security: NonNullable<BrokerData['security']>) => (
+  <Block>
+    <Header>Security</Header>
+    {security.map((requirement, index) => (
+      <Fragment key={index}>
+        {index > 0 && <SecurityDivider label="or" />}
+        {requirement.schemes.map((scheme, schemeIndex) => (
+          <Fragment key={`${scheme.name}-${schemeIndex}`}>
+            {schemeIndex > 0 && <SecurityDivider label="and" />}
+            <SecurityFlowDetail scheme={scheme} />
+          </Fragment>
+        ))}
+      </Fragment>
+    ))}
+  </Block>
+);
+
 export const BrokerOverviewSection = ({ broker }: BrokerOverviewSectionProps) => {
   const variables = Object.entries(broker.variables || {}).map(([key, value]) => ({ key, value }));
   const hasTags = broker.tags && broker.tags.length > 0;
@@ -180,6 +219,13 @@ export const BrokerOverviewSection = ({ broker }: BrokerOverviewSectionProps) =>
         <>
           <Divider />
           {renderTagsSection(broker.tags)}
+        </>
+      )}
+
+      {broker.security && broker.security.length > 0 && (
+        <>
+          <Divider />
+          {renderSecuritySection(broker.security)}
         </>
       )}
     </Wrapper>

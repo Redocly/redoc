@@ -16,7 +16,7 @@ export function processAsyncApiDocument(
   const storeCtx = createStoreContext(toRecord(props.document));
 
   if (processContent) {
-    populateAsyncApiStore(props.document, storeCtx);
+    populateAsyncApiStore(props.document, storeCtx, props.options);
   }
 
   return {
@@ -47,9 +47,11 @@ export function buildAsyncApiItems(
   });
 
   return asyncApiContext.run(context, () => {
-    const { sectionItems, sectionChildren } = processContent
-      ? collectMarkdownSections(document.info?.description, context.basePath, context.options)
-      : { sectionItems: [], sectionChildren: [] };
+    const { sectionItems, sectionChildren } = collectMarkdownSections(
+      document.info?.description,
+      context.basePath,
+      context.options,
+    );
 
     const overviewItem = buildOverviewItem(document.info ?? {}, {
       basePath,

@@ -3,7 +3,6 @@ import { useAtomValue, useSetAtom } from 'jotai';
 
 import type { CodeSamplePanelItem } from '../../../types/content.js';
 
-import { applyEnvVariables } from '../../../services/code-samples/apply-env-variables.js';
 import { findExampleIdByKey } from '../../../services/code-samples/example-key.js';
 import { itemStoreAtom, itemStoreFieldAtom } from '../../../jotai/itemStore.js';
 import { ItemIdContext } from '../../../hooks/useDeepLinkSection.js';
@@ -11,6 +10,7 @@ import { useSpecTranslate } from '../../../hooks/useTranslate.js';
 import { CodeBlockPanel, StyledCodeBlock } from '../styled.js';
 import { useResolvedExamples, useExampleKeyFromHash } from '../../ItemContent/hooks.js';
 import { getLangKey, getSyntaxHighlightLang } from '../../../utils/languages.js';
+
 import { exampleStoreAtom } from '../../../jotai/examples.js';
 import {
   useActiveVariantSchemaId,
@@ -18,8 +18,6 @@ import {
   useMediaTypeContent,
 } from './hooks.js';
 import { isSequentialMediaType } from '../../../utils/media-type.js';
-import { isRecord } from '../../../adapters/helpers.js';
-import { updateObjectProperties } from '../../../adapters/openapi/configure/merge-utils.js';
 import { useCopyCodeTelemetry } from '../../../hooks/useCopyCodeTelemetry.js';
 import {
   VariantPicker,
@@ -34,7 +32,6 @@ import { ServerDropdown } from './ServerDropdown.js';
 import { globalOptionsAtom } from '../../../jotai/store.js';
 import { createLanguageSwitchEvent } from '../../../events/languageSwitch.js';
 import { createCodeSampleCopyEvent } from '../../../events/codeSampleCopy.js';
-import { useActiveServer } from './useActiveServer.js';
 import { useCodeSampleLanguages, WEBHOOK_LANGUAGE_SAMPLES } from './useCodeSampleLanguages.js';
 
 export function CodeSampleItem({ node }: { node: CodeSamplePanelItem }): ReactElement {
@@ -42,14 +39,22 @@ export function CodeSampleItem({ node }: { node: CodeSamplePanelItem }): ReactEl
   const translate = useSpecTranslate();
   const source = node.source;
   const exampleStore = useAtomValue(exampleStoreAtom);
-  const { mediaTypes, activeMediaType, effectiveSchemaId, effectiveExampleIds, onMediaTypeChange } =
-    useMediaTypeContent(node);
+  const {
+    mediaTypes,
+    activeMediaType,
+    effectiveSchemaId,
+    effectiveExampleIds,
+    encoding,
+    onMediaTypeChange,
+  } = useMediaTypeContent(node);
 
   const exampleContext = node.isWebhook ? 'response' : 'request';
+  const variantSection = { t: 'request', schemaId: effectiveSchemaId };
   const discriminatorSelection = useSchemaVariantSelection(
     effectiveExampleIds?.length ? undefined : effectiveSchemaId,
+    variantSection,
   );
-  const discAwareSchemaId = useActiveVariantSchemaId(effectiveSchemaId);
+  const discAwareSchemaId = useActiveVariantSchemaId(effectiveSchemaId, variantSection);
   const sampleSchemaId = isSequentialMediaType(activeMediaType)
     ? effectiveSchemaId
     : discAwareSchemaId;
@@ -58,12 +63,12 @@ export function CodeSampleItem({ node }: { node: CodeSamplePanelItem }): ReactEl
     effectiveExampleIds,
     exampleContext,
     activeMediaType,
+    variantSection,
   );
   const itemId = useContext(ItemIdContext) ?? '';
   const setItemState = useSetAtom(itemStoreAtom(itemId));
   const activeExampleKey = useAtomValue(itemStoreFieldAtom({ itemId, key: 'activeExampleKey' }));
   useExampleKeyFromHash(itemId, effectiveExampleIds);
-
 
 
   const contentKey = `${activeMediaType}|${effectiveExampleIds?.join(',')}`;
@@ -99,8 +104,6 @@ export function CodeSampleItem({ node }: { node: CodeSamplePanelItem }): ReactEl
 
   const { languages, filteredDefinitionSamples, activeLanguage, setLanguage } =
     useCodeSampleLanguages(node, hasPayloadData);
-  const activeServer = useActiveServer(node);
-
 
   const selectedExampleId = effectiveExampleIds?.[selectedExampleIdx];
   const activeExampleName = selectedExampleId
@@ -108,25 +111,10 @@ export function CodeSampleItem({ node }: { node: CodeSamplePanelItem }): ReactEl
     : undefined;
 
 
-  const configuredBody = useMemo(() => {
-    const serverBody = source.requestValues?.serverBody;
-    return (
-      (activeServer.specUrl && serverBody?.[activeServer.specUrl]) ?? source.requestValues?.body
-    );
-  }, [activeServer.specUrl, source.requestValues?.body, source.requestValues?.serverBody]);
-
   const payloadForDisplay = useMemo(() => {
-    if (configuredBody !== undefined) {
-      if (payload === undefined) return configuredBody;
-      if (isRecord(payload) && isRecord(configuredBody)) {
-        return updateObjectProperties(payload, configuredBody);
-      }
-      return configuredBody;
-    }
     return payload;
   }, [
     payload,
-    configuredBody,
   ]);
 
   const code = useMemo(() => {
@@ -134,16 +122,16 @@ export function CodeSampleItem({ node }: { node: CodeSamplePanelItem }): ReactEl
 
     const defSample = filteredDefinitionSamples?.find((ds) => getLangKey(ds) === activeLanguage);
     if (defSample) {
-      return applyEnvVariables(defSample.source, source.requestValues, activeServer.specUrl);
+      let sample = defSample.source;
+      return sample;
     }
 
+    // oxlint-disable-next-line prefer-const -- CE strips the assignment below, leaving this undefined.
     let generated: string | undefined;
     return generated ?? `// ${translate('unsupportedLanguage', 'Language is not supported.')}`;
   }, [
     activeLanguage,
     filteredDefinitionSamples,
-    source,
-    activeServer,
     translate,
   ]);
 
@@ -256,6 +244,7 @@ export function CodeSampleItem({ node }: { node: CodeSamplePanelItem }): ReactEl
             payload={payloadForDisplay}
             emptyMessage={`// ${translate('noRequestPayload', 'No request payload')}`}
             mediaType={activeMediaType}
+            encoding={encoding}
             snippetType="request"
           />
         ) : (

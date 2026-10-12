@@ -19,7 +19,6 @@ function setupStore(codeSamples: RawApiDocsOptions['codeSamples']) {
       basePath: '',
       codeSamples,
     }),
-    replayDefinition: null,
   });
   return jotaiStore;
 }

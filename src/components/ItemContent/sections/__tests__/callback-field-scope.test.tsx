@@ -67,7 +67,6 @@ function renderInCallback(section: ReactElement) {
       metadata: {},
       basePath: '',
     }),
-    replayDefinition: null,
   });
 
   return render(

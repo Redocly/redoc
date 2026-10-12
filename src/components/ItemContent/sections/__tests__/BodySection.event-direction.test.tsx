@@ -52,7 +52,6 @@ function renderBody(node: Partial<ItemContentNode>) {
       metadata: {},
       basePath: '',
     }),
-    replayDefinition: null,
   });
 
   render(

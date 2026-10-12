@@ -90,4 +90,15 @@ describe('mapChannelToOperations', () => {
       invoices: [],
     });
   });
+
+  it('decodes escaped channel names in $ref', () => {
+    const result = mapChannelToOperations(
+      createAsyncApiDoc({
+        channels: { 'light/measured': { address: 'light/measured' } },
+        operations: { onLight: { channel: { $ref: '#/channels/light~1measured' } } },
+      }),
+    );
+
+    expect(result).toEqual({ 'light/measured': ['onLight'] });
+  });
 });

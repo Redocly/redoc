@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { memo, useCallback, useState, type ReactElement } from 'react';
+import { memo, useCallback, useRef, useState, type ReactElement } from 'react';
 
 import type { BrokersNode } from '../../../../types/content.js';
 import type { BrokerData } from '../../../../types/asyncapi.js';
@@ -78,6 +78,7 @@ export function BrokerPanelItem({ node }: { node: BrokersNode }): ReactElement {
   const showMoreDetailsButton = !node.title;
 
   const [selectedBroker, setSelectedBroker] = useState<BrokerData | null>(null);
+  const openerRef = useRef<HTMLElement | null>(null);
 
   useModalScrollLock(selectedBroker !== null);
 
@@ -90,6 +91,8 @@ export function BrokerPanelItem({ node }: { node: BrokersNode }): ReactElement {
           serversCount: brokers.length,
         },
       ]);
+      openerRef.current =
+        document.activeElement instanceof HTMLElement ? document.activeElement : null;
       setSelectedBroker(broker);
     },
     [telemetry, brokers.length],
@@ -97,6 +100,7 @@ export function BrokerPanelItem({ node }: { node: BrokersNode }): ReactElement {
 
   const handleCloseModal = useCallback(() => {
     setSelectedBroker(null);
+    openerRef.current?.focus();
   }, []);
 
   const brokerList = (
@@ -169,7 +173,6 @@ const ServerTitle = styled.div`
 
 const Label = styled.span`
   font-weight: var(--font-weight-semibold);
-  text-transform: capitalize;
 `;
 
 const ServerHost = styled.span`

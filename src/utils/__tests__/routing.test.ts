@@ -569,6 +569,25 @@ describe('resolveRouteByPathname', () => {
   it('returns undefined for a genuinely unknown path', () => {
     expect(resolveRouteByPathname(routeIndex, '/docs/dev-docs/api/nope')).toBeUndefined();
   });
+
+  it('ignores a trailing slash', () => {
+    expect(resolveRouteByPathname(routeIndex, '/docs/dev-docs/api/')).toBe(root);
+    expect(resolveRouteByPathname(routeIndex, '/docs/dev-docs/api/operations/get-store/')).toBe(op);
+  });
+
+  it('resolves the index.html page to the root page', () => {
+    expect(resolveRouteByPathname(routeIndex, '/docs/dev-docs/api/index.html')).toBe(root);
+  });
+
+  it('prefers an exact route that ends with a slash', () => {
+    const slashRoot = makeRouteItem('/docs/');
+    const index = buildRouteIndex([slashRoot, makeRouteItem('/docs')], [], '/docs/');
+    expect(resolveRouteByPathname(index, '/docs/')).toBe(slashRoot);
+  });
+
+  it('returns undefined for an unknown path with a trailing slash', () => {
+    expect(resolveRouteByPathname(routeIndex, '/docs/dev-docs/api/nope/')).toBeUndefined();
+  });
 });
 
 describe('buildTopLevelEntries', () => {

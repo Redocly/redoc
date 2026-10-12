@@ -197,3 +197,45 @@ it('fires sendServerModalOpenedMessage when MoreDetails is clicked', () => {
     object: 'button',
   });
 });
+
+it('shows the server name as written, without forced capitalization', () => {
+  render(
+    <BrokerPanelItem
+      node={{
+        children: [
+          {
+            kind: panelKind.BROKERS,
+            panelLabel: 'Brokers',
+            brokers: [{ url: 'broker.cafe.test:8883', name: 'production', protocol: 'mqtt' }],
+          },
+        ],
+      }}
+    />,
+  );
+  expect(getComputedStyle(screen.getByText('production')).textTransform).not.toBe('capitalize');
+});
+
+it('returns focus to More details when the dialog closes', () => {
+  render(
+    <BrokerPanelItem
+      node={{
+        title: 'Brokers',
+        children: [
+          {
+            kind: panelKind.BROKERS,
+            panelLabel: 'Brokers',
+            brokers: [{ url: 'broker.cafe.test:1883', name: 'production', protocol: 'mqtt' }],
+          },
+        ],
+      }}
+    />,
+  );
+  const moreDetails = screen.getByTestId('more-details');
+  moreDetails.focus();
+  fireEvent.click(moreDetails);
+  screen.getByTestId('modal-close').focus();
+
+  fireEvent.click(screen.getByTestId('modal-close'));
+
+  expect(moreDetails).toHaveFocus();
+});

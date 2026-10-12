@@ -7,3 +7,4 @@
 !tsconfig.json
 !tsconfig.build.json
 !config/
+!bundles/redoc.standalone.js

@@ -1,0 +1,54 @@
+swagger: '2.0'
+info:
+  title: Redocly Cafe
+  version: 1.0.0
+paths:
+  /menu/{categories}:
+    get:
+      operationId: listMenuItems
+      parameters:
+        - name: categories
+          in: path
+          required: true
+          type: array
+          items:
+            type: string
+          collectionFormat: csv
+        - name: X-Diets
+          in: header
+          type: array
+          items:
+            type: string
+        - name: toppings
+          in: query
+          type: array
+          items:
+            type: string
+          collectionFormat: pipes
+        - name: milk
+          in: query
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+        - name: syrups
+          in: query
+          type: array
+          items:
+            type: string
+          collectionFormat: ssv
+        - name: sizes
+          in: query
+          type: array
+          items:
+            type: integer
+          collectionFormat: csv
+        - name: X-Ticket-Codes
+          in: header
+          type: array
+          items:
+            type: string
+          collectionFormat: tsv
+      responses:
+        default:
+          description: Matching menu items.

@@ -95,7 +95,7 @@ export class StandalonePage {
   }
 
   /**
-   * The menu renders in a portal on `document.body`. Scoping to `Dropdown/DropdownMenu` also
+   * The menu renders on `document.body`. Scoping to `Dropdown/DropdownMenu` also
    * avoids the media-type `<select>`'s native `<option>` elements.
    */
   languageOption(name?: string): Locator {

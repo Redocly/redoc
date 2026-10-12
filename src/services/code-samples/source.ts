@@ -5,11 +5,12 @@ import type {
   securitySchemeType,
   panelKind,
 } from '../../types/common.js';
-import type { OAuthFlowsData, SecuritySchemeCredentials } from '../../types/store.js';
+import type {
+  OAuthFlowsData,
+} from '../../types/store.js';
 
-export type { OAuthFlowsData, SecuritySchemeCredentials };
 
-export type ServerVariable = {
+type ServerVariable = {
   default?: string;
   enum?: string[];
   description?: string;
@@ -20,8 +21,6 @@ export type ServerEntry = {
   name?: string;
   description?: string;
   variables?: Record<string, ServerVariable>;
-  /** Set on entries injected by `mergeInMockServer` (never present in specs). */
-  isMockServer?: boolean;
 };
 
 export type ParameterEntry = {
@@ -35,8 +34,6 @@ export type ParameterEntry = {
   style?: string;
   explode?: boolean;
   allowReserved?: boolean;
-  /** Per-server example overrides: serverUrl → example value */
-  serverValues?: Record<string, { example?: unknown }>;
 };
 
 export type SecuritySchemeEntry = {
@@ -49,15 +46,6 @@ export type SecuritySchemeEntry = {
   openIdConnectUrl?: string;
   flows?: OAuthFlowsData;
 
-  'x-defaultAccessToken'?: string;
-  'x-defaultTokenType'?: string;
-  'x-defaultClientId'?: string;
-  'x-defaultClientSecret'?: string;
-  'x-defaultUsername'?: string;
-  'x-defaultPassword'?: string;
-
-  /** Per-server auth overrides */
-  serverValues?: Record<string, SecuritySchemeCredentials>;
 };
 
 /** One AND-group: all schemes in the array must be satisfied together */
@@ -71,19 +59,12 @@ export type MediaTypeEntry = {
   exampleIds?: string[];
 };
 
-export type DefinitionCodeSample = {
+type DefinitionCodeSample = {
   lang: string;
   label?: string;
   source: string;
 };
 
-export type CodeSampleRequestValues = {
-  security?: Record<string, unknown>;
-  envVariables?: Record<string, string>;
-  serverEnvVariables?: Record<string, Record<string, string>>;
-  body?: unknown;
-  serverBody?: Record<string, unknown>;
-};
 
 export type CodeSampleSource = {
   kind: typeof panelKind.CODE_SAMPLE;
@@ -113,8 +94,6 @@ export type CodeSampleSource = {
   /** Response status codes (for generators that include expected status) */
   responseCodes?: string[];
 
-  /** Configure request values (security credentials, env vars, per-server env vars) */
-  requestValues?: CodeSampleRequestValues;
 
   /** Raw pointer into the spec (for deep linking) */
   pointer?: string;

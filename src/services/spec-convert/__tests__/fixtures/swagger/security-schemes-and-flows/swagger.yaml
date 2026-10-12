@@ -1,0 +1,48 @@
+swagger: '2.0'
+info:
+  title: Redocly Cafe
+  version: 1.0.0
+security:
+  - ApiKey: []
+  - OAuth2 Implicit: [menu:read]
+securityDefinitions:
+  ApiKey:
+    type: apiKey
+    in: query
+    name: key
+  BasicAuth:
+    type: basic
+    description: Staff login.
+  OAuth2 Implicit:
+    type: oauth2
+    flow: implicit
+    authorizationUrl: https://auth.cafe.example.test/authorize?prompt=login
+    scopes:
+      menu:read: See the menu.
+  OAuth2:
+    type: oauth2
+    flow: accessCode
+    authorizationUrl: https://auth.cafe.example.test/authorize
+    tokenUrl: ' https://auth.cafe.example.test/token?audience=cafe '
+    name: ignored
+    scopes:
+      orders:write: Place orders.
+  OAuth2Password:
+    type: oauth2
+    flow: password
+    tokenUrl: https://auth.cafe.example.test/token
+  OAuth2Client:
+    type: oauth2
+    flow: application
+    tokenUrl: '?only=query'
+    scopes: {}
+paths:
+  /orders:
+    post:
+      operationId: createOrder
+      security:
+        - OAuth2: [orders:write]
+        - OAuth2 Implicit: []
+      responses:
+        '201':
+          description: Order placed.

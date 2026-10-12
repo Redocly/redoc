@@ -15,7 +15,7 @@ const MIN_VISIBLE_DELTA_MS = 1000;
 
 /**
  * Sends the `page.time` summary of the current page load on every hide, on `pagehide` and on
- * unmount (a portal navigating away from the API docs keeps the tab visible).
+ * unmount (a host navigating away from the API docs keeps the tab visible).
  * Counters are cumulative and a snapshot that adds nothing is skipped; consumers keep the
  * largest snapshot per session.
  */

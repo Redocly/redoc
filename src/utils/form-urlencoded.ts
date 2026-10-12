@@ -1,6 +1,25 @@
 import { serializeParameterValue } from './serialize-parameter.js';
 
-export type FormFieldEncoding = { style?: string; explode?: boolean };
+export type FormFieldEncoding = {
+  contentType?: string;
+  style?: string;
+  explode?: boolean;
+  allowReserved?: boolean;
+};
+
+const RESERVED_ESCAPE_RE = /%(?:3A|2F|3F|40|24|2C|3B)/gi;
+
+export function pickFormEncoding(
+  encoding: Record<string, FormFieldEncoding | null> | undefined,
+): Record<string, FormFieldEncoding> | undefined {
+  if (!encoding) return undefined;
+  return Object.fromEntries(
+    Object.entries(encoding).map(([field, entry]) => {
+      const { contentType, style, explode, allowReserved } = entry ?? {};
+      return [field, { contentType, style, explode, allowReserved }];
+    }),
+  );
+}
 
 export function formUrlEncodeValue(
   value: unknown,
@@ -15,15 +34,24 @@ export function formUrlEncodeValue(
 
   return entries
     .map(([field, fieldValue]) => {
-      const fieldEncoding = encoding[field];
-      if (fieldEncoding) {
-        return serializeParameterValue(
-          { name: field, in: 'query', style: fieldEncoding.style, explode: fieldEncoding.explode },
+      const { contentType, style, explode, allowReserved } = encoding[field] ?? {};
+      if (style !== undefined || explode !== undefined || allowReserved !== undefined) {
+        const text = serializeParameterValue(
+          { name: field, in: 'query', style, explode },
           fieldValue,
         );
+        return allowReserved ? text.replace(RESERVED_ESCAPE_RE, decodeURIComponent) : text;
       }
-      return `${encodeURIComponent(field)}=${encodeURIComponent(stringifyFormFieldValue(fieldValue))}`;
+      const isJson = /json/i.test(contentType ?? '');
+      const items = Array.isArray(fieldValue) ? fieldValue : [fieldValue];
+      return items
+        .map((item) => {
+          const text = isJson ? (JSON.stringify(item) ?? '') : stringifyFormFieldValue(item);
+          return `${encodeURIComponent(field)}=${encodeURIComponent(text)}`;
+        })
+        .join('&');
     })
+    .filter(Boolean)
     .join('&');
 }
 

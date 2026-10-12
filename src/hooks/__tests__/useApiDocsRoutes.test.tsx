@@ -5,15 +5,9 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { renderHook } from '@testing-library/react';
 import { createStore, Provider } from 'jotai';
 
-import markdoc from '@markdoc/markdoc';
-
-import type { ApiItem, ApiItemContent } from '../../types/store.js';
-import type { ApiDocsOptions } from '../../types/options.js';
+import type { ApiItem } from '../../types/store.js';
 
 import { routeIndexAtom } from '../../jotai/routes.js';
-import { globalStoreAtom } from '../../jotai/store.js';
-import { markdocParser } from '../../components/markdoc/markdocParser.js';
-import { extractMarkdownSections } from '../../adapters/utils/markdoc.js';
 import { collectRoutesRecursively } from '../../utils/routing.js';
 import { makeLinkItem, makeRouteItem } from '../../utils/__tests__/routing.utils.js';
 import { useApiDocsRoutes } from '../useApiDocsRoutes.js';
@@ -88,27 +82,6 @@ describe('useApiDocsRoutes', () => {
 
     expect(result.current.routeIndex).toBeDefined();
     expect(result.current.routeIndex.allRoutes.length).toBeGreaterThan(0);
-  });
-
-  it('indexes the section ids of headings the overview renders from partials', () => {
-    const overview = markdocParser('{% partial file="notes.md" /%}\n');
-    extractMarkdownSections(overview, undefined, '');
-    vi.mocked(collectRoutesRecursively).mockImplementation(({ allRoutes }) => {
-      allRoutes.push({ ...makeRouteItem('/'), content: overview as unknown as ApiItemContent });
-    });
-    const store = createStore();
-    store.set(globalStoreAtom, {
-      ...store.get(globalStoreAtom),
-      options: {
-        markdocOptions: { partials: { 'notes.md': markdoc.parse('## Locale\n') } },
-      } as unknown as ApiDocsOptions,
-    });
-
-    const { result } = renderHook(() => useApiDocsRoutes([]), { wrapper: createWrapper(store) });
-
-    expect(result.current.routeIndex.overviewPartialSectionIds).toEqual(
-      new Set(['section/locale']),
-    );
   });
 
   it('should populate routeIndex atom after route collection', () => {

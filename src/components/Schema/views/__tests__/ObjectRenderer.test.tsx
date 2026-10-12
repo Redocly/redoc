@@ -25,7 +25,6 @@ function renderObject(
   const jotaiStore = createStore();
   jotaiStore.set(globalStoreAtom, {
     items: [],
-    replayDefinition: null,
     store: { schemaStore: {}, exampleStore: {}, securitySchemeStore: {} },
     options: normalizeOptions({
       specType: 'openapi',

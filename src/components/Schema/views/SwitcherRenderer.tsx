@@ -1,8 +1,12 @@
 import { useCallback, useContext, useEffect, useMemo, type ReactElement } from 'react';
 import { useAtomValue, useSetAtom } from 'jotai';
 
-import type { PropertyType, SwitcherOptionType, SwitcherType } from '../../../types/schema.js';
-import type { OneOfChangeParams } from '../../../types/pluggable.js';
+import type {
+  OneOfChangeParams,
+  PropertyType,
+  SwitcherOptionType,
+  SwitcherType,
+} from '../../../types/schema.js';
 
 import { SECTION_ATTR } from '../../../constants/openapi.js';
 import {
@@ -24,10 +28,11 @@ import {
   activeDiscriminatorSelectAtom,
   activeOneOfSelectAtom,
   buildVariantStateKey,
+  buildVariantStoreId,
 } from '../../../jotai/itemStore.js';
 import { globalOptionsAtom } from '../../../jotai/store.js';
 import { isWithinExpansionLevel } from '../../../utils/expansion.js';
-import { ItemIdContext } from '../../../hooks/useDeepLinkSection.js';
+import { DeepLinkSectionContext, ItemIdContext } from '../../../hooks/useDeepLinkSection.js';
 import { SchemaTitleLabel } from './SchemaTitleLabel.js';
 import { appendVariantSuffix, variantMarkersOnly } from '../../../utils/deep-link.js';
 import { useVariantIndexFromHash } from '../hooks/useVariantIndexFromHash.js';
@@ -38,22 +43,25 @@ import { DiscriminatorPropertyRow } from './DiscriminatorPropertyRow.js';
 import { SchemaVariantSelector } from './SchemaVariantSelector.js';
 import { CollapsibleNestedFields } from './CollapsibleNestedFields.js';
 
-function variantHashLevel(fieldParentsName: string[] | undefined, segment: 'oneof' | 'd'): number {
-  if (!fieldParentsName?.length) return 1;
-  const ancestorMarkers = fieldParentsName.join('').match(new RegExp(`${segment}=`, 'g'));
-  return (ancestorMarkers?.length ?? 0) + 1;
+// Host properties apply to every variant; on a name collision the variant's
+// definition and position win.
+function mergeHostProperties(
+  baseProps: Record<string, PropertyType>,
+  activeOptionProps: Record<string, PropertyType>,
+): Record<string, PropertyType> {
+  const hostOnlyProps = Object.fromEntries(
+    Object.entries(baseProps).filter(([name]) => !(name in activeOptionProps)),
+  );
+  return { ...hostOnlyProps, ...activeOptionProps };
 }
 
-function mergeDiscriminatorFallback(
-  activeOptionProps: Record<string, PropertyType>,
-  baseProps: Record<string, PropertyType>,
-  discriminatorPropertyName: string | undefined,
+function sharedHostProperties(
+  hostProps: Record<string, PropertyType>,
+  { sharesOnlyDiscriminator, propertyName }: SwitcherType,
 ): Record<string, PropertyType> {
-  if (discriminatorPropertyName === undefined) return activeOptionProps;
-  if (discriminatorPropertyName in activeOptionProps) return activeOptionProps;
-  const fallbackProp = baseProps[discriminatorPropertyName];
-  if (fallbackProp === undefined) return activeOptionProps;
-  return { [discriminatorPropertyName]: fallbackProp, ...activeOptionProps };
+  if (!sharesOnlyDiscriminator) return hostProps;
+  const discriminatorProp = propertyName === undefined ? undefined : hostProps[propertyName];
+  return propertyName && discriminatorProp ? { [propertyName]: discriminatorProp } : {};
 }
 
 type SwitcherRendererProps = {
@@ -129,18 +137,17 @@ function OneOfSwitcher({
   onOneOfChange?: (params: OneOfChangeParams) => void;
 }): ReactElement {
   const itemId = useContext(ItemIdContext);
-  const oneOfState = useAtomValue(useMemo(() => activeOneOfSelectAtom(itemId ?? ''), [itemId]));
-  const setItemState = useSetAtom(itemStoreAtom(itemId ?? ''));
+  const variantStoreId = buildVariantStoreId(itemId ?? '', useContext(DeepLinkSectionContext));
+  const oneOfState = useAtomValue(
+    useMemo(() => activeOneOfSelectAtom(variantStoreId), [variantStoreId]),
+  );
+  const setItemState = useSetAtom(itemStoreAtom(variantStoreId));
   const optionEntries = useMemo(() => Object.entries(switcher.options), [switcher.options]);
 
   const schemaKey = buildVariantStateKey(fieldParentsName, switcher.label);
 
   const reassert = useUrlHashReassert();
-  const hashIdx = useVariantIndexFromHash(
-    'oneof',
-    optionEntries.length,
-    variantHashLevel(fieldParentsName, 'oneof'),
-  );
+  const hashIdx = useVariantIndexFromHash('oneof', optionEntries.length, fieldParentsName);
   const stateIdx = oneOfState[schemaKey];
   const activeIdx = stateIdx !== undefined ? stateIdx : hashIdx !== -1 ? hashIdx : 0;
 
@@ -267,10 +274,11 @@ function DiscriminatorSwitcher({
   onOneOfChange?: (params: OneOfChangeParams) => void;
 }): ReactElement {
   const itemId = useContext(ItemIdContext);
+  const variantStoreId = buildVariantStoreId(itemId ?? '', useContext(DeepLinkSectionContext));
   const discState = useAtomValue(
-    useMemo(() => activeDiscriminatorSelectAtom(itemId ?? ''), [itemId]),
+    useMemo(() => activeDiscriminatorSelectAtom(variantStoreId), [variantStoreId]),
   );
-  const setItemState = useSetAtom(itemStoreAtom(itemId ?? ''));
+  const setItemState = useSetAtom(itemStoreAtom(variantStoreId));
   const optionEntries = useMemo(() => Object.entries(switcher.options), [switcher.options]);
 
   const hasParentPath = fieldParentsName?.length;
@@ -280,11 +288,7 @@ function DiscriminatorSwitcher({
   const schemaKey = buildVariantStateKey(fieldParentsName, localPart);
 
   const reassert = useUrlHashReassert();
-  const hashIdx = useVariantIndexFromHash(
-    'd',
-    optionEntries.length,
-    variantHashLevel(fieldParentsName, 'd'),
-  );
+  const hashIdx = useVariantIndexFromHash('d', optionEntries.length, fieldParentsName);
   const stateIdx = discState[schemaKey];
   const activeIdx = stateIdx !== undefined ? stateIdx : hashIdx !== -1 ? hashIdx : 0;
 
@@ -315,11 +319,9 @@ function DiscriminatorSwitcher({
 
   const activeOption = optionEntries[activeIdx] ?? optionEntries[0];
   const activeOptionProps = activeOption?.[1]?.properties ?? {};
-  const baseProps = property.properties ?? {};
-  const allProperties = mergeDiscriminatorFallback(
+  const allProperties = mergeHostProperties(
+    sharedHostProperties(property.properties ?? {}, switcher),
     activeOptionProps,
-    baseProps,
-    switcher.propertyName,
   );
 
   const { schemasExpansionLevel } = useAtomValue(globalOptionsAtom);

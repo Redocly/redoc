@@ -1,0 +1,56 @@
+swagger: '2.0'
+info:
+  version: '1.0.0'
+  title: Redocly Cafe
+  description: Receipts can be sent again through another channel.
+schemes:
+  - https
+securityDefinitions:
+  ApiKey:
+    type: apiKey
+    name: X-Api-Key
+    in: header
+    description: Key issued to cafe staff.
+produces:
+  - application/json
+paths:
+  '/orders/{channel}/receipt':
+    post:
+      security:
+        - ApiKey: []
+      operationId: resendReceipt
+      summary: Resend a receipt
+      description: Sends the receipt of an order once more.
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - $ref: '#/parameters/channel'
+        - $ref: '#/parameters/orderIdField'
+      responses:
+        '202':
+          description: The receipt is on its way.
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+            example:
+              status: Receipt queued for delivery.
+        '400':
+          description: The order is unknown or the form is incomplete.
+          schema:
+            type: string
+parameters:
+  channel:
+    name: channel
+    in: path
+    description: Where the receipt goes.
+    enum: ['EMAIL', 'SMS', 'PRINTER', 'APP']
+    required: true
+    type: string
+  orderIdField:
+    name: order_id
+    in: formData
+    description: Order whose receipt is resent.
+    required: true
+    type: string

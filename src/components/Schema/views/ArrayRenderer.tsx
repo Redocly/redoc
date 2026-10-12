@@ -1,8 +1,7 @@
 import { useAtomValue } from 'jotai';
 
 import type { ReactElement } from 'react';
-import type { PropertyType } from '../../../types/schema.js';
-import type { OneOfChangeParams } from '../../../types/pluggable.js';
+import type { OneOfChangeParams, PropertyType } from '../../../types/schema.js';
 
 import {
   ArrayWrapper,

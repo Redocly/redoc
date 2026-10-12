@@ -13,7 +13,7 @@ export type { MarkdownParser } from '../adapters/utils/parseMarkdown.js';
  * - `render` turns the parsed value into React.
  *
  * The standalone build supplies a Markdoc-based adapter (`createMarkdocAdapter`). Embedders that
- * pre-parse upstream (e.g. realm) supply a `parse` no-op plus their own `render`, so the Markdoc
+ * pre-parse upstream supply a `parse` no-op plus their own `render`, so the Markdoc
  * parser never enters their client bundle.
  */
 export type MarkdownRenderer = (parsed: unknown) => ReactNode;

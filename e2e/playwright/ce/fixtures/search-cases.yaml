@@ -45,10 +45,10 @@ x-mcp:
             type: string
             description: Estimated delivery time returned to the agent
   resources:
-    - name: catalog
-      uri: cases://catalog
+    - name: inventory
+      uri: cases://inventory
       mimeType: application/json
-      description: Read-only snapshot of the product catalog for agents
+      description: Read-only snapshot of the product inventory for agents
   prompts:
     - name: draftApology
       description: Draft an apology message for a late order

@@ -155,7 +155,6 @@ function makeWrapper({ itemId, basePath = '' }: { itemId?: string; basePath?: st
       basePath,
       markdownParser: () => undefined,
     }),
-    replayDefinition: null,
   });
 
   const adapter = createMarkdocAdapter();

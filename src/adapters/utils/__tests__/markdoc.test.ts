@@ -4,7 +4,6 @@ import type { Node } from '@markdoc/markdoc';
 import {
   isMarkdocAst,
   extractSummaryText,
-  extractSeoDescriptionText,
   extractContentUntilFirstHeading,
   extractDescriptionSegments,
   extractFirstParagraphText,
@@ -70,24 +69,6 @@ describe('extractSummaryText', () => {
   });
 });
 
-describe('extractSeoDescriptionText', () => {
-  it('returns the full first-paragraph text with no 50-char cap or ellipsis, unlike extractSummaryText', () => {
-    const longText = 'A'.repeat(80);
-    vi.mocked(parseMarkdown).mockReturnValue(makeDocNode(makeParagraphNode(longText)));
-    expect(extractSeoDescriptionText(longText)).toBe(longText);
-  });
-
-  it('extracts from an already-parsed AST (Node[]) without needing a markdownParser option', () => {
-    const ast = [makeParagraphNode('Returns a single menu item by its ID.')];
-    vi.mocked(parseMarkdown).mockReturnValue(ast);
-    expect(extractSeoDescriptionText(ast)).toBe('Returns a single menu item by its ID.');
-  });
-
-  it('returns undefined when there is no description', () => {
-    expect(extractSeoDescriptionText(undefined)).toBeUndefined();
-    expect(extractSeoDescriptionText(null)).toBeUndefined();
-  });
-});
 
 describe('extractFullText / collectMarkdownPlainText with string input', () => {
   it('returns the trimmed string as-is', () => {
@@ -148,7 +129,7 @@ describe('extractContentUntilFirstHeading', () => {
     expect(parseMarkdown).toHaveBeenCalledTimes(1);
   });
 
-  it('keeps a multi-paragraph plain intro as a string (matches the portal regex behavior)', () => {
+  it('keeps a multi-paragraph plain intro as a string (matches the host regex behavior)', () => {
     const result = extractContentUntilFirstHeading('first\n\nsecond\n\n# Heading');
 
     expect(result).toBe('first\n\nsecond');

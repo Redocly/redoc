@@ -28,6 +28,7 @@ export default defineConfig({
       json: 'report.test-timing.json',
     },
     environment: 'jsdom',
+    testTimeout: 30000,
     root: __dirname,
     setupFiles: [resolve(__dirname, 'vitest.setup.ts')],
     include: ['src/**/__tests__/**/*.test.[jt]s?(x)', 'src/**/?(*.)+(test).[jt]s?(x)'],

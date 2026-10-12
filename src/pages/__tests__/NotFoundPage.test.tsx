@@ -33,7 +33,7 @@ describe('NotFoundPage', () => {
     expect(container.querySelector(`[${SECTION_ATTR}]`)).toBeNull();
   });
 
-  it('strips the path prefix from the back link so the portal Link does not apply it twice', () => {
+  it('strips the path prefix from the back link so the theme Link does not apply it twice', () => {
     vi.stubEnv('REDOCLY_PREFIX_PATHS', '/normalized');
     try {
       render(

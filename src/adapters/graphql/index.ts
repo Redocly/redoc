@@ -38,7 +38,7 @@ export function processGraphqlDocument({
   }));
 }
 
-export function buildGraphqlItems(): ApiItem[] {
+function buildGraphqlItems(): ApiItem[] {
   const context = graphqlContext.get();
   const { sectionItems, sectionChildren } = context.processContent
     ? collectMarkdownSections(

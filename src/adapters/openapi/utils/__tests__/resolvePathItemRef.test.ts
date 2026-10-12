@@ -118,6 +118,44 @@ describe('resolvePathItemRef', () => {
     });
   });
 
+  describe('OpenAPI 3.2 and later', () => {
+    it.each(['3.2.0', '3.10.0'])('applies sibling fields for %s', (openapi) => {
+      const doc = docWithPathItems(
+        {
+          orders: {
+            get: {
+              summary: 'List orders',
+              responses: { '200': { description: 'The orders placed today' } },
+            },
+          },
+        },
+        openapi,
+      );
+
+      const raw: OpenAPIPath = {
+        $ref: '#/components/pathItems/orders',
+        summary: 'Orders of the cafe',
+        description: 'Every order placed at the counter or online',
+      };
+
+      const resolved = resolvePathItemRef(doc, raw, openapi);
+      expect(resolved?.summary).toBe('Orders of the cafe');
+      expect(resolved?.description).toBe('Every order placed at the counter or online');
+      expect(resolved?.get?.summary).toBe('List orders');
+    });
+
+    it('does not apply sibling fields when the version is missing', () => {
+      const doc = docWithPathItems({
+        menu: { get: { responses: { '200': { description: 'The menu' } } } },
+      });
+      const raw: OpenAPIPath = { $ref: '#/components/pathItems/menu', summary: 'Should not win' };
+
+      const resolved = resolvePathItemRef(doc, raw, undefined);
+      expect(resolved?.summary).toBeUndefined();
+      expect(resolved?.get).toBeDefined();
+    });
+  });
+
   describe('OpenAPI 3.0', () => {
     it('resolves $ref but does not apply sibling fields from the reference object', () => {
       const doc = docWithPathItems(

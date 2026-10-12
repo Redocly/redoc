@@ -250,7 +250,11 @@ function addOperationToTags(
   context: BuildContext,
   pathLevelParams: Referenced<OpenAPIParameter>[] = [],
 ): void {
-  const tags = operation.tags || (isWebhook ? [DEFAULT_WEBHOOKS_TAG_NAME] : ['']);
+  const tags = operation.tags?.length
+    ? operation.tags
+    : isWebhook
+      ? [DEFAULT_WEBHOOKS_TAG_NAME]
+      : [''];
   const operationInfo = createOperationInfo(
     context.badgeTags,
     operation,

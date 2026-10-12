@@ -215,7 +215,7 @@ describe('default webhooks tag rendering', () => {
     expect(groupLabels(items).filter((l) => l === 'webhooks')).toHaveLength(1);
   });
 
-  it('drops a user-declared top-level webhooks tag when nothing lands in it (matches openapi-docs)', async () => {
+  it('drops a user-declared top-level webhooks tag when nothing lands in it', async () => {
     const document = {
       openapi: '3.1.0',
       info: { title: 'T', version: '1' },

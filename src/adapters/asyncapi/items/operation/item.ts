@@ -11,8 +11,6 @@ import { combineUrls } from '@redocly/theme/core/openapi';
 import { asString } from '../../../../utils/string.js';
 import { itemLabelsByProtocol } from '../../utils/get-protocol-labels.js';
 import { readRbacScope, rbacProp } from '../../../rbac.js';
-import { resolveItemSeo } from '../../../utils/seo.js';
-import { extractSeoDescriptionText } from '../../../utils/markdoc.js';
 import { buildOperationContent } from './content.js';
 
 export function buildOperationItem({
@@ -46,9 +44,6 @@ export function buildOperationItem({
   }
   operationLink = operationLink.toLowerCase();
   const label = asString(operation.title) ?? asString(operation.summary) ?? operationId;
-  const description =
-    extractSeoDescriptionText(operation.description, options) ?? asString(operation.summary);
-  const seo = resolveItemSeo(operation, { title: label, description });
 
   return {
     label,
@@ -57,7 +52,6 @@ export function buildOperationItem({
     routeSlug: operationLink,
     httpVerb: labels[operation.action] || '',
     badges: operation?.['x-badges'] || [],
-    metadata: { seo },
     ...rbacProp(readRbacScope(operation)),
     content: processContent
       ? buildOperationContent(

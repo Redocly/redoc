@@ -1,0 +1,17 @@
+swagger: '2.0'
+info:
+  title: Redocly Cafe
+  version: 1.0.0
+paths:
+  /orders:
+    get:
+      operationId: listOrders
+      responses:
+        '200':
+          description: Open orders.
+          headers:
+            X-Opened-At:
+              description: When the till was opened.
+              format: date-time
+            X-Cashier:
+              description: Who is at the till.

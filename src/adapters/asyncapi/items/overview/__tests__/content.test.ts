@@ -121,4 +121,21 @@ describe('buildOverviewContent', () => {
     const container = result.children[0] as ContainerNode;
     expect(container.panels?.some((p) => p.title === 'Download AsyncAPI description')).toBe(true);
   });
+
+  it('omits the download panel when hideDownloadButtons is true', () => {
+    const result = buildOverviewContent({
+      document,
+      options: {
+        ...options,
+        downloadUrls: [{ title: 'YAML', url: '/asyncapi.yaml' }],
+        hideDownloadButtons: true,
+      },
+      protocol: null,
+      sectionChildren: [],
+      basePath: '/async',
+    });
+
+    const container = result.children[0] as ContainerNode;
+    expect(container.panels?.some((p) => p.title === 'Download AsyncAPI description')).toBe(false);
+  });
 });

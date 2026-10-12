@@ -11,16 +11,13 @@ import { addTagItems } from './group/item.js';
 import { openApiContext } from './buildContext.js';
 import { toSidebarLogo } from '../../utils/logo.js';
 
-export type { OpenApiBuildContext as BuildContext, TagData } from '../../types/openapi.js';
-
 function yieldToMainThread(): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, 0));
 }
 
 /**
  * Global servers (document-level) that seed the environment store on the
- * client — same source list `openapi-docs` seeds in its `Providers`.
- * Descriptions already parsed to markdown AST are dropped, like everywhere
+ * client. Descriptions already parsed to markdown AST are dropped, like everywhere
  * else server display names are derived.
  */
 function buildGlobalServers(
@@ -31,7 +28,6 @@ function buildGlobalServers(
   return merged.map((s) => ({
     url: s.url,
     ...(s.name && { name: s.name }),
-    ...(s.isMockServer && { isMockServer: true }),
     ...(typeof s.description === 'string' && s.description && { description: s.description }),
     ...(s.variables &&
       Object.keys(s.variables).length > 0 && {
@@ -77,7 +73,7 @@ export async function processOpenApiDocument({
   }));
 }
 
-export function buildOpenApiItems(): ApiItem[] {
+function buildOpenApiItems(): ApiItem[] {
   const context = openApiContext.get();
   const result: ApiItem[] = [...buildOverviewItems(context.document)];
   addTagItems(context.document, result);

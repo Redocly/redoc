@@ -136,7 +136,7 @@ describe('addTagItems', () => {
     expect(items[1]).toMatchObject({ type: 'group', label: 'Pets' });
   });
 
-  it('ignores x-tagGroups when any tag is nested (matches openapi-docs precedence)', () => {
+  it('ignores x-tagGroups when any tag is nested', () => {
     const context = makeContext({
       Animals: makeTagData('Animals', [petsOperation], {}, ['Dogs']),
       Dogs: makeTagData('Dogs', [], { parent: 'Animals' }),
@@ -228,7 +228,7 @@ describe('processTagGroups', () => {
     expect(items.map((i) => i.label)).toEqual(['Travel services', 'Accommodations', 'Attractions']);
   });
 
-  it('renders a tag in every group that lists it (openapi-docs parity: no cross-group dedupe)', () => {
+  it('renders a tag in every group that lists it (no cross-group dedupe)', () => {
     const context = makeContext({ Pets: makeTagData('Pets', [petsOperation]) });
     const items: ApiItem[] = [];
 
@@ -242,8 +242,8 @@ describe('processTagGroups', () => {
       ),
     );
 
-    // openapi-docs getTagGroupsItems renders the tag once per group (with the
-    // same id/href); api-docs matches that — no cross-group deduplication.
+    // A tag listed in several groups renders once per group (with the same id/href) —
+    // no cross-group deduplication.
     expect(items.map((i) => ({ type: i.type, label: i.label }))).toEqual([
       { type: 'separator', label: 'A' },
       { type: 'group', label: 'Pets' },

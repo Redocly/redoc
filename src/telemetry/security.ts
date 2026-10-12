@@ -33,7 +33,7 @@ const HTTP_SCHEME_KEY: Partial<Record<string, SchemeTypeKey>> = {
   bearer: 'httpBearer',
 };
 
-export function schemeTypeKey(type: string | undefined, scheme: string | undefined): SchemeTypeKey {
+function schemeTypeKey(type: string | undefined, scheme: string | undefined): SchemeTypeKey {
   if (type === securitySchemeType.HTTP) {
     return HTTP_SCHEME_KEY[scheme?.toLowerCase() ?? ''] ?? 'httpOther';
   }

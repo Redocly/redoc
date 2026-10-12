@@ -43,6 +43,14 @@ function typeRef(name: string): GraphqlTypeRef {
   return { display: name, name, isList: false, isNonNull: false, isListNonNull: false };
 }
 
+function listTypeRef(
+  display: string,
+  name: string,
+  flags: Pick<GraphqlTypeRef, 'isNonNull' | 'isListNonNull'>,
+): GraphqlTypeRef {
+  return { display, name, isList: true, ...flags };
+}
+
 describe('GraphQLReturnTypeDetails', () => {
   it('renders a link when the type has a slug', () => {
     mocks.useAtomValue.mockImplementation((atom: unknown) => {
@@ -73,5 +81,37 @@ describe('GraphQLReturnTypeDetails', () => {
 
     expect(screen.getByText('String')).toBeInTheDocument();
     expect(screen.queryByRole('link')).not.toBeInTheDocument();
+  });
+
+  it.each([
+    {
+      display: '[String!]',
+      typeRef: listTypeRef('[String!]', 'String', { isNonNull: true, isListNonNull: false }),
+      nonNull: false,
+    },
+    {
+      display: '[String!]!',
+      typeRef: listTypeRef('[String!]!', 'String', { isNonNull: true, isListNonNull: true }),
+      nonNull: true,
+    },
+    {
+      display: '[[Int!]!]!',
+      typeRef: listTypeRef('[[Int!]!]!', 'Int', { isNonNull: true, isListNonNull: true }),
+      nonNull: true,
+    },
+  ])('renders $display with non-null label: $nonNull', ({ display, typeRef, nonNull }) => {
+    mocks.useAtomValue.mockImplementation((atom: unknown) => {
+      if (atom === mocks.graphqlTypeSlugMapAtom) return {};
+      return undefined;
+    });
+
+    render(
+      <MemoryRouter>
+        <GraphQLReturnTypeDetails typeRef={typeRef} />
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByText(display)).toBeInTheDocument();
+    expect(screen.queryByText('non-null') !== null).toBe(nonNull);
   });
 });

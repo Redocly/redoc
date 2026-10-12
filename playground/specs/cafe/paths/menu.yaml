@@ -2,9 +2,6 @@ get:
   tags:
     - Products
   x-internal: false
-  x-catalogRelations:
-    - type: ownedBy
-      key: dark-side
   summary: List all menu items
   description: Retrieve a collection of menu items with optional filtering and pagination.
   operationId: listMenuItems
@@ -60,9 +57,6 @@ post:
   tags:
     - Products
   x-internal: false
-  x-catalogRelations:
-    - type: ownedBy
-      key: dark-side
   summary: Create menu item
   description: Create a new menu item.
   operationId: createMenuItem

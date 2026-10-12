@@ -1,0 +1,36 @@
+swagger: '2.0'
+info:
+  title: Redocly Cafe
+  version: 1.0.0
+paths: {}
+definitions:
+  OrderItem:
+    type: object
+    properties:
+      menuItemId:
+        type: string
+  Order:
+    type: object
+    properties:
+      lastItem:
+        description: Item added most recently, if any.
+        x-nullable: true
+        allOf:
+          - $ref: '#/definitions/OrderItem'
+      pickup:
+        x-nullable: true
+        readOnly: true
+        oneOf:
+          - type: string
+            format: date-time
+          - type: integer
+      discount:
+        x-nullable: true
+        anyOf:
+          - type: number
+          - type: string
+        not:
+          type: boolean
+      note:
+        description: Free text for the barista.
+        x-nullable: true

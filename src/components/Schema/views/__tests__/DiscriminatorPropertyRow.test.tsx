@@ -33,7 +33,6 @@ function renderRow(
       maxDisplayedEnumValues: 10,
       hidePropertiesPrefix: options?.hidePropertiesPrefix ?? false,
     }),
-    replayDefinition: null,
   });
 
   return (
@@ -137,7 +136,6 @@ describe('DiscriminatorPropertyRow', () => {
         basePath: '',
         maxDisplayedEnumValues: 10,
       }),
-      replayDefinition: null,
     });
 
     render(

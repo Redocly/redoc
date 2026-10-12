@@ -49,10 +49,6 @@ export function buildDirectiveContent(
     contentType: contentType.ITEM,
     itemVariant: itemVariant.DIRECTIVE,
     meta: { name: directive.name },
-    seo: {
-      title: `@${directive.name}`,
-      description: directive.description || undefined,
-    },
     children: [{ nodeType: nodeTypes.CONTAINER, children: containerChildren, panels }],
   };
 }

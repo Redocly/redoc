@@ -242,7 +242,7 @@ it('also passes child-tag links through useNavigationUrlNormalizer', () => {
   expect(screen.getByText('users').closest('a')).toHaveAttribute('href', '/docs/openapi/users');
 });
 
-it('strips the path prefix from operation hrefs so the portal Link does not apply it twice', () => {
+it('strips the path prefix from operation hrefs so the theme Link does not apply it twice', () => {
   vi.stubEnv('REDOCLY_PREFIX_PATHS', 'docs');
   mocks.normalizeUrl.mockImplementation((href: string) => `/docs/openapi${href}`);
   try {
@@ -259,7 +259,7 @@ it('strips the path prefix from operation hrefs so the portal Link does not appl
   }
 });
 
-it('strips the path prefix from child-tag hrefs so the portal Link does not apply it twice', () => {
+it('strips the path prefix from child-tag hrefs so the theme Link does not apply it twice', () => {
   vi.stubEnv('REDOCLY_PREFIX_PATHS', 'docs');
   mocks.normalizeUrl.mockImplementation((href: string) => `/docs/openapi${href}`);
   try {

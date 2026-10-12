@@ -1,5 +1,5 @@
 import { describe, expect, it, vi, afterEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import { createStore, Provider as JotaiProvider } from 'jotai';
 import { MemoryRouter } from 'react-router';
 
@@ -246,7 +246,7 @@ describe('ResponsesSection', () => {
       `#${ITEM_ID}/response&c=403&ct=application/json`,
     );
     await waitFor(() => expect(store.get(mediaTypeOverrideAtom)).toBe('application/json'));
-    store.set(mediaTypeOverrideAtom, 'text/csv');
+    act(() => store.set(mediaTypeOverrideAtom, 'text/csv'));
 
     unmount();
 

@@ -7,13 +7,13 @@
     "noEmit": true,
     "types": ["node"],
     // Type-check only, so the inherited emit settings do not apply. rootDir is the package
-    // root because src/api.ce.ts reaches into the engine source alongside this directory.
+    // root because src/api.ts reaches into the engine source alongside this directory.
     "rootDir": "..",
     "composite": false,
     "declaration": false
   },
   // Scoped to what this package authors; the synced specs are not type-checked by the
-  // enterprise config either. The engine's ambient declarations come along because src/api.ce.ts
+  // full config either. The engine's ambient declarations come along because src/api.ts
   // imports its source.
   "include": [
     "./src/**/*",

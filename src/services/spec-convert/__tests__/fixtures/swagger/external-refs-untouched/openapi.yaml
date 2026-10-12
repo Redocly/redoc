@@ -1,0 +1,11 @@
+openapi: 3.2.0
+info:
+  title: Redocly Cafe
+  version: 1.0.0
+paths:
+  /menu:
+    $ref: shared/menu.yaml#/paths/~1menu
+components:
+  schemas:
+    MenuItem:
+      $ref: schemas/menu-item.json

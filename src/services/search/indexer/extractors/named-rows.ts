@@ -7,7 +7,7 @@ import { makeParam } from '../param.js';
 import { fieldsPlaceOf, scopedPlace } from '../places.js';
 import { addRow, describe } from './context.js';
 
-export type NamedRow = { name: string; description?: string | Node | Node[]; type?: string };
+type NamedRow = { name: string; description?: string | Node | Node[]; type?: string };
 
 const toRows = (names: string[] | undefined): NamedRow[] => (names ?? []).map((name) => ({ name }));
 
@@ -33,12 +33,7 @@ export const namedRowsExtractor: Extractor = {
   },
 };
 
-export function addNamedRows(
-  rows: NamedRow[],
-  place: string,
-  suffix: string,
-  ctx: ExtractContext,
-): void {
+function addNamedRows(rows: NamedRow[], place: string, suffix: string, ctx: ExtractContext): void {
   for (const row of rows) {
     addRow(
       ctx,

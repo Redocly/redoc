@@ -109,9 +109,9 @@ export function SecurityButtonPanel({
 
             return (
               <Fragment key={reqIndex}>
-                {isMultiple ? '(' : ''}
+                {isMultiple && <span>(</span>}
                 {schemeNodes}
-                {isMultiple ? ')' : ''}
+                {isMultiple && <span>)</span>}
                 {reqIndex < requirements.length - 1 && <Conjunction> or </Conjunction>}
               </Fragment>
             );

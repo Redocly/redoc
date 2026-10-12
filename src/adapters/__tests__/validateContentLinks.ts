@@ -3,7 +3,6 @@ import type {
   ApiItemContent,
   ContainerNode,
   ContentNode,
-  FeedbackNode,
   GroupItemsPanelItem,
   MessageChannelReference,
   MessageLinksNode,
@@ -17,11 +16,10 @@ import { nodeTypes, panelKind } from '../../types/common.js';
  * Walk every `ApiItem.content` recursively and assert that every embedded link
  * is relative to `basePath` (no `basePath` prefix) and lowercase only.
  *
- * Validates the four link/slug fields adapters emit inside content:
+ * Validates the link/slug fields adapters emit inside content:
  *  - `GroupItem.link`             (group panels)
  *  - `MessageChannelReference.link` (AsyncAPI message references panel)
  *  - `MessageLinksNode.channelLink` (AsyncAPI operation message-links node)
- *  - `FeedbackNode.pageSlug`        (feedback container)
  *
  * Top-level `ApiItem.link` / `ApiItem.routeSlug` are intentionally NOT validated
  * — those carry the absolute route and stay basePath-prefixed.
@@ -68,13 +66,6 @@ function walkContentNode(node: ContentNode, basePath: string, trail: string): vo
     case nodeTypes.MESSAGE_LINKS: {
       const linksNode = node as MessageLinksNode;
       assertContentLink(linksNode.channelLink, basePath, `${trail} → message-links.channelLink`);
-      break;
-    }
-    case nodeTypes.FEEDBACK: {
-      const feedback = node as FeedbackNode;
-      if (feedback.pageSlug !== undefined) {
-        assertContentLink(feedback.pageSlug, basePath, `${trail} → feedback.pageSlug`);
-      }
       break;
     }
     default:

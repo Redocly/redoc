@@ -3,8 +3,13 @@ import type { GraphqlStoreFieldData, GraphqlTypeData } from '../types/graphql-st
 
 import { graphqlTypeEntryId } from '../types/graphql-store.js';
 
-const INDENTATION = '  ';
-const CONNECTION_FIELDS = new Set(['edges', 'nodes', 'node', 'pageInfo']);
+export const INDENTATION = '  ';
+export const CONNECTION_FIELDS: ReadonlySet<string> = new Set([
+  'edges',
+  'nodes',
+  'node',
+  'pageInfo',
+]);
 
 export type GraphqlTypeLookup = (name: string) => GraphqlTypeData | undefined;
 
@@ -27,7 +32,7 @@ export function getOperationFromStore(
   return rootType?.fields?.find((field) => field.name === operationName);
 }
 
-export type ParsedTypeNotation =
+type ParsedTypeNotation =
   | { kind: 'named'; name: string }
   | { kind: 'list'; ofType: ParsedTypeNotation }
   | { kind: 'non-null'; ofType: ParsedTypeNotation };
@@ -47,7 +52,7 @@ function indent(level: number): string {
   return INDENTATION.repeat(level);
 }
 
-function getScalarExample(typeName: string): unknown {
+export function getScalarExample(typeName: string): unknown {
   switch (typeName) {
     case 'Int':
       return 40;
@@ -70,7 +75,7 @@ export function getTypeExample(
   expandLevel: number,
   level = 0,
 ): unknown {
-  return getParsedTypeExample(parseTypeNotation(display), lookup, expandLevel, level);
+  return getParsedTypeExample(parseTypeNotation(display), lookup, expandLevel, level, new Set());
 }
 
 function getParsedTypeExample(
@@ -78,14 +83,15 @@ function getParsedTypeExample(
   lookup: GraphqlTypeLookup,
   maxLevel: number,
   level: number,
+  pathAtThisDepth: ReadonlySet<string>,
 ): unknown {
   if (parsed.kind === 'non-null') {
-    return getParsedTypeExample(parsed.ofType, lookup, maxLevel, level);
+    return getParsedTypeExample(parsed.ofType, lookup, maxLevel, level, pathAtThisDepth);
   }
   if (parsed.kind === 'list') {
-    return [getParsedTypeExample(parsed.ofType, lookup, maxLevel, level)];
+    return [getParsedTypeExample(parsed.ofType, lookup, maxLevel, level, pathAtThisDepth)];
   }
-  return getNamedTypeExample(parsed.name, lookup, maxLevel, level);
+  return getNamedTypeExample(parsed.name, lookup, maxLevel, level, pathAtThisDepth);
 }
 
 function getNamedTypeExample(
@@ -93,20 +99,23 @@ function getNamedTypeExample(
   lookup: GraphqlTypeLookup,
   maxLevel: number,
   level: number,
+  pathAtThisDepth: ReadonlySet<string>,
 ): unknown {
   const data = lookup(typeName);
   if (!data || data.variant === 'scalar') {
     return getScalarExample(typeName);
   }
   if (data.variant === 'object' || data.variant === 'interface') {
-    return getFieldsExample(data, lookup, maxLevel, level, true);
+    return getFieldsExample(data, lookup, maxLevel, level, true, pathAtThisDepth);
   }
   if (data.variant === 'input') {
-    return getFieldsExample(data, lookup, maxLevel, level, false);
+    return getFieldsExample(data, lookup, maxLevel, level, false, pathAtThisDepth);
   }
   if (data.variant === 'union') {
     const firstMember = data.possibleTypes?.[0];
-    return firstMember ? getNamedTypeExample(firstMember, lookup, maxLevel, level) : {};
+    return firstMember
+      ? getNamedTypeExample(firstMember, lookup, maxLevel, level, pathAtThisDepth)
+      : {};
   }
   if (data.variant === 'enum') {
     return data.enumValues?.[0]?.name;
@@ -120,16 +129,20 @@ function getFieldsExample(
   maxLevel: number,
   level: number,
   withConnectionHeuristic: boolean,
+  pathAtThisDepth: ReadonlySet<string>,
 ): Record<string, unknown> {
-  if (level === maxLevel) {
+  if (level === maxLevel || pathAtThisDepth.has(data.name)) {
     return { __typename: data.name };
   }
 
+  const pathWithType = new Set(pathAtThisDepth).add(data.name);
   const result: Record<string, unknown> = {};
   for (const field of data.fields ?? []) {
-    const childLevel =
-      withConnectionHeuristic && CONNECTION_FIELDS.has(field.name) ? level : level + 1;
-    result[field.name] = getTypeExample(field.type.display, lookup, maxLevel, childLevel);
+    const parsed = parseTypeNotation(field.type.display);
+    result[field.name] =
+      withConnectionHeuristic && CONNECTION_FIELDS.has(field.name)
+        ? getParsedTypeExample(parsed, lookup, maxLevel, level, pathWithType)
+        : getParsedTypeExample(parsed, lookup, maxLevel, level + 1, new Set());
   }
   return result;
 }
@@ -144,7 +157,7 @@ const DEFAULT_SAMPLE_LABELS: SampleLabels = {
   fragment: 'Fragment',
 };
 
-function getVariablesDeclaration(args: GraphqlStoreFieldData[], multiline: boolean): string {
+export function getVariablesDeclaration(args: GraphqlStoreFieldData[], multiline: boolean): string {
   if (args.length === 0) return '';
   if (multiline) {
     const items = args.map((arg) => `${indent(1)}$${arg.name}: ${arg.type.display}`).join('\n');
@@ -183,11 +196,21 @@ function getSelectionSetExample(
   maxLevel: number,
   level: number,
   labels: SampleLabels,
+  pathAtThisDepth: ReadonlySet<string>,
 ): string {
   const data = lookup(typeName);
   if (!data) return '';
   if (data.variant === 'object' || data.variant === 'interface') {
-    return getObjectSelectionSet(data, lookup, multiline, indentLevel, maxLevel, level, labels);
+    return getObjectSelectionSet(
+      data,
+      lookup,
+      multiline,
+      indentLevel,
+      maxLevel,
+      level,
+      labels,
+      pathAtThisDepth,
+    );
   }
   if (data.variant === 'union') {
     const firstMember = data.possibleTypes?.[0];
@@ -200,6 +223,7 @@ function getSelectionSetExample(
       maxLevel,
       level,
       labels,
+      pathAtThisDepth,
     );
   }
   return '';
@@ -213,25 +237,28 @@ function getObjectSelectionSet(
   maxLevel: number,
   level: number,
   labels: SampleLabels,
+  pathAtThisDepth: ReadonlySet<string>,
 ): string {
   const own = indent(indentLevel);
 
-  if (level === maxLevel) {
+  if (level === maxLevel || pathAtThisDepth.has(data.name)) {
     const child = indent(indentLevel + 1);
     return `{\n${child}__typename\n${child}# ...${data.name}${labels.fragment}\n${own}}`;
   }
 
+  const pathWithType = new Set(pathAtThisDepth).add(data.name);
   const fieldExamples = (data.fields ?? [])
     .map((field) => {
-      const childLevel = CONNECTION_FIELDS.has(field.name) ? level : level + 1;
+      const isConnectionField = CONNECTION_FIELDS.has(field.name);
       return getFieldExample(
         field,
         lookup,
         multiline,
         indentLevel + 1,
         maxLevel,
-        childLevel,
+        isConnectionField ? level : level + 1,
         labels,
+        isConnectionField ? pathWithType : new Set(),
       );
     })
     .join('\n');
@@ -247,6 +274,7 @@ function getFieldExample(
   maxLevel: number,
   level: number,
   labels: SampleLabels,
+  pathAtThisDepth: ReadonlySet<string>,
 ): string {
   const argsStr = getArgumentsStr(field.args ?? [], multiline, indentLevel, level, labels);
   const selectionSet = getSelectionSetExample(
@@ -257,6 +285,7 @@ function getFieldExample(
     maxLevel,
     level,
     labels,
+    pathAtThisDepth,
   );
   const sep = selectionSet ? ' ' : '';
   return `${indent(indentLevel)}${field.name}${argsStr}${sep}${selectionSet}`;
@@ -274,7 +303,16 @@ export function generateOperationExample(
   const multiline = multilineArguments ?? args.length > 4;
   const variables = getVariablesDeclaration(args, multiline);
   const mergedLabels = { ...DEFAULT_SAMPLE_LABELS, ...labels };
-  const fieldStr = getFieldExample(operation, lookup, multiline, 1, expandLevel, 0, mergedLabels);
+  const fieldStr = getFieldExample(
+    operation,
+    lookup,
+    multiline,
+    1,
+    expandLevel,
+    0,
+    mergedLabels,
+    new Set(),
+  );
   return `${operationType} ${operation.name}${variables} {\n${fieldStr}\n}`;
 }
 

@@ -1,0 +1,33 @@
+swagger: '2.0'
+info:
+  title: Redocly Cafe
+  version: 1.0.0
+parameters:
+  orderBody:
+    name: order
+    in: body
+    required: true
+    description: The full order.
+    schema:
+      $ref: '#/definitions/NewOrder'
+paths:
+  /orders:
+    parameters:
+      - $ref: '#/parameters/orderBody'
+    post:
+      operationId: createOrder
+      parameters: []
+      responses:
+        '201':
+          description: Order placed.
+    put:
+      operationId: replaceOrders
+      responses:
+        '200':
+          description: Orders replaced.
+definitions:
+  NewOrder:
+    type: object
+    properties:
+      note:
+        type: string

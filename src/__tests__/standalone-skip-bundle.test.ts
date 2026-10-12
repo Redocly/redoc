@@ -1,4 +1,5 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { load } from 'js-yaml';
 
 const loadAndBundleDefinition = vi.fn();
 
@@ -75,8 +76,114 @@ describe('skipBundle', () => {
   it('rejects being enabled without a definition object', async () => {
     await expect(
       prepareApiDocs({ specUrl: '/openapi.yaml', options: { skipBundle: true } }),
-    ).rejects.toThrow('"spec" must be an object when "skipBundle" is enabled');
+    ).rejects.toThrow('"spec" must be an object, JSON or YAML text when "skipBundle" is enabled');
 
     expect(loadAndBundleDefinition).not.toHaveBeenCalled();
+  });
+});
+
+describe('AsyncAPI 2.x', () => {
+  const v2 = {
+    asyncapi: '2.6.0',
+    info: { title: 'Lights', version: '1.0.0' },
+    servers: { production: { url: 'mqtt://broker.example.com:1883/v1', protocol: 'mqtt' } },
+    channels: {
+      'light/measured': {
+        subscribe: { operationId: 'onLight', message: { payload: { type: 'string' } } },
+      },
+    },
+  };
+
+  beforeEach(() => {
+    loadAndBundleDefinition.mockReset();
+    loadAndBundleDefinition.mockImplementation(async (source: unknown) =>
+      typeof source === 'string' ? v2 : source,
+    );
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it.each([false, true])(
+    'converts the document to 3.0 without changing the input (skipBundle: %s)',
+    async (skipBundle) => {
+      const spec = structuredClone(v2);
+      const prepared = await prepareApiDocs({ spec, options: { skipBundle } });
+      const document = prepared.document as {
+        asyncapi: string;
+        servers: Record<string, unknown>;
+        operations: Record<string, unknown>;
+      };
+
+      expect(document.asyncapi).toBe('3.0.0');
+      expect(document.servers.production).toMatchObject({
+        host: 'broker.example.com:1883',
+        pathname: '/v1',
+      });
+      expect(document.operations.onLight).toMatchObject({
+        action: 'send',
+        channel: { $ref: '#/channels/light~1measured' },
+      });
+      expect(spec).toEqual(v2);
+    },
+  );
+
+  it('offers the converted document for download instead of the 2.x spec URL', async () => {
+    const blobs: Blob[] = [];
+    URL.createObjectURL ??= () => '';
+    vi.spyOn(URL, 'createObjectURL').mockImplementation((blob) => {
+      blobs.push(blob as Blob);
+      return 'blob:converted';
+    });
+
+    const prepared = await prepareApiDocs({ specUrl: '/specs/lights.json?v=1' });
+
+    expect(prepared.options.downloadUrls).toEqual([
+      { url: 'blob:converted', title: 'lights.yaml' },
+    ]);
+    const text = await new Promise<string>((resolve) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result));
+      reader.readAsText(blobs[0]);
+    });
+    expect(load(text)).toEqual(prepared.document);
+  });
+
+  it('creates no converted file when the default download is not used', async () => {
+    URL.createObjectURL ??= () => '';
+    const createObjectURL = vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:converted');
+
+    await prepareApiDocs({ spec: structuredClone(v2) });
+    await prepareApiDocs({
+      specUrl: '/specs/lights.yaml',
+      options: { downloadUrls: [{ url: '/specs/lights-2.6.yaml' }] },
+    });
+    await prepareApiDocs({ specUrl: '/specs/lights.yaml', convertedDownload: false });
+
+    expect(createObjectURL).not.toHaveBeenCalled();
+  });
+
+  it('keeps the default download when downloadUrls has no usable entry', async () => {
+    const prepared = await prepareApiDocs({
+      specUrl: '/specs/lights.yaml',
+      options: { downloadUrls: "[{'url':'b.yaml'}]" as never, skipBundle: false },
+      convertedDownload: false,
+    });
+
+    expect(prepared.options.downloadUrls).toEqual([
+      { url: new URL('/specs/lights.yaml', document.baseURI).href },
+    ]);
+  });
+
+  it('keeps explicit downloadUrls', async () => {
+    const downloadUrls = [{ url: '/specs/lights-2.6.yaml', title: 'Original' }];
+
+    const prepared = await prepareApiDocs({
+      specUrl: '/specs/lights.yaml',
+      options: { downloadUrls },
+    });
+
+    expect(prepared.options.downloadUrls).toBe(downloadUrls);
   });
 });

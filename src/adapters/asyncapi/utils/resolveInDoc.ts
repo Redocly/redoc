@@ -1,8 +1,14 @@
-import type { AsyncApiDefinition } from '../../../types/asyncapi.js';
+import { isOpenAPIRef, resolveJsonPointer } from '../../helpers.js';
+import { isRecord } from '../../../utils/is-record.js';
 
-import { resolveRef } from '../../helpers.js';
-
-export function resolveInDoc<T>(document: AsyncApiDefinition, value: unknown): T | undefined {
-  const resolved = resolveRef(document as unknown as Record<string, unknown>, value);
-  return resolved as T | undefined;
+/** Follows a `$ref` chain; `undefined` for a non-object, a dangling pointer or a cycle. */
+export function resolveInDoc<T>(document: Record<string, unknown>, value: unknown): T | undefined {
+  const seen = new Set<string>();
+  let current: unknown = value;
+  while (isOpenAPIRef(current)) {
+    if (seen.has(current.$ref)) return undefined;
+    seen.add(current.$ref);
+    current = resolveJsonPointer(document, current.$ref);
+  }
+  return isRecord(current) ? (current as T) : undefined;
 }

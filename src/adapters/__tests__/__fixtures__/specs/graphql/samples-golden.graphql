@@ -1,0 +1,78 @@
+schema {
+  query: RootQuery
+  mutation: RootMutation
+  subscription: RootSubscription
+}
+
+scalar DateTime
+
+interface Node {
+  id: ID!
+}
+
+type User implements Node {
+  id: ID!
+  name: String
+  balance: Float!
+  isActive: Boolean
+  createdAt: DateTime
+  status: Status
+  pet: Pet
+  matrix: [[Int!]]!
+  friends(first: Int = 10, after: String): FriendsConnection!
+}
+
+type FriendsConnection {
+  edges: [FriendEdge!]
+  nodes: [User]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type FriendEdge {
+  node: User!
+  cursor: String!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  endCursor: String
+}
+
+type Dog {
+  name: String!
+  barkVolume: Int
+}
+
+type Cat {
+  name: String!
+  lives: Int
+}
+
+union Pet = Dog | Cat
+
+enum Status {
+  ACTIVE
+  INACTIVE
+}
+
+input UserFilter {
+  name: String = "any"
+  statuses: [Status!]
+  joinedAfter: DateTime
+}
+
+type RootQuery {
+  user(id: ID!): User
+  users(filter: UserFilter, first: Int, after: String, before: String, last: Int): [User!]!
+  pet(name: String!): Pet
+  status: Status
+}
+
+type RootMutation {
+  updateUser(id: ID!, name: String, status: Status, filter: UserFilter): User
+}
+
+type RootSubscription {
+  userChanged(id: ID!): User!
+}

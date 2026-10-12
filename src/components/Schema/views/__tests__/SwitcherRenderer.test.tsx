@@ -1,15 +1,16 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { render, screen, fireEvent, renderHook } from '@testing-library/react';
+import { render, screen, fireEvent, renderHook, within } from '@testing-library/react';
 import { createStore, Provider as JotaiProvider } from 'jotai';
 import { MemoryRouter } from 'react-router';
 
 import type { ReactNode } from 'react';
 import type { PropertyType, SwitcherOptionType, SwitcherType } from '../../../../types/schema.js';
 import type { ApiItem } from '../../../../types/store.js';
+import type { DeepLinkSectionValue } from '../../../../hooks/useDeepLinkSection.js';
 
 import 'jest-styled-components';
 import { contentType } from '../../../../types/common.js';
-import { itemStoreAtom } from '../../../../jotai/itemStore.js';
+import { buildVariantStoreId, itemStoreAtom } from '../../../../jotai/itemStore.js';
 import { globalStoreAtom } from '../../../../jotai/store.js';
 import { normalizeOptions } from '../../../../options/normalizeOptions.js';
 import { LEVEL_COLORS } from '../../utils.js';
@@ -31,7 +32,7 @@ function makeSwitcherProperty(
     type: 'object',
     switcher,
     properties,
-  } as PropertyType;
+  };
 }
 
 function opt(
@@ -99,8 +100,8 @@ describe('SwitcherRenderer discriminator state keys', () => {
     const onOneOfChange = vi.fn();
     const switcher: SwitcherType = {
       ...makeDiscriminator('method', {
-        a: { properties: { method: { type: 'string' } as PropertyType } },
-        b: { properties: { method: { type: 'string' } as PropertyType } },
+        a: { properties: { method: { type: 'string' } } },
+        b: { properties: { method: { type: 'string' } } },
       }),
       jsonPointer: '/components/schemas/Payment',
     };
@@ -128,14 +129,14 @@ describe('SwitcherRenderer discriminator state keys', () => {
     const innerDiscriminator = makeDiscriminator('name', {
       'Apple Pay': {
         properties: {
-          name: { type: 'string' } as PropertyType,
-          displayName: { type: 'string' } as PropertyType,
+          name: { type: 'string' },
+          displayName: { type: 'string' },
         },
       },
       'Google Pay': {
         properties: {
-          name: { type: 'string' } as PropertyType,
-          merchantName: { type: 'string' } as PropertyType,
+          name: { type: 'string' },
+          merchantName: { type: 'string' },
         },
       },
     });
@@ -148,7 +149,7 @@ describe('SwitcherRenderer discriminator state keys', () => {
           isDeprecated: false,
           isDefaultMapping: false,
           properties: {
-            name: { type: 'string' } as PropertyType,
+            name: { type: 'string' },
           },
           switcher: innerDiscriminator,
         },
@@ -159,16 +160,16 @@ describe('SwitcherRenderer discriminator state keys', () => {
     const rootDiscriminator = makeDiscriminator('method', {
       'payment-card': {
         properties: {
-          method: { type: 'string' } as PropertyType,
+          method: { type: 'string' },
           feature: {
             type: 'object',
             switcher: featureOneOf,
-          } as PropertyType,
+          },
         },
       },
       ach: {
         properties: {
-          method: { type: 'string' } as PropertyType,
+          method: { type: 'string' },
         },
       },
     });
@@ -200,13 +201,13 @@ describe('SwitcherRenderer discriminator state keys', () => {
 
   it('should use path-based keys for nested discriminators', () => {
     const disc1 = makeDiscriminator('mode', {
-      all: { properties: { mode: { type: 'string' } as PropertyType } },
-      subset: { properties: { mode: { type: 'string' } as PropertyType } },
+      all: { properties: { mode: { type: 'string' } } },
+      subset: { properties: { mode: { type: 'string' } } },
     });
 
     const disc2 = makeDiscriminator('mode', {
-      unknown: { properties: { mode: { type: 'string' } as PropertyType } },
-      restricted: { properties: { mode: { type: 'string' } as PropertyType } },
+      unknown: { properties: { mode: { type: 'string' } } },
+      restricted: { properties: { mode: { type: 'string' } } },
     });
 
     const { store } = renderWithStore(
@@ -245,20 +246,20 @@ describe('SwitcherRenderer discriminator state keys', () => {
   it('renders Enum (not Value) before discriminator when multiple mapping keys, no trailing Value', () => {
     const switcher = makeDiscriminator('type', {
       'three-columns': opt({
-        properties: { col: { type: 'string' } as PropertyType },
+        properties: { col: { type: 'string' } },
       }),
       'two-columns': opt({
-        properties: { col: { type: 'string' } as PropertyType },
+        properties: { col: { type: 'string' } },
       }),
       'one-column': opt({
-        properties: { col: { type: 'string' } as PropertyType },
+        properties: { col: { type: 'string' } },
       }),
-      list: opt({ properties: { col: { type: 'string' } as PropertyType } }),
+      list: opt({ properties: { col: { type: 'string' } } }),
     });
 
     const property = makeSwitcherProperty(switcher, {
-      type: { type: 'string' } as PropertyType,
-      message: { type: 'string' } as PropertyType,
+      type: { type: 'string' },
+      message: { type: 'string' },
     });
 
     renderWithStore(<SwitcherRenderer property={property} level={0} fieldParentsName={[]} />);
@@ -283,14 +284,14 @@ describe('SwitcherRenderer discriminator state keys', () => {
           action: {
             type: 'string',
             enum: ['redemption-cancel'],
-          } as PropertyType,
-          id: { type: 'string' } as PropertyType,
+          },
+          id: { type: 'string' },
         },
       }),
       'resend-email': opt({
         properties: {
-          action: { type: 'string', enum: ['resend-email'] } as PropertyType,
-          id: { type: 'string' } as PropertyType,
+          action: { type: 'string', enum: ['resend-email'] },
+          id: { type: 'string' },
         },
       }),
     });
@@ -311,7 +312,7 @@ describe('SwitcherRenderer discriminator state keys', () => {
     const switcher = makeDiscriminator('kind', {
       a: opt({
         properties: {
-          kind: { type: 'string', const: 'a' } as PropertyType,
+          kind: { type: 'string', const: 'a' },
         },
       }),
     });
@@ -331,7 +332,7 @@ describe('SwitcherRenderer discriminator state keys', () => {
     });
 
     const property = makeSwitcherProperty(switcher, {
-      status: { type: 'string', enum: ['x', 'y'] } as PropertyType,
+      status: { type: 'string', enum: ['x', 'y'] },
     });
 
     renderWithStore(<SwitcherRenderer property={property} level={0} fieldParentsName={[]} />);
@@ -347,11 +348,61 @@ function makeOneOf(variantCount: number): SwitcherType {
   const options: Record<string, SwitcherOptionType> = {};
   for (let i = 0; i < variantCount; i++) {
     options[`v${i}`] = opt({
-      properties: { x: { type: 'string' } as PropertyType },
+      properties: { x: { type: 'string' } },
     });
   }
   return { type: 'oneOf', label: switcherLabel.ONE_OF, options };
 }
+
+describe('SwitcherRenderer variant state per section', () => {
+  const property = makeSwitcherProperty({
+    type: 'oneOf',
+    label: switcherLabel.ONE_OF,
+    options: {
+      v0: opt({ properties: { cardNumber: { type: 'string' } } }),
+      v1: opt({ properties: { iban: { type: 'string' } } }),
+    },
+  });
+  function renderSections(sections: Record<string, DeepLinkSectionValue>) {
+    return renderWithStore(
+      <>
+        {Object.entries(sections).map(([name, section]) => (
+          <div key={name} data-testid={name}>
+            <DeepLinkSectionContext.Provider value={section}>
+              <SwitcherRenderer property={property} level={0} fieldParentsName={[]} />
+            </DeepLinkSectionContext.Provider>
+          </div>
+        ))}
+      </>,
+    );
+  }
+
+  it('keeps a pick out of sections that render another schema', () => {
+    renderSections({
+      request: { t: 'request', schemaId: 'components/schemas/Payment' },
+      response: { t: 'response', c: '200', schemaId: 'components/schemas/Receipt' },
+      callback: { t: 'request', cb: 'onEvent', schemaId: 'components/schemas/Event' },
+    });
+
+    fireEvent.click(within(screen.getByTestId('request')).getByText('v1'));
+
+    expect(within(screen.getByTestId('request')).queryByText('iban')).not.toBeNull();
+    expect(within(screen.getByTestId('response')).queryByText('cardNumber')).not.toBeNull();
+    expect(within(screen.getByTestId('callback')).queryByText('cardNumber')).not.toBeNull();
+  });
+
+  it('shares a pick between sections that render the same schema', () => {
+    renderSections({
+      request: { t: 'request', schemaId: 'components/schemas/Payment' },
+      response: { t: 'response', c: '200', schemaId: 'components/schemas/Payment' },
+    });
+
+    fireEvent.click(within(screen.getByTestId('response')).getByText('v1'));
+
+    expect(within(screen.getByTestId('request')).queryByText('iban')).not.toBeNull();
+    expect(within(screen.getByTestId('response')).queryByText('iban')).not.toBeNull();
+  });
+});
 
 describe('SwitcherRenderer state key shape', () => {
   it('root oneOf writes the switcher label as the activeOneOf key (exact string)', () => {
@@ -359,8 +410,8 @@ describe('SwitcherRenderer state key shape', () => {
       type: 'oneOf',
       label: switcherLabel.ONE_OF,
       options: {
-        v0: opt({ properties: { x: { type: 'string' } as PropertyType } }),
-        v1: opt({ properties: { y: { type: 'string' } as PropertyType } }),
+        v0: opt({ properties: { x: { type: 'string' } } }),
+        v1: opt({ properties: { y: { type: 'string' } } }),
       },
     };
     const property = makeSwitcherProperty(switcher);
@@ -381,8 +432,8 @@ describe('SwitcherRenderer state key shape', () => {
       type: 'oneOf',
       label: switcherLabel.ANY_OF,
       options: {
-        v0: opt({ properties: { x: { type: 'string' } as PropertyType } }),
-        v1: opt({ properties: { y: { type: 'string' } as PropertyType } }),
+        v0: opt({ properties: { x: { type: 'string' } } }),
+        v1: opt({ properties: { y: { type: 'string' } } }),
       },
     };
     const property = makeSwitcherProperty(switcher);
@@ -403,8 +454,8 @@ describe('SwitcherRenderer state key shape', () => {
       type: 'oneOf',
       label: switcherLabel.ONE_OF,
       options: {
-        v0: opt({ properties: { x: { type: 'string' } as PropertyType } }),
-        v1: opt({ properties: { y: { type: 'string' } as PropertyType } }),
+        v0: opt({ properties: { x: { type: 'string' } } }),
+        v1: opt({ properties: { y: { type: 'string' } } }),
       },
     };
     const property = makeSwitcherProperty(switcher);
@@ -421,8 +472,8 @@ describe('SwitcherRenderer state key shape', () => {
 
   it('root discriminator writes the propertyName as the activeDiscriminator key', () => {
     const switcher = makeDiscriminator('itemType', {
-      a: opt({ properties: { itemType: { type: 'string' } as PropertyType } }),
-      b: opt({ properties: { itemType: { type: 'string' } as PropertyType } }),
+      a: opt({ properties: { itemType: { type: 'string' } } }),
+      b: opt({ properties: { itemType: { type: 'string' } } }),
     });
     const property = makeSwitcherProperty(switcher);
 
@@ -439,10 +490,10 @@ describe('SwitcherRenderer state key shape', () => {
   it('nested array-item discriminator writes `<arrayPath[]>/<propertyName>`', () => {
     const switcher = makeDiscriminator('filterType', {
       a: opt({
-        properties: { filterType: { type: 'string' } as PropertyType },
+        properties: { filterType: { type: 'string' } },
       }),
       b: opt({
-        properties: { filterType: { type: 'string' } as PropertyType },
+        properties: { filterType: { type: 'string' } },
       }),
     });
     const property = makeSwitcherProperty(switcher);
@@ -466,7 +517,7 @@ describe('SwitcherRenderer oneOf variant selection UI', () => {
     const tablist = screen.getByRole('tablist');
     expect(tablist).toBeInTheDocument();
     expect(screen.getByText('v0')).toBeInTheDocument();
-    expect(domSnapshotWithoutClasses(tablist as HTMLElement)).toMatchInlineSnapshot(
+    expect(domSnapshotWithoutClasses(tablist)).toMatchInlineSnapshot(
       `"<div><button>v0</button><button>v1</button><button>v2</button><button>v3</button><button>v4</button></div>"`,
     );
   });
@@ -478,7 +529,7 @@ describe('SwitcherRenderer oneOf variant selection UI', () => {
     expect(screen.queryByRole('tablist')).not.toBeInTheDocument();
     const trigger = screen.getByRole('button', { name: 'v0' });
     expect(trigger).toBeInTheDocument();
-    expect(domSnapshotWithoutClasses(trigger as HTMLElement)).toMatchInlineSnapshot(
+    expect(domSnapshotWithoutClasses(trigger)).toMatchInlineSnapshot(
       `"<button><span>v0</span><svg><path></path></svg></button>"`,
     );
   });
@@ -539,67 +590,130 @@ describe('useVariantIndexFromHash', () => {
     );
   }
 
-  it('returns the correct oneOf index at level 1', () => {
-    const hash = '#plans/postplan/t=request&path=&oneof=1/trial&oneof=0/period';
-    const { result } = renderHook(() => useVariantIndexFromHash('oneof', 3, 1), {
+  function indexAt(hash: string, segment: string, count: number, fieldParentsName: string[]) {
+    const { result } = renderHook(() => useVariantIndexFromHash(segment, count, fieldParentsName), {
       wrapper: wrapper(hash),
     });
-    expect(result.current).toBe(1);
+    return result.current;
+  }
+
+  const nestedHash = '#plans/postplan/t=request&path=&oneof=1/trial&oneof=0/period';
+
+  it('returns the index of the root switcher', () => {
+    expect(indexAt(nestedHash, 'oneof', 3, [])).toBe(1);
   });
 
-  it('returns the correct nested oneOf index at level 2', () => {
-    const hash = '#plans/postplan/t=request&path=&oneof=1/trial&oneof=0/period';
-    const { result } = renderHook(() => useVariantIndexFromHash('oneof', 3, 2), {
-      wrapper: wrapper(hash),
-    });
-    expect(result.current).toBe(0);
+  it('returns the index of a switcher nested in a variant', () => {
+    expect(indexAt(nestedHash, 'oneof', 3, ['&oneof=1', 'trial'])).toBe(0);
   });
 
-  it('returns -1 when level exceeds available segments', () => {
-    const hash = '#plans/postplan/t=request&path=&oneof=1/trial&oneof=0/period';
-    const { result } = renderHook(() => useVariantIndexFromHash('oneof', 3, 3), {
-      wrapper: wrapper(hash),
-    });
-    expect(result.current).toBe(-1);
+  it('returns -1 for a switcher the hash does not address', () => {
+    expect(indexAt(nestedHash, 'oneof', 3, ['&oneof=1', 'trial&oneof=0', 'period'])).toBe(-1);
   });
 
   it('returns -1 when hash is empty', () => {
-    const { result } = renderHook(() => useVariantIndexFromHash('oneof', 3, 1), {
-      wrapper: wrapper(''),
-    });
-    expect(result.current).toBe(-1);
+    expect(indexAt('', 'oneof', 3, [])).toBe(-1);
   });
 
-  it('returns correct discriminator index at level 1', () => {
-    const hash = '#pet/getpetbyid/t=request&path=body&d=2/status';
-    const { result } = renderHook(() => useVariantIndexFromHash('d', 4, 1), {
-      wrapper: wrapper(hash),
-    });
-    expect(result.current).toBe(2);
+  it('returns the discriminator index for the field path', () => {
+    expect(indexAt('#pet/getpetbyid/t=request&path=body&d=2/status', 'd', 4, ['body'])).toBe(2);
   });
 
-  it('returns -1 when index exceeds count', () => {
-    const hash = '#pet/getpetbyid/t=request&path=body&d=5/status';
-    const { result } = renderHook(() => useVariantIndexFromHash('d', 3, 1), {
-      wrapper: wrapper(hash),
-    });
-    expect(result.current).toBe(-1);
+  it('returns -1 for out-of-range discriminator index', () => {
+    expect(indexAt('#pet/getpetbyid/t=request&path=body&d=5/status', 'd', 3, ['body'])).toBe(-1);
   });
 
-  it('handles mixed oneof and discriminator segments independently', () => {
+  it('reads oneof and d markers of the same field path independently', () => {
     const hash = '#op/test/t=request&path=body&oneof=2&d=1/child';
-    const { result: oneOfResult } = renderHook(() => useVariantIndexFromHash('oneof', 4, 1), {
-      wrapper: wrapper(hash),
+    expect(indexAt(hash, 'oneof', 4, ['body'])).toBe(2);
+    expect(indexAt(hash, 'd', 4, ['body&oneof=2'])).toBe(1);
+  });
+
+  it('does not apply a sibling field path marker', () => {
+    const hash = '#x/t=request&path=payment&oneof=1/iban';
+    expect(indexAt(hash, 'oneof', 2, ['payment'])).toBe(1);
+    expect(indexAt(hash, 'oneof', 2, ['channel'])).toBe(-1);
+  });
+
+  it('matches a field path regardless of case (links are lowercased)', () => {
+    expect(indexAt('#x/t=request&path=tripfilters[]&d=1/to', 'd', 2, ['tripFilters[]'])).toBe(1);
+  });
+
+  it('matches a legacy link that has no [] array-item markers', () => {
+    expect(indexAt('#x/t=response&c=200&path=items&d=1/name', 'd', 2, ['items[]'])).toBe(1);
+  });
+
+  it.each([
+    ['#x/t=request&path=&oneof=10/p10', 'oneof', [], 10],
+    ['#x/t=request&path=&oneof=10', 'oneof', [], 10],
+    ['#x/t=request&path=&oneof=10&d=0/a', 'oneof', [], 10],
+    ['#x/t=request&path=&oneof=3/inner&oneof=10/q10', 'oneof', ['&oneof=3', 'inner'], 10],
+    ['#x/t=request&path=&d=10/r10', 'd', [], 10],
+  ])('reads the whole multi-digit index in %s', (hash, segment, fieldParentsName, expected) => {
+    expect(indexAt(hash, segment, 11, fieldParentsName)).toBe(expected);
+  });
+
+  it('returns -1 for a multi-digit index that exceeds count', () => {
+    expect(indexAt('#x/t=request&path=&oneof=12/p', 'oneof', 3, [])).toBe(-1);
+  });
+
+  function indexIn(itemId: string, hash: string, fieldParentsName: string[]) {
+    window.location.hash = hash;
+    const { result } = renderHook(() => useVariantIndexFromHash('oneof', 3, fieldParentsName), {
+      wrapper: ({ children }: { children: ReactNode }) => (
+        <MemoryRouter initialEntries={[{ hash }]}>
+          <JotaiProvider>
+            <ItemIdContext.Provider value={itemId}>{children}</ItemIdContext.Provider>
+          </JotaiProvider>
+        </MemoryRouter>
+      ),
     });
-    const { result: discResult } = renderHook(() => useVariantIndexFromHash('d', 4, 1), {
-      wrapper: wrapper(hash),
-    });
-    expect(oneOfResult.current).toBe(2);
-    expect(discResult.current).toBe(1);
+    return result.current;
+  }
+
+  it("ignores a hash that addresses another item's switcher at the same field path", () => {
+    const hash = '#test-item/t=request&path=pay&oneof=1/pa1';
+    expect(indexIn(TEST_ITEM_ID, hash, ['pay'])).toBe(1);
+    expect(indexIn('other-item', hash, ['pay'])).toBe(-1);
+  });
+
+  it('reads a link only in the section it addresses', () => {
+    const hash = '#test-item/t=response&c=200&path=pay&oneof=2/iban';
+    const indexInSection = (section: DeepLinkSectionValue) => {
+      window.location.hash = hash;
+      const { result } = renderHook(() => useVariantIndexFromHash('oneof', 3, ['pay']), {
+        wrapper: ({ children }: { children: ReactNode }) => (
+          <MemoryRouter initialEntries={[{ hash }]}>
+            <JotaiProvider>
+              <ItemIdContext.Provider value={TEST_ITEM_ID}>
+                <DeepLinkSectionContext.Provider value={section}>
+                  {children}
+                </DeepLinkSectionContext.Provider>
+              </ItemIdContext.Provider>
+            </JotaiProvider>
+          </MemoryRouter>
+        ),
+      });
+      return result.current;
+    };
+
+    expect(indexInSection({ t: 'response', c: '200' })).toBe(2);
+    expect(indexInSection({ t: 'request' })).toBe(-1);
+    expect(indexInSection({ t: 'response', c: '404' })).toBe(-1);
+    expect(indexInSection({ t: 'request', cb: 'onEvent' })).toBe(-1);
+  });
+
+  it('reads a link to the overview, whose item has an empty slug', () => {
+    expect(indexIn('/', '#path=method&oneof=2/currency', ['method'])).toBe(2);
+    expect(
+      indexIn('/', '#pets/createorder/t=request&path=method&oneof=2/currency', ['method']),
+    ).toBe(-1);
   });
 });
 
 describe('deep-link reload restoration', () => {
+  const REQUEST_STORE_ID = buildVariantStoreId(TEST_ITEM_ID, { t: 'request' });
+
   afterEach(() => {
     window.location.hash = '';
   });
@@ -631,10 +745,10 @@ describe('deep-link reload restoration', () => {
       label: switcherLabel.ONE_OF,
       options: {
         iv0: opt({
-          properties: { targetProp: { type: 'string' } as PropertyType },
+          properties: { targetProp: { type: 'string' } },
         }),
         iv1: opt({
-          properties: { otherProp: { type: 'string' } as PropertyType },
+          properties: { otherProp: { type: 'string' } },
         }),
       },
     };
@@ -642,7 +756,7 @@ describe('deep-link reload restoration', () => {
       type: 'oneOf',
       label: switcherLabel.ONE_OF,
       options: {
-        v0: opt({ properties: { alpha: { type: 'string' } as PropertyType } }),
+        v0: opt({ properties: { alpha: { type: 'string' } } }),
         v1: opt({ switcher: innerOneOf }),
       },
     };
@@ -659,16 +773,16 @@ describe('deep-link reload restoration', () => {
 
   it('restores a nested discriminator branch from the hash on reload', () => {
     const innerDisc = makeDiscriminator('innerKind', {
-      ia: { properties: { iaField: { type: 'string' } as PropertyType } },
-      ib: { properties: { ibField: { type: 'string' } as PropertyType } },
+      ia: { properties: { iaField: { type: 'string' } } },
+      ib: { properties: { ibField: { type: 'string' } } },
     });
     const outerDisc = makeDiscriminator('outerKind', {
       oa: {
         properties: {
-          sub: { type: 'object', switcher: innerDisc } as PropertyType,
+          sub: { type: 'object', switcher: innerDisc },
         },
       },
-      ob: { properties: { obField: { type: 'string' } as PropertyType } },
+      ob: { properties: { obField: { type: 'string' } } },
     });
     const property = makeSwitcherProperty(outerDisc);
 
@@ -686,8 +800,8 @@ describe('deep-link reload restoration', () => {
       type: 'oneOf',
       label: switcherLabel.ONE_OF,
       options: {
-        v0: opt({ properties: { x: { type: 'string' } as PropertyType } }),
-        v1: opt({ properties: { y: { type: 'string' } as PropertyType } }),
+        v0: opt({ properties: { x: { type: 'string' } } }),
+        v1: opt({ properties: { y: { type: 'string' } } }),
       },
     };
     const { container } = renderAtHash(
@@ -708,8 +822,8 @@ describe('deep-link reload restoration', () => {
       type: 'oneOf',
       label: switcherLabel.ONE_OF,
       options: {
-        v0: opt({ properties: { x: { type: 'string' } as PropertyType } }),
-        v1: opt({ properties: { y: { type: 'string' } as PropertyType } }),
+        v0: opt({ properties: { x: { type: 'string' } } }),
+        v1: opt({ properties: { y: { type: 'string' } } }),
       },
     };
     const { container } = renderAtHash(
@@ -727,8 +841,8 @@ describe('deep-link reload restoration', () => {
 
   it('emits &d=<idx> in child deep-link ids for a root discriminator', () => {
     const switcher = makeDiscriminator('kind', {
-      a: { properties: { aField: { type: 'string' } as PropertyType } },
-      b: { properties: { bField: { type: 'string' } as PropertyType } },
+      a: { properties: { aField: { type: 'string' } } },
+      b: { properties: { bField: { type: 'string' } } },
     });
     const { container } = renderAtHash(
       <SwitcherRenderer
@@ -748,8 +862,8 @@ describe('deep-link reload restoration', () => {
       type: 'oneOf',
       label: switcherLabel.ONE_OF,
       options: {
-        v0: opt({ properties: { x: { type: 'string' } as PropertyType } }),
-        v1: opt({ properties: { y: { type: 'string' } as PropertyType } }),
+        v0: opt({ properties: { x: { type: 'string' } } }),
+        v1: opt({ properties: { y: { type: 'string' } } }),
       },
     };
     renderAtHash(
@@ -765,8 +879,8 @@ describe('deep-link reload restoration', () => {
 
   it('seeds activeDiscriminator in the itemStore from a hash discriminator marker', () => {
     const switcher = makeDiscriminator('method', {
-      a: { properties: { aField: { type: 'string' } as PropertyType } },
-      b: { properties: { bField: { type: 'string' } as PropertyType } },
+      a: { properties: { aField: { type: 'string' } } },
+      b: { properties: { bField: { type: 'string' } } },
     });
 
     const { store } = renderAtHash(
@@ -778,7 +892,7 @@ describe('deep-link reload restoration', () => {
       '#test-item/t=request&path=&d=1/bfield',
     );
 
-    expect(store.get(itemStoreAtom(TEST_ITEM_ID)).activeDiscriminator['method']).toBe(1);
+    expect(store.get(itemStoreAtom(REQUEST_STORE_ID)).activeDiscriminator['method']).toBe(1);
   });
 
   it('seeds activeOneOf in the itemStore from a hash oneof marker', () => {
@@ -786,8 +900,8 @@ describe('deep-link reload restoration', () => {
       type: 'oneOf',
       label: switcherLabel.ONE_OF,
       options: {
-        v0: opt({ properties: { x: { type: 'string' } as PropertyType } }),
-        v1: opt({ properties: { y: { type: 'string' } as PropertyType } }),
+        v0: opt({ properties: { x: { type: 'string' } } }),
+        v1: opt({ properties: { y: { type: 'string' } } }),
       },
     };
 
@@ -800,13 +914,44 @@ describe('deep-link reload restoration', () => {
       '#test-item/t=request&path=&oneof=1/y',
     );
 
-    expect(store.get(itemStoreAtom(TEST_ITEM_ID)).activeOneOf['One of:']).toBe(1);
+    expect(store.get(itemStoreAtom(REQUEST_STORE_ID)).activeOneOf['One of:']).toBe(1);
+  });
+
+  it('seeds only the switcher whose field path the hash addresses', () => {
+    const switcher = (a: string, b: string): SwitcherType => ({
+      type: 'oneOf',
+      label: switcherLabel.ONE_OF,
+      options: {
+        [a]: opt({ properties: { [a]: { type: 'string' } } }),
+        [b]: opt({ properties: { [b]: { type: 'string' } } }),
+      },
+    });
+
+    const { store } = renderAtHash(
+      <>
+        <SwitcherRenderer
+          property={makeSwitcherProperty(switcher('cardNumber', 'iban'))}
+          level={2}
+          fieldParentsName={['payment']}
+        />
+        <SwitcherRenderer
+          property={makeSwitcherProperty(switcher('url', 'room'))}
+          level={2}
+          fieldParentsName={['channel']}
+        />
+      </>,
+      '#test-item/t=request&path=payment&oneof=1/iban',
+    );
+
+    expect(store.get(itemStoreAtom(REQUEST_STORE_ID)).activeOneOf).toEqual({
+      'payment/One of:': 1,
+    });
   });
 
   it('does not seed the itemStore when the hash has no variant marker', () => {
     const switcher = makeDiscriminator('method', {
-      a: { properties: { aField: { type: 'string' } as PropertyType } },
-      b: { properties: { bField: { type: 'string' } as PropertyType } },
+      a: { properties: { aField: { type: 'string' } } },
+      b: { properties: { bField: { type: 'string' } } },
     });
 
     const { store } = renderAtHash(
@@ -817,7 +962,9 @@ describe('deep-link reload restoration', () => {
       />,
     );
 
-    expect(store.get(itemStoreAtom(TEST_ITEM_ID)).activeDiscriminator['method']).toBeUndefined();
+    expect(
+      store.get(itemStoreAtom(REQUEST_STORE_ID)).activeDiscriminator['method'],
+    ).toBeUndefined();
   });
 });
 
@@ -827,31 +974,77 @@ describe('SwitcherRenderer description and variant behavior', () => {
       type: 'oneOf',
       label: switcherLabel.ONE_OF,
       options: {
-        v0: opt({ properties: { x: { type: 'string' } as PropertyType } }),
+        v0: opt({ properties: { x: { type: 'string' } } }),
       },
     };
     const property: PropertyType = {
       type: 'object',
       switcher: oneOf,
       description: 'parent fallback text',
-    } as PropertyType;
+    };
 
     renderWithStore(<SwitcherRenderer property={property} level={0} fieldParentsName={[]} />);
     expect(screen.getByText('parent fallback text')).toBeInTheDocument();
   });
 
-  it('should only include the discriminator property from base properties, dropping siblings', () => {
+  it("keeps the host's own properties next to the active variant's", () => {
     const discriminator = makeDiscriminator('kind', {
-      a: { properties: { aField: { type: 'string' } as PropertyType } },
+      a: { properties: { aField: { type: 'string' } } },
     });
     const property = makeSwitcherProperty(discriminator, {
-      kind: { type: 'string' } as PropertyType,
-      leakedSibling: { type: 'string' } as PropertyType,
+      kind: { type: 'string' },
+      hostSibling: { type: 'string' },
     });
 
     renderWithStore(<SwitcherRenderer property={property} level={0} fieldParentsName={[]} />);
-    expect(screen.queryByText('leakedSibling')).not.toBeInTheDocument();
+    expect(screen.getByText('hostSibling')).toBeInTheDocument();
     expect(screen.getByText('aField')).toBeInTheDocument();
+  });
+
+  it('shares only the discriminator property when the host is one of the variants', () => {
+    const discriminator: SwitcherType = {
+      ...makeDiscriminator('petType', {
+        cat: { properties: { petType: { type: 'string' }, huntingSkill: { type: 'string' } } },
+        dog: { properties: { petType: { type: 'string' }, packSize: { type: 'integer' } } },
+      }),
+      sharesOnlyDiscriminator: true,
+    };
+    const property = makeSwitcherProperty(discriminator, {
+      petType: { type: 'string' },
+      huntingSkill: { type: 'string' },
+    });
+    renderWithStore(<SwitcherRenderer property={property} level={0} fieldParentsName={[]} />);
+    fireEvent.click(screen.getByText('dog'));
+
+    expect(screen.getByText('packSize')).toBeInTheDocument();
+    expect(screen.queryByText('huntingSkill')).not.toBeInTheDocument();
+  });
+
+  it('renders the host required property for every discriminator variant', () => {
+    const discriminator = makeDiscriminator('method', {
+      card: {
+        properties: {
+          method: { type: 'string', const: 'card' },
+          last4: { type: 'string' },
+        },
+      },
+      bank: {
+        properties: {
+          method: { type: 'string', const: 'bank' },
+          iban: { type: 'string' },
+        },
+      },
+    });
+    const property = makeSwitcherProperty(discriminator, {
+      method: { type: 'string', description: 'Payment method' },
+      amount: { type: 'number', isRequired: true },
+    });
+
+    renderWithStore(<SwitcherRenderer property={property} level={0} fieldParentsName={[]} />);
+
+    const renderedNames = screen.getAllByText(/^(method|amount|last4|iban)$/);
+    expect(renderedNames.map((node) => node.textContent)).toEqual(['amount', 'method', 'last4']);
+    expect(screen.getByText('required')).toBeInTheDocument();
   });
 
   it('should render the variant title in parentheses for a primitive oneOf option', () => {
@@ -869,7 +1062,7 @@ describe('SwitcherRenderer description and variant behavior', () => {
     const property: PropertyType = {
       type: 'string',
       switcher: oneOf,
-    } as PropertyType;
+    };
 
     renderWithStore(<SwitcherRenderer property={property} level={0} fieldParentsName={[]} />);
     expect(screen.getByText('(ScalarTitle)')).toBeInTheDocument();
@@ -879,15 +1072,15 @@ describe('SwitcherRenderer description and variant behavior', () => {
     const discriminator = makeDiscriminator('itemType', {
       coffee: {
         properties: {
-          name: { type: 'string' } as PropertyType,
-          status: { type: 'string' } as PropertyType,
-          itemType: { type: 'string' } as PropertyType,
-          brewingMethod: { type: 'string' } as PropertyType,
+          name: { type: 'string' },
+          status: { type: 'string' },
+          itemType: { type: 'string' },
+          brewingMethod: { type: 'string' },
         },
       },
     });
     const property = makeSwitcherProperty(discriminator, {
-      itemType: { type: 'string' } as PropertyType,
+      itemType: { type: 'string' },
     });
 
     renderWithStore(<SwitcherRenderer property={property} level={0} fieldParentsName={[]} />);
@@ -908,7 +1101,7 @@ describe('OneOfSwitcher variant nesting chrome', () => {
       type: 'oneOf',
       label: switcherLabel.ONE_OF,
       options: {
-        object: opt({ properties: { id: { type: 'string' } as PropertyType } }),
+        object: opt({ properties: { id: { type: 'string' } } }),
         null: opt({ typeLabel: 'null' }),
       },
     };
@@ -922,13 +1115,13 @@ describe('OneOfSwitcher variant nesting chrome', () => {
     const innerDiscriminator = makeDiscriminator('trigger', {
       MANUAL: {
         properties: {
-          trigger: { type: 'string' } as PropertyType,
-          note: { type: 'string' } as PropertyType,
+          trigger: { type: 'string' },
+          note: { type: 'string' },
         },
       },
       SCHEDULED: {
         properties: {
-          trigger: { type: 'string' } as PropertyType,
+          trigger: { type: 'string' },
         },
       },
     });
@@ -999,7 +1192,6 @@ describe('SwitcherRenderer schema title link', () => {
     ];
     store.set(globalStoreAtom, {
       items,
-      replayDefinition: null,
       store: { schemaStore: {}, exampleStore: {}, securitySchemeStore: {} },
       options: normalizeOptions({
         specType: 'openapi',

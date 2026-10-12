@@ -1,10 +1,4 @@
 import type { Node } from '@markdoc/markdoc';
-import type {
-  ConfigureRequestValues,
-  ConfigureServerRequestValues,
-} from '@redocly/theme/ext/configure';
-
-export type { ConfigureRequestValues, ConfigureServerRequestValues };
 
 export type ObjectValues<T> = T[keyof T];
 
@@ -17,12 +11,6 @@ export type OpenAPIRef = {
 
 export type Referenced<T> = T | OpenAPIRef;
 
-export type SeoData = {
-  title?: string;
-  description?: string;
-  keywords?: string;
-  image?: string;
-};
 
 export type ExternalDocsData = {
   url: string;
@@ -63,14 +51,6 @@ export const apiSpecType = {
 
 export type ApiSpecType = ObjectValues<typeof apiSpecType>;
 
-export const tagKind = {
-  NAV: 'nav',
-  BADGE: 'badge',
-  AUDIENCE: 'audience',
-} as const;
-
-export type TagKind = ObjectValues<typeof tagKind>;
-
 export const contentType = {
   OVERVIEW: 'overview',
   GROUP: 'group',
@@ -109,6 +89,24 @@ export const securitySchemeType = {
 } as const;
 
 export type SecuritySchemeType = ObjectValues<typeof securitySchemeType>;
+
+export const asyncApiSecuritySchemeType = {
+  USER_PASSWORD: 'userPassword',
+  API_KEY: 'apiKey',
+  X509: 'X509',
+  SYMMETRIC_ENCRYPTION: 'symmetricEncryption',
+  ASYMMETRIC_ENCRYPTION: 'asymmetricEncryption',
+  HTTP_API_KEY: 'httpApiKey',
+  HTTP: 'http',
+  OAUTH2: 'oauth2',
+  OPEN_ID_CONNECT: 'openIdConnect',
+  PLAIN: 'plain',
+  SCRAM_SHA256: 'scramSha256',
+  SCRAM_SHA512: 'scramSha512',
+  GSSAPI: 'gssapi',
+} as const;
+
+export type AsyncApiSecuritySchemeType = ObjectValues<typeof asyncApiSecuritySchemeType>;
 
 export const securitySchemeIn = {
   QUERY: 'query',
@@ -163,8 +161,6 @@ export const panelKind = {
   GRAPHQL_TYPE_SAMPLE: 'graphql-type-sample',
   MCP_EXAMPLE: 'mcp-example',
 } as const;
-
-export type PanelKind = ObjectValues<typeof panelKind>;
 
 export const schemaKind = {
   JSON_SCHEMA: 'json-schema',

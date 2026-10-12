@@ -55,7 +55,6 @@ function renderBody(opts: { specType?: string; schemasExpansionLevel?: number } 
       metadata: {},
       ...(schemasExpansionLevel !== undefined ? { schemasExpansionLevel } : {}),
     }),
-    replayDefinition: null,
   });
 
   return render(

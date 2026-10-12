@@ -27,7 +27,6 @@ function renderWithMaxEnum(limit: number, values: unknown[]) {
     items: [],
     store: emptyStore,
     options,
-    replayDefinition: null,
   });
 
   return render(

@@ -1,13 +1,13 @@
-import { useAtomValue, useSetAtom } from 'jotai';
+import {
+  useSetAtom,
+} from 'jotai';
 import { useEffect, useMemo } from 'react';
 
 import type { ApiItem } from '../types/store.js';
 import type { RouteItem, RouteIndex, TagWithItems } from '../utils/routing.js';
 
 import { routeIndexAtom } from '../jotai/routes.js';
-import { globalOptionsAtom } from '../jotai/store.js';
 import { buildRouteIndex, collectRoutesRecursively } from '../utils/routing.js';
-import { collectOverviewPartialSectionIds } from '../utils/overview-partial-sections.js';
 
 type UseApiDocsRoutesResult = {
   routes: RouteItem[];
@@ -19,7 +19,6 @@ export function useApiDocsRoutes(
   basePath: string = '/',
 ): UseApiDocsRoutesResult {
   const setRouteIndex = useSetAtom(routeIndexAtom);
-  const partials = useAtomValue(globalOptionsAtom).markdocOptions?.partials;
 
   const { routes, routeIndex } = useMemo(() => {
     const allRoutes: RouteItem[] = [];
@@ -34,12 +33,16 @@ export function useApiDocsRoutes(
     });
 
     const index = buildRouteIndex(allRoutes, tagsWithItems, basePath, allTagsWithItems);
-    const overviewPartialSectionIds = collectOverviewPartialSectionIds(
-      index.rootPage?.content,
-      partials,
-    );
-    return { routes: allRoutes, routeIndex: { ...index, overviewPartialSectionIds } };
-  }, [apiItems, basePath, partials]);
+    return {
+      routes: allRoutes,
+      routeIndex: {
+        ...index,
+      },
+    };
+  }, [
+    apiItems,
+    basePath,
+  ]);
 
   // Publish to the atom for outside consumers (scroll-spy, sidebar).
   useEffect(() => {

@@ -3,6 +3,7 @@ import { createStore } from 'jotai';
 
 import {
   buildVariantStateKey,
+  buildVariantStoreId,
   expandableSectionAtom,
   expandableSectionKeysAtom,
   itemStoreAtom,
@@ -257,5 +258,38 @@ describe('expandableSectionKeysAtom', () => {
     expect(listener).toHaveBeenCalledTimes(2);
 
     unsub();
+  });
+});
+
+describe('buildVariantStoreId', () => {
+  it('gives each OpenAPI request, response code and callback its own store', () => {
+    expect(buildVariantStoreId('/pets/create', { t: 'request' })).toBe('/pets/create#t=request');
+    expect(buildVariantStoreId('/pets/create', { t: 'response', c: '200' })).toBe(
+      '/pets/create#t=response&c=200',
+    );
+    expect(buildVariantStoreId('/pets/create', { t: 'request', cb: 'onEvent' })).toBe(
+      '/pets/create#cb=onEvent&t=request',
+    );
+  });
+
+  it('gives sections that render the same schema one store', () => {
+    const payment = 'components/schemas/Payment';
+    expect(buildVariantStoreId('/pets/create', { t: 'request', schemaId: payment })).toBe(
+      buildVariantStoreId('/pets/create', { t: 'response', c: '200', schemaId: payment }),
+    );
+    expect(buildVariantStoreId('/pets/create', { t: 'request', schemaId: payment })).not.toBe(
+      buildVariantStoreId('/pets/create', {
+        t: 'response',
+        c: '200',
+        schemaId: 'components/schemas/Receipt',
+      }),
+    );
+  });
+
+  it('keeps the item store for sections without a request or response side', () => {
+    expect(buildVariantStoreId('/pets/create', undefined)).toBe('/pets/create');
+    expect(buildVariantStoreId('/tools/search', { t: 'input-schema' })).toBe('/tools/search');
+    expect(buildVariantStoreId('/channels/light', { t: 'payload' })).toBe('/channels/light');
+    expect(buildVariantStoreId('', { t: 'request' })).toBe('');
   });
 });

@@ -14,7 +14,7 @@ function stripRefPrefix(ref: string): string {
   return ref.startsWith('#/') ? ref.slice(2) : ref;
 }
 
-export type EffectiveDiscriminator = {
+type EffectiveDiscriminator = {
   propertyName: string;
   mapping: Record<string, string>;
   defaultMapping?: string;
@@ -66,77 +66,6 @@ export function findEffectiveDiscriminator(
   return undefined;
 }
 
-export function applyDiscriminatorValue(
-  sample: Record<string, unknown>,
-  variantSchemaId: string,
-  schemaStore: Record<string, SchemaEntry>,
-  mappingKey?: string,
-): void {
-  for (const entry of Object.values(schemaStore)) {
-    const disc = getDiscriminator(entry.data);
-    if (!disc?.propertyName || !disc.mapping) continue;
-    if (!(disc.propertyName in sample)) continue;
-
-    if (mappingKey !== undefined) {
-      const mapped = disc.mapping[mappingKey];
-      if (mapped && stripRefPrefix(mapped) === variantSchemaId) {
-        sample[disc.propertyName] = mappingKey;
-        return;
-      }
-      continue;
-    }
-
-    if (disc.defaultMapping && stripRefPrefix(disc.defaultMapping) === variantSchemaId) {
-      return;
-    }
-
-    for (const [name, ref] of Object.entries(disc.mapping)) {
-      if (stripRefPrefix(ref) === variantSchemaId) {
-        sample[disc.propertyName] = name;
-        return;
-      }
-    }
-  }
-}
-
-type HoistInput = {
-  oneOfList: unknown[];
-  oneOfOwner: Record<string, unknown>;
-  extraSiblings: unknown[];
-  fallbackSchemaId: string;
-  schemaStore: Record<string, SchemaEntry>;
-  activeIdx?: number;
-};
-
-function buildHoistedSchema({
-  oneOfList,
-  oneOfOwner,
-  extraSiblings,
-  fallbackSchemaId,
-  schemaStore,
-  activeIdx = 0,
-}: HoistInput): { schema: Record<string, unknown>; variantSchemaId: string } | undefined {
-  const safeIdx = activeIdx >= 0 && activeIdx < oneOfList.length ? activeIdx : 0;
-  const activeRaw = oneOfList[safeIdx];
-  const activeVariant = derefSchemaFromStore(activeRaw, schemaStore);
-  if (!activeVariant) return undefined;
-
-  const { oneOf: _o, anyOf: _a, ...ownerSiblings } = oneOfOwner;
-
-  const siblings = [...extraSiblings, ownerSiblings].filter(isNonEmptyObject);
-  const existingAllOf = Array.isArray(activeVariant.allOf)
-    ? (activeVariant.allOf as unknown[])
-    : [];
-  const mergedAllOf = [...existingAllOf, ...siblings];
-
-  const { allOf: _drop, ...activeVariantRest } = activeVariant;
-  const schema: Record<string, unknown> = mergedAllOf.length
-    ? { ...activeVariantRest, allOf: mergedAllOf }
-    : { ...activeVariantRest };
-
-  const variantSchemaId = resolveStoreIdFromRef(activeRaw, schemaStore) ?? fallbackSchemaId;
-  return { schema, variantSchemaId };
-}
 
 function isNonEmptyObject(value: unknown): value is Record<string, unknown> {
   return (
@@ -144,16 +73,6 @@ function isNonEmptyObject(value: unknown): value is Record<string, unknown> {
   );
 }
 
-function derefSchemaFromStore(
-  value: unknown,
-  schemaStore: Record<string, SchemaEntry>,
-): Record<string, unknown> | undefined {
-  if (!value || typeof value !== 'object') return undefined;
-  const record = value as Record<string, unknown>;
-  if (typeof record.$ref !== 'string') return record;
-  const id = stripRefPrefix(record.$ref);
-  return schemaStore[id]?.data;
-}
 
 function resolveStoreIdFromRef(
   value: unknown,
@@ -166,7 +85,7 @@ function resolveStoreIdFromRef(
   return schemaStore[id] ? id : undefined;
 }
 
-export type SchemaVariantOption = {
+type SchemaVariantOption = {
   label: string;
   schemaId: string;
   mappingKey?: string;
@@ -174,11 +93,6 @@ export type SchemaVariantOption = {
   isDeprecated?: boolean;
 };
 
-export type HoistedVariant = {
-  schema: Record<string, unknown>;
-  variantSchemaId: string;
-  mappingKey?: string;
-};
 
 export type SchemaVariantAxis = {
   kind: 'discriminator' | 'oneOf' | 'anyOf';
@@ -211,7 +125,7 @@ function variantSchemaForLabelDerivation(
     merged['x-original-ref'] = record.$ref;
     return merged;
   }
-  return record as SchemaNode;
+  return record;
 }
 
 /**
@@ -289,7 +203,7 @@ function buildOneOfAxis(
   for (let i = 0; i < variants.length; i++) {
     const raw = variants[i];
     const variantNode = variantSchemaForLabelDerivation(raw, schemaStore);
-    const { label: baseLabel } = deriveVariantLabel(variantNode, parentSchema as SchemaNode);
+    const { label: baseLabel } = deriveVariantLabel(variantNode, parentSchema);
     const dedupCount = (seen.get(baseLabel) ?? 0) + 1;
     seen.set(baseLabel, dedupCount);
     const label = dedupCount === 1 ? baseLabel : `${baseLabel} (${dedupCount})`;
@@ -446,6 +360,8 @@ export function resolveActiveVariantIndex(
   const matches = Object.entries(stateRecord).filter(
     ([key]) =>
       key.endsWith(`/${axis.stateKey}`) ||
+      // `&d=0/style` is stored as `drink&d=0/style` when the host sits below a property
+      (axis.stateKey.startsWith('&') && key.endsWith(axis.stateKey)) ||
       // A bare `One of:` is a root switcher's key — never a suffix of nested axes.
       (key.includes('/') && axis.stateKey.endsWith(`/${key}`)),
   );
@@ -474,6 +390,26 @@ const LEAF_LABEL_SEPARATOR = ' / ';
 
 function declaresOwnVariants(data: Record<string, unknown>): boolean {
   return Array.isArray(data.oneOf) || Array.isArray(data.anyOf);
+}
+
+/**
+ * Whether the store rewrite samples `hostData` as the selected variant merged with the
+ * host's own keywords: the host declares the axis itself (not through an inherited
+ * discriminator), and the variant is not a discriminator host whose own variant would be lost.
+ */
+export function samplesVariantThroughHost(
+  hostData: Record<string, unknown> | undefined,
+  variantData: Record<string, unknown> | undefined,
+): boolean {
+  if (!hostData || !variantData || getDiscriminator(variantData)) return false;
+  return declaresVariantAxis(hostData);
+}
+
+/** Whether the sampler store rewrites this host: it declares the axis rather than inheriting it. */
+export function declaresVariantAxis(hostData: Record<string, unknown> | undefined): boolean {
+  return (
+    !!hostData && (declaresOwnVariants(hostData) || Boolean(getDiscriminator(hostData)?.mapping))
+  );
 }
 
 function hasStoredOptions(axis: SchemaVariantAxis): boolean {
@@ -517,7 +453,7 @@ function nestedAxisOf(
   return nested && hasStoredOptions(nested) ? nested : undefined;
 }
 
-export function collectVariantLeaves(
+function collectVariantLeaves(
   axis: SchemaVariantAxis,
   schemaStore: Record<string, SchemaEntry>,
   visited: ReadonlySet<string> = new Set(),
@@ -541,6 +477,32 @@ export function findSchemaVariantLeaves(
 ): SchemaVariantLeaf[] | undefined {
   const axis = findSchemaVariantAxis(schemaId, schemaStore, options);
   return axis && collectVariantLeaves(axis, schemaStore, new Set([schemaId]));
+}
+
+/**
+ * A variant picked inside another variant, merged with each host on its path, innermost first,
+ * each discriminator value stamped. For `Beverage → Coffee → Espresso`: `Espresso` + `Coffee`
+ * keywords + `style: espresso` + `Beverage` keywords + `kind: coffee`.
+ */
+function mergeNestedVariantWithHosts(
+  hostId: string,
+  nested: SchemaVariantLeaf,
+  schemaStore: Record<string, SchemaEntry>,
+): Record<string, unknown> | undefined {
+  let schema = schemaStore[nested.schemaId]?.data;
+  for (let level = nested.picks.length - 1; schema && level >= 0; level--) {
+    const { axis, idx } = nested.picks[level];
+    const outer = nested.picks[level - 1];
+    const levelHostId = outer ? outer.axis.options[outer.idx].schemaId : hostId;
+    const levelHost = schemaStore[levelHostId]?.data;
+    if (!levelHost) return undefined;
+    const merged = mergeHostSiblings(schema, levelHostId, levelHost);
+    schema =
+      axis.kind === 'discriminator'
+        ? injectDiscriminatorEnum(merged, axis.localPart, axis.options[idx].mappingKey)
+        : merged;
+  }
+  return schema;
 }
 
 /** The state fields selecting `picks` changes: each axis writes to the record its kind owns. */
@@ -597,129 +559,6 @@ function resolveActiveVariantOption(
   return active;
 }
 
-export function resolveActiveVariantSchemaId(
-  schemaId: string,
-  schemaStore: Record<string, SchemaEntry>,
-  activeDiscriminator?: Record<string, number>,
-  activeOneOf?: Record<string, number>,
-): string {
-  const active = resolveActiveVariantOption(
-    schemaId,
-    schemaStore,
-    activeDiscriminator,
-    activeOneOf,
-  );
-  return active?.schemaId ?? schemaId;
-}
-
-export function hoistActiveVariantSchemaForSampling(
-  schemaId: string,
-  schemaStore: Record<string, SchemaEntry>,
-  activeDiscriminator?: Record<string, number>,
-  activeOneOf?: Record<string, number>,
-): HoistedVariant | undefined {
-  const leaves = findSchemaVariantLeaves(schemaId, schemaStore);
-  const leaf = leaves?.[resolveActiveVariantLeafIndex(leaves, activeDiscriminator, activeOneOf)];
-  if (leaf && leaf.picks.length > 1) {
-    const data = schemaStore[leaf.schemaId]?.data;
-    return data && { schema: data, variantSchemaId: leaf.schemaId, mappingKey: leaf.mappingKey };
-  }
-
-  const state = { activeDiscriminator, activeOneOf };
-  const pinned = { ...state, ...withVariantPicks(state, leaf?.picks ?? []) };
-
-  const hoistedOneOfSchema = hoistActiveOneOfSchema(schemaId, schemaStore, pinned.activeOneOf);
-  if (hoistedOneOfSchema) return hoistedOneOfSchema;
-
-  const active = resolveActiveVariantOption(
-    schemaId,
-    schemaStore,
-    pinned.activeDiscriminator,
-    pinned.activeOneOf,
-  );
-  if (!active || active.schemaId === schemaId) return undefined;
-  const entry = schemaStore[active.schemaId];
-  if (!entry) return undefined;
-  // two mapping keys can name the same schema, so the id alone cannot say which
-  // option is selected — carry the key the sampler should stamp
-  return { schema: entry.data, variantSchemaId: active.schemaId, mappingKey: active.mappingKey };
-}
-
-function hoistActiveOneOfSchema(
-  schemaId: string,
-  schemaStore: Record<string, SchemaEntry>,
-  activeOneOf: Record<string, number> | undefined,
-): HoistedVariant | undefined {
-  const entry = schemaStore[schemaId];
-  if (!entry || getDiscriminator(entry.data)) return undefined;
-
-  const data = entry.data;
-
-  if (Array.isArray(data.oneOf) && data.oneOf.length > 0) {
-    const axis = buildOneOfAxis(data.oneOf, data, schemaStore, [], 'oneOf');
-    const activeIdx = axis ? resolveActiveVariantIndex(axis, undefined, activeOneOf) : 0;
-    return buildHoistedSchema({
-      oneOfList: data.oneOf,
-      oneOfOwner: data,
-      extraSiblings: [],
-      fallbackSchemaId: schemaId,
-      schemaStore,
-      activeIdx,
-    });
-  }
-
-  if (Array.isArray(data.anyOf) && data.anyOf.length > 0) {
-    const axis = buildOneOfAxis(data.anyOf, data, schemaStore, [], 'anyOf');
-    const activeIdx = axis ? resolveActiveVariantIndex(axis, undefined, activeOneOf) : 0;
-    return buildHoistedSchema({
-      oneOfList: data.anyOf,
-      oneOfOwner: data,
-      extraSiblings: [],
-      fallbackSchemaId: schemaId,
-      schemaStore,
-      activeIdx,
-    });
-  }
-
-  if (Array.isArray(data.allOf)) {
-    let oneOfOwner: Record<string, unknown> | undefined;
-    let oneOfList: unknown[] | undefined;
-    let compositionKind: 'oneOf' | 'anyOf' = 'oneOf';
-    const extraSiblings: unknown[] = [];
-
-    for (const rawEntry of data.allOf) {
-      const candidate =
-        derefSchemaFromStore(rawEntry, schemaStore) ?? (rawEntry as Record<string, unknown>);
-      const candidateOneOf = Array.isArray(candidate.oneOf)
-        ? (candidate.oneOf as unknown[])
-        : Array.isArray(candidate.anyOf)
-          ? (candidate.anyOf as unknown[])
-          : undefined;
-
-      if (!oneOfList && candidateOneOf?.length && !getDiscriminator(candidate)) {
-        oneOfOwner = candidate;
-        oneOfList = candidateOneOf;
-        compositionKind = Array.isArray(candidate.oneOf) ? 'oneOf' : 'anyOf';
-      } else {
-        extraSiblings.push(rawEntry);
-      }
-    }
-
-    if (!oneOfList || !oneOfOwner) return undefined;
-    const axis = buildOneOfAxis(oneOfList, oneOfOwner, schemaStore, [], compositionKind);
-    const activeIdx = axis ? resolveActiveVariantIndex(axis, undefined, activeOneOf) : 0;
-    return buildHoistedSchema({
-      oneOfList,
-      oneOfOwner,
-      extraSiblings,
-      fallbackSchemaId: schemaId,
-      schemaStore,
-      activeIdx,
-    });
-  }
-
-  return undefined;
-}
 
 // Array items are keyed with a `[]` suffix on the parent segment, same as ArrayRenderer.
 function itemsPath(path: string[]): string[] {
@@ -829,7 +668,7 @@ export function applyActiveVariantsToSchema(
  * which samples `{}` only when the referenced schema's top level infers as an object.
  * Variant rewrites replace an object host (`type: 'object'`) with an allOf-rooted
  * variant that carries no top-level `type`, so a back-reference into the host would
- * sample as `null` where legacy (fed the raw spec) produced `{}`. Keep the host's
+ * sample as `null` where sampling the raw spec gives `{}`. Keep the host's
  * declared type on the rewritten entry: discriminator variants allOf-inherit the
  * host, and a `type` sibling of oneOf/anyOf constrains every variant, so the
  * effective type is unchanged either way.
@@ -853,6 +692,16 @@ export function applyActiveVariantsToStore(
     if (!entry.data) {
       continue;
     }
+    const leaves = declaresVariantAxis(entry.data)
+      ? findSchemaVariantLeaves(id, schemaStore)
+      : undefined;
+    const leaf = leaves?.[resolveActiveVariantLeafIndex(leaves, activeDiscriminator, activeOneOf)];
+    const nestedLeaf =
+      leaf && leaf.picks.length > 1 && mergeNestedVariantWithHosts(id, leaf, schemaStore);
+    if (nestedLeaf) {
+      resolved[id] = preserveHostType(nestedLeaf, entry.data);
+      continue;
+    }
     const discriminator = getDiscriminator(entry.data);
     if (
       discriminator?.propertyName &&
@@ -862,9 +711,9 @@ export function applyActiveVariantsToStore(
       const variantData =
         active && active.schemaId !== id ? schemaStore[active.schemaId]?.data : undefined;
       if (variantData) {
-        const inlined = inlineBackRefToHost(variantData, id, entry.data);
+        const merged = mergeHostSiblings(variantData, id, entry.data);
         resolved[id] = preserveHostType(
-          injectDiscriminatorEnum(inlined, discriminator.propertyName, active?.mappingKey),
+          injectDiscriminatorEnum(merged, discriminator.propertyName, active?.mappingKey),
           entry.data,
         );
       } else {
@@ -889,7 +738,7 @@ export function applyActiveVariantsToStore(
       if (!activeOption?.schemaId || !schemaStore[activeOption.schemaId]) continue;
 
       const variantData = schemaStore[activeOption.schemaId].data;
-      resolved[id] = preserveHostType(inlineBackRefToHost(variantData, id, entry.data), entry.data);
+      resolved[id] = preserveHostType(mergeHostSiblings(variantData, id, entry.data), entry.data);
       rewritten = true;
       break;
     }
@@ -930,7 +779,7 @@ function injectDiscriminatorEnum(
   if (Array.isArray(schema.allOf)) {
     return { ...schema, allOf: [...schema.allOf, enumChunk] };
   }
-  return { allOf: [schema, enumChunk] };
+  return withRootXml({ allOf: [schema, enumChunk] }, schema);
 }
 
 function hostRefCandidates(hostId: string): string[] {
@@ -943,21 +792,53 @@ function hostRefCandidates(hostId: string): string[] {
   return Array.from(refs);
 }
 
-function stripVariantAxisFromHost(hostData: Record<string, unknown>): Record<string, unknown> {
-  const { discriminator: _d, oneOf: _o, anyOf: _a, ...rest } = hostData;
+/** Host keywords shared by every variant; a host sample value describes one variant only. */
+function hostKeywordsForVariants(hostData: Record<string, unknown>): Record<string, unknown> {
+  const {
+    discriminator: _d,
+    oneOf: _o,
+    anyOf: _a,
+    example: _e,
+    examples: _es,
+    default: _df,
+    ...rest
+  } = hostData;
   return rest;
 }
 
-function inlineBackRefToHost(
+const ANNOTATION_ONLY_HOST_KEYS = new Set(['type', 'title', 'description']);
+
+/** The sampler names the XML root element from the top-level `xml`, which an allOf wrapper hides. */
+function withRootXml(
+  wrapper: Record<string, unknown>,
+  wrapped: Record<string, unknown>,
+): Record<string, unknown> {
+  return wrapped.xml === undefined ? wrapper : { ...wrapper, xml: wrapped.xml };
+}
+
+/** The variant with the host keywords applied; host refs inside it are inlined, not followed. */
+function mergeHostSiblings(
   variantData: Record<string, unknown>,
   hostId: string,
   hostData: Record<string, unknown>,
 ): Record<string, unknown> {
-  const candidates = hostRefCandidates(hostId);
-  if (!containsRef(variantData, candidates)) return variantData;
+  const refs = hostRefCandidates(hostId);
+  const host = hostKeywordsForVariants(hostData);
+  const variant = containsRef(variantData, refs)
+    ? (replaceRefsDeep(variantData, refs, host) as Record<string, unknown>)
+    : variantData;
+  const hasSiblings = Object.keys(host).some((key) => !ANNOTATION_ONLY_HOST_KEYS.has(key));
+  return inheritsHost(variantData, hostId) || !hasSiblings
+    ? variant
+    : withRootXml({ allOf: [host, variant] }, variant);
+}
 
-  const inlinedHost = stripVariantAxisFromHost(hostData);
-  return replaceRefsDeep(variantData, candidates, inlinedHost) as Record<string, unknown>;
+function inheritsHost(variantData: Record<string, unknown>, hostId: string): boolean {
+  const refs = hostRefCandidates(hostId);
+  return (
+    Array.isArray(variantData.allOf) &&
+    variantData.allOf.some((part) => isNonEmptyObject(part) && refs.includes(part.$ref as string))
+  );
 }
 
 function containsRef(node: unknown, refs: string[]): boolean {

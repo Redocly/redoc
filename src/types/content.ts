@@ -6,6 +6,7 @@ import type { BadgeData, ServerData, nodeTypes, panelKind } from './common.js';
 import type { GroupItem, ApiItemContent, SecuritySchemeEntry } from './store.js';
 import type { AsyncAPISchema, BrokerData } from './asyncapi.js';
 import type { BadgeType, ExampleType } from './schema.js';
+import type { FormFieldEncoding } from '../utils/form-urlencoded.js';
 
 export type { ApiItemContent };
 
@@ -201,6 +202,7 @@ export type ItemContentNode = {
     payloadLabel?: string;
     headers?: AsyncAPISchema;
     externalDocs?: { url: string; description?: string | Node[] | Node };
+    correlationId?: { location: string; description?: string | Node[] | Node };
   }>;
 
   values?: Array<{
@@ -226,11 +228,14 @@ export type SecuritySchemeDetail = {
   deprecated?: boolean;
 };
 
+/** Schemes required together; separate requirements are alternatives. */
+export type SecurityRequirementDetail = {
+  schemes: SecuritySchemeDetail[];
+};
+
 export type SecurityNode = {
   nodeType: typeof nodeTypes.SECURITY;
-  requirements: Array<{
-    schemes: SecuritySchemeDetail[];
-  }>;
+  requirements: SecurityRequirementDetail[];
 };
 
 
@@ -440,7 +445,6 @@ export type MessageReferencesPanelItem = {
   referencesByMessageKey: Record<string, MessageReferencesGroups>;
 };
 
-
 export type DefinitionCodeSample = {
   lang: string;
   label?: string;
@@ -457,8 +461,6 @@ export type CodeSamplePanelItem = BaseExamplePanelItem & {
     name?: string;
     description?: string;
     variables?: Record<string, { default?: string }>;
-    /** Set on entries injected by `mergeInMockServer` (never present in specs). */
-    isMockServer?: boolean;
   }[];
   exampleIds?: string[];
   mediaTypes?: string[];
@@ -472,7 +474,6 @@ export type ResponseExamplesPanelItem = BaseExamplePanelItem & {
   /** Webhook response: the client sends it, so samples drop readOnly like a request. */
   isEvent?: boolean;
   hideHeaderTitle?: boolean;
-  exampleKey?: string;
 };
 
 export type GraphQLQueryPanelItem = BaseExamplePanelItem & {
@@ -505,8 +506,6 @@ export type CallbackPayloadPanelItem = BaseExamplePanelItem & {
     name?: string;
     description?: string;
     variables?: Record<string, { default?: string }>;
-    /** Set on entries injected by `mergeInMockServer` (never present in specs). */
-    isMockServer?: boolean;
   }[];
   definitionSamples?: DefinitionCodeSample[];
   mediaTypes?: string[];
@@ -602,36 +601,11 @@ export type McpNode = MultiChildPanelBase<
   | typeof panelKind.CONNECT_MCP_BUTTON
 >;
 
-export type CodeSampleRequestValues = {
-  security?: Record<string, unknown>;
-  envVariables?: Record<string, string>;
-  serverEnvVariables?: Record<string, Record<string, string>>;
-};
-
-export type CodeSampleParamEntry = {
-  name: string;
-  value: string;
-  serverValues?: Record<string, string>;
-  serializationMime?: string;
-};
-
-export type CodeSampleOperationData = {
-  method: string;
-  path: string;
-  serverUrl?: string;
-  headers?: CodeSampleParamEntry[];
-  queryString?: CodeSampleParamEntry[];
-  cookies?: CodeSampleParamEntry[];
-  pathParams?: { name: string; value: string }[];
-  body?: unknown;
-  bodyMediaType?: string;
-  requestValues?: CodeSampleRequestValues;
-  securityRequirements?: Array<Record<string, string[]>>;
-};
 
 export type MediaTypeContent = {
   schemaId?: string;
   exampleIds?: string[];
+  encoding?: Record<string, FormFieldEncoding>;
 };
 
 export type ResponseCodeEntry = {

@@ -33,7 +33,6 @@ function renderParametersSection(showExtensions: RedocConfig['showExtensions']) 
     items: [],
     store,
     options,
-    replayDefinition: null,
   });
 
   const node: ItemContentNode = {

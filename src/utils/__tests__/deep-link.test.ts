@@ -1,6 +1,5 @@
 import { describe, it, expect } from 'vitest';
 
-import type { ApiItemContent } from '../../types/store.js';
 import type { RouteItem } from '../routing.js';
 
 import { contentType } from '../../types/common.js';
@@ -56,7 +55,7 @@ describe('serializeFieldParams', () => {
 });
 
 describe('makeDeepLink', () => {
-  it('matches openapi-docs format: /{operationId}#{operationId}/{suffix}', () => {
+  it('uses the /{operationId}#{operationId}/{suffix} format', () => {
     expect(makeDeepLink('getUsers', 'request')).toBe('/getusers#getusers/request');
   });
 
@@ -224,6 +223,15 @@ describe('extractDeepLinkParamFromHash', () => {
     );
   });
 
+  it('reads a message id that contains "/" up to the next "&"', () => {
+    expect(
+      extractDeepLinkParamFromHash(
+        '#channels/cafe/points/messages&m=cafe/points.subscribe.message.1&t=payload',
+        'm',
+      ),
+    ).toBe('cafe/points.subscribe.message.1');
+  });
+
   it('extracts params from response suffixes', () => {
     expect(extractDeepLinkParamFromHash('#getuser/response&c=404/body', 'c')).toBe('404');
   });
@@ -366,7 +374,7 @@ describe('resolveLegacyHashToRoute', () => {
   const makeRoute = (path: string): RouteItem => ({
     path,
     label: path,
-    content: { contentType: contentType.GROUP, children: [] } as ApiItemContent,
+    content: { contentType: contentType.GROUP, children: [] },
   });
 
   const routeIndex = buildRouteIndex(
@@ -416,22 +424,6 @@ describe('resolveLegacyHashToRoute', () => {
     );
   });
 
-  describe('section hash of a heading from an overview partial (no route of its own)', () => {
-    const index = {
-      ...routeIndex,
-      overviewPartialSectionIds: new Set(['section/learning-resources']),
-    };
-
-    it('resolves to the overview page', () => {
-      expect(resolveLegacyHashToRoute('#section/Learning-Resources', '/docs', index)).toBe(
-        '/docs#section/learning-resources',
-      );
-    });
-
-    it('leaves a dangling section hash on the page', () => {
-      expect(resolveLegacyHashToRoute('#section/does-not-exist', '/docs', index)).toBeUndefined();
-    });
-  });
 
   it('returns undefined for a hash that matches no route', () => {
     expect(resolveLegacyHashToRoute('#does/not/exist', '/docs', routeIndex)).toBeUndefined();
@@ -577,7 +569,21 @@ describe('stripVariantMarkers', () => {
     expect(stripVariantMarkers('a&d=0&oneof=1')).toBe('a');
   });
 
+  it('removes markers that only form after an earlier marker is removed', () => {
+    expect(stripVariantMarkers('a&&d=0d=1')).toBe('a');
+    expect(stripVariantMarkers('a&one&d=0of=1')).toBe('a');
+  });
+
   it('leaves plain names untouched', () => {
     expect(stripVariantMarkers('order.items[]')).toBe('order.items[]');
+  });
+
+  it('returns input unchanged when nothing matches, including near-miss markers', () => {
+    expect(stripVariantMarkers('a')).toBe('a');
+    expect(stripVariantMarkers('')).toBe('');
+    expect(stripVariantMarkers('quote&d=')).toBe('quote&d=');
+    expect(stripVariantMarkers('quote&dd=0')).toBe('quote&dd=0');
+    expect(stripVariantMarkers('quote?d=0&oneof=x')).toBe('quote?d=0&oneof=x');
+    expect(stripVariantMarkers('#/paths/~1orders/get&foo=1')).toBe('#/paths/~1orders/get&foo=1');
   });
 });

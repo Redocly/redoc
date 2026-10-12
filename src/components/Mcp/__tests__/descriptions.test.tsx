@@ -45,7 +45,6 @@ function renderWithStore(mcp: McpData, ui: ReactElement, basePath = ''): void {
       // MCP descriptions are parsed on the client by the markdown adapter, never by the build parser.
       markdownParser: () => undefined,
     }),
-    replayDefinition: null,
   });
 
   render(

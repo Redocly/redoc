@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
-import type { OperationInfo } from '../../../../types/openapi.js';
+import type { OpenAPIServer, OperationInfo } from '../../../../types/openapi.js';
 
-import { getOperationData } from '../operation.js';
+import { getOperationData, pickOperationServers } from '../operation.js';
 
 function makeOperation(overrides?: Partial<OperationInfo>): OperationInfo {
   return {
@@ -20,34 +20,18 @@ function makeOperation(overrides?: Partial<OperationInfo>): OperationInfo {
 
 describe('getOperationData', () => {
 
-  it('falls back both title and description to the summary when there is no operation description', () => {
-    const data = getOperationData(makeOperation({ summary: 'List pets' }), '/docs/openapi');
-    expect(data.seo).toEqual({ title: 'List pets', description: 'List pets' });
-  });
-
-  it('prefers the operation description over the summary when both are present', () => {
-    const data = getOperationData(
-      makeOperation({ summary: 'List pets', description: 'Returns all pets in the store.' }),
-      '/docs/openapi',
-    );
-    expect(data.seo).toEqual({
-      title: 'List pets',
-      description: 'Returns all pets in the store.',
-    });
-  });
-
   it('derives the slug from the operationId when present', () => {
     const data = getOperationData(makeOperation({ operationId: 'getPets' }), '/docs/openapi');
     expect(data.slug).toBe('/docs/openapi/getpets');
   });
 
-  it('derives the slug from the JSON pointer when the operation has no operationId (legacy parity)', () => {
+  it('derives the slug from the JSON pointer when the operation has no operationId (legacy behavior)', () => {
     const data = getOperationData(
       makeOperation({ operationId: undefined, pointer: '/paths/~1pets/get' }),
       '/docs/openapi',
     );
-    // Matches legacy openapi-docs `getOperationId` → `pointerToId(pointer)`, so the route is
-    // identical to the legacy one (no redirect needed). NOT the new httpVerb+pathName scheme.
+    // Pointer-derived, so the route stays the one existing links use (no redirect needed) —
+    // not an httpVerb+pathName slug.
     expect(data.slug).toBe('/docs/openapi/paths/~1pets/get');
   });
 
@@ -62,5 +46,27 @@ describe('getOperationData', () => {
       '/docs/openapi',
     );
     expect(data.slug).toBe('/docs/openapi/get/pets');
+  });
+});
+
+describe('pickOperationServers', () => {
+  const productionServer: OpenAPIServer = { url: 'https://api.example.com' };
+  const stagingServer: OpenAPIServer = { url: 'https://staging.example.com' };
+
+  it('prefers operation servers when non-empty', () => {
+    expect(pickOperationServers([productionServer], [stagingServer])).toEqual([productionServer]);
+  });
+
+  it('falls through to document servers when operation servers is an empty array (not `??`)', () => {
+    expect(pickOperationServers([], [productionServer])).toEqual([productionServer]);
+  });
+
+  it('falls through to document servers when operation servers is undefined', () => {
+    expect(pickOperationServers(undefined, [productionServer])).toEqual([productionServer]);
+  });
+
+  it('returns an empty array when neither list has servers', () => {
+    expect(pickOperationServers([], undefined)).toEqual([]);
+    expect(pickOperationServers(undefined, undefined)).toEqual([]);
   });
 });

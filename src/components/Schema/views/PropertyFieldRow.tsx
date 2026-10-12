@@ -2,8 +2,7 @@ import { useMemo } from 'react';
 import { useAtomValue } from 'jotai';
 
 import type { ReactElement } from 'react';
-import type { PropertyType } from '../../../types/schema.js';
-import type { OneOfChangeParams } from '../../../types/pluggable.js';
+import type { OneOfChangeParams, PropertyType } from '../../../types/schema.js';
 
 import { isStructuredExample } from '../../../types/schema.js';
 import { getSchemaEnumRowLabel } from '../utils.js';
@@ -95,6 +94,7 @@ export function PropertyFieldRow({
         <PropertyRenderer
           property={property}
           level={level + 1}
+          expandByDefault={expandByDefault}
           fieldParentsName={[...fieldParentsName, name]}
           skipReadOnly={skipReadOnly}
           skipWriteOnly={skipWriteOnly}

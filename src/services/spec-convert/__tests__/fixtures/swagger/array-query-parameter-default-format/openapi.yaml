@@ -1,0 +1,33 @@
+openapi: 3.2.0
+info:
+  title: Redocly Cafe
+  version: '1.0'
+paths:
+  /menu:
+    get:
+      summary: Filter the menu.
+      operationId: listMenuItems
+      parameters:
+        - name: allergens
+          in: query
+          description: Allergens to leave out.
+          required: true
+          style: form
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '202':
+          description: Filter accepted.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  note:
+                    type: string
+                    description: What the kitchen will do with the filter.
+servers:
+  - url: https://cafe.example.test/api

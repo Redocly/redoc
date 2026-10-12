@@ -52,13 +52,4 @@ describe('buildMcpItemContent', () => {
     expect(result.children[1]).toMatchObject({ nodeType: nodeTypes.MARKDOC });
   });
 
-  it('uses correct markdoc tag per type', () => {
-    const tool = buildMcpItemContent('tool', 'a', 'a', 'A', options);
-    const resource = buildMcpItemContent('rsrc', 'b', 'b', 'B', options);
-    const prompt = buildMcpItemContent('prompt', 'c', 'c', 'C', options);
-
-    expect(tool.seo?.title).toBe('A');
-    expect(resource.seo?.title).toBe('B');
-    expect(prompt.seo?.title).toBe('C');
-  });
 });

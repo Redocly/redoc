@@ -1,8 +1,6 @@
 import { styled, css } from 'styled-components';
 
-export { DeprecatedBadge } from '../Schema/styled.js';
-
-export const Annotation = styled.div`
+const Annotation = styled.div`
   margin-top: calc(var(--spacing-unit, 4px) / 2);
   margin-bottom: var(--spacing-base);
   color: var(--text-color-primary);
@@ -125,15 +123,6 @@ export const NonNullLabel = styled.span`
   font-size: var(--font-size-base);
   line-height: var(--line-height-base);
   margin-right: var(--spacing-xxs, 4px);
-`;
-
-export const SectionLabel = styled.h4`
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-semibold);
-  line-height: var(--line-height-lg);
-  color: var(--text-color-primary);
-  margin: var(--spacing-sm) 0 0;
-  padding: 0;
 `;
 
 export const ArgsCollapsed = styled.span<{ $size?: 'base' | 'lg' }>`

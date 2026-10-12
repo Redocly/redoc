@@ -3,10 +3,7 @@ import { test, expect } from '@playwright/test';
 import { goto } from '../helpers/commands';
 import { ApiDocsPage } from '../page-objects/ApiDocsPage';
 
-/**
- * Drops two enterprise couplings: the global Languages panel, and the generated request samples.
- * Only the spec's own `x-codeSamples` exist here.
- */
+/** Only the spec's own `x-codeSamples` exist here. */
 test.describe('Redoc', () => {
   let apiDocs: ApiDocsPage;
 

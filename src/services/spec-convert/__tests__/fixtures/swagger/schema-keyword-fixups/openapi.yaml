@@ -1,0 +1,67 @@
+openapi: 3.2.0
+info:
+  title: Redocly Cafe
+  version: 1.0.0
+paths: {}
+components:
+  schemas:
+    MenuItem:
+      type: object
+      discriminator:
+        propertyName: itemKind
+      xml:
+        name: menuItem
+      properties:
+        itemKind:
+          type: string
+        name:
+          type:
+            - string
+            - 'null'
+        price:
+          type: number
+          exclusiveMinimum: 0
+          maximum: 100
+        photo:
+          type: string
+          format: binary
+        sizes:
+          type: array
+          items: {}
+        tags:
+          type: array
+          items: {}
+        allergens:
+          type: array
+          items:
+            type: string
+        pairings:
+          type: array
+          items:
+            anyOf:
+              - type: string
+              - type: integer
+        barcode:
+          name: barcode
+          type: string
+        note: {}
+        variants:
+          anyOf:
+            - type: string
+            - type: integer
+        spice:
+          oneOf:
+            - type: string
+          not:
+            type: boolean
+      required:
+        - name
+        - barcode
+    OrderItem:
+      type: object
+      properties:
+        quantity:
+          type: integer
+      additionalProperties:
+        type: string
+        format: binary

@@ -79,10 +79,6 @@ export function buildInputContent(
     contentType: contentType.ITEM,
     itemVariant: itemVariant.INPUT,
     meta: { name: input.name },
-    seo: {
-      title: input.name,
-      description: input.description || undefined,
-    },
     children: [{ nodeType: nodeTypes.CONTAINER, children: containerChildren, panels }],
   };
 }

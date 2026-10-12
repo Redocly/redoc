@@ -23,8 +23,14 @@ import {
 import { useSpecTranslate } from '../../../hooks/useTranslate.js';
 
 export function PayloadExampleItem({ node }: { node: PayloadExamplesPanelItem }): ReactElement {
-  const { mediaTypes, activeMediaType, effectiveSchemaId, effectiveExampleIds, onMediaTypeChange } =
-    useMediaTypeContent(node);
+  const {
+    mediaTypes,
+    activeMediaType,
+    effectiveSchemaId,
+    effectiveExampleIds,
+    isMessageWithoutPayload,
+    onMediaTypeChange,
+  } = useMediaTypeContent(node);
   const translate = useSpecTranslate();
 
   const discriminatorSelection = useSchemaVariantSelection(
@@ -34,18 +40,22 @@ export function PayloadExampleItem({ node }: { node: PayloadExamplesPanelItem })
   const resolved = useResolvedExamples(
     sampleSchemaId,
     effectiveExampleIds,
-    'response',
+    undefined,
     activeMediaType,
   );
+  const generated = useResolvedExamples(sampleSchemaId, undefined, undefined, activeMediaType);
   const exampleEntries = useExampleEntries(effectiveExampleIds);
   const [selectedExampleIdx, setSelectedExampleIdx] = useState(0);
 
   useEffect(() => setSelectedExampleIdx(0), [effectiveExampleIds, activeMediaType]);
 
-  const payload = resolved[selectedExampleIdx] ?? resolved[0];
+  const selected =
+    selectedExampleIdx < resolved.length ? resolved[selectedExampleIdx] : resolved[0];
+  const payload = selected ?? generated[0];
   const activeExampleDescription = exampleEntries[selectedExampleIdx]?.description;
+  const activeExampleHeaders = exampleEntries[selectedExampleIdx]?.headers;
 
-  if (resolved.length === 0) {
+  if (resolved.length === 0 && !isMessageWithoutPayload) {
     return <></>;
   }
 
@@ -72,6 +82,13 @@ export function PayloadExampleItem({ node }: { node: PayloadExamplesPanelItem })
         onSelect={setSelectedExampleIdx}
       />
       <ExampleDescription description={activeExampleDescription} />
+      {activeExampleHeaders && (
+        <>
+          <SampleLabel>{translate('header', 'Headers')}</SampleLabel>
+          <PayloadDisplay payload={activeExampleHeaders} mediaType="application/json" />
+          <SampleLabel>{translate('payload', 'Payload')}</SampleLabel>
+        </>
+      )}
       <PayloadDisplay
         payload={payload}
         emptyMessage="// No payload sample"
@@ -80,6 +97,12 @@ export function PayloadExampleItem({ node }: { node: PayloadExamplesPanelItem })
     </CodeBlockPanel>
   );
 }
+
+const SampleLabel = styled.div`
+  margin: var(--spacing-xs) var(--spacing-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+`;
 
 const SamplesPanelHeader = styled(PanelHeader)`
   font-weight: var(--font-weight-regular);

@@ -33,4 +33,3 @@ export type SearchItemData = {
 };
 
 export type { OperationParameter } from '@redocly/theme/core/openapi';
-export type { ItemBadge } from '@redocly/config';

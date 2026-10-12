@@ -5,6 +5,10 @@
 # npm i -g http-server
 # http-server -p 8000 --cors
 
+# `--build-arg BUNDLE_STAGE=prebuilt` takes bundles/redoc.standalone.js from `npm run build`
+# instead of building it in the image (the Docker smoke test uses it).
+ARG BUNDLE_STAGE=build
+
 FROM node:24.21.0-alpine3.24@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1 AS build
 
 WORKDIR /build
@@ -16,6 +20,11 @@ RUN npm ci --no-fund
 COPY . .
 
 RUN npm run build:standalone && npm run minify
+
+FROM scratch AS prebuilt
+COPY bundles/redoc.standalone.js /build/bundles/
+
+FROM ${BUNDLE_STAGE} AS bundle
 
 FROM nginx:1.28-alpine@sha256:8f2bcf97c473dfe311e79a510ee540ee02e28ce1e6a64e1ef89bfad32574ef10
 
@@ -29,15 +38,19 @@ ENV REDOC_OPTIONS=
 
 # add docker-entrypoint scripts
 COPY config/docker/docker-entrypoint.d/ /docker-entrypoint.d/
-RUN chmod -R +x /docker-entrypoint.d/
+COPY config/docker/docker-run.sh /usr/local/bin/
+RUN chmod -R +x /docker-entrypoint.d/ /usr/local/bin/docker-run.sh
 
 # copy nginx config
-COPY config/docker/nginx/templates/ /etc/nginx/templates/
+COPY config/docker/nginx/templates/ /etc/redoc/nginx/
 COPY config/docker/nginx/nginx.conf config/docker/nginx/handle_options.conf config/docker/nginx/security.conf config/docker/nginx/caching.conf /etc/nginx/
 
-# copy static files
+# copy static files; index.html is generated at start-up
+COPY config/docker/index.tpl.html /etc/redoc/index.tpl.html
 COPY config/docker/static/ /usr/share/nginx/html/
-COPY --from=build /build/bundles/redoc.standalone.js /usr/share/nginx/html/
+RUN rm /etc/nginx/conf.d/default.conf \
+  && ln -sf /tmp/redoc/index.html /usr/share/nginx/html/index.html
+COPY --from=bundle /build/bundles/redoc.standalone.js /usr/share/nginx/html/
 
 # Put a content hash in the asset names and record them for the page templates
 RUN cd /usr/share/nginx/html \

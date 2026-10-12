@@ -9,10 +9,7 @@ vi.mock('@redocly/theme/core/openapi', () => ({
   useThemeHooks: vi.fn(),
 }));
 
-/**
- * Fixture mirroring what's registered in the locale bundles
- * (see packages/portal/src/constants/l10n/langs/en.ts).
- */
+/** Fixture mirroring what's registered in the locale bundles. */
 const REGISTERED_KEYS: readonly string[] = [
   'openapi.info.title',
   'openapi.info.contact.url',

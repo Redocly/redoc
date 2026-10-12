@@ -41,6 +41,19 @@ describe('spec type detection', () => {
     expect(loadAndBundleDefinition).toHaveBeenCalledWith(asyncapi);
   });
 
+  it('parses a YAML string as an API description', async () => {
+    const yaml = 'asyncapi: 3.0.0\ninfo:\n  title: Cafe events\n  version: 1.0.0\nchannels: {}\n';
+    const prepared = await prepareApiDocs({ spec: yaml });
+
+    expect(prepared.specType).toBe('asyncapi');
+    expect(loadAndBundleDefinition).toHaveBeenCalledWith(asyncapi);
+  });
+
+  it('treats a multi-line SDL that YAML can parse as GraphQL', async () => {
+    const sdl = 'type Query {\n  beans: [String]\n}\n';
+    expect((await prepareApiDocs({ spec: sdl })).specType).toBe('graphql');
+  });
+
   it('treats any other string as GraphQL SDL', async () => {
     const prepared = await prepareApiDocs({ spec: SDL });
 

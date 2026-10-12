@@ -14,7 +14,6 @@ function createWrapper(basePath: string) {
   const store = createStore();
   store.set(globalStoreAtom, {
     items: [],
-    replayDefinition: null,
     store: { schemaStore: {}, exampleStore: {}, securitySchemeStore: {} },
     options: normalizeOptions({
       specType: 'openapi',

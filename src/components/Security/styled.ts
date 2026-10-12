@@ -144,7 +144,6 @@ export const FlowTitleWrapper = styled.div`
 export const FlowTitle = styled.p`
   font-size: var(--font-size-base);
   margin: 0;
-  text-transform: capitalize;
   font-weight: var(--font-weight-semibold);
   line-height: var(--line-height-base);
 `;

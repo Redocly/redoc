@@ -193,8 +193,11 @@ describe('buildMessageReferencesGroups (AsyncAPI channel references)', () => {
   });
 });
 
-function withBuildContext<T>(document: AsyncApiDefinition, fn: () => T): T {
-  const storeCtx = createStoreContext(document as unknown as Record<string, unknown>);
+function withBuildContext<T>(
+  document: AsyncApiDefinition,
+  fn: () => T,
+  storeCtx = createStoreContext(document as unknown as Record<string, unknown>),
+): T {
   const ctx = {
     document,
     options: {} as ApiDocsOptions,
@@ -319,5 +322,226 @@ describe('buildChannelContent — Kafka message-binding schema resolution', () =
         },
       },
     });
+  });
+});
+
+describe('buildChannelContent — message examples', () => {
+  it('registers header values and examples without a payload', () => {
+    const channel = {
+      address: 'kitchen/orders',
+      messages: {
+        orderPlaced: {
+          name: 'OrderPlaced',
+          payload: { type: 'object' },
+          examples: [
+            {
+              name: 'latte',
+              summary: 'Latte',
+              headers: { correlation: 'c-7' },
+              payload: { id: 42 },
+            },
+            { name: 'headersOnly', headers: { correlation: 'c-8' } },
+            { name: 'empty' },
+          ],
+        },
+      },
+    } as unknown as AsyncApiChannel;
+    const document = doc({ orders: channel });
+    const storeCtx = createStoreContext(document as unknown as Record<string, unknown>);
+
+    withBuildContext(
+      document,
+      () => buildChannelContent('orders', channel, document, {} as MarkdownSanitizeOptions),
+      storeCtx,
+    );
+
+    expect(Object.values(storeCtx.exampleStore)).toEqual([
+      expect.objectContaining({
+        value: { id: 42 },
+        summary: 'Latte',
+        headers: { correlation: 'c-7' },
+      }),
+      expect.objectContaining({
+        value: undefined,
+        summary: 'headersOnly',
+        headers: { correlation: 'c-8' },
+      }),
+    ]);
+  });
+});
+
+describe('buildChannelContent — message correlationId', () => {
+  function messagesItem(document: AsyncApiDefinition, channel: AsyncApiChannel) {
+    const content = withBuildContext(document, () =>
+      buildChannelContent('orders', channel, document, {} as MarkdownSanitizeOptions),
+    );
+    return content.children
+      .filter((n): n is ContainerNode => n.nodeType === nodeTypes.CONTAINER)
+      .flatMap((c) => c.children)
+      .find((n): n is ItemContentNode => n.nodeType === nodeTypes.ITEM && n.variant === 'messages');
+  }
+
+  it('emits an inline correlationId with its location and description', () => {
+    const channel = {
+      address: 'orders/events',
+      messages: {
+        orderCreated: {
+          name: 'OrderCreated',
+          correlationId: {
+            location: '$message.header#/correlationId',
+            description: 'Correlates all events belonging to one order.',
+          },
+        },
+      },
+    } as unknown as AsyncApiChannel;
+
+    const item = messagesItem(doc({ orders: channel }), channel);
+
+    expect(item?.messages?.[0].correlationId).toEqual({
+      location: '$message.header#/correlationId',
+      description: 'Correlates all events belonging to one order.',
+    });
+  });
+
+  it('resolves a $ref correlationId from components', () => {
+    const channel = {
+      address: 'orders/events',
+      messages: {
+        orderCreated: {
+          name: 'OrderCreated',
+          correlationId: { $ref: '#/components/correlationIds/orderCorrelation' },
+        },
+      },
+    } as unknown as AsyncApiChannel;
+    const document = {
+      ...doc({ orders: channel }),
+      components: {
+        correlationIds: { orderCorrelation: { location: '$message.header#/correlationId' } },
+      },
+    } as unknown as AsyncApiDefinition;
+
+    const item = messagesItem(document, channel);
+
+    expect(item?.messages?.[0].correlationId).toEqual({
+      location: '$message.header#/correlationId',
+      description: undefined,
+    });
+  });
+
+  it('omits correlationId when the message has none', () => {
+    const channel = {
+      address: 'orders/events',
+      messages: { orderCreated: { name: 'OrderCreated' } },
+    } as unknown as AsyncApiChannel;
+
+    const item = messagesItem(doc({ orders: channel }), channel);
+
+    expect(item?.messages?.[0].correlationId).toBeUndefined();
+  });
+});
+
+describe('buildChannelContent — server security', () => {
+  it('maps each channel server security entry to a scheme detail from the store', () => {
+    const channel = {
+      address: 'orders/events',
+      servers: [{ $ref: '#/servers/production' }],
+      messages: { evt: { name: 'evt' } },
+    } as unknown as AsyncApiChannel;
+    const document = {
+      asyncapi: '3.0.0',
+      info: { title: 'Test', version: '1.0' },
+      servers: {
+        production: {
+          host: 'broker.cafe.test:8883',
+          protocol: 'mqtt',
+          security: [{ $ref: '#/components/securitySchemes/userPass' }],
+        },
+      },
+      channels: { orders: channel },
+    } as unknown as AsyncApiDefinition;
+
+    const content = withBuildContext(document, () => {
+      asyncApiContext.get().storeCtx.securitySchemeStore.userPass = {
+        id: 'userPass',
+        type: 'userPassword',
+      };
+      return buildChannelContent('orders', channel, document, {} as MarkdownSanitizeOptions);
+    });
+    const brokers = findPanelChild<{ brokers?: Array<{ security?: unknown }> }>(
+      content,
+      panelKind.BROKERS,
+    );
+
+    expect(brokers?.brokers?.[0]?.security).toEqual([
+      { schemes: [{ name: 'userPass', type: 'userPassword' }] },
+    ]);
+  });
+});
+
+describe('buildChannelContent — channel servers', () => {
+  it('lists only the referenced servers when several share a host', () => {
+    const channel = {
+      address: 'orders/events',
+      servers: [{ $ref: '#/servers/v1' }],
+      messages: { evt: { name: 'evt' } },
+    } as unknown as AsyncApiChannel;
+    const document = {
+      asyncapi: '3.0.0',
+      info: { title: 'Test', version: '1.0' },
+      servers: {
+        v1: { host: 'broker.test', pathname: '/v1', protocol: 'ws' },
+        v2: { host: 'broker.test', pathname: '/v2', protocol: 'ws' },
+        shared: { $ref: '#/components/servers/shared' },
+      },
+      components: { servers: { shared: { host: 'broker.test', protocol: 'wss' } } },
+      channels: { orders: channel },
+    } as unknown as AsyncApiDefinition;
+
+    const listed = (servers: unknown[]) => {
+      const content = withBuildContext(document, () =>
+        buildChannelContent(
+          'orders',
+          { ...channel, servers } as AsyncApiChannel,
+          document,
+          {} as MarkdownSanitizeOptions,
+        ),
+      );
+      return findPanelChild<{ brokers?: Array<{ name: string }> }>(
+        content,
+        panelKind.BROKERS,
+      )?.brokers?.map((b) => b.name);
+    };
+
+    expect(listed([{ $ref: '#/servers/v1' }])).toEqual(['v1']);
+    expect(listed([{ $ref: '#/servers/shared' }])).toEqual(['shared']);
+  });
+
+  it('shows the host and protocol of a root server given as a ref', () => {
+    const channel = {
+      address: 'orders/events',
+      servers: [{ $ref: '#/servers/main' }, { $ref: '#/servers/missing' }],
+      messages: { evt: { name: 'evt' } },
+    } as unknown as AsyncApiChannel;
+    const document = {
+      asyncapi: '3.0.0',
+      info: { title: 'Test', version: '1.0' },
+      servers: {
+        main: { $ref: '#/components/servers/broker' },
+        ghost: { $ref: '#/components/servers/missing' },
+      },
+      components: { servers: { broker: { host: 'broker.test:1883', protocol: 'mqtt' } } },
+      channels: { orders: channel },
+    } as unknown as AsyncApiDefinition;
+
+    const content = withBuildContext(document, () =>
+      buildChannelContent('orders', channel, document, {} as MarkdownSanitizeOptions),
+    );
+
+    expect(
+      findPanelChild<{ brokers?: Array<{ name: string; url?: string; protocol?: string }> }>(
+        content,
+        panelKind.BROKERS,
+      )?.brokers?.map(({ name, url, protocol }) => ({ name, url, protocol })),
+    ).toEqual([{ name: 'main', url: 'broker.test:1883', protocol: 'mqtt' }]);
   });
 });

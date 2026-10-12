@@ -4,23 +4,12 @@ import { summarizeSecurity } from './security.js';
 
 import type { AgentTool, ApiDocsAgentToolsParams } from './types.js';
 
-export { collectOperations } from './operations.js';
-export {
-  MAX_AGENT_RESULT_CHARS,
-  agentErrorResult,
-  agentJsonResult,
-  agentTextResult,
-} from './results.js';
+export { agentTextResult } from './results.js';
 export { registerAgentTools } from './webmcp.js';
 export { createSpecSliceOperationDetail } from './spec-slice-detail.js';
 export type {
   AgentTool,
-  AgentToolAnnotations,
-  AgentToolOutcome,
-  AgentToolResult,
-  AgentToolsTelemetry,
   ApiDocsAgentToolsParams,
-  ApiOperationSummary,
 } from './types.js';
 
 const DEFAULT_OPERATION_LIMIT = 100;

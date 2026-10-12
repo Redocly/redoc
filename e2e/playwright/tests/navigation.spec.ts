@@ -180,6 +180,22 @@ test.describe('Navigation (GraphQL)', () => {
     await expect(enumItemLink).toHaveAttribute('href', /\/other\/enums\/[^/]+$/);
   });
 
+  test('should render markdown in argument and enum value descriptions', async ({ page }) => {
+    await page.goto('/other/queries/license');
+    await apiDocs.waitForPageLoad();
+
+    const querySection = page.locator('[data-section-id="/other/queries/license"]');
+    await expect(querySection.locator('strong', { hasText: 'downcased' })).toBeVisible();
+    await expect(querySection.locator('code', { hasText: /^mit$/ })).toBeVisible();
+
+    await page.goto('/other/enums/commentauthorassociation');
+    await apiDocs.waitForPageLoad();
+
+    const enumSection = page.locator('[data-section-id="/other/enums/commentauthorassociation"]');
+    await expect(enumSection.locator('strong', { hasText: 'invited' })).toBeVisible();
+    await expect(enumSection.locator('code', { hasText: /^MEMBER$/ })).toBeVisible();
+  });
+
   test('should display "Implemented by" section on interface page', async ({ page }) => {
     await page.goto('/other/interfaces/gitsignature');
     await apiDocs.waitForPageLoad();

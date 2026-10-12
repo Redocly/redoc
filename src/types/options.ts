@@ -1,4 +1,5 @@
 import type { LayoutVariant } from '@redocly/config';
+
 import type {
   EditionAsyncApiConfig,
   EditionGraphQLConfig,
@@ -6,22 +7,12 @@ import type {
 } from './edition-config.js';
 import type { ConfigFunction, Node, Schema } from '@markdoc/markdoc';
 import type { MarkdocTagSchema } from '@redocly/theme/markdoc/tags/types';
-import type {
-  ConfigureRequestValues,
-  ConfigureServerRequestValues,
-} from '@redocly/theme/ext/configure';
 import type { ComponentType } from 'react';
-import type { ApiSpecType, SidebarLogo, Referenced } from './common.js';
+import type { ApiSpecType, SidebarLogo } from './common.js';
 import type { ProtocolVariant } from './asyncapi.js';
 import type { GraphQLOptions } from './graphql.js';
 import type { Events } from './events.js';
 import type { CodeSamplesConfig } from './code-samples-config.js';
-import type {
-  OpenAPIOperation as OpenAPIOperationType,
-  OpenAPIParameter,
-  OpenAPIServer,
-  OpenAPITag,
-} from './openapi.js';
 
 export type * from './code-samples-config.js';
 
@@ -89,7 +80,6 @@ export type ApiDocsOptions = {
   codeSamples?: CodeSamplesConfig;
   events: Events;
   hidePropertiesPrefix: boolean;
-  dynamicRequestValues?: ConfigureRequestValues | ConfigureServerRequestValues;
   protocol?: ProtocolVariant;
   scrollYOffset: () => number;
   hideLoading: boolean;
@@ -114,56 +104,11 @@ export type RawApiDocsOptions = EditionRedocConfig &
     basePath?: string;
     hideSchemaPattern?: boolean;
     disableTelemetry?: boolean;
-    requiredPropsFirst?: boolean; // JSON schema pluggable option
+    requiredPropsFirst?: boolean; // alias of `sortRequiredPropsFirst`
     protocol?: ProtocolVariant;
-    dynamicRequestValues?: ConfigureRequestValues | ConfigureServerRequestValues;
     layout?:
       | EditionRedocConfig['layout']
       | EditionAsyncApiConfig['layout']
       | EditionGraphQLConfig['layout'];
   };
-
-export type Normalized<T> = { [P in keyof T]-?: T[P] };
-
-export type ExternalLink = ExternalLinkLink | ExternalLinkSeparator;
-
-export type ExternalLinkLink = {
-  label: string;
-  link: string;
-  target?: string;
-  separatorLine?: boolean;
-};
-export type ExternalLinkSeparator = {
-  separator?: string;
-  separatorLine?: boolean;
-};
-
-export type MenuItemGroupType = 'group' | 'tag' | 'section' | 'schema' | 'tool' | 'rsrc' | 'prompt';
-export type MenuItemType = MenuItemGroupType | 'operation';
-
-export type TagInfo = OpenAPITag & {
-  operations: ExtendedOpenAPIOperation[];
-  used?: boolean;
-  schemaRendersInTag?: boolean;
-  isSchema?: boolean;
-};
-
-export type ExtendedOpenAPIOperation = {
-  pointer: string;
-  pathName: string;
-  httpVerb: string;
-  pathParameters: Array<Referenced<OpenAPIParameter>>;
-  pathServers: Array<OpenAPIServer> | undefined;
-  isWebhook: boolean;
-  isAdditionalOperation: boolean;
-  defaultSampleName?: string | false;
-  keywords?: unknown;
-} & OpenAPIOperationType;
-
-export type TagsInfoMap = Record<string, TagInfo>;
-
-export type TagGroup = {
-  name: string;
-  tags: string[];
-};
 

@@ -1,8 +1,11 @@
 import type { Node } from '@markdoc/markdoc';
-import type { ResolvedNavItem } from '@redocly/config';
 import type { JSONSchema7 } from 'json-schema';
-import type { Referenced, ObjectValues } from './common.js';
+import type {
+  AsyncApiSecuritySchemeType,
+  ObjectValues,
+} from './common.js';
 import type { ApiItem, StoreContext } from './store.js';
+import type { SecurityRequirementDetail } from './content.js';
 import type { ApiDocsOptions } from './options.js';
 
 export type AsyncApiDefinition = {
@@ -18,23 +21,8 @@ export type AsyncApiDefinition = {
     name: string;
     tags: string[];
   }[];
-  'x-redocly-catalog-key'?: string;
 };
 
-export type AsyncApiDefinitionReferenced = {
-  asyncapi: string;
-  id?: string;
-  info: AsyncApiInfo;
-  servers?: Record<string, AsyncApiServer>;
-  defaultContentType?: string;
-  channels?: AsyncApiChannels;
-  operations?: AsyncApiOperationsReferenced;
-  components?: AsyncApiComponentsReferenced;
-  'x-tagGroups'?: {
-    name: string;
-    tags: string[];
-  }[];
-};
 
 export type AsyncApiInfo = {
   title: string;
@@ -71,8 +59,6 @@ export type AsyncApiExternalDocs = {
 
 export type AsyncApiServer = {
   host: string;
-  /** AsyncAPI 2.x servers carry `url` instead of `host`. */
-  url?: string;
   protocol: string;
   protocolVersion?: string;
   pathname?: string;
@@ -83,7 +69,42 @@ export type AsyncApiServer = {
   tags?: AsyncApiTag[];
   externalDocs?: AsyncApiExternalDocs;
   bindings?: AsyncApiServerBinding;
+  security?: AsyncApiSecurityRequirement[];
 };
+
+export type AsyncApiOAuthFlow = {
+  authorizationUrl?: string;
+  tokenUrl?: string;
+  refreshUrl?: string;
+  availableScopes?: Record<string, string>;
+};
+
+export type AsyncApiSecurityScheme = {
+  type: AsyncApiSecuritySchemeType;
+  description?: string | Node[] | Node;
+  name?: string;
+  in?: 'user' | 'password' | 'query' | 'header' | 'cookie';
+  scheme?: string;
+  bearerFormat?: string;
+  openIdConnectUrl?: string;
+  scopes?: string[];
+  flows?: AsyncApiOAuthFlows;
+};
+
+export type AsyncApiOAuthFlows = {
+  implicit?: AsyncApiOAuthFlow;
+  password?: AsyncApiOAuthFlow;
+  clientCredentials?: AsyncApiOAuthFlow;
+  authorizationCode?: AsyncApiOAuthFlow;
+};
+
+/** 2.x requirement kept by the 2.x conversion: component scheme name → required scopes, all required. */
+export type AsyncApiSecurityRequirementObject = Record<string, string[]>;
+
+export type AsyncApiSecurityRequirement =
+  | AsyncApiSecurityScheme
+  | { $ref: string }
+  | AsyncApiSecurityRequirementObject;
 
 export type AsyncApiServerVariables = {
   [name: string]: AsyncApiServerVariable;
@@ -188,20 +209,6 @@ export type AsyncApiMessage = {
   examples?: AsyncApiMessageExample[];
 };
 
-export type AsyncApiMessageReferenced = {
-  headers?: AsyncAPISchema;
-  payload?: Referenced<AsyncAPISchema>;
-  correlationId?: AsyncApiCorrelationId;
-  contentType?: string;
-  name?: string;
-  title?: string;
-  summary?: string;
-  description?: string | Node[] | Node;
-  tags?: AsyncApiTag[];
-  externalDocs?: AsyncApiExternalDocs;
-  bindings?: AsyncApiMessageBinding;
-  examples?: AsyncApiMessageExample[];
-};
 
 export type AsyncApiCorrelationId = {
   description?: string | Node[] | Node;
@@ -221,6 +228,7 @@ export type AsyncApiMessageKafkaBinding = {
 };
 
 export type AsyncApiMessageExample = {
+  headers?: Record<string, unknown>;
   payload?: Record<string, unknown>;
   name?: string;
   summary?: string;
@@ -235,9 +243,6 @@ export type AsyncApiOperations = {
   [name: string]: AsyncApiOperation;
 };
 
-export type AsyncApiOperationsReferenced = {
-  [name: string]: AsyncApiOperationReferenced;
-};
 
 export type AsyncApiOperation = {
   action: 'send' | 'receive';
@@ -251,23 +256,10 @@ export type AsyncApiOperation = {
   traits?: AsyncApiOperationTraits[];
   messages?: AsyncApiMessage[];
   reply?: AsyncApiOperationReply;
+  security?: AsyncApiSecurityRequirement[];
   'x-badges'?: AsyncApiXBadges[];
 };
 
-export type AsyncApiOperationReferenced = {
-  action: 'send' | 'receive';
-  channel: AsyncApiChannel;
-  title?: string;
-  summary?: string;
-  description?: string | Node[] | Node;
-  tags?: AsyncApiTag[];
-  externalDocs?: AsyncApiExternalDocs;
-  bindings?: AsyncApiOperationBinding;
-  traits?: AsyncApiOperationTraits[];
-  messages?: Referenced<AsyncApiMessage>[];
-  reply?: AsyncApiOperationReply;
-  'x-badges'?: AsyncApiXBadges[];
-};
 
 export type AsyncApiOperationReply = {
   address?: {
@@ -307,13 +299,10 @@ export type AsyncApiComponents = {
   messages: Record<string, AsyncApiMessage>;
   schemas: Record<string, AsyncAPISchema>;
   tags: Record<string, AsyncApiTag>;
+  securitySchemes?: Record<string, AsyncApiSecurityScheme>;
+  correlationIds?: Record<string, AsyncApiCorrelationId>;
 };
 
-export type AsyncApiComponentsReferenced = {
-  messages: Record<string, AsyncApiMessageReferenced>;
-  schemas: Record<string, AsyncAPISchema>;
-  tags: Record<string, AsyncApiTag>;
-};
 
 export type AvroSchema = {
   type: string | string[] | AvroSchema[];
@@ -329,21 +318,6 @@ export type AvroSchema = {
   }>;
   items?: AvroSchema | string;
   values?: AvroSchema | string;
-};
-
-export type ResolvedAsyncApiNavItem = ResolvedNavItem & {
-  items?: ResolvedAsyncApiNavItem[];
-  action?: string;
-  ast?: Node | Node[];
-  httpVerb?: string;
-};
-
-export type DownloadUrls = {
-  url: string;
-};
-
-export type ChannelWithKey = AsyncApiChannel & {
-  key: string;
 };
 
 export type AsyncAPISchema = JSONSchema7 | MultiFormatSchemaObject;
@@ -372,7 +346,7 @@ export type AsyncApiBuildContext = {
 };
 
 export type BrokerData = {
-  /** Server host (3.x `host`, 2.x `url`); absent only for invalid documents. */
+  /** Server host; absent only for invalid documents. */
   url?: string;
   description?: string | Node[] | Node;
   name?: string;
@@ -389,8 +363,5 @@ export type BrokerData = {
   tags?: AsyncApiTag[];
   externalDocs?: AsyncApiExternalDocs;
   bindings?: AsyncApiServerBinding;
-};
-
-export type AsyncApiContext = {
-  protocol: string | null;
+  security?: SecurityRequirementDetail[];
 };

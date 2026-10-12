@@ -33,6 +33,6 @@ test('surfaces an unparseable definition as an alert instead of a blank page', a
   const apiDocs = new StandalonePage(page);
   await apiDocs.gotoExpectingFailure(initUrl('bad-definition'));
 
-  await expect(apiDocs.alert).toContainText('Failed to load API definition');
+  await expect(apiDocs.alert).toContainText('Failed to load API description');
   await expect(apiDocs.sidebar).toHaveCount(0);
 });

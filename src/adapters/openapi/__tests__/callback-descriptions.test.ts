@@ -175,7 +175,7 @@ describe('createCallbackIdFactory', () => {
 });
 
 describe('callback ids', () => {
-  it('uses the legacy `<name>/<verb>` shape so links shared from openapi-docs resolve', async () => {
+  it('uses the legacy `<name>/<verb>` shape so previously shared links resolve', async () => {
     const node = await findCallbackNode(documentWithCallbackDescription('Text'));
 
     expect(node.callback?.callbackId).toBe('jobCompleted/post');
@@ -188,6 +188,64 @@ describe('callback ids', () => {
       'jobCompleted/post',
       'jobCompleted/post~1',
     ]);
+  });
+});
+
+describe('callback payload sample', () => {
+  it('uses the same schema id as the callback body', async () => {
+    const { items } = await processOpenApiDocument({
+      type: 'openapi',
+      document: {
+        openapi: '3.1.0',
+        info: { title: 'T', version: '1' },
+        paths: {
+          '/orders': {
+            post: {
+              operationId: 'createOrder',
+              responses: { '200': { description: 'ok' } },
+              callbacks: {
+                onPaid: {
+                  '{$request.body#/callbackUrl}': {
+                    post: {
+                      requestBody: {
+                        content: {
+                          'application/json': { schema: { $ref: '#/components/schemas/Event' } },
+                        },
+                      },
+                      responses: { '204': { description: 'ok' } },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+        components: {
+          schemas: {
+            Event: { type: 'object', oneOf: [{ title: 'Created' }, { title: 'Deleted' }] },
+          },
+        },
+      } as unknown as OpenAPIDefinition,
+      basePath: '/api',
+      options,
+    });
+    const schemaIds = (kind?: string): string[] => {
+      const found: string[] = [];
+      const walk = (value: unknown): void => {
+        if (!value || typeof value !== 'object') return;
+        const node = value as Record<string, unknown>;
+        const media = node.mediaTypeSchemas as Record<string, { schemaId?: string }> | undefined;
+        if (media && (kind === undefined || node.kind === kind)) {
+          found.push(...Object.values(media).map((entry) => entry.schemaId ?? ''));
+        }
+        Object.values(node).forEach(walk);
+      };
+      walk(items);
+      return found;
+    };
+
+    expect(schemaIds('callback-payload')).toEqual(['components/schemas/Event']);
+    expect(schemaIds()).toContain('components/schemas/Event');
   });
 });
 

@@ -42,8 +42,8 @@ export function SecurityModal({
           <Segmented
             value={selectedIndex}
             onChange={({ value }) => setSelectedIndex(value)}
-            options={requirements.map((req, index) => ({
-              label: req.schemes.map((s) => s.name).join(' and '),
+            options={requirementLabels(requirements).map((label, index) => ({
+              label,
               value: index,
             }))}
           />
@@ -63,4 +63,14 @@ export function SecurityModal({
   }
 
   return modal;
+}
+
+/** Tab labels; alternatives that name the same schemes are told apart by their scopes. */
+function requirementLabels(requirements: SecurityRequirements): string[] {
+  const names = requirements.map((req) => req.schemes.map((s) => s.name).join(' and '));
+  return names.map((name, index) => {
+    const scopes = requirements[index].schemes.flatMap((s) => s.scopes ?? []);
+    const isDuplicate = names.indexOf(name) !== names.lastIndexOf(name);
+    return isDuplicate && scopes.length > 0 ? `${name} (${scopes.join(', ')})` : name;
+  });
 }

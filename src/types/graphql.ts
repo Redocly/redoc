@@ -23,8 +23,6 @@ export type GraphQLLicense = {
   identifier?: string;
 };
 
-export type PaginationType = 'none' | 'section' | 'item';
-
 type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] };
 
 type BaseRequired = WithRequired<

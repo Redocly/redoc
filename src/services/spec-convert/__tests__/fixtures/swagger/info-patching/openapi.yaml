@@ -1,0 +1,7 @@
+openapi: 3.2.0
+info:
+  version: '3'
+  title: ''
+  x-logo:
+    url: https://cafe.example.test/logo.svg
+paths: {}

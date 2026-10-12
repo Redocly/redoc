@@ -98,10 +98,6 @@ export function buildObjectContent(
     contentType: contentType.ITEM,
     itemVariant: itemVariant.OBJECT,
     meta: { name: object.name },
-    seo: {
-      title: object.name,
-      description: object.description || undefined,
-    },
     children: [{ nodeType: nodeTypes.CONTAINER, children: containerChildren, panels }],
   };
 }

@@ -189,6 +189,7 @@ function buildCustomGroup(
             filter: typeFilter,
             processedItems,
             menuCommonFilter: common,
+            parentPath,
           }),
         ]);
         break;

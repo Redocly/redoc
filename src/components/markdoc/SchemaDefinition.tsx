@@ -45,7 +45,10 @@ function SchemaDefinitionComponent({
 
   const resolved = useResolvedExamples(schemaId, exampleIds, 'response', 'application/json');
 
-  const sectionData = useMemo(() => ({ pathOnly: true as const }), []);
+  const sectionData = useMemo(
+    () => ({ pathOnly: true as const, t: 'response', schemaId }),
+    [schemaId],
+  );
 
   const descriptionSource = useMemo((): unknown => {
     const data = schemaEntry?.data;

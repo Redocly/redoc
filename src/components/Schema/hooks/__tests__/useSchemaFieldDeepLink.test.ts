@@ -90,7 +90,6 @@ function makeWrapper({
       metadata: {},
       basePath: '',
     }),
-    replayDefinition: null,
   });
   if (itemId && expandableSections) {
     store.set(itemStoreAtom(itemId), { expandableSections });

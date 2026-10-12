@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from '../test.js';
 
 import { StandalonePage } from '../page-objects/StandalonePage.js';
 import { BUNDLE_URL, loadExamples } from './manifests.js';

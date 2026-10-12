@@ -10,6 +10,7 @@ import type {
 } from '../../../../types/content.js';
 import type {
   AsyncApiChannel,
+  AsyncApiCorrelationId,
   AsyncApiDefinition,
   AsyncApiMessage,
   AsyncApiParameter,
@@ -44,10 +45,10 @@ import {
   itemLabelsByProtocol,
 } from '../../utils/get-protocol-labels.js';
 import { resolveInDoc } from '../../utils/resolveInDoc.js';
-import { getServerHost } from '../../utils/get-server-host.js';
 import { resolveAsyncApiSchema } from '../../utils/resolve-schema.js';
 import { getChannelLabel } from '../../utils/get-channel-label.js';
 import { asyncApiContext } from '../../buildContext.js';
+import { toBrokerData } from '../../panels/brokers.js';
 
 export function buildMessageReferencesGroups(
   document: AsyncApiDefinition,
@@ -190,18 +191,19 @@ export function buildChannelContent(
   const channelPanels: PanelNode[] = [];
 
   if (document.servers && channel.servers) {
-    const resolvedChannelServers = channel.servers
-      .map((server) => resolveInDoc<AsyncApiServer>(document, server))
-      .filter((server): server is AsyncApiServer => !!server && !!getServerHost(server));
+    const channelServers = new Set(
+      channel.servers
+        .map((server) => resolveInDoc<AsyncApiServer>(document, server))
+        .filter((server): server is AsyncApiServer => server !== undefined),
+    );
 
     const { sectionRbac: serversSectionRbac, entries: serverEntries } = splitRbacSection(
       document.servers,
     );
-    const filteredServers = serverEntries.filter(([, server]) =>
-      resolvedChannelServers.some(
-        (channelServer) => getServerHost(channelServer) === getServerHost(server),
-      ),
-    );
+    const filteredServers = serverEntries.filter(([, server]) => {
+      const resolved = resolveInDoc<AsyncApiServer>(document, server);
+      return resolved !== undefined && channelServers.has(resolved);
+    });
 
     if (filteredServers.length > 0) {
       channelPanels.push({
@@ -209,21 +211,9 @@ export function buildChannelContent(
           {
             kind: panelKind.BROKERS,
             panelLabel: labels.servers,
-            brokers: filteredServers.map(([name, server]) => ({
-              name,
-              url: getServerHost(server),
-              description: parseMarkdown(server.description, markdownOptions) ?? [],
-              protocol: server.protocol,
-              protocolVersion: server.protocolVersion,
-              pathname: server.pathname,
-              title: server.title,
-              summary: server.summary,
-              tags: server.tags,
-              externalDocs: server.externalDocs,
-              bindings: server.bindings,
-              variables: server.variables,
-              ...rbacProp(readRbacScope(server) ?? serversSectionRbac),
-            })),
+            brokers: filteredServers.map(([name, server]) =>
+              toBrokerData(name, server, document, markdownOptions, serversSectionRbac),
+            ),
           },
         ],
       });
@@ -299,10 +289,11 @@ export function buildChannelContent(
 
       if (storeCtx && message.examples && Array.isArray(message.examples)) {
         for (const example of message.examples) {
-          if (example.payload) {
+          if (example.payload !== undefined || example.headers) {
             const id = registerExample(storeCtx.exampleStore, {
               value: example.payload,
               summary: example.summary || example.name,
+              ...(example.headers ? { headers: example.headers } : {}),
             });
             exampleIds.push(id);
           }
@@ -347,6 +338,8 @@ export function buildChannelContent(
           }
         : undefined;
 
+      const correlationId = resolveInDoc<AsyncApiCorrelationId>(document, message.correlationId);
+
       return {
         name,
         label: message.title || message.name || name,
@@ -360,6 +353,9 @@ export function buildChannelContent(
         payloadLabel: labels.payload,
         headers: message.headers,
         externalDocs,
+        correlationId: correlationId?.location
+          ? { location: correlationId.location, description: correlationId.description }
+          : undefined,
         ...rbacProp(rbac),
       };
     });
@@ -455,10 +451,6 @@ export function buildChannelContent(
         label: labels.channel,
         color: labels.channel.toLowerCase(),
       },
-    },
-    seo: {
-      title: channelTitle,
-      description: asString(channel.description),
     },
     children,
   };

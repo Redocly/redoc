@@ -15,15 +15,15 @@ import { buildItems } from './adapters/build.js';
 import { markdocParser } from './components/markdoc/markdocParser.js';
 import { TypeOfUsageContext } from './telemetry/TypeOfUsageContext.js';
 import { reportDefinitionLoadFailed } from './telemetry/index.js';
-import { DefinitionLoadError, errorMessage } from './utils/definitionLoadError.js';
-import { argValueToBoolean } from './options/helpers.js';
-import { loadAndBundleDefinition } from './utils/loadAndBundleSpec.js';
-import { logoFromSpec } from './utils/x-logo.js';
+import { argValueToBoolean, normalizeDownloadUrls } from './options/helpers.js';
 import { isRecord } from './utils/is-record.js';
+import { normalizePath } from './utils/url.js';
+import { convertedDownloadUrl, convertedFileName, resolveSpec } from './utils/resolveSpec.js';
+import { logoFromSpec } from './utils/x-logo.js';
 import { apiSpecType } from './types/common.js';
 
 type RedocStandaloneProps = {
-  /** Parsed API description object, or a GraphQL SDL string. */
+  /** Parsed API description object, its JSON or YAML text, or a GraphQL SDL string. */
   spec?: Record<string, unknown> | string;
   /** URL of the API description. Ignored when `spec` is provided. */
   specUrl?: string;
@@ -46,139 +46,20 @@ type PreparedApiDocs = {
   timings: BuildTimings;
 };
 
-const GRAPHQL_URL_PATTERN = /\.(graphql|gql)([?#]|$)/i;
-const JSON_START_PATTERN = /^\s*[[{]/;
-
-type ResolvedSpec = { document: unknown; type: ApiSpecType; sdl?: string };
-
-function documentSpecType(document: Record<string, unknown>): ApiSpecType {
-  const isIntrospection =
-    '__schema' in document || (isRecord(document.data) && '__schema' in document.data);
-  if (isIntrospection) {
-    throw new DefinitionLoadError(
-      'unsupported',
-      'GraphQL introspection results are not supported; provide the schema as SDL',
-    );
-  }
-  return 'asyncapi' in document ? apiSpecType.ASYNCAPI : apiSpecType.OPENAPI;
-}
-
-function parseJsonSpec(json: string): Record<string, unknown> {
-  let parsed: unknown;
-  try {
-    parsed = JSON.parse(json);
-  } catch (error) {
-    throw new DefinitionLoadError('parse', errorMessage(error));
-  }
-  if (!isRecord(parsed))
-    throw new DefinitionLoadError('unsupported', 'A JSON "spec" must be an object');
-  return parsed;
-}
-
-async function bundle(source: Record<string, unknown> | string): Promise<Record<string, unknown>> {
-  const bundled: unknown = await loadAndBundleDefinition(source);
-  if (!isRecord(bundled)) {
-    throw new DefinitionLoadError(
-      'unsupported',
-      'The spec did not resolve to an OpenAPI or AsyncAPI document',
-    );
-  }
-  return bundled;
-}
-
-async function resolveGraphqlSdl(sdl: string): Promise<ResolvedSpec> {
-  const { parse } = await import('./utils/graphql-parse.js');
-  try {
-    return { document: parse(sdl), type: apiSpecType.GRAPHQL, sdl };
-  } catch (error) {
-    throw new DefinitionLoadError('parse', errorMessage(error));
-  }
-}
-
-async function fetchText(url: string): Promise<string> {
-  let response: Response;
-  try {
-    response = await fetch(url);
-  } catch (error) {
-    throw new DefinitionLoadError('fetch', errorMessage(error), 0);
-  }
-  if (response.ok === false) {
-    throw new DefinitionLoadError(
-      'fetch',
-      `Request failed with status ${response.status}`,
-      response.status,
-    );
-  }
-  return response.text();
-}
-
-async function resolveDocument(
-  document: Record<string, unknown>,
-  skipBundle: boolean,
-): Promise<ResolvedSpec> {
-  const type = documentSpecType(document);
-  return { document: skipBundle ? document : await bundle(document), type };
-}
-
-async function resolveUrl(url: string, skipBundle: boolean): Promise<ResolvedSpec> {
-  if (skipBundle) {
-    throw new DefinitionLoadError(
-      'unsupported',
-      '"spec" must be an object when "skipBundle" is enabled',
-    );
-  }
-  if (GRAPHQL_URL_PATTERN.test(url)) {
-    return resolveGraphqlSdl(await fetchText(url));
-  }
-  try {
-    const document = await bundle(url);
-    return { document, type: documentSpecType(document) };
-  } catch (bundleError) {
-    const text = await fetchText(url);
-    if (/^\s*<(!doctype|html)/i.test(text)) {
-      throw new DefinitionLoadError(
-        'unsupported',
-        `${url} returned an HTML page instead of an API description. Check that your server serves the file at this URL.`,
-      );
-    }
-    try {
-      return await resolveGraphqlSdl(text);
-    } catch {
-      throw bundleError;
-    }
-  }
-}
-
-async function resolveSpec({
-  spec,
-  specUrl,
-  skipBundle,
-}: Pick<RedocStandaloneProps, 'spec' | 'specUrl'> & {
-  skipBundle: boolean;
-}): Promise<ResolvedSpec> {
-  if (typeof spec === 'string') {
-    return JSON_START_PATTERN.test(spec)
-      ? resolveDocument(parseJsonSpec(spec), skipBundle)
-      : resolveGraphqlSdl(spec);
-  }
-  if (spec !== undefined) {
-    return resolveDocument(spec, skipBundle);
-  }
-  if (specUrl !== undefined) {
-    return resolveUrl(specUrl, skipBundle);
-  }
-  throw new DefinitionLoadError('unsupported', 'Either "spec" or "specUrl" must be provided');
-}
-
+/**
+ * Resolves the spec and builds the item model. `convertedDownload: false` keeps the default
+ * download on `specUrl` for an AsyncAPI 2.x source instead of a `blob:` URL of the converted
+ * document, which a server pass cannot create; the caller revokes any `blob:` download URL.
+ */
 async function prepareApiDocs({
   spec,
   specUrl,
   options = {},
   basePath = '/',
-}: Pick<
-  RedocStandaloneProps,
-  'spec' | 'specUrl' | 'options' | 'basePath'
->): Promise<PreparedApiDocs> {
+  convertedDownload = true,
+}: Pick<RedocStandaloneProps, 'spec' | 'specUrl' | 'options' | 'basePath'> & {
+  convertedDownload?: boolean;
+}): Promise<PreparedApiDocs> {
   const resolveStart = performance.now();
   const resolved = await resolveSpec({
     spec,
@@ -187,12 +68,31 @@ async function prepareApiDocs({
   });
   const resolveSpecMs = Math.round(performance.now() - resolveStart);
 
-  const defaultDownloadUrls =
-    spec === undefined && specUrl !== undefined ? [{ url: specUrl }] : undefined;
+  const usesDefaultDownload =
+    spec === undefined &&
+    specUrl !== undefined &&
+    normalizeDownloadUrls(options.downloadUrls ?? [], resolved.type).length === 0;
+  const convertedUrl =
+    usesDefaultDownload && convertedDownload && resolved.convertedFrom
+      ? convertedDownloadUrl(resolved.document)
+      : undefined;
+  const downloadUrls =
+    usesDefaultDownload && specUrl !== undefined
+      ? [
+          convertedUrl
+            ? { url: convertedUrl, title: convertedFileName(specUrl) }
+            : {
+                url:
+                  typeof document === 'undefined'
+                    ? specUrl
+                    : new URL(specUrl, document.baseURI).href,
+              },
+        ]
+      : options.downloadUrls;
 
   const mergedOptions = {
-    downloadUrls: defaultDownloadUrls,
     ...options,
+    downloadUrls,
     specType: resolved.type,
     metadata: { ...options.metadata, type: resolved.type },
   } as RawApiDocsOptions;
@@ -202,7 +102,7 @@ async function prepareApiDocs({
     type: resolved.type,
     document: resolved.document,
     options: mergedOptions,
-    basePath,
+    basePath: normalizePath(basePath),
     markdownParser: markdocParser,
   } as Parameters<typeof buildItems>[0]);
   const buildItemsMs = Math.round(performance.now() - buildStart);
@@ -218,6 +118,17 @@ async function prepareApiDocs({
         ? resolved.sdl
         : (resolved.document as Record<string, unknown>),
   };
+}
+
+function blobDownloadUrls(options: RawApiDocsOptions): string[] {
+  const downloadUrls = Array.isArray(options.downloadUrls) ? options.downloadUrls : [];
+  return downloadUrls
+    .map((entry: unknown) => (isRecord(entry) && typeof entry.url === 'string' ? entry.url : ''))
+    .filter((url) => url.startsWith('blob:'));
+}
+
+function revokeAll(urls: string[]): void {
+  for (const url of urls) URL.revokeObjectURL(url);
 }
 
 function isTelemetryDisabled(value: unknown): boolean {
@@ -249,6 +160,7 @@ const RedocStandalone = ({
 
   useEffect(() => {
     let cancelled = false;
+    let blobUrls: string[] = [];
     const startedAt = performance.now();
     setPrepared(null);
     setError(null);
@@ -260,7 +172,11 @@ const RedocStandalone = ({
       basePath,
     })
       .then((result) => {
-        if (cancelled) return;
+        blobUrls = blobDownloadUrls(result.options);
+        if (cancelled) {
+          revokeAll(blobUrls);
+          return;
+        }
         setPrepared(result);
         onLoaded?.();
       })
@@ -277,6 +193,7 @@ const RedocStandalone = ({
 
     return () => {
       cancelled = true;
+      revokeAll(blobUrls);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [spec, specUrl, basePath]);
@@ -284,7 +201,7 @@ const RedocStandalone = ({
   if (error) {
     return (
       <div role="alert" style={{ padding: '1em', fontFamily: 'monospace', color: '#e53e3e' }}>
-        Failed to load API definition: {error.message}
+        Failed to load API description: {error.message}
       </div>
     );
   }

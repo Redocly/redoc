@@ -32,13 +32,3 @@ export const StyledCodeBlock = styled(CodeBlock)`
 export const StyledJsonViewer = styled(JsonViewer)`
   --code-block-padding: var(--spacing-xs) 0 var(--spacing-xs) 20px;
 `;
-
-export const SectionHeader = styled.div`
-  font-weight: var(--panel-heading-font-weight-local);
-  line-height: var(--line-height-base);
-  color: var(--panel-heading-text-color);
-`;
-
-export const VariablesContainer = styled.div`
-  border-top: 1px solid var(--border-color-secondary);
-`;

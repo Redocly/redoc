@@ -22,7 +22,7 @@ type OverviewOptions = {
 
 export function buildOverviewContent(overviewOptions: OverviewOptions): ApiItemContent {
   const {
-    options: { info, downloadUrls, metadata },
+    options: { info, downloadUrls, hideDownloadButtons, metadata },
     markdoc,
     sectionChildren,
     basePath,
@@ -30,7 +30,7 @@ export function buildOverviewContent(overviewOptions: OverviewOptions): ApiItemC
 
   const panels: PanelNode[] = [];
 
-  const downloadPanel = buildDownloadPanelContent(downloadUrls ?? []);
+  const downloadPanel = hideDownloadButtons ? null : buildDownloadPanelContent(downloadUrls ?? []);
 
   if (downloadPanel) {
     panels.push(downloadPanel);
@@ -82,7 +82,6 @@ export function buildOverviewContent(overviewOptions: OverviewOptions): ApiItemC
 
   return {
     contentType: contentType.OVERVIEW,
-    seo: { title: info?.title, description: info?.description },
     children: [containerNode],
   };
 }

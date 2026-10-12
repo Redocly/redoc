@@ -1,0 +1,16 @@
+swagger: 2.0
+info:
+  title: Redocly Cafe
+  version: 1.0.0
+paths:
+  /orders:
+    post:
+      parameters:
+        - name: order
+          in: body
+          required: true
+          schema:
+            type: object
+      responses:
+        '200':
+          description: Order received.

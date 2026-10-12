@@ -1,0 +1,18 @@
+openapi: 3.2.0
+info:
+  version: 1.0.0
+  title: Redocly Cafe
+paths:
+  /orders/total:
+    get:
+      operationId: getOrderTotal
+      responses:
+        '200':
+          description: Total of the open tab, if any.
+          content:
+            application/json:
+              schema:
+                type:
+                  - number
+                  - 'null'
+                default: null

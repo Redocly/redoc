@@ -95,12 +95,6 @@ export const appStore = atomWithStorage<AppStore>(
   customStorage,
 );
 
-export const environmentsAtom = atom((get) => {
-  const state = get(appStore);
-  // Merge with an empty set so consumers get a copy, never the persisted store object.
-  const envs = mergeEnvData(state.environments, {});
-  return envs;
-});
 
 export const environmentAtom = atom<
   [Record<string, string>, string],
@@ -152,15 +146,15 @@ export const activeMimeNameAtom = atom<string, [string], void>(
   },
 );
 
-// Authored embed selection (`mimeType`/`exampleKey` on a pluggable tag). Kept
-// out of the cookie-backed store so an embed never overwrites the visitor's
-// persisted media-type preference for the rest of the site.
+// Transient media-type selection (a `ct=` deep link, an authored default). Kept
+// out of the cookie-backed store so it never overwrites the visitor's persisted
+// media-type preference for the rest of the site.
 export const mediaTypeOverrideAtom = atom<string | undefined>(undefined);
 
 export const activeMediaTypeAtom = atom<string | undefined, [string | undefined], void>(
   (get) => get(mediaTypeOverrideAtom) ?? (get(activeMimeNameAtom) || undefined),
   (get, set, value) => {
-    // A genuine user pick replaces any authored embed default.
+    // A genuine user pick replaces any transient selection.
     set(mediaTypeOverrideAtom, undefined);
     // Global switch can reshape every mounted section; keep the visible one anchored.
     if ((value ?? '') !== get(activeMimeNameAtom)) {
@@ -179,18 +173,10 @@ export const layoutAtom = atom<LayoutVariant, LayoutVariant[], void>(
 );
 
 
-export const allowedEnvironmentsAtom = atom<string[] | null, [string[] | null], void>(
-  (get) => get(appStore).allowedEnvironments,
-  (get, set, allowedEnvironments) => {
-    const state = get(appStore);
-    set(appStore, { ...state, allowedEnvironments });
-  },
-);
-
 /**
  * appSessionStore saved to session storage
  */
-export const appSessionStore = atomWithStorage<AppSessionStore>(
+const appSessionStore = atomWithStorage<AppSessionStore>(
   'redoc.appSessionStore',
   {
     collapsedSidebar: false,
@@ -268,7 +254,6 @@ export const languageAtom = atom<LanguageAtom, [string], void>(
   },
 );
 
-export const requestValuesAtom = atom<Record<string, Record<string, unknown>>>({});
 
 /**
  * The `data-section-id` of whatever section is currently nearest the top of

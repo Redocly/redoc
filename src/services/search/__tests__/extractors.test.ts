@@ -178,7 +178,6 @@ describe('extractPanelRows', () => {
                     description: 'Production **cluster** behind the [gateway](https://example.com)',
                   },
                   { url: 'https://eu.example.com/v1', name: 'eu' },
-                  { url: 'http://localhost:4010', isMockServer: true },
                 ],
               },
             ],

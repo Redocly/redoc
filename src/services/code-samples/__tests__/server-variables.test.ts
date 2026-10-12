@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
-import { replaceServerVariables, serverMatchesUrl } from '../server-variables.js';
+import {
+  replaceServerVariables,
+} from '../server-variables.js';
 
 describe('replaceServerVariables', () => {
   it('substitutes a variable with its default value', () => {
@@ -52,30 +54,3 @@ describe('replaceServerVariables', () => {
   });
 });
 
-describe('serverMatchesUrl', () => {
-  const templatedServer = {
-    url: 'https://{host}/api',
-    variables: { host: { default: 'app.example.com' } },
-  };
-
-  it('matches the raw (templated) server URL', () => {
-    expect(serverMatchesUrl(templatedServer, 'https://{host}/api')).toBe(true);
-  });
-
-  it('matches the variable-substituted server URL', () => {
-    expect(serverMatchesUrl(templatedServer, 'https://app.example.com/api')).toBe(true);
-  });
-
-  it('does not match an unrelated URL', () => {
-    expect(serverMatchesUrl(templatedServer, 'https://other.example.com/api')).toBe(false);
-  });
-
-  it('does not match when the url is undefined or empty', () => {
-    expect(serverMatchesUrl(templatedServer, undefined)).toBe(false);
-    expect(serverMatchesUrl(templatedServer, '')).toBe(false);
-  });
-
-  it('matches a plain server by exact URL', () => {
-    expect(serverMatchesUrl({ url: '/_mock/apis/main' }, '/_mock/apis/main')).toBe(true);
-  });
-});

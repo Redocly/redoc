@@ -1,0 +1,7 @@
+swagger: '2.0'
+info:
+  version: 3
+  logo:
+    url: https://cafe.example.test/logo.svg
+  termsOfService: see the counter
+paths: {}

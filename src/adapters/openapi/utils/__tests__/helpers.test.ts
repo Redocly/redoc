@@ -2,10 +2,8 @@ import { describe, expect, it } from 'vitest';
 
 import {
   escapeHTMLAttrChars,
-  get,
   getDefinitionName,
   isAbsoluteUrl,
-  isNumeric,
   removeQueryStringAndHash,
   resolveUrl,
   sanitizeItemId,
@@ -20,19 +18,6 @@ describe('stripTrailingSlash', () => {
 
   it('returns path unchanged when there is no trailing slash', () => {
     expect(stripTrailingSlash('/pets')).toBe('/pets');
-  });
-});
-
-describe('isNumeric', () => {
-  it('returns true for finite numeric values', () => {
-    expect(isNumeric(42)).toBe(true);
-    expect(isNumeric('3.14')).toBe(true);
-  });
-
-  it('returns false for non-numeric values', () => {
-    expect(isNumeric('abc')).toBe(false);
-    expect(isNumeric(Infinity)).toBe(false);
-    expect(isNumeric(null)).toBe(false);
   });
 });
 
@@ -99,20 +84,6 @@ describe('escapeHTMLAttrChars', () => {
 describe('sanitizeItemId', () => {
   it('replaces hash symbols and lowercases', () => {
     expect(sanitizeItemId('Schema#Pet')).toBe('schema_pet');
-  });
-});
-
-describe('get', () => {
-  it('reads nested values by dot path', () => {
-    expect(get({ a: { b: { c: 1 } } }, 'a.b.c')).toBe(1);
-  });
-
-  it('returns default when path is missing', () => {
-    expect(get({ a: 1 }, 'b.c', 'default')).toBe('default');
-  });
-
-  it('supports array path segments', () => {
-    expect(get({ a: { b: 2 } }, ['a', 'b'])).toBe(2);
   });
 });
 

@@ -23,8 +23,7 @@ import { deepLinkHash } from './deepLinkHash.js';
  * navigation back to the remembered hash would be treated as a no-op.
  *
  * A `hashchange` that arrives with the hash unchanged can only be synthetic: a host
- * re-landing on the current URL without routing (the portal's `loadAndNavigate` skips
- * the router when nothing in the URL changed). It is announced as a reassert.
+ * re-landing on the current URL without routing. It is announced as a reassert.
  */
 
 /** Fired after a raw `history.replaceState` URL write that bypasses the router. */

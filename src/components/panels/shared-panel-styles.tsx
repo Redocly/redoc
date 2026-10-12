@@ -35,7 +35,7 @@ export const PanelListItem = styled.div`
   align-items: center;
 `;
 
-export const StyledListIcon = styled.svg`
+const StyledListIcon = styled.svg`
   width: 22px;
   height: 22px;
   flex-shrink: 0;

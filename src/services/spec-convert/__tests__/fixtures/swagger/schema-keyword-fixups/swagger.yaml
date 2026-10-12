@@ -1,0 +1,64 @@
+swagger: '2.0'
+info:
+  title: Redocly Cafe
+  version: 1.0.0
+paths: {}
+definitions:
+  MenuItem:
+    type: object
+    discriminator: itemKind
+    x-required: [name]
+    xml:
+      name: menuItem
+      namespace: ''
+    properties:
+      itemKind:
+        type: string
+      name:
+        type: string
+        x-nullable: true
+      price:
+        type: number
+        minimum: 0
+        exclusiveMinimum: true
+        maximum: 100
+        exclusiveMaximum: false
+      photo:
+        type: file
+      sizes:
+        type: array
+      tags:
+        type: array
+        items: []
+      allergens:
+        type: array
+        items:
+          - type: string
+      pairings:
+        type: array
+        items:
+          - type: string
+          - type: integer
+      barcode:
+        name: barcode
+        type: string
+        required: true
+        allowEmptyValue: true
+      note:
+        x-nullable: true
+      variants:
+        x-anyOf:
+          - type: string
+          - type: integer
+      spice:
+        x-oneOf:
+          - type: string
+        x-not:
+          type: boolean
+  OrderItem:
+    type: object
+    properties:
+      quantity:
+        type: integer
+    additionalProperties:
+      type: file

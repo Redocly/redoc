@@ -31,7 +31,7 @@ export function getUrlDirname(urlLikeString: string): string | undefined {
       return url.origin + '/';
     }
   } catch (error) {
-    console.error(`Invalid URL: ${urlLikeString}`, error);
+    console.error('Invalid URL: %s', urlLikeString, error);
     return;
   }
 }

@@ -2,11 +2,10 @@ import { memo, useContext } from 'react';
 import { useAtomValue } from 'jotai';
 
 import type { ReactElement } from 'react';
-import type { PropertyType, SchemaNode, Document } from '../../types/schema.js';
+import type { PropertyType, SchemaNode, Document, OneOfChangeParams } from '../../types/schema.js';
 import type { OpenAPISchema } from '../../types/openapi.js';
 import type { AsyncAPISchema } from '../../types/asyncapi.js';
 import type { PropertyRendererProps } from './views/PropertyRenderer.js';
-import type { OneOfChangeParams } from '../../types/pluggable.js';
 
 import { schemaEntryAtom } from '../../jotai/schema.js';
 import { globalOptionsAtom } from '../../jotai/store.js';

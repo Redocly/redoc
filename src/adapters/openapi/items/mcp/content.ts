@@ -30,7 +30,6 @@ export function buildMcpItemContent(
 
   return {
     contentType: contentType.ITEM,
-    seo: { title },
     meta: { name },
     children: [
       {

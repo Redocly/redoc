@@ -2,7 +2,7 @@ import { isRecord } from '../../adapters/helpers.js';
 
 import type { ApiStore } from '../../types/store.js';
 
-/** Credentials the docs store to pre-fill Try It. The request console reads them; an agent never does. */
+/** Credential fields a security scheme can carry; an agent never sees them. */
 function isCredentialKey(key: string): boolean {
   return key === 'serverValues' || key.startsWith('x-default');
 }

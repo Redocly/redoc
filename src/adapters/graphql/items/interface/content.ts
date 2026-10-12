@@ -115,10 +115,6 @@ export function buildInterfaceContent(
     contentType: contentType.ITEM,
     itemVariant: itemVariant.INTERFACE,
     meta: { name: interfaceType.name },
-    seo: {
-      title: interfaceType.name,
-      description: interfaceType.description || undefined,
-    },
     children: [{ nodeType: nodeTypes.CONTAINER, children: containerChildren, panels }],
   };
 }

@@ -67,7 +67,6 @@ function makeWrapper(
     items: [],
     store: { schemaStore, exampleStore, securitySchemeStore: {} },
     options,
-    replayDefinition: null,
   });
 
   function Wrapper({ children }: { children: ReactNode }) {
@@ -218,7 +217,7 @@ function makePayloadNode(
     kind: 'payload',
     examples: [],
     ...overrides,
-  } as PayloadExamplesPanelItem;
+  };
 }
 
 describe('useMediaTypeContent active-message fallback', () => {
@@ -273,6 +272,28 @@ describe('useMediaTypeContent active-message fallback', () => {
 
     expect(result.current.effectiveSchemaId).toBe('cancel-ride-schema');
     expect(result.current.effectiveExampleIds).toEqual(['cancel-ex']);
+    expect(result.current.isMessageWithoutPayload).toBe(false);
+  });
+
+  it('resolves no sample when the active message has no payload instead of keeping another message sample', () => {
+    const { jotaiStore, Wrapper } = makeWrapper({});
+    jotaiStore.set(itemStoreAtom(TEST_ITEM_ID), {
+      activeMessageKey: 'ping',
+    });
+
+    const node = makePayloadNode({
+      schemaId: 'order-ready-schema',
+      messagesByKey: {
+        orderReady: { schemaId: 'order-ready-schema' },
+        ping: {},
+      },
+    });
+
+    const { result } = renderHook(() => useMediaTypeContent(node), { wrapper: Wrapper });
+
+    expect(result.current.effectiveSchemaId).toBeUndefined();
+    expect(result.current.effectiveExampleIds).toBeUndefined();
+    expect(result.current.isMessageWithoutPayload).toBe(true);
   });
 
   it('falls back to node.schemaId when activeMessageKey is set but not present in messagesByKey', () => {
@@ -352,7 +373,7 @@ describe('useMediaTypeContent active-message fallback', () => {
 });
 
 describe('useActiveVariantSchemaId driven by getSchemaVariantSelector (oneOf source)', () => {
-  it('returns the active oneOf variant id (chosen via activeOneOf[<switcher label>]) so Payload sampling targets it directly', () => {
+  it('keeps the host id for a root-level pick: the sampler rewrites the host to that variant', () => {
     const { jotaiStore, Wrapper } = makeWrapper(makeOneOfSchemaStore());
     jotaiStore.set(itemStoreAtom(TEST_ITEM_ID), {
       activeOneOf: { 'One of:': 1 },
@@ -361,19 +382,101 @@ describe('useActiveVariantSchemaId driven by getSchemaVariantSelector (oneOf sou
     const { result } = renderHook(() => useActiveVariantSchemaId('body'), {
       wrapper: Wrapper,
     });
-    expect(result.current).toBe('components/schemas/Fraud Prevention');
+    expect(result.current).toBe('body');
   });
 
-  it('accepts a single scoped oneOf key for root oneOf resolution (legacy sync)', () => {
-    const { jotaiStore, Wrapper } = makeWrapper(makeOneOfSchemaStore());
-    jotaiStore.set(itemStoreAtom(TEST_ITEM_ID), {
-      activeOneOf: { 'entityMetadata/One of:': 1 },
-    });
+  it('keeps the host id for a discriminator pick so the sample carries the host properties and the mapping value', () => {
+    const store: Record<string, SchemaEntry> = {
+      'components/schemas/Card': {
+        id: 'components/schemas/Card',
+        kind: schemaKind.JSON_SCHEMA,
+        data: { type: 'object', properties: { last4: { type: 'string' } } },
+      },
+      body: {
+        id: 'body',
+        kind: schemaKind.JSON_SCHEMA,
+        data: {
+          type: 'object',
+          required: ['amount'],
+          properties: { amount: { type: 'number' } },
+          oneOf: [{ $ref: '#/components/schemas/Card' }],
+          discriminator: {
+            propertyName: 'method',
+            mapping: { card: '#/components/schemas/Card' },
+          },
+        },
+      },
+    };
+    const { jotaiStore, Wrapper } = makeWrapper(store);
+    jotaiStore.set(itemStoreAtom(TEST_ITEM_ID), { activeDiscriminator: { method: 0 } });
 
     const { result } = renderHook(() => useActiveVariantSchemaId('body'), {
       wrapper: Wrapper,
     });
-    expect(result.current).toBe('components/schemas/Fraud Prevention');
+    expect(result.current).toBe('body');
+  });
+
+  it('samples a sibling variant alone when the host inherits the discriminator through allOf', () => {
+    const schema = (id: string, data: Record<string, unknown>): SchemaEntry => ({
+      id,
+      kind: schemaKind.JSON_SCHEMA,
+      data,
+    });
+    const store: Record<string, SchemaEntry> = {
+      'components/schemas/Pet': schema('components/schemas/Pet', {
+        type: 'object',
+        properties: { petType: { type: 'string' } },
+        discriminator: {
+          propertyName: 'petType',
+          mapping: { cat: '#/components/schemas/Cat', dog: '#/components/schemas/Dog' },
+        },
+      }),
+      'components/schemas/Cat': schema('components/schemas/Cat', {
+        allOf: [
+          { $ref: '#/components/schemas/Pet' },
+          { properties: { huntingSkill: { type: 'string' } } },
+        ],
+      }),
+      'components/schemas/Dog': schema('components/schemas/Dog', {
+        allOf: [
+          { $ref: '#/components/schemas/Pet' },
+          { properties: { packSize: { type: 'integer' } } },
+        ],
+      }),
+    };
+    const { jotaiStore, Wrapper } = makeWrapper(store);
+    jotaiStore.set(itemStoreAtom(TEST_ITEM_ID), { activeDiscriminator: { petType: 1 } });
+
+    const { result } = renderHook(() => useActiveVariantSchemaId('components/schemas/Cat'), {
+      wrapper: Wrapper,
+    });
+    expect(result.current).toBe('components/schemas/Dog');
+  });
+
+  it('samples a variant that is a discriminator host itself on its own', () => {
+    const schema = (id: string, data: Record<string, unknown>): SchemaEntry => ({
+      id,
+      kind: schemaKind.JSON_SCHEMA,
+      data,
+    });
+    const store: Record<string, SchemaEntry> = {
+      'components/schemas/Error': schema('components/schemas/Error', { type: 'object' }),
+      'components/schemas/Pet': schema('components/schemas/Pet', {
+        type: 'object',
+        discriminator: { propertyName: 'petType', mapping: { cat: '#/components/schemas/Cat' } },
+      }),
+      'components/schemas/Cat': schema('components/schemas/Cat', {
+        allOf: [{ $ref: '#/components/schemas/Pet' }],
+      }),
+      body: schema('body', {
+        oneOf: [{ $ref: '#/components/schemas/Error' }, { $ref: '#/components/schemas/Pet' }],
+      }),
+    };
+    const { jotaiStore, Wrapper } = makeWrapper(store);
+    jotaiStore.set(itemStoreAtom(TEST_ITEM_ID), { activeOneOf: { 'One of:': 1 } });
+
+    const { result } = renderHook(() => useActiveVariantSchemaId('body'), { wrapper: Wrapper });
+    expect(result.current).toBe('components/schemas/Pet');
   });
 
   it('returns the original schema id when there are no variants', () => {
@@ -464,9 +567,32 @@ describe('useSchemaVariantSelection (oneOf nested in a oneOf variant)', () => {
 });
 
 describe('useActiveVariantSchemaId (oneOf nested in a oneOf variant)', () => {
-  it('returns the active leaf so the sample follows the nested pick', () => {
+  it('keeps the host id: the sampler store merges the nested variant into the host', () => {
     const { jotaiStore, Wrapper } = makeWrapper(makeOneOfInOneOfSchemaStore());
     jotaiStore.set(itemStoreAtom(TEST_ITEM_ID), { activeOneOf: { '&oneof=0/One of:': 1 } });
+    const { result } = renderHook(() => useActiveVariantSchemaId('body'), { wrapper: Wrapper });
+
+    expect(result.current).toBe('body');
+  });
+
+  it('samples the nested variant alone when the host does not declare the axis', () => {
+    const store = makeOneOfInOneOfSchemaStore();
+    store['components/schemas/Pet'] = {
+      id: 'components/schemas/Pet',
+      kind: schemaKind.JSON_SCHEMA,
+      data: {
+        discriminator: { propertyName: 'kind', mapping: { otp: '#/components/schemas/Otp' } },
+      },
+    };
+    store.body = {
+      ...store.body,
+      data: { allOf: [{ $ref: '#/components/schemas/Pet' }] },
+    };
+    const { jotaiStore, Wrapper } = makeWrapper(store);
+    jotaiStore.set(itemStoreAtom(TEST_ITEM_ID), {
+      activeDiscriminator: { kind: 0 },
+      activeOneOf: { '&d=0/One of:': 1 },
+    });
     const { result } = renderHook(() => useActiveVariantSchemaId('body'), { wrapper: Wrapper });
 
     expect(result.current).toBe('components/schemas/OtpFailed');
@@ -484,6 +610,6 @@ describe('useActiveVariantSchemaId (nested oneOf with inline options)', () => {
     jotaiStore.set(itemStoreAtom(TEST_ITEM_ID), { activeOneOf: { '&oneof=0/One of:': 1 } });
     const { result } = renderHook(() => useActiveVariantSchemaId('body'), { wrapper: Wrapper });
 
-    expect(result.current).toBe('components/schemas/Otp');
+    expect(result.current).toBe('body');
   });
 });

@@ -1,0 +1,38 @@
+swagger: '2.0'
+info:
+  title: Redocly Cafe
+  version: 1.0.0
+paths:
+  '/orders/{orderId}/feedback':
+    parameters:
+      - name: orderId
+        in: path
+        required: true
+        type: string
+      - name: visitDate
+        in: formData
+        type: string
+        format: date
+    post:
+      operationId: rateOrder
+      parameters:
+        - name: rating
+          in: formData
+          type: integer
+          minimum: 1
+          maximum: 5
+          default: 5
+        - name: comment
+          in: formData
+          required: true
+          type: string
+          description: Free-text comment for the kitchen.
+          x-display: textarea
+      responses:
+        '204':
+          description: Thanks for the feedback.
+    put:
+      operationId: replaceOrderFeedback
+      responses:
+        '204':
+          description: Feedback replaced.

@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 
 import {
+  registerExample,
   resolveContent,
   resolveRef,
   stableStringify,
@@ -127,16 +128,21 @@ describe('resolveRef ignoreNamedSchemas', () => {
 describe('resolveContent', () => {
   const mediaTypes = {
     PatchResponse: {
-      'application/json': {
-        schema: { type: 'object', properties: { id: { type: 'string' } } },
-        examples: {
-          default: { value: { id: '123' } },
-        },
+      schema: { type: 'object', properties: { id: { type: 'string' } } },
+      examples: {
+        default: { value: { id: '123' } },
       },
     },
   };
   const spec: Record<string, unknown> = {
-    components: { mediaTypes },
+    components: {
+      mediaTypes: {
+        ...mediaTypes,
+        PatchResponseAlias: { $ref: '#/components/mediaTypes/PatchResponse' },
+        LoopA: { $ref: '#/components/mediaTypes/LoopB' },
+        LoopB: { $ref: '#/components/mediaTypes/LoopA' },
+      },
+    },
   };
 
   it('returns the inline content map unchanged', () => {
@@ -147,23 +153,57 @@ describe('resolveContent', () => {
     expect(result).toEqual(inline);
   });
 
-  it('dereferences a $ref to components/mediaTypes (OpenAPI 3.2)', () => {
+  it('dereferences a media type entry that references components/mediaTypes (OpenAPI 3.2)', () => {
     const result = resolveContent(spec, {
-      content: { $ref: '#/components/mediaTypes/PatchResponse' },
+      content: {
+        'application/json': { $ref: '#/components/mediaTypes/PatchResponse' },
+        'text/plain': { schema: { type: 'string' } },
+      },
     });
-    expect(result).toEqual(mediaTypes.PatchResponse);
+    expect(result).toEqual({
+      'application/json': mediaTypes.PatchResponse,
+      'text/plain': { schema: { type: 'string' } },
+    });
+  });
+
+  it('resolves a content map that is itself a $ref', () => {
+    const result = resolveContent(
+      { ...spec, 'x-content': { 'application/json': mediaTypes.PatchResponse } },
+      { content: { $ref: '#/x-content' } as never },
+    );
+    expect(result).toEqual({ 'application/json': mediaTypes.PatchResponse });
+  });
+
+  it('follows a media type that references another media type', () => {
+    const result = resolveContent(spec, {
+      content: { 'application/json': { $ref: '#/components/mediaTypes/PatchResponseAlias' } },
+    });
+    expect(result).toEqual({ 'application/json': mediaTypes.PatchResponse });
+  });
+
+  it('drops a media type entry whose $ref cannot be resolved or is cyclic', () => {
+    const result = resolveContent(spec, {
+      content: {
+        'application/json': { $ref: '#/components/mediaTypes/Missing' },
+        'application/xml': { $ref: '#/components/mediaTypes/LoopA' },
+        'text/plain': { schema: { type: 'string' } },
+      },
+    });
+    expect(result).toEqual({ 'text/plain': { schema: { type: 'string' } } });
+  });
+
+  it('returns undefined when no media type is left', () => {
+    expect(
+      resolveContent(spec, {
+        content: { 'application/json': { $ref: '#/components/mediaTypes/Missing' } },
+      }),
+    ).toBeUndefined();
+    expect(resolveContent(spec, { content: {} })).toBeUndefined();
   });
 
   it('returns undefined when content is missing', () => {
     expect(resolveContent(spec, {})).toBeUndefined();
     expect(resolveContent(spec, undefined)).toBeUndefined();
-  });
-
-  it('returns undefined when $ref cannot be resolved', () => {
-    const result = resolveContent(spec, {
-      content: { $ref: '#/components/mediaTypes/Missing' },
-    });
-    expect(result).toBeUndefined();
   });
 });
 
@@ -183,7 +223,7 @@ describe('pickRenderableDescription', () => {
     }
   });
 
-  it('passes pre-parsed AST nodes through (portal replaces markdown strings with parsed markdoc)', () => {
+  it('passes pre-parsed AST nodes through (a host may replace markdown strings with parsed markdoc)', () => {
     const node = { $$mdtype: 'Node', type: 'paragraph', attributes: {}, children: [] };
     expect(pickRenderableDescription(node)).toBe(node);
     expect(pickRenderableDescription([node])).toEqual([node]);
@@ -194,5 +234,26 @@ describe('pickRenderableDescription', () => {
     expect(pickRenderableDescription(true)).toBeUndefined();
     expect(pickRenderableDescription(null)).toBeUndefined();
     expect(pickRenderableDescription(undefined)).toBeUndefined();
+  });
+});
+
+describe('registerExample fallback ids', () => {
+  it('numbers each store from example_0', () => {
+    const a = {};
+    const b = {};
+    expect(registerExample(a, { value: 1 })).toBe('example_0');
+    expect(registerExample(a, { value: 2 })).toBe('example_1');
+    expect(registerExample(b, { value: 3 })).toBe('example_0');
+  });
+
+  it('skips ids a hydrated store already holds and stores the new entry', () => {
+    const store = {
+      example_0: { id: 'example_0', value: 'built' },
+      example_1: { id: 'example_1', value: 'built' },
+    };
+    const id = registerExample(store, { value: 'runtime' });
+    expect(id).toBe('example_2');
+    expect(store[id]?.value).toBe('runtime');
+    expect(store.example_0.value).toBe('built');
   });
 });

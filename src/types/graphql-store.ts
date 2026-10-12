@@ -38,6 +38,7 @@ export type GraphqlTypeData = {
   enumValues?: GraphqlEnumValueData[];
   possibleTypes?: string[];
   interfaces?: string[];
+  isOneOf?: true;
   specifiedByUrl?: string;
   requiresScopes?: GraphqlRequiresScopes;
 };
@@ -64,7 +65,7 @@ export type GraphqlStoreMeta = {
 };
 
 export const GRAPHQL_TYPE_ENTRY_PREFIX = 'types/';
-export const GRAPHQL_DIRECTIVE_ENTRY_PREFIX = 'directives/';
+const GRAPHQL_DIRECTIVE_ENTRY_PREFIX = 'directives/';
 
 export function graphqlTypeEntryId(typeName: string): string {
   return `${GRAPHQL_TYPE_ENTRY_PREFIX}${typeName}`;

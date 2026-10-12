@@ -13,12 +13,17 @@ import { isRecord } from '../utils/is-record.js';
 
 export { isRecord };
 
-let schemaCounter = 0;
-let exampleCounter = 0;
+const storeCounters = new WeakMap<object, number>();
 
-export function resetStoreCounters(): void {
-  schemaCounter = 0;
-  exampleCounter = 0;
+/**
+ * Sequential per-store id: a fresh store starts at `${prefix}_0`, and an id already present
+ * in the store (a hydrated store that keeps registering at runtime) is skipped, never reused.
+ */
+function nextStoreId(store: Record<string, unknown>, prefix: string): string {
+  let n = storeCounters.get(store) ?? 0;
+  while (`${prefix}_${n}` in store) n++;
+  storeCounters.set(store, n + 1);
+  return `${prefix}_${n}`;
 }
 
 export function stableStringify(data: unknown, seen?: Set<unknown>): string {
@@ -57,7 +62,7 @@ export function registerSchema(
       return existing;
     }
 
-    const id = `schema_${schemaCounter++}`;
+    const id = nextStoreId(schemaStore, 'schema');
     schemaStore[id] = { ...storedEntry, id };
     hashIndex[hash] = id;
     return id;
@@ -90,7 +95,7 @@ export function registerExample(
   exampleStore: Record<string, ExampleEntry>,
   entry: Omit<ExampleEntry, 'id'> & { id?: string },
 ): string {
-  const id = entry.id ?? `example_${exampleCounter++}`;
+  const id = entry.id ?? nextStoreId(exampleStore, 'example');
   if (!exampleStore[id]) {
     exampleStore[id] = { ...entry, id };
   }
@@ -149,31 +154,50 @@ export function isOpenAPIRef(value: unknown): value is OpenAPIRef {
 }
 
 type LegacyExampleHost = {
-  content?: Referenced<MediaTypesMap>;
+  content?: { [mime: string]: Referenced<OpenAPIMediaType> };
   'x-examples'?: { [mime: string]: { [name: string]: Referenced<OpenAPIExample> } };
   'x-example'?: { [mime: string]: unknown };
 };
 
+/** Follows a `components.mediaTypes` reference chain; `undefined` when it is broken or cyclic. */
+export function resolveMediaType(
+  spec: Record<string, unknown>,
+  entry: Referenced<OpenAPIMediaType>,
+): OpenAPIMediaType | undefined {
+  const seen = new Set<string>();
+  let mediaType: Referenced<OpenAPIMediaType> | undefined = entry;
+  while (isOpenAPIRef(mediaType)) {
+    if (seen.has(mediaType.$ref)) return undefined;
+    seen.add(mediaType.$ref);
+    mediaType = resolveRef<Referenced<OpenAPIMediaType>>(spec, mediaType);
+  }
+  return isRecord(mediaType) ? mediaType : undefined;
+}
+
+/** `undefined` when there is no media type left to render. */
 export function resolveContent(
   spec: Record<string, unknown>,
   info: LegacyExampleHost | null | undefined,
-  ignoreNamedSchemas?: Set<string>,
 ): MediaTypesMap | undefined {
-  const content = info?.content;
+  if (!info?.content) return undefined;
+  const content = isOpenAPIRef(info.content)
+    ? resolveRef<MediaTypesMap>(spec, info.content)
+    : info.content;
   if (!content) return undefined;
-  const resolved = isOpenAPIRef(content)
-    ? resolveRef<MediaTypesMap>(spec, content, ignoreNamedSchemas)
-    : content;
-  return mergeLegacyExamples(resolved, info);
+  const resolved: MediaTypesMap = {};
+  for (const [mime, entry] of Object.entries(content)) {
+    const mediaType = resolveMediaType(spec, entry);
+    if (mediaType) resolved[mime] = mediaType;
+  }
+  const merged = mergeLegacyExamples(resolved, info);
+  return merged && Object.keys(merged).length > 0 ? merged : undefined;
 }
 
 /**
  * Swagger 2.0 body parameters carry their examples as `x-examples` / `x-example`
- * extensions that `swagger2openapi` copies onto the generated requestBody/response as
- * siblings of `content` (not inside the media type). Merge them into the media map so
- * they render — parity with legacy openapi-docs `getContentWithLegacyExamples`
- * (`packages/openapi-docs/src/utils/openapi.ts`). `x-examples` (plural) wins over
- * `x-example` (singular), matching legacy.
+ * extensions; the Swagger 2.0 converter copies them onto the generated requestBody/response
+ * as siblings of `content` (not inside the media type). Merge them into the media map so
+ * they render. `x-examples` (plural) wins over `x-example` (singular).
  */
 function mergeLegacyExamples(
   media: MediaTypesMap | undefined,

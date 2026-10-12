@@ -77,7 +77,6 @@ function renderGroupPage(content: ApiItemContent, isExpanded = true, sectionId?:
     items: [],
     store: EMPTY_API_STORE,
     options: { basePath: '/docs' } as ApiDocsOptions,
-    replayDefinition: null,
   });
 
   return render(

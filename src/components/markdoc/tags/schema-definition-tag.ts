@@ -1,4 +1,3 @@
-import type { Node } from '@markdoc/markdoc';
 import type { MarkdocTagSchema } from '@redocly/theme/markdoc/tags/types';
 
 export const schemaDefinitionTag: MarkdocTagSchema = {
@@ -20,9 +19,5 @@ export const schemaDefinitionTag: MarkdocTagSchema = {
       type: String,
       default: false,
     },
-  },
-  renderForLlms: (node: Node) => {
-    const ref = node.attributes.schemaRef as string | undefined;
-    return ref ? `Schema: ${ref}` : '';
   },
 };

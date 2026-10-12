@@ -58,7 +58,7 @@ function FieldRow({ field }: { field: FieldData }): ReactElement {
         <PropertyName $deprecated={field.deprecated}>
           {field.name}
           {hasArgs && (
-            <InlineArgs>({args.length === 1 ? args[0].name : `...${args.length} args`})</InlineArgs>
+            <InlineArgs>{`(${args.length === 1 ? args[0].name : `...${args.length} args`})`}</InlineArgs>
           )}
         </PropertyName>
         {field.type && <SchemaTypeLabel>{field.type}</SchemaTypeLabel>}

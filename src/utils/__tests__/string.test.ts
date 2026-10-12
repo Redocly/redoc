@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 
-import { asString } from '../string.js';
+import { asString, tryDecodeURIComponent } from '../string.js';
 
 describe('asString', () => {
   it('keeps non-empty strings', () => {
@@ -30,5 +30,26 @@ describe('asString', () => {
     expect(asString({ en: 'Summary' })).toBeUndefined();
     expect(asString(['Summary'])).toBeUndefined();
     expect(asString(() => 'Summary')).toBeUndefined();
+  });
+});
+
+describe('tryDecodeURIComponent', () => {
+  it('decodes valid escapes', () => {
+    expect(tryDecodeURIComponent('/caf%C3%A9')).toBe('/café');
+    expect(tryDecodeURIComponent('/a%5Cb')).toBe('/a\\b');
+  });
+
+  it('returns input with a malformed escape unchanged, without logging', () => {
+    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
+    for (const input of ['/menu%zz', '/menu%', '/%E0%A4%A', '/deals/50%off']) {
+      expect(tryDecodeURIComponent(input)).toBe(input);
+    }
+    expect(consoleError).not.toHaveBeenCalled();
+    consoleError.mockRestore();
+  });
+
+  it('decodes the rest of a string around a lone percent sign', () => {
+    expect(tryDecodeURIComponent('/other/50%%20off')).toBe('/other/50% off');
+    expect(tryDecodeURIComponent('/other/50%off')).toBe('/other/50%off');
   });
 });

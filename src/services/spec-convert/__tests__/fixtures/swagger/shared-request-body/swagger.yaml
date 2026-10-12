@@ -1,0 +1,90 @@
+swagger: '2.0'
+info:
+  title: Redocly Cafe
+  version: 1.0.0
+host: cafe.example.test
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /orders:
+    post:
+      operationId: createOrder
+      parameters:
+        - name: order
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/NewOrder'
+      responses:
+        '201':
+          description: Order placed.
+          schema:
+            $ref: '#/definitions/Order'
+  '/orders/{orderId}':
+    put:
+      operationId: replaceOrder
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          type: string
+        - name: order
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/NewOrder'
+      responses:
+        '200':
+          description: Order replaced.
+          schema:
+            $ref: '#/definitions/Order'
+  /order-items:
+    post:
+      parameters:
+        - name: items
+          in: body
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/OrderItem'
+      responses:
+        '204':
+          description: Items queued.
+    put:
+      parameters:
+        - name: items
+          in: body
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/OrderItem'
+      responses:
+        '204':
+          description: Items replaced.
+definitions:
+  NewOrder:
+    type: object
+    properties:
+      items:
+        type: array
+        items:
+          $ref: '#/definitions/OrderItem'
+  OrderItem:
+    type: object
+    properties:
+      menuItemId:
+        type: string
+      quantity:
+        type: integer
+        minimum: 1
+  Order:
+    allOf:
+      - $ref: '#/definitions/NewOrder'
+      - type: object
+        properties:
+          id:
+            type: string

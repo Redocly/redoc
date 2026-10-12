@@ -79,7 +79,6 @@ function renderResponseExampleItem(
   const jotaiStore = createStore();
   jotaiStore.set(globalStoreAtom, {
     items: [],
-    replayDefinition: null,
     store: { schemaStore: {}, exampleStore: {}, securitySchemeStore: {} },
     options: normalizeOptions({
       specType: 'openapi',
@@ -302,7 +301,11 @@ describe('ResponseExampleItem variant picker gating', () => {
       ],
     });
 
-    expect(vi.mocked(useSchemaVariantSelection)).toHaveBeenLastCalledWith(undefined);
+    expect(vi.mocked(useSchemaVariantSelection)).toHaveBeenLastCalledWith(undefined, {
+      t: 'response',
+      c: '200',
+      schemaId: 'schema-200',
+    });
   });
 
   it('resolves the variant selection for a schema-only response', () => {
@@ -317,7 +320,11 @@ describe('ResponseExampleItem variant picker gating', () => {
       ],
     });
 
-    expect(vi.mocked(useSchemaVariantSelection)).toHaveBeenLastCalledWith('schema-200');
+    expect(vi.mocked(useSchemaVariantSelection)).toHaveBeenLastCalledWith('schema-200', {
+      t: 'response',
+      c: '200',
+      schemaId: 'schema-200',
+    });
   });
 });
 
@@ -343,6 +350,7 @@ describe('ResponseExampleItem sample direction', () => {
       undefined,
       'response',
       'application/json',
+      { t: 'response', c: '200', schemaId: 'schema-200' },
     );
   });
 
@@ -354,6 +362,7 @@ describe('ResponseExampleItem sample direction', () => {
       undefined,
       'request',
       'application/json',
+      { t: 'response', c: '200', schemaId: 'schema-200' },
     );
   });
 });

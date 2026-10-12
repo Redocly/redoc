@@ -1,4 +1,4 @@
-// Browser-bundle stand-in for `@opentelemetry/semantic-conventions` (see redoc/vite.config.ts):
+// Browser-bundle stand-in for `@opentelemetry/semantic-conventions` (see vite.config.ts):
 // only the attribute names the OpenTelemetry SDK and @redocly/redoc-opentelemetry read.
 export const ATTR_EXCEPTION_MESSAGE = 'exception.message';
 export const ATTR_EXCEPTION_STACKTRACE = 'exception.stacktrace';

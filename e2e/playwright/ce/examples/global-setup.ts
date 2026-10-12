@@ -10,6 +10,8 @@ import type { Example } from './manifests.js';
 
 const exec = promisify(execFile);
 const START_TIMEOUT_MS = 90_000;
+/** Unbounded parallel builds stall registry metadata lookups and corrupt in-flight BuildKit pulls. */
+const BUILD_CONCURRENCY = 4;
 
 /** Packs the local build, builds and starts every selected example's container. */
 export default async function globalSetup(): Promise<void> {
@@ -17,7 +19,7 @@ export default async function globalSetup(): Promise<void> {
   const examples = loadExamples();
   const tarball = await packRedoc();
   try {
-    await Promise.all(examples.map((example) => build(example, tarball)));
+    await forEachLimited(examples, BUILD_CONCURRENCY, (example) => build(example, tarball));
   } finally {
     rmSync(dirname(tarball), { recursive: true, force: true });
   }
@@ -45,8 +47,37 @@ async function packRedoc(): Promise<string> {
 async function build(example: Example, tarball: string): Promise<void> {
   if (example.usesNpm) copyFileSync(tarball, resolve(example.dir, 'redoc.tgz'));
   log(example, 'docker build');
-  await docker(example, ['build', '-f', dockerfile(example), '-t', example.image, example.dir]);
+  await dockerBuild(example, [
+    'build',
+    '-f',
+    dockerfile(example),
+    '-t',
+    example.image,
+    example.dir,
+  ]);
   if (example.usesNpm) await assertInstalledFromTarball(example);
+}
+
+/** Retries once: registry and BuildKit content-store errors are transient, Dockerfile errors fail twice. */
+async function dockerBuild(example: Example, args: string[]): Promise<void> {
+  try {
+    await docker(example, args);
+  } catch (error) {
+    log(example, `docker build failed, retrying once:\n${(error as Error).message}`);
+    await docker(example, args);
+  }
+}
+
+async function forEachLimited<T>(
+  items: T[],
+  limit: number,
+  task: (item: T) => Promise<void>,
+): Promise<void> {
+  const queue = [...items];
+  const worker = async (): Promise<void> => {
+    for (let item = queue.shift(); item !== undefined; item = queue.shift()) await task(item);
+  };
+  await Promise.all(Array.from({ length: Math.min(limit, queue.length) }, worker));
 }
 
 /**
@@ -55,7 +86,7 @@ async function build(example: Example, tarball: string): Promise<void> {
  */
 async function assertInstalledFromTarball(example: Example): Promise<void> {
   const buildImage = `${example.image}-build`;
-  await docker(example, [
+  await dockerBuild(example, [
     'build',
     '-f',
     dockerfile(example),

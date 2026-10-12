@@ -195,6 +195,7 @@ describe('normalizeOptions', () => {
       expect(result.samplesMaxInlineArgs).toBe(5);
       expect(result.fieldExpandLevel).toBe(2);
     });
+
   });
 
   describe('AsyncAPI', () => {
@@ -284,13 +285,9 @@ describe('normalizeOptions', () => {
 
     // Attributes arrive as strings, and only the literal "false" reads as off.
     it.each(FLAGS)('%s treats every attribute string but "false" as true', (flag) => {
-      const on = normalizeOptions(makeOpenApiRaw({ [flag]: '' } as Partial<RawApiDocsOptions>));
-      const off = normalizeOptions(
-        makeOpenApiRaw({ [flag]: 'false' } as Partial<RawApiDocsOptions>),
-      );
-      const truthyWord = normalizeOptions(
-        makeOpenApiRaw({ [flag]: 'no' } as Partial<RawApiDocsOptions>),
-      );
+      const on = normalizeOptions(makeOpenApiRaw({ [flag]: '' }));
+      const off = normalizeOptions(makeOpenApiRaw({ [flag]: 'false' }));
+      const truthyWord = normalizeOptions(makeOpenApiRaw({ [flag]: 'no' }));
       expect(on[flag]).toBe(true);
       expect(off[flag]).toBe(false);
       expect(truthyWord[flag]).toBe(true);

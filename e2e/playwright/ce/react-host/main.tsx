@@ -185,7 +185,11 @@ const CASES: Record<string, () => React.ReactElement> = {
 
 const CASE_BASE_PATHS: Record<string, string> = { 'base-path': DEEP_BASE };
 
-const name = new URLSearchParams(window.location.search).get('case') ?? 'definition-url';
+const requestedCase = new URLSearchParams(window.location.search).get('case');
+const name =
+  requestedCase && Object.prototype.hasOwnProperty.call(CASES, requestedCase)
+    ? requestedCase
+    : 'definition-url';
 
 alignUrlWithBasePath(CASE_BASE_PATHS[name] ?? BASE);
 

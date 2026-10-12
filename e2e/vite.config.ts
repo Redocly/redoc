@@ -73,19 +73,12 @@ export default defineConfig({
     chunkSizeWarningLimit: Infinity,
   },
   resolve: {
-    dedupe: [
-      'react',
-      'react-dom',
-      'react-router',
-      'styled-components',
-      '@redocly/ajv',
-      'yaml',
-      '@redocly/config',
-    ],
+    dedupe: ['react', 'react-dom', 'react-router', 'styled-components', '@redocly/config'],
     alias: {
-      ajv: '@redocly/ajv',
+      '@redocly/ajv/dist/2020.js': resolve(REDOC_ROOT, 'src/ajv-stub.js'),
+      '@redocly/ajv/dist/draft4.js': resolve(REDOC_ROOT, 'src/ajv-stub.js'),
+      'ajv-formats': resolve(REDOC_ROOT, 'src/ajv-stub.js'),
       '@redocly/theme': THEME_PATH,
-      '@portal': resolve(THEME_PATH, 'mocks'),
       flexsearch: resolve(
         dirname(createRequire(import.meta.url).resolve('flexsearch')),
         'flexsearch.compact.module.min.js',
@@ -99,13 +92,6 @@ export default defineConfig({
       path: 'path-browserify',
       'node:path': 'path-browserify',
       buffer: 'buffer',
-      http: resolve(REDOC_ROOT, 'src/empty.js'),
-      url: 'url',
-      fs: resolve(REDOC_ROOT, 'src/empty.js'),
-      os: resolve(REDOC_ROOT, 'src/empty.js'),
-      tty: resolve(REDOC_ROOT, 'src/empty.js'),
-      'node-fetch': resolve(REDOC_ROOT, 'src/empty.js'),
-      'node-fetch-h2': resolve(REDOC_ROOT, 'src/empty.js'),
     },
   },
   optimizeDeps: {

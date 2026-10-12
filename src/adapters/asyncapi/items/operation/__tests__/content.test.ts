@@ -7,6 +7,7 @@ import type {
   HeaderNode,
   MessageLinksNode,
   OperationBindingNode,
+  SecurityNode,
 } from '../../../../../types/content.js';
 import type {
   AsyncApiDefinition,
@@ -94,7 +95,72 @@ describe('buildOperationContent (AsyncAPI operation)', () => {
       });
     });
 
-    it('chases nested $ref chains up to the depth limit (4 hops)', () => {
+    it('decodes escaped channel and message names in message refs', () => {
+      const messageRef = '#/channels/user~1signedup/messages/user~1signedup.send.message';
+      const document = {
+        asyncapi: '3.0.0',
+        info: { title: 'T', version: '1.0' },
+        channels: {
+          'user/signedup': {
+            address: 'user/signedup',
+            messages: { 'user/signedup.send.message': { payload: { type: 'string' } } },
+          },
+        },
+      } as unknown as AsyncApiDefinition;
+      const op = makeOperation({
+        channel: { $ref: '#/channels/user~1signedup' } as never,
+        messages: [{ $ref: messageRef } as never],
+      });
+
+      const content = withBuildContext(document, () =>
+        buildOperationContent(
+          'user/signedup.send',
+          op,
+          document,
+          '/asyncapi/channels/user-signedup/operations/op1',
+          TEST_OPTIONS,
+        ),
+      );
+
+      expect(findMessageLinksNode(content)?.messages).toEqual([
+        { name: 'user/signedup.send.message', label: 'user/signedup.send.message' },
+      ]);
+    });
+
+    it('links the channel message the operation ref names, not one whose ref ends the same', () => {
+      const document = {
+        asyncapi: '3.0.0',
+        info: { title: 'T', version: '1.0' },
+        channels: {
+          c: {
+            address: 'c',
+            messages: {
+              a: { $ref: '#/components/messages/X' },
+              b: { $ref: '#/components/messages/a' },
+            },
+          },
+        },
+        components: { messages: { X: { title: 'X' }, a: { title: 'A' } } },
+      } as unknown as AsyncApiDefinition;
+      const op = makeOperation({
+        channel: { $ref: '#/channels/c' } as never,
+        messages: [{ $ref: '#/channels/c/messages/a' } as never],
+      });
+
+      const content = withBuildContext(document, () =>
+        buildOperationContent(
+          'op',
+          op,
+          document,
+          '/asyncapi/channels/c/operations/op',
+          TEST_OPTIONS,
+        ),
+      );
+
+      expect(findMessageLinksNode(content)?.messages?.map((m) => m.name)).toEqual(['a']);
+    });
+
+    it('chases nested $ref chains (4 hops)', () => {
       const document = {
         asyncapi: '3.0.0',
         info: { title: 'T', version: '1.0' },
@@ -235,10 +301,10 @@ describe('buildOperationContent (AsyncAPI operation)', () => {
             'op1',
             op,
             minimalDocument,
-            '/portal/asyncapi/rides/topics/ride-requests/operations/op1',
+            '/docs/asyncapi/rides/topics/ride-requests/operations/op1',
             TEST_OPTIONS,
           ),
-        { basePath: '/portal/asyncapi' },
+        { basePath: '/docs/asyncapi' },
       );
 
       expect(findMessageLinksNode(content)?.channelLink).toBe('/rides/topics/ride-requests');
@@ -433,6 +499,123 @@ describe('buildOperationContent (AsyncAPI operation)', () => {
           },
         },
       });
+    });
+  });
+
+  describe('reply', () => {
+    it('labels reply messages referenced through a channel message $ref with their title', () => {
+      const document = {
+        asyncapi: '3.0.0',
+        info: { title: 'T', version: '1.0' },
+        channels: {
+          orderReplies: {
+            address: 'orders/replies',
+            messages: { orderAccepted: { $ref: '#/components/messages/OrderAccepted' } },
+          },
+        },
+        components: {
+          messages: { OrderAccepted: { name: 'OrderAccepted', title: 'Order accepted' } },
+        },
+      } as unknown as AsyncApiDefinition;
+
+      const op = makeOperation({
+        reply: {
+          channel: { $ref: '#/channels/orderReplies' },
+          messages: [{ $ref: '#/channels/orderReplies/messages/orderAccepted' }],
+        } as never,
+      });
+
+      const content = withBuildContext(document, () =>
+        buildOperationContent(
+          'op1',
+          op,
+          document,
+          '/asyncapi/topics/orders/operations/op1',
+          TEST_OPTIONS,
+        ),
+      );
+
+      expect(JSON.stringify(firstContainer(content).children)).toContain(
+        'Messages: Order accepted',
+      );
+    });
+  });
+
+  describe('security', () => {
+    const document = {
+      asyncapi: '3.0.0',
+      info: { title: 'T', version: '1.0' },
+      channels: {},
+      components: {
+        securitySchemes: {
+          userPass: { type: 'userPassword', description: 'Broker user name and password.' },
+        },
+      },
+    } as unknown as AsyncApiDefinition;
+
+    function securityNode(op: AsyncApiOperation): {
+      node?: SecurityNode;
+      children: ReturnType<typeof firstContainer>['children'];
+    } {
+      const content = withBuildContext(document, () => {
+        const { storeCtx } = asyncApiContext.get();
+        storeCtx.securitySchemeStore.userPass = {
+          id: 'userPass',
+          type: 'userPassword',
+          description: 'Broker user name and password.',
+        };
+        return buildOperationContent(
+          'op1',
+          op,
+          document,
+          '/asyncapi/topics/orders/operations/op1',
+          TEST_OPTIONS,
+        );
+      });
+      const children = firstContainer(content).children;
+      return {
+        node: children.find((n): n is SecurityNode => n.nodeType === nodeTypes.SECURITY),
+        children,
+      };
+    }
+
+    it('emits a security node with one requirement per scheme, after the external docs', () => {
+      const { node, children } = securityNode(
+        makeOperation({
+          externalDocs: { url: 'https://docs.example.com' },
+          security: [{ $ref: '#/components/securitySchemes/userPass' }],
+        }),
+      );
+
+      expect(node?.requirements).toEqual([
+        {
+          schemes: [
+            {
+              name: 'userPass',
+              type: 'userPassword',
+              description: 'Broker user name and password.',
+            },
+          ],
+        },
+      ]);
+      expect(children.findIndex((n) => n.nodeType === nodeTypes.SECURITY)).toBe(
+        children.findIndex((n) => n.nodeType === nodeTypes.EXTERNAL_DOCS) + 1,
+      );
+    });
+
+    it('emits one requirement per requirement object, keeping each scheme and its scopes', () => {
+      const { node } = securityNode(
+        makeOperation({ security: [{ userPass: ['read'], certs: [] }, { userPass: [] }] }),
+      );
+
+      expect(node?.requirements.map(({ schemes }) => schemes.map((s) => s.scopes))).toEqual([
+        [['read']],
+        [undefined],
+      ]);
+    });
+
+    it('omits the security node when the operation has no security', () => {
+      expect(securityNode(makeOperation()).node).toBeUndefined();
     });
   });
 

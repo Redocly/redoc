@@ -43,15 +43,27 @@ export function CallbackPayloadItem({
   const definitionSamples = node.definitionSamples;
 
   const isVisible = callbackName != null && selectedCallback === callbackName;
-  const { mediaTypes, activeMediaType, effectiveSchemaId, effectiveExampleIds, onMediaTypeChange } =
-    useMediaTypeContent(node);
+  const {
+    mediaTypes,
+    activeMediaType,
+    effectiveSchemaId,
+    effectiveExampleIds,
+    encoding,
+    onMediaTypeChange,
+  } = useMediaTypeContent(node);
 
-  const sampleSchemaId = useBodySamplingSchemaId(effectiveSchemaId, activeMediaType);
+  const variantSection = { t: 'request', cb: callbackName, schemaId: effectiveSchemaId };
+  const sampleSchemaId = useBodySamplingSchemaId(
+    effectiveSchemaId,
+    activeMediaType,
+    variantSection,
+  );
   const resolved = useResolvedExamples(
     sampleSchemaId,
     effectiveExampleIds,
     'response',
     activeMediaType,
+    variantSection,
   );
   const exampleEntries = useExampleEntries(effectiveExampleIds);
   const [selectedExampleIdx, setSelectedExampleIdx] = useState(0);
@@ -132,6 +144,7 @@ export function CallbackPayloadItem({
             payload={payload}
             emptyMessage="// No callback payload"
             mediaType={activeMediaType}
+            encoding={encoding}
           />
         </>
       )}

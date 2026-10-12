@@ -74,9 +74,10 @@ export function ResponseExampleItem({ node }: { node: ResponseExamplesPanelItem 
   const storedCode = useAtomValue(itemStoreFieldAtom({ itemId, key: 'activeResponseCode' }));
   const activeExampleKey = useAtomValue(itemStoreFieldAtom({ itemId, key: 'activeExampleKey' }));
   const exampleStore = useAtomValue(exampleStoreAtom);
+  let authoredExampleKey: string | undefined = undefined;
   const keyedExample = useMemo(
-    () => findKeyedExample(responseCodes, node.exampleKey, exampleStore),
-    [responseCodes, node.exampleKey, exampleStore],
+    () => findKeyedExample(responseCodes, authoredExampleKey, exampleStore),
+    [responseCodes, authoredExampleKey, exampleStore],
   );
   const activeCode = storedCode || keyedExample?.code || responseCodes?.[0]?.code;
 
@@ -100,8 +101,8 @@ export function ResponseExampleItem({ node }: { node: ResponseExamplesPanelItem 
     responseMediaTypes.includes(keyedExample.mediaType)
       ? keyedExample.mediaType
       : undefined;
-  // An authored exampleKey (set only on embeds) beats the persisted global
-  // media type until the user switches media type in this panel.
+  // An authored example key beats the persisted global media type until the
+  // user switches media type in this panel.
   const activeMediaType =
     !userPickedMediaType && keyedMediaType
       ? keyedMediaType
@@ -123,22 +124,29 @@ export function ResponseExampleItem({ node }: { node: ResponseExamplesPanelItem 
     activeResponseData?.exampleIds ??
     (hasResponseCodes ? undefined : node.exampleIds);
   useExampleKeyFromHash(itemId, activeExampleIds);
-  // Legacy hasSample parity: a media type without schema or examples is "No content".
+  // A media type without schema or examples renders as "No content".
   const activeCodeHasContent =
     !responseCodes?.length || Boolean(effectiveSchemaId || activeExampleIds?.length);
 
   const resolvedMediaType =
     responseMediaTypes.length > 0 ? (activeMediaType ?? responseMediaTypes[0]) : 'application/json';
 
+  const variantSection = { t: 'response', c: activeCode, schemaId: effectiveSchemaId };
   const discriminatorSelection = useSchemaVariantSelection(
     activeExampleIds?.length ? undefined : effectiveSchemaId,
+    variantSection,
   );
-  const sampleSchemaId = useBodySamplingSchemaId(effectiveSchemaId, resolvedMediaType);
+  const sampleSchemaId = useBodySamplingSchemaId(
+    effectiveSchemaId,
+    resolvedMediaType,
+    variantSection,
+  );
   const resolved = useResolvedExamples(
     sampleSchemaId,
     activeExampleIds,
     node.isEvent ? 'request' : 'response',
     resolvedMediaType,
+    variantSection,
   );
   const exampleEntries = useExampleEntries(activeExampleIds);
   const contentKey = `${activeCode}|${activeMediaType}|${activeExampleIds?.join(',')}`;
@@ -150,14 +158,14 @@ export function ResponseExampleItem({ node }: { node: ResponseExamplesPanelItem 
   const storeIdx = storeKeyedId ? (activeExampleIds?.indexOf(storeKeyedId) ?? -1) : -1;
   const authoredKeyedId = findExampleIdByKey(
     activeExampleIds,
-    node.exampleKey,
+    authoredExampleKey,
     (id) => exampleStore[id],
   );
   const authoredIdx = authoredKeyedId ? (activeExampleIds?.indexOf(authoredKeyedId) ?? -1) : -1;
   // The shared key (a selection made anywhere in the operation) wins; then this
   // panel's own explicit pick, remembered per response code/media type; then the
-  // authored embed exampleKey. A key this panel doesn't have leaves the
-  // selection alone.
+  // authored example key. A key this panel doesn't have leaves the selection
+  // alone.
   const [selections, setSelections] = useState<Record<string, { idx: number; picked: boolean }>>(
     {},
   );

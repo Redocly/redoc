@@ -19,23 +19,6 @@ interface Props {
   className?: string;
 }
 
-function ReturnTypeView({ typeRef }: { typeRef: GraphqlTypeRef }) {
-  if (typeRef.isList) {
-    return (
-      <>
-        [{typeRef.name}
-        {typeRef.isNonNull ? '!' : ''}]{typeRef.isListNonNull ? '!' : ''}
-      </>
-    );
-  }
-  return (
-    <>
-      {typeRef.name}
-      {typeRef.isNonNull ? '!' : ''}
-    </>
-  );
-}
-
 function GraphQLReturnTypeDetailsComponent({
   typeRef,
   inline = false,
@@ -47,16 +30,14 @@ function GraphQLReturnTypeDetailsComponent({
   const slugMap = useAtomValue(graphqlTypeSlugMapAtom);
   const normalizeUrl = useNavigationUrlNormalizer();
   const translate = useSpecTranslate();
-  const showNonNullLabel = typeRef.isListNonNull || typeRef.isNonNull;
+  const showNonNullLabel = typeRef.display.endsWith('!');
   const typeSlug = slugMap[typeRef.name];
   return (
     <Wrapper className={className} data-testid="return-type" $inline={inline} $size={size}>
       {typeSlug ? (
-        <StyledTypeLink to={normalizeUrl(typeSlug)}>
-          <ReturnTypeView typeRef={typeRef} />
-        </StyledTypeLink>
+        <StyledTypeLink to={normalizeUrl(typeSlug)}>{typeRef.display}</StyledTypeLink>
       ) : (
-        <ReturnTypeView typeRef={typeRef} />
+        <span>{typeRef.display}</span>
       )}
       {showNonNullLabel && (
         <>

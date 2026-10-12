@@ -56,7 +56,12 @@ servers:
     protocol: kafka
     description: Staging Kafka broker cluster for pre-production testing
     protocolVersion: '2.6.0'
-    pathname: /
+    pathname: /gateway-v1
+    security:
+      - $ref: '#/components/securitySchemes/brokerAuth'
+    externalDocs:
+      description: Staging broker setup guide
+      url: https://developer.wheelyfast.io/docs/staging-brokers
     title: Staging WheelyFast Kafka Brokers
     summary: Pre-production messaging brokers for testing and verification
     variables:
@@ -543,6 +548,13 @@ operations:
       $ref: '#/channels/paymentsProcessing'
     messages:
       - $ref: '#/components/messages/paymentAuthorized'
+    security:
+      - $ref: '#/components/securitySchemes/brokerAuth'
+    reply:
+      channel:
+        $ref: '#/channels/paymentsProcessing'
+      messages:
+        - $ref: '#/channels/paymentsProcessing/messages/paymentCompleted'
     title: Produce Payment Authorization
     summary: Payment service produces authorization events at ride start
     description: Produces event when passenger payment method has sufficient funds before ride begins. Includes buffer amount for route changes.
@@ -925,6 +937,8 @@ components:
       name: paymentCompleted
       title: Payment Completed
       summary: Final payment has been successfully processed
+      correlationId:
+        $ref: '#/components/correlationIds/paymentCorrelation'
       description: Confirms successful charge to passenger's payment method. Includes final amount, tip, and transaction details.
       headers:
         type: object
@@ -1882,6 +1896,16 @@ components:
           type: number
           format: float
           description: Remaining distance to pickup point in kilometers
+
+  correlationIds:
+    paymentCorrelation:
+      description: Correlates every event of one payment transaction.
+      location: $message.header#/transactionId
+
+  securitySchemes:
+    brokerAuth:
+      type: scramSha256
+      description: SASL/SCRAM credentials issued per service.
 
   tags:
     Notifications:

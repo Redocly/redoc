@@ -58,10 +58,6 @@ export function buildEnumContent(
     contentType: contentType.ITEM,
     itemVariant: itemVariant.ENUM,
     meta: { name: enumType.name },
-    seo: {
-      title: enumType.name,
-      description: enumType.description || undefined,
-    },
     children: [{ nodeType: nodeTypes.CONTAINER, children: containerChildren, panels }],
   };
 }

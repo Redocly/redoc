@@ -102,7 +102,7 @@ const CODE_SAMPLE_EXTENSIONS: ReadonlySet<string> = new Set(['x-codeSamples', 'x
 
 const SCAN_BUDGET = 50_000;
 
-export type DocumentScan = {
+type DocumentScan = {
   specVersion?: string;
   extensionsCount: number;
   redocExtensions: RedocExtensions;
@@ -261,10 +261,7 @@ const SKIPPED_OPTION_KEYS: ReadonlySet<string> = new Set([
   'apiLogo',
   'menu',
   'events',
-  'dynamicRequestValues',
   'schemaDefinitionsTagName',
-  'licenseKey',
-  'userClaims',
   'corsProxyUrl',
 ]);
 

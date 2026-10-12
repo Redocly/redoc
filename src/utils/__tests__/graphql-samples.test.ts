@@ -76,7 +76,7 @@ describe('graphql-samples', () => {
     });
   });
 
-  describe('generateOperationExample — variable declaration (graphql-docs getVariablesExample parity)', () => {
+  describe('generateOperationExample — variable declaration (legacy getVariablesExample behavior)', () => {
     const { store, lookup } = setup(`
       scalar S
       type Query {
@@ -120,7 +120,7 @@ describe('graphql-samples', () => {
     });
   });
 
-  describe('generateOperationExample — field arguments string (graphql-docs getArgumentsExample parity)', () => {
+  describe('generateOperationExample — field arguments string (legacy getArgumentsExample behavior)', () => {
     const { store, lookup } = setup(`
       type Query {
         root(x: Int, y: Int): Child
@@ -252,6 +252,52 @@ describe('graphql-samples', () => {
 
       const deeper = generateOperationVariablesExample(op.args ?? [], inputLookup, 2);
       expect(deeper).toEqual({ o: { inner: { code: 'Example String' } } });
+    });
+  });
+
+  describe('cycles made only of connection fields', () => {
+    const { store, lookup } = setup(`
+      type Query {
+        graph: GraphNode
+        ping: String
+      }
+      type GraphNode {
+        id: ID!
+        edges: [GraphEdge!]!
+      }
+      type GraphEdge {
+        weight: Int
+        node: GraphNode!
+      }
+    `);
+
+    it('generateOperationExample stops at the re-entered type with the fragment placeholder', () => {
+      const sample = generateOperationExample('query', queryOperation(store, 'graph'), lookup, 2);
+      expect(sample).toBe(
+        [
+          'query graph {',
+          '  graph {',
+          '    id',
+          '    edges {',
+          '      weight',
+          '      node {',
+          '        __typename',
+          '        # ...GraphNodeFragment',
+          '      }',
+          '    }',
+          '  }',
+          '}',
+        ].join('\n'),
+      );
+    });
+
+    it('generateOperationResponseExample stops at the re-entered type with __typename', () => {
+      expect(generateOperationResponseExample('GraphNode', lookup, 2)).toEqual({
+        data: {
+          id: '9cfb1c81-4c79-452f-b1f5-8ee6571276b4',
+          edges: [{ weight: 40, node: { __typename: 'GraphNode' } }],
+        },
+      });
     });
   });
 });

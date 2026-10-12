@@ -22,7 +22,6 @@ function renderLabel(
   const jotaiStore = createStore();
   jotaiStore.set(globalStoreAtom, {
     items: ITEMS,
-    replayDefinition: null,
     store: { schemaStore: {}, exampleStore: {}, securitySchemeStore: {} },
     options: { ...(options ?? {}) } as ApiDocsOptions,
   } as GlobalStoreAtom);

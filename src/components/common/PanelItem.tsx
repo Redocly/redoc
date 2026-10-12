@@ -36,7 +36,7 @@ export const PanelItem = ({
   );
 };
 
-export const PanelItemWrapper = styled.span`
+const PanelItemWrapper = styled.span`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -45,7 +45,7 @@ export const PanelItemWrapper = styled.span`
   width: 100%;
 `;
 
-export const Item = styled.span`
+const Item = styled.span`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -53,7 +53,7 @@ export const Item = styled.span`
   flex: 1;
 `;
 
-export const Header = styled.span`
+const Header = styled.span`
   text-align: left;
   color: var(--menu-content-title-color);
   font-size: var(--h6-font-size);
@@ -70,7 +70,7 @@ export const Title = styled.div<{ $active?: boolean }>`
   font-weight: ${({ $active }) => $active && 'var(--font-weight-medium)'};
 `;
 
-export const ActionsWrapper = styled.div`
+const ActionsWrapper = styled.div`
   display: flex;
   gap: var(--spacing-xs);
 `;
@@ -96,7 +96,7 @@ export const PanelItemDescription = styled.span`
   font-weight: var(--font-weight-medium);
 `;
 
-export const StyledCheckmarkIcon = styled(CheckmarkIcon)`
+const StyledCheckmarkIcon = styled(CheckmarkIcon)`
   width: 14px;
   height: 14px;
   position: absolute;

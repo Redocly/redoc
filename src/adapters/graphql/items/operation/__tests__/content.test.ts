@@ -13,7 +13,7 @@ import { markdocParser } from '../../../../../components/markdoc/markdocParser.j
 const schema = buildASTSchema(
   parseGraphQL(`
     type Query {
-      """Search the catalog (legacy)."""
+      """Search the inventory (legacy)."""
       oldSearch(query: String!): [Book!]!
         @deprecated(reason: "Use **\`currentSearch\`** instead. See [migration](https://example.com).")
       currentSearch(query: String!): [Book!]!

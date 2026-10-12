@@ -1,5 +1,7 @@
 import type { ProtocolVariant, AsyncApiDefinition, AsyncApiOperations } from '../../../types/asyncapi.js';
 
+import { JsonPointer } from '../../openapi/utils/JsonPointer.js';
+
 export function findFirstBinding(
   obj: unknown,
   visited: Set<unknown> = new Set(),
@@ -55,7 +57,7 @@ export function mapChannelToOperations(
     let channelId: string | undefined;
 
     if (typeof channel.$ref === 'string') {
-      channelId = channel.$ref.split('/').pop();
+      channelId = JsonPointer.baseName(channel.$ref);
     } else if (typeof channel.address === 'string') {
       channelId = addressToChannelId[channel.address];
     }

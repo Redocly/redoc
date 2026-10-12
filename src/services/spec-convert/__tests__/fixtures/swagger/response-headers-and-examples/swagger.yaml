@@ -1,0 +1,69 @@
+swagger: '2.0'
+info:
+  title: Redocly Cafe
+  version: 1.0.0
+produces:
+  - application/json
+  - text/plain
+paths:
+  /orders:
+    get:
+      operationId: listOrders
+      responses:
+        '200':
+          description: Open orders.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Order'
+          examples:
+            application/json:
+              - id: A-17
+                status: brewing
+            text/csv: "id,status\nA-17,brewing\n"
+          headers:
+            X-Queue-Length:
+              type: integer
+              format: int32
+              description: Orders waiting ahead of this one.
+            X-Order-Ids:
+              type: array
+              items:
+                type: string
+              minItems: 1
+            X-Station-Ids:
+              type: array
+              collectionFormat: multi
+              items:
+                type: integer
+            X-Ticket-Codes:
+              type: array
+              collectionFormat: tsv
+              items:
+                type: string
+            X-Shift:
+              type: string
+              enum: [morning, evening]
+              collectionFormat: csv
+            Status Code:
+              type: integer
+        '404':
+          description: ''
+        '500':
+          $ref: '#/responses/KitchenDown'
+responses:
+  KitchenDown:
+    description: The kitchen is offline.
+    schema:
+      type: string
+    headers:
+      Retry-After:
+        type: integer
+definitions:
+  Order:
+    type: object
+    properties:
+      id:
+        type: string
+      status:
+        type: string

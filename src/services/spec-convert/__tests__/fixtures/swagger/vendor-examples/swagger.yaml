@@ -1,0 +1,47 @@
+swagger: '2.0'
+info:
+  title: Redocly Cafe
+  version: 1.0.0
+produces:
+  - application/json
+paths:
+  '/orders/{orderId}':
+    parameters:
+      - name: orderId
+        in: path
+        required: true
+        type: string
+    get:
+      operationId: getOrder
+      parameters:
+        - name: expand
+          in: query
+          type: boolean
+      x-ms-examples:
+        Get a brewing order:
+          parameters:
+            orderId: A-17
+            expand: true
+          responses:
+            '200':
+              headers:
+                X-Queue-Length: 2
+              body:
+                id: A-17
+                status: brewing
+      responses:
+        '200':
+          description: The order.
+          headers:
+            X-Queue-Length:
+              type: integer
+          schema:
+            $ref: '#/definitions/Order'
+definitions:
+  Order:
+    type: object
+    properties:
+      id:
+        type: string
+      status:
+        type: string

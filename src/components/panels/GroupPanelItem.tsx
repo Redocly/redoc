@@ -107,7 +107,7 @@ export function GroupPanelItem({ node }: { node: GroupItemNode }): ReactElement 
     for (const section of node.children) {
       const items: ResolvedEntry[] = (section.items ?? []).map((item) => ({
         ...item,
-        // The portal's theme Link re-applies the path prefix; hand it a prefix-free path.
+        // The theme Link re-applies the host's path prefix; hand it a prefix-free path.
         href: withoutPathPrefix(normalizeUrl(item.link)),
       }));
       if (items.length === 0) continue;

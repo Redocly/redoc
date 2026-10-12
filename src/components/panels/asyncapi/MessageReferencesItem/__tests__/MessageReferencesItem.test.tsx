@@ -206,7 +206,7 @@ describe('MessageReferencesPanelItem', () => {
           referencesByMessageKey: {
             created: {
               exchanges: [
-                // Legacy adapter output: link contains basePath.
+                // Absolute link that still contains basePath.
                 {
                   key: 'exchange.legacy',
                   label: 'Legacy Exchange',

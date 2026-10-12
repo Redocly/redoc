@@ -150,7 +150,6 @@ function renderFixture(fixture: Fixture) {
     items: fixture.items,
     store: fixture.store,
     options,
-    replayDefinition: null,
   });
 
   return render(
@@ -209,7 +208,7 @@ describe('request/response example sync', () => {
 
   it('does not leak the selection into another operation with the same example keys', () => {
     const jotaiStore = createStore();
-    jotaiStore.set(globalStoreAtom, { items, store, options, replayDefinition: null });
+    jotaiStore.set(globalStoreAtom, { items, store, options });
 
     render(
       <Provider store={jotaiStore}>

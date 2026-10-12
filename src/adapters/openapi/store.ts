@@ -23,24 +23,6 @@ import { applyIgnoreNamedSchemasDeep } from './utils/applyIgnoreNamedSchemasDeep
 import { parseMarkdown } from '../utils/parseMarkdown.js';
 import { resolveOpenApiExampleValue } from './resolve-openapi-example-value.js';
 
-const extensionKeys = [
-  'x-defaultClientId',
-  'x-defaultAccessToken',
-  'x-defaultTokenType',
-  'x-defaultClientSecret',
-  'x-defaultUsername',
-  'x-defaultPassword',
-] as const;
-
-function extractExtensionFields(schema: OpenAPISecurityScheme): Partial<SecuritySchemeEntry> {
-  const result: Record<string, unknown> = {};
-  const raw = schema as unknown as Record<string, unknown>;
-  for (const key of extensionKeys) {
-    if (raw[key]) result[key] = raw[key];
-  }
-  if (raw['x-serverValues']) result.serverValues = raw['x-serverValues'];
-  return result as Partial<SecuritySchemeEntry>;
-}
 
 function normalizeImplicitDiscriminators(document: OpenAPIDefinition): void {
   const schemas = document.components?.schemas;
@@ -84,17 +66,6 @@ export function populateOpenApiStore(
 
   const components = document.components;
 
-  const xRoot = document['x-root'];
-  if (isRecord(xRoot)) {
-    const processed = applyIgnoreNamedSchemasDeep(xRoot, ignoreNamedSchemas);
-    const schema = isRecord(processed) ? processed : xRoot;
-    registerSchema(schemaStore, hashIndex, {
-      id: 'x-root',
-      kind: schemaKind.JSON_SCHEMA,
-      title: typeof schema.title === 'string' ? schema.title : 'Root',
-      data: schema,
-    });
-  }
 
   if (!components) {
     return { schemaStore, exampleStore, securitySchemeStore };
@@ -154,7 +125,6 @@ export function populateOpenApiStore(
         oauth2MetadataUrl: schema.oauth2MetadataUrl,
         deprecated: schema.deprecated,
         flows: schema.flows,
-        ...extractExtensionFields(schema),
         ...rbacProp(readRbacScope(rawSchema) ?? readRbacScope(schema) ?? sectionRbac),
       };
 

@@ -13,7 +13,7 @@ const EnumTableWrapper = styled(MarkdownWrapper)`
   }
 `;
 
-export type SchemaEnumDescriptionValue = string | Node | Node[];
+type SchemaEnumDescriptionValue = string | Node | Node[];
 
 type SchemaEnumDescriptionsProps = {
   values: Record<string, SchemaEnumDescriptionValue>;
@@ -26,16 +26,14 @@ export function SchemaEnumDescriptions({
 }: SchemaEnumDescriptionsProps): ReactElement {
   const entries = Object.entries(values);
   const prefix = type?.startsWith('Array') ? 'Items ' : '';
+  const heading = `${prefix}${entries.length === 1 ? 'Value' : 'Enum Value'}`;
 
   return (
     <EnumTableWrapper as="div">
       <table className="md">
         <thead>
           <tr>
-            <th style={{ width: '30%' }}>
-              {prefix}
-              {entries.length === 1 ? 'Value' : 'Enum Value'}
-            </th>
+            <th style={{ width: '30%' }}>{heading}</th>
             <th>Description</th>
           </tr>
         </thead>

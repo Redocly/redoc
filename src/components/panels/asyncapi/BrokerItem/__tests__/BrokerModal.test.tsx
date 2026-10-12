@@ -5,7 +5,6 @@ import '@testing-library/jest-dom/vitest';
 import { BrokerModal } from '../BrokerModal.js';
 
 vi.mock('@redocly/theme/core/hooks', () => ({
-  useOutsideClick: vi.fn(),
   useFocusTrap: vi.fn(),
 }));
 vi.mock('@redocly/theme/components/Button/Button', () => ({
@@ -17,7 +16,7 @@ vi.mock('@redocly/theme/components/Button/Button', () => ({
   ),
 }));
 vi.mock('@redocly/theme/components/Typography/Typography', () => ({
-  Typography: ({ children }: any) => <span>{children}</span>,
+  Typography: ({ children, id }: any) => <span id={id}>{children}</span>,
 }));
 vi.mock('@redocly/theme/components/Segmented/Segmented', () => ({
   Segmented: ({ options, value, onChange }: any) => (
@@ -103,4 +102,29 @@ it('should call onClose when the close button is clicked', () => {
   );
   fireEvent.click(screen.getByTestId('close'));
   expect(onClose).toHaveBeenCalledTimes(1);
+});
+
+it('is a labelled dialog that closes on Escape', () => {
+  const onClose = vi.fn();
+  render(
+    <BrokerModal
+      broker={{ url: 'broker.cafe.test:8883', name: 'production', protocol: 'mqtt' }}
+      panelLabel="Servers"
+      onClose={onClose}
+    />,
+  );
+  expect(screen.getByRole('dialog', { name: 'mqtt: production' })).toBeInTheDocument();
+  fireEvent.keyDown(document, { key: 'Escape' });
+  expect(onClose).toHaveBeenCalledTimes(1);
+});
+
+it('shows the protocol as written, without forced capitalization', () => {
+  render(
+    <BrokerModal
+      broker={{ url: 'broker.cafe.test:8883', name: 'production', protocol: 'mqtt' }}
+      panelLabel="Servers"
+      onClose={vi.fn()}
+    />,
+  );
+  expect(getComputedStyle(screen.getByText(/mqtt/)).textTransform).not.toBe('capitalize');
 });

@@ -6,7 +6,7 @@ import type { AsyncMessageSubsection } from './context.js';
  * `asyncSubsectionOf`, `isDescriptionPlace`), so every literal lives here.
  */
 
-export const REQUEST_FIELDS_PLACE = 'request fields';
+const REQUEST_FIELDS_PLACE = 'request fields';
 export const REQUEST_BODY_PLACE = 'request body';
 export const SCHEMA_FIELDS_PLACE = 'schema fields';
 export const DESCRIPTION_PLACE = 'description';

@@ -3467,7 +3467,7 @@ A comment author association with repository.
 """
 enum CommentAuthorAssociation {
   """
-  Author has been invited to collaborate on the repository.
+  Author has been **invited** to collaborate on the repository, see `MEMBER`.
   """
   COLLABORATOR
 
@@ -28983,7 +28983,7 @@ type Query {
   """
   license(
     """
-    The license's downcased SPDX ID
+    The license's **downcased** SPDX ID, for example `mit`
     """
     key: String!
   ): License

@@ -1,0 +1,14 @@
+openapi: 3.2.0
+info:
+  title: Redocly Cafe
+  version: 2.3.0
+paths:
+  /orders:
+    get:
+      operationId: listOrders
+      responses:
+        '200':
+          description: Orders placed so far.
+servers:
+  - url: http://cafe.example.test:8443/cafe-api
+  - url: https://cafe.example.test:8443/cafe-api

@@ -2,6 +2,7 @@ import { useAtomValue } from 'jotai';
 
 import type { ReactElement, ReactNode } from 'react';
 import type { ExampleEntry } from '../../../types/store.js';
+import type { MediaTypeContent } from '../../../types/content.js';
 import type { SchemaVariantSelection } from './hooks.js';
 
 import { exampleStoreAtom } from '../../../jotai/examples.js';
@@ -10,6 +11,7 @@ import { RESOURCES, useTelemetry } from '../../../telemetry/index.js';
 import { useCopyCodeTelemetry } from '../../../hooks/useCopyCodeTelemetry.js';
 import { MAX_DISPLAYED_STRING_LENGTH } from '../../../constants/rendering.js';
 import {
+  isFormUrlEncodedMediaType,
   isJsonLikeMediaType,
   isSequentialMediaType,
   langFromMime,
@@ -154,7 +156,7 @@ export function MediaTypeSelector({
   );
 }
 
-export type PanelSelectOption = {
+type PanelSelectOption = {
   value: string;
   label: string;
   labelNode?: ReactNode;
@@ -227,11 +229,13 @@ export function PayloadDisplay({
   payload,
   emptyMessage = '// No sample',
   mediaType,
+  encoding,
   snippetType = 'response',
 }: {
   payload: unknown;
   emptyMessage?: string;
   mediaType?: string;
+  encoding?: MediaTypeContent['encoding'];
   snippetType?: 'request' | 'response';
 }): ReactElement {
   const { jsonSamplesExpandLevel } = useAtomValue(globalOptionsAtom);
@@ -270,11 +274,11 @@ export function PayloadDisplay({
         />
       );
     }
-    if (isFormUrlEncodedMime(mediaType)) {
+    if (isFormUrlEncodedMediaType(mediaType)) {
       return (
         <StyledCodeBlock
           lang="text"
-          source={formUrlEncodeValue(payload)}
+          source={formUrlEncodeValue(payload, encoding)}
           header={{
             className: 'code-block-header',
             controls: { copy: { onClick: onCopy('text') } },
@@ -316,10 +320,6 @@ export function PayloadDisplay({
       }}
     />
   );
-}
-
-function isFormUrlEncodedMime(mediaType: string | undefined): boolean {
-  return !!mediaType && /x-www-form-urlencoded/i.test(mediaType);
 }
 
 function tryParseJson(value: string): unknown {

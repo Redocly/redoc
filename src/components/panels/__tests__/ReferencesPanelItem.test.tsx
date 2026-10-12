@@ -160,8 +160,7 @@ describe('ReferencesPanelItem', () => {
       </MemoryRouter>,
     );
 
-    // Parity with legacy graphql-docs: the panel heading stays even when
-    // every reference row is skipped.
+    // The panel heading stays even when every reference row is skipped.
     expect(screen.getByText('References')).toBeInTheDocument();
     expect(screen.queryByText('HiddenType')).not.toBeInTheDocument();
     expect(screen.queryByRole('link')).not.toBeInTheDocument();

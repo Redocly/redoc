@@ -33,7 +33,7 @@ import type { DirectiveTarget } from '../../utils/graphql-directive-utils.js';
 
 import { getRequiresScopesDirective } from '../../utils/graphql-directive-utils.js';
 
-export function toTypeRef(type: GraphQLType): GraphqlTypeRef {
+function toTypeRef(type: GraphQLType): GraphqlTypeRef {
   const namedType = getNamedType(type);
   const isReturnNonNull = isNonNullType(type);
   const possibleListType = isReturnNonNull ? type.ofType : type;
@@ -120,6 +120,7 @@ export function serializeNamedType(type: GraphQLNamedType): GraphqlTypeData {
       ...base,
       variant: 'input',
       fields: Object.values(type.getFields()).map(serializeInputField),
+      isOneOf: type.isOneOf || undefined,
     };
   }
 

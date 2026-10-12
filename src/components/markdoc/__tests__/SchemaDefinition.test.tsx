@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { createStore, Provider } from 'jotai';
 import { MemoryRouter } from 'react-router';
 import '@testing-library/jest-dom/vitest';
@@ -8,6 +8,8 @@ import type { GlobalStoreAtom } from '../../../jotai/store.js';
 import type { SchemaEntry } from '../../../types/store.js';
 
 import { globalStoreAtom } from '../../../jotai/store.js';
+import { itemStoreAtom } from '../../../jotai/itemStore.js';
+import { ItemIdContext } from '../../../hooks/useDeepLinkSection.js';
 import { normalizeOptions } from '../../../options/normalizeOptions.js';
 import { MarkdownAdapterProvider } from '../../../contexts/markdownAdapter.js';
 import { createMarkdocAdapter } from '../markdocAdapter.js';
@@ -19,8 +21,14 @@ const SCHEMA_NAME = 'Target';
 function renderSchemaDefinition(
   data: Record<string, unknown> | null,
   schemaRef = `#/components/schemas/${SCHEMA_NAME}`,
+  extraSchemas: Record<string, Record<string, unknown>> = {},
+  itemId?: string,
 ) {
   const schemaStore: GlobalStoreAtom['store']['schemaStore'] = {};
+  for (const [name, extra] of Object.entries(extraSchemas)) {
+    const id = `components/schemas/${name}`;
+    schemaStore[id] = { id, kind: 'json-schema', data: extra };
+  }
   if (data) {
     const entry: SchemaEntry = {
       id: `components/schemas/${SCHEMA_NAME}`,
@@ -33,7 +41,6 @@ function renderSchemaDefinition(
   const jotaiStore = createStore();
   jotaiStore.set(globalStoreAtom, {
     items: [],
-    replayDefinition: null,
     store: {
       schemaStore,
       exampleStore: {},
@@ -47,15 +54,18 @@ function renderSchemaDefinition(
     }),
   });
 
-  return render(
+  const result = render(
     <MemoryRouter>
       <Provider store={jotaiStore}>
         <MarkdownAdapterProvider value={createMarkdocAdapter()}>
-          <SchemaDefinition schemaRef={schemaRef} />
+          <ItemIdContext.Provider value={itemId}>
+            <SchemaDefinition schemaRef={schemaRef} />
+          </ItemIdContext.Provider>
         </MarkdownAdapterProvider>
       </Provider>
     </MemoryRouter>,
   );
+  return { ...result, store: jotaiStore };
 }
 
 describe('SchemaDefinition description rendering', () => {
@@ -122,5 +132,38 @@ describe('SchemaDefinition description rendering', () => {
     expect(
       descriptionNode.compareDocumentPosition(typeRow) & Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy();
+  });
+});
+
+describe('SchemaDefinition variant state', () => {
+  it('stores the discriminator selection under the response sample state key', () => {
+    const itemId = 'schemas-beverage';
+    const { store } = renderSchemaDefinition(
+      {
+        oneOf: [{ $ref: '#/components/schemas/Coffee' }, { $ref: '#/components/schemas/Tea' }],
+        discriminator: {
+          propertyName: 'kind',
+          mapping: { coffee: '#/components/schemas/Coffee', tea: '#/components/schemas/Tea' },
+        },
+      },
+      `#/components/schemas/${SCHEMA_NAME}`,
+      {
+        Coffee: {
+          type: 'object',
+          properties: { kind: { type: 'string' }, shots: { type: 'integer' } },
+        },
+        Tea: {
+          type: 'object',
+          properties: { kind: { type: 'string' }, steepSeconds: { type: 'integer' } },
+        },
+      },
+      itemId,
+    );
+
+    fireEvent.click(screen.getByRole('tab', { name: 'tea' }));
+
+    expect(screen.getByText('steepSeconds')).toBeInTheDocument();
+    const state = store.get(itemStoreAtom(`${itemId}#schema=components/schemas/${SCHEMA_NAME}`));
+    expect(state.activeDiscriminator['kind']).toBe(1);
   });
 });

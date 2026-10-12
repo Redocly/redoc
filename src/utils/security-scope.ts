@@ -1,5 +1,4 @@
 // Scope helpers shared by the inline security panel and the security flow detail.
-// Parity with legacy openapi-docs `utils/security-scope.ts`.
 
 export function isScopeTruncated(scope: string, maxVisibleScopeChars: number): boolean {
   return scope.length > maxVisibleScopeChars;

@@ -29,11 +29,7 @@ By default Redoc offers a three-panel, responsive layout:
 - The central panel contains the documentation.
 - The right panel contains request and response examples.
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./images/demo-dark.png">
-  <source media="(prefers-color-scheme: light)" srcset="./images/demo-light.png">
-  <img alt="Redoc demo" src="./images/demo-light.png">
-</picture>
+<img alt="Redoc demo" src="./images/redoc-layouts.gif">
 
 ## Live demo
 

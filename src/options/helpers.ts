@@ -85,10 +85,7 @@ function isNumeric(value: string): boolean {
   return /^-?\d+(\.\d+)?$/.test(value);
 }
 
-/**
- * Normalize scrollYOffset for OpenAPI options. Safe for SSR: no DOM (querySelector).
- * In browser, openapi-docs version also supports CSS selector strings.
- */
+/** Normalize scrollYOffset for OpenAPI options. Safe for SSR: no DOM (querySelector). */
 export function normalizeScrollYOffset(value: RedocConfig['scrollYOffset']): () => number {
   if (typeof value === 'number') {
     return () => value;
@@ -133,13 +130,46 @@ export function normalizeIgnoreNamedSchemas(
 }
 
 export function normalizeDownloadUrls(
-  downloadUrls: { title?: string; url: string }[],
+  downloadUrls: unknown,
   type: ApiSpecType,
 ): { title: string; url: string }[] {
-  return downloadUrls.map((url) => ({
+  const entries = parseDownloadUrls(downloadUrls).map((entry) =>
+    typeof entry === 'string' ? { url: entry } : entry,
+  );
+  const valid = entries.filter(
+    (entry): entry is { title?: unknown; url: string } =>
+      typeof entry === 'object' &&
+      entry !== null &&
+      'url' in entry &&
+      typeof entry.url === 'string',
+  );
+  if (valid.length !== entries.length) {
+    console.warn('Ignoring "downloadUrls" entries without a string "url":', downloadUrls);
+  }
+  return valid.map((url) => ({
     ...url,
-    title: url.title ?? getFileNameFromUrl(url.url, type),
+    title: typeof url.title === 'string' ? url.title : getFileNameFromUrl(url.url, type),
   }));
+}
+
+function parseDownloadUrls(value: unknown): unknown[] {
+  if (Array.isArray(value)) return value;
+  if (typeof value === 'string') {
+    const trimmed = value.trim();
+    if (!trimmed) return [];
+    if (!/^[[{]/.test(trimmed)) return [{ url: trimmed }];
+    try {
+      return parseDownloadUrls(JSON.parse(trimmed));
+    } catch {
+      console.warn('Ignoring "downloadUrls": not valid JSON:', value);
+      return [];
+    }
+  }
+  if (typeof value === 'object' && value !== null) return [value];
+  if (value !== undefined && value !== null) {
+    console.warn('Ignoring "downloadUrls": expected an array of { url, title? }:', value);
+  }
+  return [];
 }
 
 function getFileNameFromUrl(url: string, type: ApiSpecType): string {

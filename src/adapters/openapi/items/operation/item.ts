@@ -1,14 +1,11 @@
 import type { ApiItem } from '../../../../types/store.js';
-import type { OperationInfo, OpenAPIInfo } from '../../../../types/openapi.js';
-import type { OpenAPIServer } from '@redocly/theme/core/types';
+import type { OperationInfo } from '../../../../types/openapi.js';
 
 import { WEBHOOKS_GROUP_TITLE } from '../../../../constants/openapi.js';
 import { buildItemContent } from './content.js';
 import { getOperationData } from '../../utils/operation.js';
-import { resolveRequestValues, applyRequestValuesToOperationInfo } from '../../configure/index.js';
 import { openApiContext } from '../../buildContext.js';
 import { readRbacScope, rbacProp, type RbacScope } from '../../../rbac.js';
-import { pickOperationServers } from '../../utils/merge-mock-server.js';
 
 export function addOperationItems({
   operations,
@@ -75,36 +72,22 @@ function addOperationItem(
   result: ApiItem[],
   parentRbac?: RbacScope,
 ): void {
-  const { document, options, processContent } = openApiContext.get();
-  const rawServers = pickOperationServers(
-    operation.servers as Array<{ url?: string }> | undefined,
-    document.servers as Array<{ url?: string }> | undefined,
-  );
-  let servers = rawServers.filter((s): s is { url: string } => typeof s?.url === 'string');
+  const {
+    processContent,
+  } = openApiContext.get();
 
-  if (processContent) {
-    const mergedRequestValues = resolveRequestValues({
-      operationInfo: operation,
-      info: (document.info ?? {}) as OpenAPIInfo,
-      servers: servers as OpenAPIServer[],
-      basePath,
-      dynamicRequestValues: options.dynamicRequestValues,
-    });
-    if (mergedRequestValues && Object.keys(mergedRequestValues).length > 0) {
-      applyRequestValuesToOperationInfo(operation, mergedRequestValues, servers as OpenAPIServer[]);
-    }
-  }
-
-  const { slug, badges, httpPath, seo, ...rest } = getOperationData(operation, basePath);
+  const {
+    slug,
+    badges,
+    httpPath,
+    ...rest
+  } = getOperationData(operation, basePath);
 
   const item: ApiItem = {
     ...rest,
     type: 'link',
     link: slug,
     routeSlug: slug,
-    metadata: {
-      ...(seo ? { seo } : {}),
-    },
     ...rbacProp(readRbacScope(operation) ?? parentRbac),
     content: processContent ? buildItemContent(operation, slug) : null,
   };

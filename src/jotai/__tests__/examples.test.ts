@@ -82,11 +82,13 @@ function setupStore({
   itemId,
   activeDiscriminator,
   activeOneOf,
+  onlyRequiredInSamples,
 }: {
   schemaStore: Record<string, SchemaEntry>;
   itemId?: string;
   activeDiscriminator?: Record<string, number>;
   activeOneOf?: Record<string, number>;
+  onlyRequiredInSamples?: boolean;
 }) {
   const jotaiStore = createStore();
   jotaiStore.set(globalStoreAtom, {
@@ -97,8 +99,8 @@ function setupStore({
       downloadUrls: [],
       metadata: {},
       basePath: '',
+      onlyRequiredInSamples,
     }),
-    replayDefinition: null,
   });
   if (itemId && (activeDiscriminator || activeOneOf)) {
     jotaiStore.set(itemStoreAtom(itemId), {
@@ -361,5 +363,177 @@ describe('generatedExampleAtom (streaming media types)', () => {
     const lines = (sample as string).split('\n');
     expect(lines).toHaveLength(3);
     expect(lines.every((line) => line === lines[0])).toBe(true);
+  });
+});
+
+describe('generatedExampleAtom (onlyRequiredInSamples)', () => {
+  const messageId = 'components/schemas/Message';
+  const schemaStore: Record<string, SchemaEntry> = {
+    [messageId]: {
+      id: messageId,
+      kind: schemaKind.JSON_SCHEMA,
+      data: {
+        type: 'object',
+        required: ['id'],
+        properties: {
+          id: { type: 'string', example: 'msg_1' },
+          note: { type: 'string', example: 'optional' },
+          secret: { type: 'string', writeOnly: true, example: 'hidden' },
+          createdAt: { type: 'string', readOnly: true, example: '2024-01-01' },
+        },
+      },
+    },
+  };
+
+  it('drops optional properties for a sample without a context', () => {
+    const store = setupStore({ schemaStore, onlyRequiredInSamples: true });
+    const key = buildExampleAtomKey(messageId, undefined, 'application/json', ITEM_ID);
+
+    expect(store.get(generatedExampleAtom(key))).toEqual({ id: 'msg_1' });
+  });
+
+  it('keeps readOnly and writeOnly properties for a sample without a context', () => {
+    const store = setupStore({ schemaStore });
+    const key = buildExampleAtomKey(messageId, undefined, 'application/json', ITEM_ID);
+
+    expect(store.get(generatedExampleAtom(key))).toEqual({
+      id: 'msg_1',
+      note: 'optional',
+      secret: 'hidden',
+      createdAt: '2024-01-01',
+    });
+  });
+
+  it('keeps optional properties for a response sample', () => {
+    const store = setupStore({ schemaStore, onlyRequiredInSamples: true });
+    const key = buildExampleAtomKey(messageId, 'response', 'application/json', ITEM_ID);
+
+    expect(store.get(generatedExampleAtom(key))).toEqual({
+      id: 'msg_1',
+      note: 'optional',
+      createdAt: '2024-01-01',
+    });
+  });
+});
+
+describe('generatedExampleAtom discriminator host keywords', () => {
+  const schema = (id: string, data: Record<string, unknown>): SchemaEntry => ({
+    id,
+    kind: schemaKind.JSON_SCHEMA,
+    data,
+  });
+  const ref = (name: string) => ({ $ref: `#/components/schemas/${name}` });
+  const mapping = (...names: string[]) =>
+    Object.fromEntries(names.map((name) => [name.toLowerCase(), ref(name).$ref]));
+  const sample = (
+    schemaStore: Record<string, SchemaEntry>,
+    schemaId: string,
+    activeDiscriminator: Record<string, number>,
+    onlyRequiredInSamples?: boolean,
+  ) =>
+    setupStore({ schemaStore, itemId: ITEM_ID, activeDiscriminator, onlyRequiredInSamples }).get(
+      generatedExampleAtom(buildExampleAtomKey(schemaId, 'request', 'application/json', ITEM_ID)),
+    );
+
+  const paymentStore = {
+    'components/schemas/Payment': schema('components/schemas/Payment', {
+      type: 'object',
+      required: ['amount'],
+      properties: { method: { type: 'string' }, amount: { type: 'number', example: 4.2 } },
+      oneOf: [ref('Card')],
+      discriminator: { propertyName: 'method', mapping: mapping('Card') },
+    }),
+    'components/schemas/Card': schema('components/schemas/Card', {
+      type: 'object',
+      properties: { last4: { type: 'string' }, related: ref('Payment') },
+    }),
+  };
+
+  it('keeps the host fields for a variant that references the host below a property', () => {
+    expect(sample(paymentStore, 'components/schemas/Payment', { method: 0 })).toEqual({
+      method: 'card',
+      amount: 4.2,
+      last4: 'string',
+      related: { method: 'string', amount: 4.2 },
+    });
+  });
+
+  it('keeps required host fields and drops optional variant fields with only-required samples', () => {
+    expect(sample(paymentStore, 'components/schemas/Payment', { method: 0 }, true)).toEqual({
+      amount: 4.2,
+    });
+  });
+
+  it('does not carry a host example into a variant that inherits the host', () => {
+    const store = {
+      'components/schemas/Pet': schema('components/schemas/Pet', {
+        type: 'object',
+        properties: { petType: { type: 'string' }, name: { type: 'string' } },
+        example: { petType: 'cat', name: 'Tom', huntingSkill: 'lazy' },
+        default: { petType: 'cat' },
+        oneOf: [ref('Cat'), ref('Dog')],
+        discriminator: { propertyName: 'petType', mapping: mapping('Cat', 'Dog') },
+      }),
+      'components/schemas/Cat': schema('components/schemas/Cat', {
+        allOf: [ref('Pet'), { properties: { huntingSkill: { type: 'string' } } }],
+      }),
+      'components/schemas/Dog': schema('components/schemas/Dog', {
+        allOf: [ref('Pet'), { properties: { packSize: { type: 'integer' } } }],
+      }),
+    };
+
+    expect(sample(store, 'components/schemas/Pet', { petType: 1 })).toEqual({
+      petType: 'dog',
+      name: 'string',
+      packSize: 0,
+    });
+  });
+
+  const beverageStore = {
+    'components/schemas/Order': schema('components/schemas/Order', {
+      type: 'object',
+      properties: { drink: ref('Beverage') },
+    }),
+    'components/schemas/Beverage': schema('components/schemas/Beverage', {
+      type: 'object',
+      oneOf: [ref('Coffee'), ref('Tea')],
+      discriminator: { propertyName: 'kind', mapping: mapping('Coffee', 'Tea') },
+    }),
+    'components/schemas/Coffee': schema('components/schemas/Coffee', {
+      type: 'object',
+      oneOf: [ref('Latte'), ref('Espresso')],
+      discriminator: { propertyName: 'style', mapping: mapping('Latte', 'Espresso') },
+    }),
+    'components/schemas/Tea': schema('components/schemas/Tea', {
+      type: 'object',
+      properties: { kind: { type: 'string' } },
+    }),
+    'components/schemas/Latte': schema('components/schemas/Latte', {
+      type: 'object',
+      properties: { kind: { type: 'string' }, style: { type: 'string' }, milk: { type: 'string' } },
+    }),
+    'components/schemas/Espresso': schema('components/schemas/Espresso', {
+      type: 'object',
+      properties: {
+        kind: { type: 'string' },
+        style: { type: 'string' },
+        shots: { type: 'integer' },
+      },
+    }),
+  };
+
+  it('stamps every mapping key on the path of a nested discriminator variant', () => {
+    expect(
+      sample(beverageStore, 'components/schemas/Beverage', { kind: 0, '&d=0/style': 1 }),
+    ).toEqual({ kind: 'coffee', style: 'espresso', shots: 0 });
+  });
+
+  it('follows a nested discriminator pick made below a property', () => {
+    expect(
+      sample(beverageStore, 'components/schemas/Order', {
+        'drink/kind': 0,
+        'drink&d=0/style': 1,
+      }),
+    ).toEqual({ drink: { kind: 'coffee', style: 'espresso', shots: 0 } });
   });
 });

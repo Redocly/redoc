@@ -28,7 +28,7 @@ import {
 } from '../../../hooks/useExpandableSection.js';
 import { LazyMount } from '../../common/LazyMount.js';
 
-export const COLLAPSIBLE_NESTED_DEFAULT_FALLBACK = 0;
+const COLLAPSIBLE_NESTED_DEFAULT_FALLBACK = 0;
 
 export function getCollapsibleNestedInitialExpanded(
   expandByDefault?: boolean,
@@ -56,7 +56,7 @@ export function useIsDeepLinkTarget(fieldPath: string | undefined): boolean {
       return true;
     }
 
-    // Legacy (openapi-docs) deep links support
+    // Legacy deep links carry no `[]` array markers.
     const strippedPath = stripArrayMarkers(normalizedPath);
     if (strippedPath === normalizedPath) return false;
     const strippedHash = stripArrayMarkers(decoded);
@@ -222,7 +222,7 @@ export function CollapsibleNestedFields({
     <NestedWrapper data-schema-nested-open={isExpanded ? 'true' : 'false'}>
       <ShowProperty type="button" onClick={toggleNested}>
         <CircleIcon sign={isExpanded ? '−' : '+'} level={level} expanded={isExpanded} />
-        {isExpanded ? '' : nestedLabel}
+        {isExpanded ? null : <span>{nestedLabel}</span>}
       </ShowProperty>
       {isExpanded && (
         <StyledNested $level={level}>

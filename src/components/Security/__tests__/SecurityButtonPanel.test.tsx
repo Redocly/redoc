@@ -86,6 +86,28 @@ describe('SecurityButtonPanel', () => {
   });
 });
 
+describe('SecurityButtonPanel requirement summary', () => {
+  it('joins alternatives with "or" and groups schemes required together with "and"', () => {
+    render(
+      <SecurityButtonPanel
+        requirements={[
+          { schemes: [{ name: 'bearerToken', type: 'http' }] },
+          {
+            schemes: [
+              { name: 'apiKeyHeader', type: 'httpApiKey' },
+              { name: 'basicAuth', type: 'http' },
+            ],
+          },
+        ]}
+      />,
+    );
+
+    expect(screen.getByTestId('panel-body').textContent).toBe(
+      'bearerToken or (apiKeyHeader and basicAuth)',
+    );
+  });
+});
+
 describe('SecurityButtonPanel telemetry', () => {
   type MockTelemetry = {
     sendViewSecurityDetailsClickedMessage: ReturnType<typeof vi.fn>;

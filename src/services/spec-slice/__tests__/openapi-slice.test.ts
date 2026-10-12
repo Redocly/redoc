@@ -313,4 +313,23 @@ describe('extractOpenApiSlice', () => {
     expect(Object.keys(webhooks)).toEqual(['hook']);
     expect(webhooks.hook.post).toBeDefined();
   });
+
+  it('matches a webhook with an empty tags list by the default webhooks tag', () => {
+    const source = deepFreeze({
+      openapi: '3.1.0',
+      info: { title: 'Empty tags', version: '1.0.0' },
+      paths: {},
+      webhooks: {
+        hook: {
+          post: { operationId: 'hookPost', tags: [], responses: { '200': { description: 'ok' } } },
+        },
+      },
+    });
+    const slice = extractOpenApiSlice(source, {
+      kind: 'tag',
+      tagName: DEFAULT_WEBHOOKS_TAG_NAME,
+    });
+    const webhooks = expectDefined(slice).document.webhooks as Record<string, unknown>;
+    expect(Object.keys(webhooks)).toEqual(['hook']);
+  });
 });

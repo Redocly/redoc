@@ -1,8 +1,10 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '@testing-library/react';
+import { renderToStaticMarkup } from 'react-dom/server';
 import { MemoryRouter } from 'react-router';
 import '@testing-library/jest-dom/vitest';
 
+import type { ReactNode } from 'react';
 import type { Node } from '@markdoc/markdoc';
 import type { OpenAPIDefinition } from '../../../types/openapi.js';
 
@@ -28,7 +30,7 @@ function collectTagNames(ast: Node | Node[] | undefined): string[] {
     for (const child of (node.children as { tag?: string }[]) ?? []) walk(child);
   };
   const nodes = Array.isArray(ast) ? ast : ast ? [ast] : [];
-  nodes.forEach((node) => walk(node as { tag?: string }));
+  nodes.forEach((node) => walk(node));
   return tags;
 }
 
@@ -74,6 +76,20 @@ describe('markdocParser raw HTML handling', () => {
       'url(https://example.com/badge.png)',
     );
     expect(badge?.style.color).toBe('red');
+  });
+
+  it('keeps a tag whose name is no element name as text, so the description renders', () => {
+    // Inside an HTML block, the escaped generic `\<T\>` parses as a tag named `t\`.
+    const adapter = createMarkdocAdapter();
+    const html = renderToStaticMarkup(
+      <MemoryRouter>
+        {adapter.render(
+          adapter.parse('<p align="center">\n  <br>Figure 1 GridItem\\<T\\> mapping<br>\n</p>\n'),
+        )}
+      </MemoryRouter>,
+    );
+
+    expect(html).toContain('<br/>Figure 1 GridItem\\&lt;T\\&gt; mapping<br/>');
   });
 
   it('leaves regular markdown unaffected', () => {
@@ -139,8 +155,53 @@ describe('markdocParser raw HTML handling', () => {
         }
       }
     };
-    visitContent((operation?.content?.children ?? []) as Parameters<typeof visitContent>[0]);
+    visitContent(operation?.content?.children ?? []);
 
     expect(parts.join(' ').trim()).toBe('Beta Get upcoming museum operating hours.');
+  });
+});
+
+describe('raw script and style elements', () => {
+  const SOURCE = 'Before <script>window.__x=1</script> after';
+
+  it('drops a raw script element from the page and the search text', () => {
+    const adapter = createMarkdocAdapter();
+    const { container } = render(
+      <MemoryRouter>{adapter.render(adapter.parse(SOURCE))}</MemoryRouter>,
+    );
+
+    expect(container.querySelector('script')).toBeNull();
+    expect(container.textContent).toMatch(/^Before\s+after$/);
+    expect(extractFullText(markdocParser(SOURCE) ?? '')).toMatch(/^Before\s+after$/);
+  });
+
+  it('keeps style source out of the search text', () => {
+    expect(extractFullText(markdocParser('a <style>.x{color:red}</style> b') ?? '')).toMatch(
+      /^a\s+b$/,
+    );
+  });
+
+  it('passes raw script elements to a host HtmlScript component', () => {
+    const HtmlScript = ({ children }: { children?: ReactNode }) => <output>{children}</output>;
+    const adapter = createMarkdocAdapter({ components: { HtmlScript } });
+    const { container } = render(
+      <MemoryRouter>{adapter.render(adapter.parse(SOURCE))}</MemoryRouter>,
+    );
+
+    expect(container.querySelector('output')).toHaveTextContent('window.__x=1');
+  });
+});
+
+describe('sanitize', () => {
+  it('strips unsafe HTML from descriptions parsed by the adapter', () => {
+    const adapter = createMarkdocAdapter(undefined, { sanitize: true });
+    const { container } = render(
+      <MemoryRouter>
+        {adapter.render(adapter.parse('Text <iframe srcdoc="<script>alert(1)</script>"></iframe>'))}
+      </MemoryRouter>,
+    );
+
+    expect(container.querySelector('iframe')).toBeNull();
+    expect(container).toHaveTextContent('Text');
   });
 });

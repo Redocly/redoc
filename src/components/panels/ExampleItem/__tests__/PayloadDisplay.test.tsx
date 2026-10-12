@@ -57,6 +57,18 @@ describe('PayloadDisplay', () => {
     expect(getByTestId('code-block-source').textContent).toBe('name=Museum%20Visitor&count=5');
   });
 
+  it('applies the media type encoding to an application/x-www-form-urlencoded payload', () => {
+    const { getByTestId } = render(
+      <PayloadDisplay
+        payload={{ tags: ['red', 'green'], ids: ['a', 'b'] }}
+        mediaType="application/x-www-form-urlencoded"
+        encoding={{ tags: { style: 'form', explode: false } }}
+      />,
+    );
+
+    expect(getByTestId('code-block-source').textContent).toBe('tags=red,green&ids=a&ids=b');
+  });
+
   it('serializes an object payload as XML for application/xml', () => {
     const { getByTestId } = render(
       <PayloadDisplay payload={{ name: 'Alice' }} mediaType="application/xml" />,
@@ -129,13 +141,21 @@ describe('ExampleDescription with the real markdoc adapter', () => {
   });
 
   it('renders inline HTML (sanitize: false default) without attaching string event handlers', async () => {
+    // React warns when it drops the string handler; that refusal is the behaviour under test.
+    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
     const { container } = await renderWithMarkdocAdapter(
       'Has <b>raw html</b> and <img src=x onerror="alert(1)"> injection attempt',
     );
+    expect(consoleError).toHaveBeenCalledWith(
+      expect.stringContaining('Invalid event handler property'),
+      'onerror',
+      'onError',
+    );
+    consoleError.mockRestore();
     expect(container.querySelector('b')?.textContent).toBe('raw html');
     const img = container.querySelector('img');
     expect(img?.getAttribute('onerror')).toBeNull();
-    expect((img as HTMLImageElement | null)?.onerror ?? null).toBeNull();
+    expect(img?.onerror ?? null).toBeNull();
   });
 
   it('keeps special symbols and template placeholders as text', async () => {
@@ -151,7 +171,7 @@ describe('ExampleDescription with the real markdoc adapter', () => {
     expect(container.textContent).toContain('end-marker');
   });
 
-  it('renders a pre-parsed AST (portal-shaped) description', async () => {
+  it('renders a pre-parsed AST (host-shaped) description', async () => {
     const ast = {
       $$mdtype: 'Node',
       type: 'paragraph',

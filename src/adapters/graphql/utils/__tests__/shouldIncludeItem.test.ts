@@ -8,7 +8,7 @@ describe('shouldIncludeItem', () => {
     expect(shouldIncludeItem('other', undefined, { includeByName: ['getUser'] })).toBe(false);
   });
 
-  it('combines specific and common includes and excludes like graphql-docs', () => {
+  it('combines specific and common includes and excludes like the previous engine', () => {
     expect(shouldIncludeItem('x', { includeByName: ['x'] }, { includeByName: ['y'] })).toBe(true);
     expect(shouldIncludeItem('y', { includeByName: ['x'] }, { includeByName: ['y'] })).toBe(true);
     expect(shouldIncludeItem('z', { includeByName: ['x'] }, { includeByName: ['y'] })).toBe(false);

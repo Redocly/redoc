@@ -26,7 +26,6 @@ function renderPattern(pattern?: string, options: { hideSchemaPattern?: boolean 
       basePath: '',
       ...options,
     }),
-    replayDefinition: null,
   });
 
   return render(

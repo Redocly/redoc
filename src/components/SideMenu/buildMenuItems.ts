@@ -3,6 +3,7 @@ import type { ApiItem } from '../../types/store.js';
 import type { TFunction } from '../../hooks/useTranslate.js';
 
 import { resolveText } from '../../utils/resolveText.js';
+import { tryDecodeURIComponent } from '../../utils/string.js';
 
 export type MenuItemState = {
   type?: string;
@@ -56,7 +57,7 @@ function buildState(
     : EMPTY_CHILDREN;
 
   const link = normalizeSlashes(item.link ?? item.routeSlug);
-  const decodedLink = link && decodeURIComponent(link);
+  const decodedLink = link && tryDecodeURIComponent(link).toLowerCase();
   const active = !!decodedLink && (activePath === decodedLink || activePath === decodedLink + '/');
   const hasActiveSubItem = childrenStates.some((c) => c.active || c.hasActiveSubItem);
   const label = resolveText(translate, item.labelTranslationKey, item.label);

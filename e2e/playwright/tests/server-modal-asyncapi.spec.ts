@@ -38,6 +38,33 @@ test.describe('Broker server modal', () => {
     await expect(overview.getByText('us-east-1').first()).toBeVisible();
   });
 
+  test('should show the pathname, external docs and security of the server', async () => {
+    await apiDocs.openBrokerModal('staging');
+
+    const overview = apiDocs.getBrokerOverviewSection();
+    await expect(overview.getByText('/gateway-v1', { exact: true })).toBeVisible();
+    await expect(
+      overview.getByRole('link', { name: 'Staging broker setup guide' }),
+    ).toHaveAttribute('href', 'https://developer.wheelyfast.io/docs/staging-brokers');
+    await expect(overview.getByText('Security', { exact: true })).toBeVisible();
+    await expect(overview.getByText('brokerAuth', { exact: true })).toBeVisible();
+    await expect(overview.getByText('SASL/SCRAM credentials issued per service.')).toBeVisible();
+    await expect(overview.getByText('scramSha256', { exact: true })).toBeVisible();
+  });
+
+  test('should show server name, protocol and variable values as written', async () => {
+    await expect(
+      apiDocs.brokerRow('staging').first().getByText('staging', { exact: true }),
+    ).toHaveText('staging', { useInnerText: true });
+
+    await apiDocs.openBrokerModal('staging');
+
+    await expect(apiDocs.getBrokerModal()).toContainText('kafka: staging', { useInnerText: true });
+    await expect(
+      apiDocs.getBrokerOverviewSection().getByText('us-west-2', { exact: true }),
+    ).toHaveText('us-west-2', { useInnerText: true });
+  });
+
   test('should show the kafka protocol icon in the modal title', async () => {
     await apiDocs.openBrokerModal('production');
 

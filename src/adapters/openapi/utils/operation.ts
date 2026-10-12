@@ -1,12 +1,12 @@
 import type { OperationInfo, OpenAPIXBadges } from '../../../types/openapi.js';
-import type { SeoData } from '../../../types/common.js';
 import type { ParseMarkdownOptions } from '../../utils/parseMarkdown.js';
 
 import { DEFAULT_TAG_SLUG } from '../../../constants/openapi.js';
 import { asString, encodeBackSlashes } from '../../../utils/string.js';
-import { extractSeoDescriptionText, extractSummaryText } from '../../utils/markdoc.js';
+import {
+  extractSummaryText,
+} from '../../utils/markdoc.js';
 import { normalizePath, joinWithSeparator } from '../../../utils/url.js';
-import { resolveItemSeo } from '../../utils/seo.js';
 import { sanitizeItemId } from './helpers.js';
 
 type OperationData = {
@@ -18,7 +18,6 @@ type OperationData = {
   httpVerb: string;
   httpPath: string;
   isWebhook: boolean;
-  seo?: SeoData;
 };
 
 export function getOperationData(operation: OperationInfo, basePath: string): OperationData {
@@ -39,10 +38,6 @@ export function getOperationData(operation: OperationInfo, basePath: string): Op
     asString(operation.pathName) ??
     'Unknown Operation';
 
-  const seo = resolveItemSeo(operation, {
-    title: label,
-    description: extractSeoDescriptionText(operation.description) ?? asString(operation.summary),
-  });
 
   const result: OperationData = {
     slug,
@@ -52,7 +47,6 @@ export function getOperationData(operation: OperationInfo, basePath: string): Op
     httpPath: operation.pathName,
     isAdditionalOperation: operation.isAdditionalOperation ?? false,
     isWebhook: operation.isWebhook ?? false,
-    seo,
   };
 
   if (operation?.['x-badges']) {
@@ -98,4 +92,15 @@ export function getOperationColor({
 function pointerToId(pointer: string | undefined): string {
   if (!pointer) return '';
   return pointer.startsWith('/') ? pointer.slice(1) : pointer;
+}
+
+/** Operation servers win when non-empty; an empty array falls through to the
+ *  document servers (see the empty-array test — a `??` fallback would not). */
+export function pickOperationServers<T>(
+  operationServers: T[] | undefined,
+  documentServers: T[] | undefined,
+): T[] {
+  return operationServers && operationServers.length > 0
+    ? operationServers
+    : (documentServers ?? []);
 }

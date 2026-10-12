@@ -7,7 +7,7 @@ import { useAtomValue } from 'jotai';
 
 import type { ReactElement, MouseEvent, PointerEvent, FocusEvent } from 'react';
 
-import { LinkIcon } from '@redocly/theme/icons/LinkIcon/LinkIcon';
+import { SharedLinkIcon } from '@redocly/theme/icons/LinkIcon/LinkIconSymbol';
 
 import { globalOptionsAtom } from '../../jotai/store.js';
 import { hashToElementId } from '../../utils/deep-link.js';
@@ -22,7 +22,7 @@ const TOOLTIP_ROOM_PX = 48;
 
 type TooltipPosition = { x: number; y: number; placement: 'top' | 'bottom' };
 
-export type DeepLinkAnchorVariant = 'heading' | 'field';
+type DeepLinkAnchorVariant = 'heading' | 'field';
 
 export interface DeepLinkAnchorProps {
   /** Full link target (path + hash), also used as the element id */
@@ -90,7 +90,7 @@ function DeepLinkAnchorComponent({
     };
   }, [isTooltipOpen, closeTooltip]);
 
-  // The tooltip renders in a portal but stays in this React subtree, so moving the pointer
+  // The tooltip renders on document.body but stays in this React subtree, so moving the pointer
   // onto it counts as staying inside the link.
   const handlePointerEnter = useCallback(
     (e: PointerEvent<HTMLAnchorElement>) => {
@@ -138,7 +138,7 @@ function DeepLinkAnchorComponent({
         onBlur={closeTooltip}
       >
         <IconBox ref={iconRef}>
-          <LinkIcon color="--heading-anchor-color" />
+          <SharedLinkIcon color="--heading-anchor-color" />
         </IconBox>
         {tooltipAt ? <DeepLinkTooltip at={tooltipAt} /> : null}
       </StyledLink>
@@ -232,12 +232,18 @@ const StyledLink = styled(Link)<{ $variant: DeepLinkAnchorVariant }>`
           padding-right: var(--heading-anchor-offset-right, 4px);
         `}
 
-  &:hover svg path:first-of-type {
-    fill: var(--deep-link-anchor-bg-color-hover, var(--button-bg-color-secondary-hover));
+  &:hover svg {
+    --link-icon-bg-color: var(
+      --deep-link-anchor-bg-color-hover,
+      var(--button-bg-color-secondary-hover)
+    );
   }
 
-  &:active svg path:first-of-type {
-    fill: var(--deep-link-anchor-bg-color-pressed, var(--button-bg-color-secondary-pressed));
+  &:active svg {
+    --link-icon-bg-color: var(
+      --deep-link-anchor-bg-color-pressed,
+      var(--button-bg-color-secondary-pressed)
+    );
   }
 
   &&[aria-current] svg,
@@ -245,11 +251,8 @@ const StyledLink = styled(Link)<{ $variant: DeepLinkAnchorVariant }>`
     visibility: visible;
   }
 
-  &&[aria-current] svg path:first-of-type {
-    fill: var(--deep-link-anchor-bg-color-current, var(--color-blueberry-1));
-  }
-
-  &&[aria-current] svg path:last-of-type {
+  &&[aria-current] svg {
+    --link-icon-bg-color: var(--deep-link-anchor-bg-color-current, var(--color-blueberry-1));
     fill: var(--deep-link-anchor-color-current, var(--color-blueberry-6));
   }
 `;

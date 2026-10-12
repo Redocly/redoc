@@ -37,6 +37,14 @@ import {
 import { ScopeTagWithTooltip } from './ScopeTagWithTooltip.js';
 
 const MAX_VISIBLE_SCOPE_CHARS = 24;
+const TYPES_WITHOUT_GENERIC_ROW: ReadonlySet<string> = new Set([
+  'http',
+  'apiKey',
+  'httpApiKey',
+  'oauth2',
+  'openIdConnect',
+  'mutualTLS',
+]);
 
 export function SecurityFlowDetail({ scheme }: { scheme: SecurityScheme }): ReactElement | null {
   const translate = useSpecTranslate();
@@ -62,9 +70,17 @@ export function SecurityFlowDetail({ scheme }: { scheme: SecurityScheme }): Reac
       )}
       <FlowProperties>
         {type === 'http' && <HttpSchemeDetails scheme={scheme} translate={translate} />}
-        {type === 'apiKey' && <ApiKeySchemeDetails scheme={scheme} translate={translate} />}
+        {(type === 'apiKey' || type === 'httpApiKey') && (
+          <ApiKeySchemeDetails scheme={scheme} translate={translate} />
+        )}
         {type === 'oauth2' && <OAuth2SchemeDetails scheme={scheme} translate={translate} />}
         {type === 'openIdConnect' && <OpenIdSchemeDetails scheme={scheme} translate={translate} />}
+        {!TYPES_WITHOUT_GENERIC_ROW.has(type) && (
+          <>
+            <SchemeRow label="Scheme type:" value={type} />
+            <RequiredScopesRow scopes={scheme.scopes} translate={translate} />
+          </>
+        )}
       </FlowProperties>
     </FlowWrapper>
   );
@@ -96,6 +112,15 @@ function ApiKeySchemeDetails({
   scheme: SecurityScheme;
   translate: TFunction;
 }): ReactElement {
+  if (!scheme.paramName) {
+    return (
+      <>
+        <SchemeRow label="Scheme type:" value={scheme.type} />
+        <SchemeRow label="Location:" value={scheme.in} />
+        <RequiredScopesRow scopes={scheme.scopes} translate={translate} />
+      </>
+    );
+  }
   const location = scheme.in ? `${scheme.in.charAt(0).toUpperCase() + scheme.in.slice(1)} ` : '';
   return (
     <>

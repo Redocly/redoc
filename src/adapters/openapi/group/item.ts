@@ -206,7 +206,7 @@ function addSingleTagItem(
   const mcpGroupItems: McpGroupItems = { tools: [], resources: [], prompts: [] };
   addMcpItems({ tagName, tagSlug, result: tagItems, groupItems: mcpGroupItems });
 
-  if (description && context.processContent) {
+  if (description) {
     const operationId = toRelativePath(tagSlug, context.basePath);
     for (const section of extractMarkdownSections(
       description,
@@ -218,6 +218,7 @@ function addSingleTagItem(
         buildMarkdownSectionItem({
           heading: section,
           basePath: context.basePath,
+          withContent: context.processContent,
         }),
       );
     }

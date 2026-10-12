@@ -54,7 +54,13 @@ export function DownloadPanelItem({ node }: { node: DownloadNode }): ReactElemen
               title={
                 <LinkWrapper>
                   {icon}
-                  <Link href={url} target="_blank" download rel="noreferrer" onClick={onClick}>
+                  <Link
+                    href={url}
+                    target="_blank"
+                    download={url.startsWith('blob:') ? label || true : true}
+                    rel="noreferrer"
+                    onClick={onClick}
+                  >
                     {label}
                   </Link>
                 </LinkWrapper>

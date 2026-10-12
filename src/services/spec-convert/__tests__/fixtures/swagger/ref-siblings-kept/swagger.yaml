@@ -1,0 +1,38 @@
+swagger: '2.0'
+info:
+  title: Redocly Cafe
+  version: 1.0.0
+paths:
+  '/orders/{orderId}':
+    get:
+      operationId: getOrder
+      parameters:
+        - $ref: '#/parameters/orderId'
+      responses:
+        '200':
+          description: The order.
+          schema:
+            $ref: '#/definitions/Order'
+            description: Order as the kitchen sees it.
+parameters:
+  orderId:
+    name: orderId
+    in: path
+    required: true
+    type: string
+definitions:
+  Order:
+    type: object
+    properties:
+      lastItem:
+        $ref: '#/definitions/OrderItem'
+        description: Most recently added item.
+        x-nullable: true
+      firstItem:
+        $ref: '#/definitions/OrderItem'
+        readOnly: true
+  OrderItem:
+    type: object
+    properties:
+      menuItemId:
+        type: string

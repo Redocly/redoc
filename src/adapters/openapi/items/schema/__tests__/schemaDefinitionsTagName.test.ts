@@ -74,7 +74,7 @@ describe('buildOpenApiItems with schemaDefinitionsTagName', () => {
     expect(schemaItems[0]?.routeSlug).toContain('pet');
   });
 
-  it('injects Schemas tag like openapi-docs when it is not listed in spec tags', async () => {
+  it('injects the Schemas tag when it is not listed in spec tags', async () => {
     const document = {
       openapi: '3.0.0',
       info: { title: 'T', version: '1' },
@@ -120,7 +120,7 @@ describe('buildOpenApiItems with schemaDefinitionsTagName', () => {
     expect(schemaItems[0]).toMatchObject({ type: 'link', label: 'Pet', httpVerb: 'schema' });
   });
 
-  it('renders the configured Schemas tag even when no schemas would land in it (matches openapi-docs)', async () => {
+  it('renders the configured Schemas tag even when no schemas would land in it', async () => {
     const document = {
       openapi: '3.0.0',
       info: { title: 'T', version: '1' },
@@ -161,7 +161,7 @@ describe('buildOpenApiItems with schemaDefinitionsTagName', () => {
     expect(schemaGroup).toBeDefined();
   });
 
-  it('renders the configured Schemas tag even when the document has no schemas at all (matches openapi-docs)', async () => {
+  it('renders the configured Schemas tag even when the document has no schemas at all', async () => {
     const document = {
       openapi: '3.0.0',
       info: { title: 'T', version: '1' },

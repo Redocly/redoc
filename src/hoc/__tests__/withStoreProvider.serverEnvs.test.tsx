@@ -7,7 +7,7 @@ import type { ApiItem, ApiStore } from '../../types/store.js';
 import type { RawApiDocsOptions } from '../../types/options.js';
 
 import { withStoreProvider } from '../withStoreProvider.js';
-import { environmentAtom, environmentsAtom } from '../../jotai/app.js';
+import { appStore, environmentAtom } from '../../jotai/app.js';
 
 const NO_ITEMS: ApiItem[] = [];
 
@@ -54,10 +54,10 @@ beforeEach(() => {
 });
 
 describe('withStoreProvider server environment seeding', () => {
-  it('seeds one environment per server, keyed like openapi-docs (description || url)', () => {
+  it('seeds one environment per server, keyed by description || url', () => {
     const store = renderWithParentStore(makeStore(SERVERS));
 
-    expect(store.get(environmentsAtom)).toEqual({
+    expect(store.get(appStore).environments).toEqual({
       'Test env': { server: 'https://rest.test.example.com' },
       'Prod env': { server: 'https://rest.prod.example.com' },
       'Vars env': { server: 'https://{region}.vars.example.com', region: 'eu' },
@@ -66,7 +66,7 @@ describe('withStoreProvider server environment seeding', () => {
 
   it('seeds nothing when the store has no servers', () => {
     const store = renderWithParentStore(makeStore());
-    expect(store.get(environmentsAtom)).toEqual({});
+    expect(store.get(appStore).environments).toEqual({});
   });
 
   it('resolves a persisted environment name in a fresh session (cookie only, no sessionStorage)', () => {
@@ -109,7 +109,7 @@ describe('withStoreProvider server environment seeding', () => {
       </Provider>,
     );
 
-    expect(parentStore.get(environmentsAtom)['Vars env']).toEqual({
+    expect(parentStore.get(appStore).environments['Vars env']).toEqual({
       server: 'https://{region}.vars.example.com',
       region: 'us',
     });

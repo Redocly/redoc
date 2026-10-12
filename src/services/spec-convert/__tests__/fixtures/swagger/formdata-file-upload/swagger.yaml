@@ -1,0 +1,85 @@
+---
+swagger: '2.0'
+info:
+  description: Menu photos and their metadata.
+  version: v1
+  title: Redocly Cafe
+  contact:
+    name: Cafe kitchen
+    url: https://cafe.example.test/kitchen
+  license:
+    name: Cafe internal use
+    url: https://cafe.example.test/license
+host: cafe.example.test:8080
+basePath: /media
+tags:
+  - name: Menu photos
+schemes:
+  - http
+  - https
+paths:
+  /menu/photos:
+    post:
+      tags:
+        - Menu photos
+      summary: Upload a menu photo with optional metadata
+      description: |
+        Send the picture as a file together with the fields that describe it.
+      operationId: uploadMenuPhoto
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+        - name: photo
+          in: formData
+          description: The picture itself.
+          required: false
+          type: file
+        - name: caption
+          in: formData
+          description: Caption shown under the photo.
+          required: false
+          type: string
+          x-example: Iced oat latte
+        - name: menuItemId
+          in: formData
+          description: Menu item the photo belongs to.
+          required: false
+          type: string
+          x-example: latte-oat-iced
+        - name: takenBy
+          in: formData
+          description: Staff member who took the photo.
+          required: false
+          type: string
+          x-example: maria
+      responses:
+        200:
+          description: Photo stored.
+          schema:
+            $ref: '#/definitions/MenuPhoto'
+        201:
+          description: Photo stored and published.
+        400:
+          description: The upload was empty.
+      security:
+        - BasicAuth: []
+securityDefinitions:
+  BasicAuth:
+    type: basic
+definitions:
+  MenuPhoto:
+    type: object
+    properties:
+      id:
+        type: string
+      caption:
+        type: string
+      menuItemId:
+        type: string
+      uploadedAt:
+        type: string
+        format: date-time
+      url:
+        type: string

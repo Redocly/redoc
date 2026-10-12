@@ -25,7 +25,6 @@ function renderExpandable(value: string): void {
       metadata: {},
       basePath: '',
     }),
-    replayDefinition: null,
   });
 
   render(

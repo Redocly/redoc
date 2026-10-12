@@ -48,47 +48,21 @@ export async function buildItems(props: ApiDocProps): Promise<BuildItemsResult> 
   return { items: result.items, store: { ...result.store, specType }, specType };
 }
 
-export function isOpenApiDefinition(
+function isOpenApiDefinition(
   def: ApiDocProps,
 ): def is ApiDocProps & { type: 'openapi'; document: OpenAPIDefinition } {
   return def.type === 'openapi';
 }
 
-export function isAsyncApiDefinition(
+function isAsyncApiDefinition(
   def: ApiDocProps,
 ): def is ApiDocProps & { type: 'asyncapi'; document: AsyncApiDefinition } {
   return def.type === 'asyncapi';
 }
 
-export function isGraphqlDefinition(
+function isGraphqlDefinition(
   def: ApiDocProps,
 ): def is ApiDocProps & { type: 'graphql'; document: DocumentNode } {
   return def.type === 'graphql';
 }
 
-export async function buildNavItems(props: ApiDocProps): Promise<Omit<BuildItemsResult, 'store'>> {
-  const specType = props.type;
-  const options = { ...normalizeOptions(props.options), markdownParser: props.markdownParser };
-
-  if (isOpenApiDefinition(props)) {
-    const { processOpenApiDocument } = await import('./openapi/index.js');
-    const { items } = await processOpenApiDocument({
-      ...props,
-      options,
-      processContent: false,
-    });
-    return { items, specType };
-  } else if (isAsyncApiDefinition(props)) {
-    const { processAsyncApiDocument } = await import('./asyncapi/index.js');
-    const { items } = processAsyncApiDocument({ ...props, options, processContent: false });
-    return { items, specType };
-  } else if (isGraphqlDefinition(props)) {
-    const { processGraphqlDocument } = await import('./graphql/index.js');
-    const { items } = processGraphqlDocument({ ...props, options, processContent: false });
-    return { items, specType };
-  }
-  return {
-    items: [],
-    specType,
-  };
-}

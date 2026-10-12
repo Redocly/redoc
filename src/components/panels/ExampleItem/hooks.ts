@@ -6,10 +6,13 @@ import type {
   CodeSamplePanelItem,
   PayloadExamplesPanelItem,
 } from '../../../types/content.js';
+import type { VariantSection } from '../../../jotai/itemStore.js';
 import {
   type SchemaVariantAxis,
   findSchemaVariantLeaves,
   resolveActiveVariantLeafIndex,
+  declaresVariantAxis,
+  samplesVariantThroughHost,
   withVariantPicks,
 } from '../../../services/code-samples/discriminator.js';
 
@@ -18,6 +21,7 @@ import { exampleStoreAtom } from '../../../jotai/examples.js';
 import {
   activeDiscriminatorSelectAtom,
   activeOneOfSelectAtom,
+  buildVariantStoreId,
   itemStoreAtom,
   itemStoreFieldAtom,
 } from '../../../jotai/itemStore.js';
@@ -60,9 +64,7 @@ export function useMediaTypeContent(
   const hasResolvedMessage = !!activeMessageContent;
 
   const effectiveSchemaId =
-    activeContent?.schemaId ??
-    (hasResolvedMessage ? activeMessageContent?.schemaId : undefined) ??
-    node.schemaId;
+    activeContent?.schemaId ?? (hasResolvedMessage ? activeMessageContent.schemaId : node.schemaId);
   const exampleStore = useAtomValue(exampleStoreAtom);
   const rawExampleIds =
     activeContent?.exampleIds ??
@@ -87,24 +89,39 @@ export function useMediaTypeContent(
     activeMediaType,
     effectiveSchemaId,
     effectiveExampleIds,
+    encoding: activeContent?.encoding,
+    isMessageWithoutPayload:
+      hasResolvedMessage && !effectiveSchemaId && !effectiveExampleIds?.length,
     onMediaTypeChange,
   };
 }
 
-export function useActiveVariantSchemaId(schemaId?: string): string | undefined {
+export function useActiveVariantSchemaId(
+  schemaId?: string,
+  section?: VariantSection,
+): string | undefined {
   const store = useAtomValue(schemaStoreAtom);
-  const itemId = useContext(ItemIdContext);
+  const variantStoreId = buildVariantStoreId(useContext(ItemIdContext) ?? '', section);
   const discState = useAtomValue(
-    useMemo(() => activeDiscriminatorSelectAtom(itemId ?? ''), [itemId]),
+    useMemo(() => activeDiscriminatorSelectAtom(variantStoreId), [variantStoreId]),
   );
-  const oneOfState = useAtomValue(useMemo(() => activeOneOfSelectAtom(itemId ?? ''), [itemId]));
+  const oneOfState = useAtomValue(
+    useMemo(() => activeOneOfSelectAtom(variantStoreId), [variantStoreId]),
+  );
   const leaves = useMemo(
     () => (schemaId ? findSchemaVariantLeaves(schemaId, store) : undefined),
     [schemaId, store],
   );
 
   const active = leaves?.[resolveActiveVariantLeafIndex(leaves, discState, oneOfState)];
-  return active && store[active.schemaId] ? active.schemaId : schemaId;
+  if (!active || !schemaId || !store[active.schemaId]) return schemaId;
+  // The sampler store rewrites the host to the selected variant; the variant id alone loses the host keywords.
+  const hostData = store[schemaId]?.data;
+  const throughHost =
+    active.picks.length > 1
+      ? declaresVariantAxis(hostData)
+      : samplesVariantThroughHost(hostData, store[active.schemaId].data);
+  return throughHost ? schemaId : active.schemaId;
 }
 
 // Streaming media types fan a oneOf/anyOf body out into one chunk per variant; the body
@@ -112,22 +129,32 @@ export function useActiveVariantSchemaId(schemaId?: string): string | undefined 
 export function useBodySamplingSchemaId(
   schemaId: string | undefined,
   mediaType: string | undefined,
+  section?: VariantSection,
 ): string | undefined {
   const isStreaming = isSequentialMediaType(mediaType);
   // Passing undefined short-circuits the variant resolution inside the hook; we still subscribe
   // to the underlying atoms (required by Rules of Hooks), but skip the schema-graph walk.
-  const activeVariantSchemaId = useActiveVariantSchemaId(isStreaming ? undefined : schemaId);
+  const activeVariantSchemaId = useActiveVariantSchemaId(
+    isStreaming ? undefined : schemaId,
+    section,
+  );
   return isStreaming ? schemaId : activeVariantSchemaId;
 }
 
-export function useSchemaVariantSelection(schemaId?: string): SchemaVariantSelection | undefined {
+export function useSchemaVariantSelection(
+  schemaId?: string,
+  section?: VariantSection,
+): SchemaVariantSelection | undefined {
   const store = useAtomValue(schemaStoreAtom);
   const itemId = useContext(ItemIdContext);
+  const variantStoreId = buildVariantStoreId(itemId ?? '', section);
   const discState = useAtomValue(
-    useMemo(() => activeDiscriminatorSelectAtom(itemId ?? ''), [itemId]),
+    useMemo(() => activeDiscriminatorSelectAtom(variantStoreId), [variantStoreId]),
   );
-  const oneOfState = useAtomValue(useMemo(() => activeOneOfSelectAtom(itemId ?? ''), [itemId]));
-  const setItemState = useSetAtom(itemStoreAtom(itemId ?? ''));
+  const oneOfState = useAtomValue(
+    useMemo(() => activeOneOfSelectAtom(variantStoreId), [variantStoreId]),
+  );
+  const setItemState = useSetAtom(itemStoreAtom(variantStoreId));
 
   const leaves = useMemo(() => {
     if (!schemaId) return undefined;

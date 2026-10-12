@@ -74,11 +74,12 @@ function resolveArgs(
   let spec: Record<string, unknown> | string | undefined;
 
   if (typeof specOrSpecUrl === 'string') {
-    // A raw GraphQL SDL or JSON string is a spec, not a URL.
-    if (!isUrlLike(specOrSpecUrl) || /^\s*[[{]/.test(specOrSpecUrl)) {
+    // A raw GraphQL SDL, JSON or YAML string is a spec, not a URL.
+    const value = specOrSpecUrl.trim();
+    if (!isUrlLike(value) || /^[[{]/.test(value)) {
       spec = specOrSpecUrl;
     } else {
-      specUrl = specOrSpecUrl;
+      specUrl = value;
     }
   } else if (typeof specOrSpecUrl === 'object') {
     spec = specOrSpecUrl;
@@ -152,7 +153,7 @@ export async function hydrate(
   const basePath = props.basePath ?? '/';
 
   // hydration must render the post-resolution tree, as the server pass does
-  const prepared = await prepareApiDocs({ ...props, basePath });
+  const prepared = await prepareApiDocs({ ...props, basePath, convertedDownload: false });
 
   const app: ReactElement = createElement(RedoclyApiDocsStandalone, {
     items: prepared.items,

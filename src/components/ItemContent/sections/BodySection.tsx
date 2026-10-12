@@ -47,8 +47,9 @@ function BodySectionComponent({ node }: { node: ItemContentNode }): ReactElement
       t: 'request',
       cb: callbackScope,
       ct: hasMultiple ? currentMediaType : undefined,
+      schemaId: activeSchemaId,
     }),
-    [callbackScope, hasMultiple, currentMediaType],
+    [callbackScope, hasMultiple, currentMediaType, activeSchemaId],
   );
 
   return (

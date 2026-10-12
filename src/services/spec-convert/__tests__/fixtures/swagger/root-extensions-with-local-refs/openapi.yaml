@@ -1,0 +1,32 @@
+openapi: 3.2.0
+info:
+  version: '1.0'
+  title: Redocly Cafe
+x-stations:
+  espresso:
+    queue: bar
+  bakery:
+    queue: oven
+x-routing:
+  rules:
+    - match:
+        header: X-Order-Kind
+        equals: drink
+      station:
+        $ref: '#/x-stations/espresso'
+    - match:
+        header: X-Order-Kind
+        equals: food
+      station:
+        $ref: '#/x-stations/bakery'
+paths:
+  /orders:
+    post:
+      operationId: createOrder
+      x-route:
+        $ref: '#/x-routing/rules/0'
+      responses:
+        '202':
+          description: Order sent to a station.
+servers:
+  - url: //cafe.example.test

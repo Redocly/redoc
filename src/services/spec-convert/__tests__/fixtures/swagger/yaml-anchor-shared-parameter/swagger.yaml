@@ -1,0 +1,46 @@
+swagger: '2.0'
+info:
+  title: Redocly Cafe
+  version: 1.0.0
+  description: Orders, menu and kitchen tickets.
+tags:
+  - name: menu
+    description: What the kitchen can make.
+schemes:
+  - http
+host: cafe.example.test
+basePath: /v1
+produces:
+  - application/json
+consumes:
+  - application/json
+parameters:
+  baristaToken: &baristaToken
+    in: header
+    name: X-Barista-Token
+    description: Token handed out at the counter.
+    required: false
+    type: string
+paths:
+  /menu:
+    get:
+      tags:
+        - menu
+      summary: List menu items
+      description: Returns every item on today's menu.
+      operationId: listMenuItems
+      parameters:
+        - *baristaToken
+      responses:
+        '200':
+          description: The menu.
+          schema:
+            $ref: '#/definitions/MenuItem'
+definitions:
+  MenuItem:
+    type: object
+    required:
+      - name
+    properties:
+      name:
+        type: string

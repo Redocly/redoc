@@ -47,7 +47,7 @@ describe('RedocTelemetry', () => {
         expect.objectContaining({
           otel: expect.objectContaining({
             collectorTraceUrl: 'https://otel.cloud.redocly.com/v1/traces',
-            // Edition-specific: `realm-ui` for portal, `redoc-ce` in the community tree.
+            // Edition-specific, see telemetry/defaults.
             serviceName: DEFAULT_SERVICE_NAME,
             serviceVersion: '1.0.0',
           }),
@@ -84,7 +84,7 @@ describe('RedocTelemetry', () => {
         serviceVersion: '1.0.0',
       });
 
-      // `react` in the community tree, unset in enterprise.
+      // Edition-specific, see telemetry/defaults.
       expect(telemetry.typeOfUsage).toBe(DEFAULT_TYPE_OF_USAGE);
     });
 

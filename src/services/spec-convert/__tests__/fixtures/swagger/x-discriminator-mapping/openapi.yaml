@@ -1,0 +1,19 @@
+openapi: 3.2.0
+info:
+  version: ''
+  title: ''
+paths: {}
+components:
+  schemas:
+    MenuItem:
+      type: object
+      properties:
+        itemKind:
+          type: string
+      discriminator:
+        propertyName: itemKind
+        mapping:
+          drink: Beverage
+          pastry: '#/components/schemas/Pastry'
+    Beverage: {}
+    Pastry: {}

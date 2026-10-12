@@ -28,7 +28,7 @@ import { ExternalDocsItem } from './ExternalDocsItem.js';
 import { ChannelAddressItem } from './ChannelAddressItem.js';
 import { MessageLinksItem } from './MessageLinksItem.js';
 
-export const ContentTypeMapper: Record<ContentType, FC<unknown>> = {
+const ContentTypeMapper: Record<ContentType, FC<unknown>> = {
   [contentType.OVERVIEW]: OverviewPage as FC<unknown>,
   [contentType.GROUP]: GroupPage as FC<unknown>,
   [contentType.ITEM]: ItemPage as FC<unknown>,
@@ -60,7 +60,7 @@ const OverviewSectionWrapperView = memo(function OverviewSectionWrapperView({
   );
 });
 
-export const NodeTypeMapper: Record<NodeTypes, FC<unknown>> = {
+const NodeTypeMapper: Record<NodeTypes, FC<unknown>> = {
   [nodeTypes.CONTAINER]: ContainerItem as FC<unknown>,
   [nodeTypes.OVERVIEW_SECTION_WRAPPER]: OverviewSectionWrapperView as FC<unknown>,
   [nodeTypes.HEADER]: HeaderItem as FC<unknown>,
@@ -76,7 +76,7 @@ export const NodeTypeMapper: Record<NodeTypes, FC<unknown>> = {
   [nodeTypes.EXTENSIONS]: ExtensionsItem as FC<unknown>,
 };
 
-export const Mapper = {
+const Mapper = {
   ...ContentTypeMapper,
   ...NodeTypeMapper,
 } as Record<ContentType | NodeTypes, FC<unknown>>;

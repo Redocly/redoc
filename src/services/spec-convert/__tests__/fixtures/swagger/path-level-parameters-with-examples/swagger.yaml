@@ -1,0 +1,26 @@
+swagger: '2.0'
+info:
+  title: Redocly Cafe
+  version: 1.0.0
+paths:
+  '/orders/{orderId}':
+    parameters:
+      - name: orderId
+        in: path
+        description: Identifier printed on the receipt.
+        example: 3f2c9a10-7d4e-4b8a-9c11-2e5f6a7b8c9d
+        type: string
+        format: UUID
+        required: true
+      - name: currency
+        in: query
+        description: Currency used for the totals.
+        example: EUR
+        type: string
+        format: iso-4217
+        required: true
+    get:
+      operationId: getOrder
+      responses:
+        '200':
+          description: The order.

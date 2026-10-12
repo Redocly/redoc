@@ -6,7 +6,7 @@ import type { OpenAPIDefinition, ParsedDocument } from '../types/openapi.js';
 
 import { IS_BROWSER } from '@redocly/theme/core/openapi';
 
-import { convertSwagger2OpenAPI } from '../adapters/utils/convertSwagger2OpenAPI.js';
+import { convertSwaggerToOpenApi } from '../services/spec-convert/index.js';
 import { DefinitionLoadError, errorMessage } from './definitionLoadError.js';
 
 export async function loadOpenapiConfig(): Promise<RedocConfig> {
@@ -26,7 +26,7 @@ export async function loadAndBundleDefinition(
   const bundleOpts: Parameters<typeof bundle>[0] = {
     config,
     base: IS_BROWSER
-      ? window.location.origin
+      ? document.baseURI || window.location.href
       : typeof (globalThis as unknown as { process: { cwd: () => string } }).process !== 'undefined'
         ? (globalThis as unknown as { process: { cwd: () => string } }).process.cwd()
         : '',
@@ -65,7 +65,8 @@ export async function loadAndBundleDefinition(
     throw new DefinitionLoadError(stage, message, lastStatus);
   }
 
-  return parsed.swagger !== undefined ? convertSwagger2OpenAPI(parsed) : parsed;
+  if (parsed.swagger !== undefined) return convertSwaggerToOpenApi(parsed) as OpenAPIDefinition;
+  return parsed;
 }
 
 function createParsedDocument(specUrlOrObject: Record<string, unknown> | string) {

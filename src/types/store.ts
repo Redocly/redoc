@@ -3,6 +3,7 @@ import type { DocumentNode } from 'graphql';
 import type { Node } from '@markdoc/markdoc';
 import type {
   ApiSpecType,
+  AsyncApiSecuritySchemeType,
   Badge,
   BadgeData,
   ContentType,
@@ -10,7 +11,6 @@ import type {
   SecuritySchemeIn,
   SecuritySchemeType,
   ServerData,
-  SeoData,
   SidebarLogo,
   SchemaKind,
 } from './common.js';
@@ -42,7 +42,6 @@ export type StoreContext = {
 
 export type ApiItemContent = {
   contentType: ContentType;
-  seo?: SeoData;
   itemVariant?: ItemVariant;
   meta?: ItemMeta;
   children: ContentNode[];
@@ -54,7 +53,6 @@ export type BreadcrumbItem = {
 };
 
 export type ItemMeta = {
-  sourceId?: string; // is used to identify pointer in pluggable components
   name?: string;
   deprecated?: boolean;
   isWebhook?: boolean;
@@ -94,6 +92,8 @@ export type ExampleEntry = {
   description?: string | Node | Node[];
   mediaType?: string;
   externalValue?: string;
+  /** Header values of an AsyncAPI message example. */
+  headers?: Record<string, unknown>;
 };
 
 export type OAuthFlowEntry = {
@@ -124,38 +124,22 @@ export type OAuthFlowsData = {
     tokenUrl: string;
     refreshUrl?: string;
     scopes: Record<string, string>;
-    'x-defaultClientId'?: string;
   };
 };
 
-export type SecuritySchemeCredentials = {
-  'x-defaultAccessToken'?: string;
-  'x-defaultTokenType'?: string;
-  'x-defaultClientId'?: string;
-  'x-defaultClientSecret'?: string;
-  'x-defaultUsername'?: string;
-  'x-defaultPassword'?: string;
-  scopes?: string[];
-};
 
 export type SecuritySchemeEntry = {
   id: string;
-  type: SecuritySchemeType;
+  type: SecuritySchemeType | AsyncApiSecuritySchemeType;
   scheme?: string;
   bearerFormat?: string;
   description?: string | Node[] | Node;
-  in?: SecuritySchemeIn;
+  in?: SecuritySchemeIn | 'user' | 'password';
   paramName?: string;
+  scopes?: string[];
   openIdConnectUrl?: string;
   deprecated?: boolean;
   oauth2MetadataUrl?: string;
-  'x-defaultClientId'?: string;
-  'x-defaultAccessToken'?: string;
-  'x-defaultTokenType'?: string;
-  'x-defaultClientSecret'?: string;
-  'x-defaultUsername'?: string;
-  'x-defaultPassword'?: string;
-  serverValues?: Record<string, SecuritySchemeCredentials>;
   flows?: OAuthFlowsData;
 };
 

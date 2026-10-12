@@ -31,6 +31,7 @@ import { collapsedSidebarAtom, colorModeAtom } from './jotai/app.js';
 import { PrePaintColorModeScript } from './components/PrePaintColorModeScript.js';
 import { STANDALONE_THEME_CONFIG } from './standaloneThemeConfig.js';
 import { compose } from './utils/compose.js';
+import { normalizePath } from './utils/url.js';
 import { withRouter } from './hoc/withRouter.js';
 import { withStoreProvider } from './hoc/withStoreProvider.js';
 import { useCodeHighlight } from './hooks/useCodeHighlight.js';
@@ -41,7 +42,7 @@ const ThemeDataProvider = ({ children }: PropsWithChildren): ReactElement => {
     () =>
       ({
         hooks: {
-          useCodeHighlight: () => ({ highlight: useCodeHighlight }),
+          useCodeHighlight,
           // useThemeConfig dereferences useCurrentProduct once a config exists.
           ...(STANDALONE_THEME_CONFIG ? { useCurrentProduct: () => undefined } : {}),
         },
@@ -75,7 +76,7 @@ const RedoclyApiDocsStandalone = compose(
 )(({
   items,
   store,
-  basePath,
+  basePath: rawBasePath = '/',
   options: rawOptions,
   logo,
   telemetryConfig,
@@ -83,6 +84,7 @@ const RedoclyApiDocsStandalone = compose(
   spec,
   buildTimings,
 }: RedoclyApiDocsStandaloneProps): ReactElement => {
+  const basePath = normalizePath(rawBasePath);
   const options = useAtomValue(globalOptionsAtom);
   const apiStore = useAtomValue(storeAtom);
   const telemetry = useRedocTelemetryInstance(telemetryConfig);
@@ -91,8 +93,8 @@ const RedoclyApiDocsStandalone = compose(
     [buildTimings, rawOptions],
   );
   const markdownAdapter = useMemo(
-    () => markdownAdapterProp ?? createMarkdocAdapter(),
-    [markdownAdapterProp],
+    () => markdownAdapterProp ?? createMarkdocAdapter(undefined, options),
+    [markdownAdapterProp, options],
   );
   const collapsedSidebar = useAtomValue(collapsedSidebarAtom);
 

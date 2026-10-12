@@ -22,7 +22,7 @@ import { schemaDefinitionTag } from './tags/schema-definition-tag.js';
  * separately and wired in by the host's markdown adapter on the client.
  */
 
-export function getMarkdownHeaderId(children: RenderableTreeNode[]): string | undefined {
+function getMarkdownHeaderId(children: RenderableTreeNode[]): string | undefined {
   const text = collectInnerText(children).trim();
   return text ? `section/${safeSlugify(text)}` : undefined;
 }
@@ -61,8 +61,7 @@ function injectThLabels(children: RenderableTreeNode[]): RenderableTreeNode[] {
 export const apiDocsMarkdocNodes: Record<string, Schema> = {
   // The theme's markdown table styles target `table.md` inside an `.md-table-wrapper` scroll
   // container (see @redocly/theme Markdown/styles/base-table); markdoc's default transform
-  // emits a bare <table>, which renders unstyled. Mirrors the portal's table node
-  // (packages/portal/src/markdoc/nodes/table.ts) so standalone tables get the same styling.
+  // emits a bare <table>, which renders unstyled.
   table: {
     transform(node: Node, config: Config) {
       const attributes = node.transformAttributes(config);
