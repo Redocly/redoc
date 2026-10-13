@@ -7,6 +7,7 @@ import { AppStore } from './services/AppStore';
 import { debugTime, debugTimeEnd } from './utils/debug';
 import { querySelector } from './utils/dom';
 import type { StoreState } from './services';
+import type { Root } from 'react-dom/client';
 
 configure({
   useProxies: 'ifavailable',
@@ -16,6 +17,8 @@ export { Redoc, AppStore } from '.';
 
 export const version = __REDOC_VERSION__;
 export const revision = __REDOC_REVISION__;
+
+const roots = new WeakMap<Element, Root>();
 
 function attributesMap(element: Element) {
   const res = {};
@@ -59,7 +62,11 @@ export function init(
     spec = specOrSpecUrl;
   }
 
-  const root = createRoot(element!);
+  let root = roots.get(element);
+  if (!root) {
+    root = createRoot(element);
+    roots.set(element, root);
+  }
   root.render(
     React.createElement(
       RedocStandalone,
@@ -76,7 +83,8 @@ export function init(
 
 export function destroy(element: Element | null = querySelector('redoc')): void {
   if (element) {
-    createRoot(element).unmount();
+    roots.get(element)?.unmount();
+    roots.delete(element);
   }
 }
 
@@ -91,7 +99,10 @@ export function hydrate(
 
   setTimeout(() => {
     debugTime('Redoc hydrate');
-    hydrateRoot(element!, <Redoc store={store} />, { onRecoverableError: callback });
+    roots.set(
+      element!,
+      hydrateRoot(element!, <Redoc store={store} />, { onRecoverableError: callback }),
+    );
     debugTimeEnd('Redoc hydrate');
   }, 0);
 }
