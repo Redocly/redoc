@@ -361,6 +361,14 @@ describe('getLegacyHash', () => {
     expect(getLegacyHash('#paths/api/users')).toBe('/api/users');
   });
 
+  it('drops the operation marker of a tagged operation', () => {
+    expect(getLegacyHash('#tag/Orders/operation/getOrderById')).toBe('/orders/getorderbyid');
+  });
+
+  it('keeps the section prefix, which is part of the section route', () => {
+    expect(getLegacyHash('#section/Authentication')).toBe('/section/authentication');
+  });
+
   it('returns empty for non-legacy hash', () => {
     expect(getLegacyHash('#getUsers/request')).toBe('');
   });
@@ -390,6 +398,23 @@ describe('resolveLegacyHashToRoute', () => {
   it('resolves a suffix-less legacy operation hash to its route', () => {
     expect(resolveLegacyHashToRoute('#operation/sendViber', '/docs', routeIndex)).toBe(
       '/docs/viber-business-messaging/sendviber',
+    );
+  });
+
+  it('resolves a legacy tagged operation hash to the operation route, not the tag', () => {
+    expect(
+      resolveLegacyHashToRoute(
+        '#tag/viber-business-messaging/operation/sendViber',
+        '/docs',
+        routeIndex,
+      ),
+    ).toBe('/docs/viber-business-messaging/sendviber');
+  });
+
+  it('resolves a legacy section hash with a sub-heading tail to the section route', () => {
+    const index = buildRouteIndex([makeRoute('/docs/section/authentication')], [], '/docs');
+    expect(resolveLegacyHashToRoute('#section/Authentication/api_key', '/docs', index)).toBe(
+      '/docs/section/authentication#section/authentication/api_key',
     );
   });
 

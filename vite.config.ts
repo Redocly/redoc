@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import { resolve, dirname } from 'path';
-import { existsSync } from 'fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { createRequire } from 'module';
 import react from '@vitejs/plugin-react';
@@ -66,6 +66,118 @@ const styledComponentsNamedImport = {
     ),
 };
 
+// Bundled code reads only the package name and version; the rest of package.json stays out.
+const PACKAGE_JSON_PATH = resolve(__dirname, 'package.json');
+const packageJsonNameVersion = {
+  name: 'package-json-name-version',
+  enforce: 'pre' as const,
+  load: (id: string) =>
+    id === PACKAGE_JSON_PATH ? JSON.stringify({ name: pkg.name, version: pkg.version }) : undefined,
+};
+
+const LIBRARY_EXTERNALS = /^(react|react-dom|react-router|styled-components)(\/|$)/;
+
+// Third-party code ships inlined in the bundles, so their licenses are checked on what each build
+// actually bundles, not on the install tree. The per-bundle lists feed `npm run list:licenses`.
+const ALLOWED_LICENSES = new Set([
+  'MIT',
+  'ISC',
+  'Apache-2.0',
+  'BSD',
+  'BSD-2-Clause',
+  'BSD-3-Clause',
+  'CC-BY-4.0',
+  'CC0-1.0',
+  'Python-2.0',
+]);
+const BUNDLED_LICENSES_DIR = resolve(__dirname, 'node_modules/.cache/bundled-licenses');
+
+type Manifest = {
+  name?: string;
+  version?: string;
+  license?: string | { type?: string };
+  licenses?: { type?: string }[];
+  repository?: string | { url?: string };
+};
+
+const manifests = new Map<string, Manifest>();
+function readManifest(path: string): Manifest {
+  let manifest = manifests.get(path);
+  if (!manifest) {
+    manifest = JSON.parse(readFileSync(path, 'utf8')) as Manifest;
+    manifests.set(path, manifest);
+  }
+  return manifest;
+}
+
+/** Nearest `package.json` with a `name`; a nested `dist/esm/package.json` sets only the type. */
+function findManifest(file: string): string | undefined {
+  for (let dir = dirname(file); dir !== dirname(dir); dir = dirname(dir)) {
+    const path = resolve(dir, 'package.json');
+    if (existsSync(path) && readManifest(path).name) return path;
+  }
+  return undefined;
+}
+
+function licenseOf({ license, licenses }: Manifest): string {
+  if (typeof license === 'string') return license;
+  return license?.type ?? licenses?.map((entry) => entry.type).join(' OR ') ?? '';
+}
+
+/** An SPDX `OR` needs one allowed alternative; anything with `AND` needs every part allowed. */
+function isAllowedLicense(expression: string): boolean {
+  const flat = expression.replace(/[()]/g, '');
+  return flat.includes(' AND ')
+    ? flat.split(' AND ').every((part) => ALLOWED_LICENSES.has(part.trim()))
+    : flat.split(' OR ').some((part) => ALLOWED_LICENSES.has(part.trim()));
+}
+
+const bundledLicenses = (bundleName: string) => ({
+  name: 'bundled-licenses',
+  generateBundle(
+    this: { error(message: string): never },
+    _options: unknown,
+    bundle: Record<string, { type: string; modules?: Record<string, { renderedLength: number }> }>,
+  ) {
+    const paths = new Set<string>();
+    for (const output of Object.values(bundle)) {
+      // only modules with code in the output: a tree-shaken module ships nothing
+      for (const [id, { renderedLength }] of Object.entries(output.modules ?? {})) {
+        if (renderedLength === 0 || id.startsWith('\0')) continue;
+        const path = findManifest(id.split('?')[0]);
+        if (path && path !== PACKAGE_JSON_PATH) paths.add(path);
+      }
+    }
+    const packages = [...paths]
+      .map((path) => {
+        const manifest = readManifest(path);
+        const { repository } = manifest;
+        return {
+          name: manifest.name ?? '',
+          version: manifest.version ?? '',
+          license: licenseOf(manifest),
+          repository: typeof repository === 'string' ? repository : repository?.url,
+        };
+      })
+      .sort((a, b) => a.name.localeCompare(b.name) || a.version.localeCompare(b.version));
+
+    const rejected = packages.filter((entry) => !isAllowedLicense(entry.license));
+    if (rejected.length > 0) {
+      this.error(
+        `${bundleName}: bundled packages with a license outside the allowlist: ` +
+          rejected
+            .map((entry) => `${entry.name}@${entry.version} (${entry.license || 'none'})`)
+            .join(', '),
+      );
+    }
+    mkdirSync(BUNDLED_LICENSES_DIR, { recursive: true });
+    writeFileSync(
+      resolve(BUNDLED_LICENSES_DIR, `${bundleName}.json`),
+      JSON.stringify(packages, null, 2),
+    );
+  },
+});
+
 export default defineConfig(({ command, mode }) => {
   const isStandalone = mode === 'standalone';
   const entry = resolve(__dirname, isStandalone ? 'src/standalone.tsx' : 'src/index.ts');
@@ -74,6 +186,8 @@ export default defineConfig(({ command, mode }) => {
   return {
     plugins: [
       redoclyConfigLiterals,
+      packageJsonNameVersion,
+      bundledLicenses(baseFileName),
       react(),
       ...(isStandalone ? [] : [styledComponentsNamedImport]),
       ...(mode === 'analyze' ? [bundleStats()] : []),
@@ -146,6 +260,8 @@ export default defineConfig(({ command, mode }) => {
     build: {
       outDir: resolve(__dirname, 'bundles'),
       emptyOutDir: false,
+      // `npm run license:check` builds only to run the license check
+      write: !process.env.LICENSE_CHECK,
       lib: {
         entry,
         fileName: baseFileName,
@@ -155,9 +271,7 @@ export default defineConfig(({ command, mode }) => {
       minify: false,
       rolldownOptions: {
         input: entry,
-        external: isStandalone
-          ? ['node-fetch']
-          : ['node-fetch', 'react', 'react-dom', 'react/jsx-runtime', 'styled-components'],
+        external: isStandalone ? ['node-fetch'] : ['node-fetch', LIBRARY_EXTERNALS],
         output: {
           codeSplitting: false,
           entryFileNames: `${baseFileName}.js`,

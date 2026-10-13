@@ -54,11 +54,8 @@ export function useMediaTypeContent(
 
   const activeContent = mediaTypeSchemas?.[activeMediaType ?? ''];
   const messagesByKey = 'messagesByKey' in node ? node.messagesByKey : undefined;
-  const nodeExampleIds = 'exampleIds' in node ? node.exampleIds : undefined;
-  const hasPublicDefault = Boolean(node.schemaId) || (nodeExampleIds?.length ?? 0) > 0;
   const resolvedMessageKey =
-    activeMessageKey ||
-    (!hasPublicDefault && messagesByKey ? Object.keys(messagesByKey)[0] : undefined);
+    activeMessageKey || (messagesByKey ? Object.keys(messagesByKey)[0] : undefined);
   const activeMessageContent =
     messagesByKey && resolvedMessageKey ? messagesByKey[resolvedMessageKey] : undefined;
   const hasResolvedMessage = !!activeMessageContent;

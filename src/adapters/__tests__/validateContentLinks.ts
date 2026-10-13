@@ -1,11 +1,9 @@
 import type { ApiItem, GroupItem } from '../../types/store.js';
 import type {
   ApiItemContent,
-  ContainerNode,
   ContentNode,
   GroupItemsPanelItem,
   MessageChannelReference,
-  MessageLinksNode,
   MessageReferencesPanelItem,
   PanelNode,
 } from '../../types/content.js';
@@ -20,6 +18,7 @@ import { nodeTypes, panelKind } from '../../types/common.js';
  *  - `GroupItem.link`             (group panels)
  *  - `MessageChannelReference.link` (AsyncAPI message references panel)
  *  - `MessageLinksNode.channelLink` (AsyncAPI operation message-links node)
+ *  - `OverviewSectionWrapperNode.sectionId` (overview sections; becomes `data-section-id`)
  *
  * Top-level `ApiItem.link` / `ApiItem.routeSlug` are intentionally NOT validated
  * — those carry the absolute route and stay basePath-prefixed.
@@ -48,24 +47,23 @@ function validateApiItemContent(content: ApiItemContent, basePath: string, trail
 function walkContentNode(node: ContentNode, basePath: string, trail: string): void {
   switch (node.nodeType) {
     case nodeTypes.CONTAINER: {
-      const container = node as ContainerNode;
-      for (const child of container.children) {
+      for (const child of node.children) {
         walkContentNode(child, basePath, trail);
       }
-      for (const panel of container.panels ?? []) {
+      for (const panel of node.panels ?? []) {
         walkPanel(panel, basePath, trail);
       }
       break;
     }
     case nodeTypes.OVERVIEW_SECTION_WRAPPER: {
+      assertContentLink(node.sectionId, basePath, `${trail} → overview-section.sectionId`);
       for (const child of node.children) {
         walkContentNode(child, basePath, trail);
       }
       break;
     }
     case nodeTypes.MESSAGE_LINKS: {
-      const linksNode = node as MessageLinksNode;
-      assertContentLink(linksNode.channelLink, basePath, `${trail} → message-links.channelLink`);
+      assertContentLink(node.channelLink, basePath, `${trail} → message-links.channelLink`);
       break;
     }
     default:

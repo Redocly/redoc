@@ -1,7 +1,6 @@
 get:
   tags:
     - Orders
-  x-internal: false
   summary: Retrieve an order
   description: Retrieve a single order by its ID.
   operationId: getOrderById
@@ -45,7 +44,6 @@ get:
 patch:
   tags:
     - Orders
-  x-internal: false
   summary: Partially update an order
   description: |
     Update an existing order status.
@@ -103,7 +101,6 @@ patch:
 delete:
   tags:
     - Orders
-  x-internal: false
   summary: Delete an order
   description: |
     Delete the order.

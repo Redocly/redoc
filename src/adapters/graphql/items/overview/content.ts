@@ -17,7 +17,6 @@ type OverviewOptions = {
   options: ApiDocsOptions;
   markdoc?: string | Node[];
   sectionChildren: ContentNode[];
-  basePath: string;
 };
 
 export function buildOverviewContent(overviewOptions: OverviewOptions): ApiItemContent {
@@ -25,7 +24,6 @@ export function buildOverviewContent(overviewOptions: OverviewOptions): ApiItemC
     options: { info, downloadUrls, hideDownloadButtons, metadata },
     markdoc,
     sectionChildren,
-    basePath,
   } = overviewOptions;
 
   const panels: PanelNode[] = [];
@@ -55,14 +53,14 @@ export function buildOverviewContent(overviewOptions: OverviewOptions): ApiItemC
         labelTranslationKey: info?.title || info?.version ? undefined : 'overview',
       },
     ],
-    sectionId: basePath,
+    sectionId: '/',
   };
 
   if (markdoc?.length) {
     overviewSection.children.push({
       nodeType: nodeTypes.OVERVIEW_SECTION_WRAPPER,
       children: [{ nodeType: nodeTypes.MARKDOC, content: markdoc }],
-      sectionId: basePath,
+      sectionId: '/',
     });
   }
 

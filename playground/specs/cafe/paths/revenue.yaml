@@ -1,7 +1,6 @@
 get:
   tags:
     - Statistics
-  x-internal: false
   summary: Get revenue statistics
   description: |
     Retrieve revenue statistics for a configurable date range.

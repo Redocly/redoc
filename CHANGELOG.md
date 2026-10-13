@@ -1,4 +1,12 @@
-# 3.0.0-rc.3
+# Redoc
+
+## 3.0.0-rc.4
+
+### Bug Fixes
+
+- Fixed issues found in the previous release candidate and improved overall stability ahead of the 3.0.0 release.
+
+## 3.0.0-rc.3
 
 ### Features
 

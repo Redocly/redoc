@@ -32,7 +32,6 @@ export function buildOverviewItem(context: BuildContext, sectionChildren: Conten
       options: context.options,
       markdoc: markdoc?.length ? markdoc : undefined,
       sectionChildren,
-      basePath: context.basePath,
     }),
   };
 }

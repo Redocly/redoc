@@ -22,6 +22,7 @@ import type {
   GraphQLType,
 } from 'graphql';
 import type {
+  GraphqlDescription,
   GraphqlDirectiveData,
   GraphqlEnumValueData,
   GraphqlStoreFieldData,
@@ -30,8 +31,24 @@ import type {
   GraphqlTypeRef,
 } from '../../types/graphql-store.js';
 import type { DirectiveTarget } from '../../utils/graphql-directive-utils.js';
+import type { ParseMarkdownOptions } from '../utils/parseMarkdown.js';
 
 import { getRequiresScopesDirective } from '../../utils/graphql-directive-utils.js';
+import { parseMarkdown } from '../utils/parseMarkdown.js';
+
+type DescriptionSerializer = (
+  description: string | null | undefined,
+) => GraphqlDescription | undefined;
+
+/** Without markdown options a description stays the raw string. */
+function createDescriptionSerializer(
+  markdownOptions?: ParseMarkdownOptions,
+): DescriptionSerializer {
+  return (description) =>
+    markdownOptions?.markdownParser
+      ? parseMarkdown(description, markdownOptions)
+      : (description ?? undefined);
+}
 
 function toTypeRef(type: GraphQLType): GraphqlTypeRef {
   const namedType = getNamedType(type);
@@ -54,109 +71,112 @@ function serializeRequiresScopes(target: DirectiveTarget): GraphqlRequiresScopes
   return directive ? { scopes: directive.scopes } : undefined;
 }
 
-function serializeArgument(arg: GraphQLArgument): GraphqlStoreFieldData {
-  return {
+export type GraphqlTypeSerializer = {
+  serializeNamedType(type: GraphQLNamedType): GraphqlTypeData;
+  serializeDirective(directive: GraphQLDirective): GraphqlDirectiveData;
+};
+
+export function createGraphqlTypeSerializer(
+  markdownOptions?: ParseMarkdownOptions,
+): GraphqlTypeSerializer {
+  const describe = createDescriptionSerializer(markdownOptions);
+
+  const serializeArgument = (arg: GraphQLArgument): GraphqlStoreFieldData => ({
     name: arg.name,
     type: toTypeRef(arg.type),
-    description: arg.description ?? undefined,
+    description: describe(arg.description),
     deprecationReason: arg.deprecationReason ?? undefined,
     defaultValue: arg.defaultValue,
     required: isRequiredArgument(arg) || undefined,
     requiresScopes: serializeRequiresScopes(arg),
-  };
-}
+  });
 
-function serializeOutputField(field: GraphQLField<unknown, unknown>): GraphqlStoreFieldData {
-  return {
+  const serializeOutputField = (field: GraphQLField<unknown, unknown>): GraphqlStoreFieldData => ({
     name: field.name,
     type: toTypeRef(field.type),
-    description: field.description ?? undefined,
+    description: describe(field.description),
     deprecationReason: field.deprecationReason ?? undefined,
     args: field.args.length > 0 ? field.args.map(serializeArgument) : undefined,
     requiresScopes: serializeRequiresScopes(field),
-  };
-}
+  });
 
-function serializeInputField(field: GraphQLInputField): GraphqlStoreFieldData {
-  return {
+  const serializeInputField = (field: GraphQLInputField): GraphqlStoreFieldData => ({
     name: field.name,
     type: toTypeRef(field.type),
-    description: field.description ?? undefined,
+    description: describe(field.description),
     deprecationReason: field.deprecationReason ?? undefined,
     defaultValue: field.defaultValue,
     required: isRequiredInputField(field) || undefined,
     requiresScopes: serializeRequiresScopes(field),
-  };
-}
+  });
 
-function serializeEnumValue(value: GraphQLEnumValue): GraphqlEnumValueData {
-  return {
+  const serializeEnumValue = (value: GraphQLEnumValue): GraphqlEnumValueData => ({
     name: value.name,
-    description: value.description ?? undefined,
+    description: describe(value.description),
     deprecationReason: value.deprecationReason ?? undefined,
     requiresScopes: serializeRequiresScopes(value),
+  });
+
+  const serializeNamedType = (type: GraphQLNamedType): GraphqlTypeData => {
+    const base = {
+      name: type.name,
+      description: describe(type.description),
+      requiresScopes: serializeRequiresScopes(type),
+    };
+
+    if (isObjectType(type) || isInterfaceType(type)) {
+      const interfaces = type.getInterfaces().map((i) => i.name);
+      return {
+        ...base,
+        variant: isObjectType(type) ? 'object' : 'interface',
+        fields: Object.values(type.getFields()).map(serializeOutputField),
+        interfaces: interfaces.length > 0 ? interfaces : undefined,
+      };
+    }
+
+    if (isInputObjectType(type)) {
+      return {
+        ...base,
+        variant: 'input',
+        fields: Object.values(type.getFields()).map(serializeInputField),
+        isOneOf: type.isOneOf || undefined,
+      };
+    }
+
+    if (isUnionType(type)) {
+      return {
+        ...base,
+        variant: 'union',
+        possibleTypes: type.getTypes().map((member) => member.name),
+      };
+    }
+
+    if (isEnumType(type)) {
+      return {
+        ...base,
+        variant: 'enum',
+        enumValues: type.getValues().map(serializeEnumValue),
+      };
+    }
+
+    if (isScalarType(type)) {
+      return {
+        ...base,
+        variant: 'scalar',
+        specifiedByUrl: type.specifiedByURL ?? undefined,
+      };
+    }
+
+    return { ...base, variant: 'scalar' };
   };
-}
 
-export function serializeNamedType(type: GraphQLNamedType): GraphqlTypeData {
-  const base = {
-    name: type.name,
-    description: type.description ?? undefined,
-    requiresScopes: serializeRequiresScopes(type),
-  };
-
-  if (isObjectType(type) || isInterfaceType(type)) {
-    const interfaces = type.getInterfaces().map((i) => i.name);
-    return {
-      ...base,
-      variant: isObjectType(type) ? 'object' : 'interface',
-      fields: Object.values(type.getFields()).map(serializeOutputField),
-      interfaces: interfaces.length > 0 ? interfaces : undefined,
-    };
-  }
-
-  if (isInputObjectType(type)) {
-    return {
-      ...base,
-      variant: 'input',
-      fields: Object.values(type.getFields()).map(serializeInputField),
-      isOneOf: type.isOneOf || undefined,
-    };
-  }
-
-  if (isUnionType(type)) {
-    return {
-      ...base,
-      variant: 'union',
-      possibleTypes: type.getTypes().map((member) => member.name),
-    };
-  }
-
-  if (isEnumType(type)) {
-    return {
-      ...base,
-      variant: 'enum',
-      enumValues: type.getValues().map(serializeEnumValue),
-    };
-  }
-
-  if (isScalarType(type)) {
-    return {
-      ...base,
-      variant: 'scalar',
-      specifiedByUrl: type.specifiedByURL ?? undefined,
-    };
-  }
-
-  return { ...base, variant: 'scalar' };
-}
-
-export function serializeDirective(directive: GraphQLDirective): GraphqlDirectiveData {
-  return {
+  const serializeDirective = (directive: GraphQLDirective): GraphqlDirectiveData => ({
     name: directive.name,
-    description: directive.description ?? undefined,
+    description: describe(directive.description),
     locations: [...directive.locations],
     args: directive.args.length > 0 ? directive.args.map(serializeArgument) : undefined,
     isRepeatable: directive.isRepeatable || undefined,
-  };
+  });
+
+  return { serializeNamedType, serializeDirective };
 }

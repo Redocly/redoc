@@ -88,7 +88,9 @@ function flatten(items: ApiItem[]): ApiItem[] {
 type IndexedField = { name: string; place: string; deepLink: string };
 
 function indexFields(items: ApiItem[], store: ApiStore): IndexedField[] {
-  const indexer = new ApiDocsSearchIndexer(BASE_PATH, store.schemaStore);
+  const indexer = new ApiDocsSearchIndexer(BASE_PATH, store.schemaStore, undefined, {
+    graphqlMeta: store.graphqlMeta,
+  });
   for (const item of flatten(items)) {
     indexer.addItem(item);
   }

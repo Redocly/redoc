@@ -1,3 +1,8 @@
+import type { Node } from '@markdoc/markdoc';
+
+/** Raw when the store was built without a markdown parser (`buildGraphqlStoreFromSdl`). */
+export type GraphqlDescription = string | Node | Node[];
+
 export type GraphqlTypeRef = {
   display: string;
   name: string;
@@ -13,7 +18,7 @@ export type GraphqlRequiresScopes = {
 export type GraphqlStoreFieldData = {
   name: string;
   type: GraphqlTypeRef;
-  description?: string;
+  description?: GraphqlDescription;
   deprecationReason?: string;
   defaultValue?: unknown;
   required?: boolean;
@@ -23,7 +28,7 @@ export type GraphqlStoreFieldData = {
 
 export type GraphqlEnumValueData = {
   name: string;
-  description?: string;
+  description?: GraphqlDescription;
   deprecationReason?: string;
   requiresScopes?: GraphqlRequiresScopes;
 };
@@ -33,7 +38,7 @@ export type GraphqlTypeDataVariant = 'object' | 'interface' | 'input' | 'union' 
 export type GraphqlTypeData = {
   variant: GraphqlTypeDataVariant;
   name: string;
-  description?: string;
+  description?: GraphqlDescription;
   fields?: GraphqlStoreFieldData[];
   enumValues?: GraphqlEnumValueData[];
   possibleTypes?: string[];
@@ -45,7 +50,7 @@ export type GraphqlTypeData = {
 
 export type GraphqlDirectiveData = {
   name: string;
-  description?: string;
+  description?: GraphqlDescription;
   locations: string[];
   args?: GraphqlStoreFieldData[];
   isRepeatable?: boolean;

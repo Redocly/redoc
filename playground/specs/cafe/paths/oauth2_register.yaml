@@ -1,7 +1,6 @@
 post:
   tags:
     - Authorization
-  x-internal: false
   summary: Create OAuth2 client
   description: >
     Register a new OAuth2 client for dynamic client registration. 

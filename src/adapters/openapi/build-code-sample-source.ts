@@ -14,6 +14,7 @@ import {
 } from '../../types/common.js';
 import type {
   CodeSampleSource,
+  MediaTypeEntry,
   ParameterEntry,
   SecurityRequirement,
   ServerEntry,
@@ -31,6 +32,7 @@ import {
 import { isStatusCode } from '../../utils/status-code.js';
 import { encodeJsonPointerSegment } from '../../utils/refPointer.js';
 import { applyIgnoreNamedSchemasDeep } from './utils/applyIgnoreNamedSchemasDeep.js';
+import { pickFormFieldEncoding } from './utils/form-encoding.js';
 import { pickOperationServers } from './utils/operation.js';
 import {
   hasOpenApiExampleValue,
@@ -246,7 +248,7 @@ function buildRequestBodyMap(
   doc: Record<string, unknown>,
   storeCtx: StoreContext,
   ignoreNamedSchemas?: Set<string>,
-): Record<string, { schemaId?: string; exampleIds?: string[] }> | undefined {
+): Record<string, MediaTypeEntry> | undefined {
   const rawRequestBody = operationInfo.requestBody as Record<string, unknown> | undefined;
   const requestBody = rawRequestBody
     ? (resolveRef(doc, rawRequestBody, ignoreNamedSchemas) ?? rawRequestBody)
@@ -255,7 +257,7 @@ function buildRequestBodyMap(
 
   if (!rbContent || !storeCtx) return undefined;
 
-  const requestBodyMap: Record<string, { schemaId?: string; exampleIds?: string[] }> = {};
+  const requestBodyMap: Record<string, MediaTypeEntry> = {};
   for (const [mediaType, content] of Object.entries(rbContent)) {
     let bodySchemaId: string | undefined;
     const itemSchemaRaw = (content as { itemSchema?: unknown }).itemSchema;
@@ -309,9 +311,11 @@ function buildRequestBodyMap(
         }
       }
     }
+    const encoding = pickFormFieldEncoding(mediaType, content.encoding, doc, content.schema);
     requestBodyMap[mediaType] = {
       schemaId: bodySchemaId,
       ...(exampleIds.length > 0 && { exampleIds }),
+      ...(encoding && { encoding }),
     };
   }
 

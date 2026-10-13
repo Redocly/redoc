@@ -1,7 +1,8 @@
 import type { OperationParameter } from '@redocly/theme/core/openapi';
 import type { Node } from '@markdoc/markdoc';
 import type { ItemContentNode } from '../../../../types/content.js';
-import type { ExampleEntry } from '../../../../types/store.js';
+import type { ExampleEntry, SchemaEntry } from '../../../../types/store.js';
+import type { GraphqlStoreMeta } from '../../../../types/graphql-store.js';
 import type { SchemaWalker } from '../schema-walker.js';
 import type { DescriptionFormatter, WalkScope } from '../context.js';
 
@@ -16,6 +17,10 @@ export type ExtractContext = {
   formatDescription: DescriptionFormatter;
   hasSchemas: boolean;
   exampleStore?: Record<string, ExampleEntry>;
+  /** GraphQL field and argument rows are read from it; without it those nodes index nothing. */
+  schemaStore?: Record<string, SchemaEntry>;
+  /** Names the GraphQL root types, which operation argument rows need. */
+  graphqlMeta?: GraphqlStoreMeta;
   /** True on the API overview page; parts that should lead there only are gated on it. */
   isOverview: boolean;
 };

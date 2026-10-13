@@ -28,6 +28,15 @@ describe('formUrlEncodeValue', () => {
     expect(formUrlEncodeValue({ tags: ['red', 'green'] })).toBe('tags=red&tags=green');
   });
 
+  it('repeats the name for an array with the form style and the default explode', () => {
+    expect(
+      formUrlEncodeValue(
+        { to: ['alice@example.com', 'bob@example.com'] },
+        { to: { style: 'form' } },
+      ),
+    ).toBe('to=alice%40example.com&to=bob%40example.com');
+  });
+
   it('serializes each object item of an array as JSON under the repeated field name', () => {
     expect(formUrlEncodeValue({ items: [{ id: 1 }, { id: 2 }] })).toBe(
       `items=${encodeURIComponent('{"id":1}')}&items=${encodeURIComponent('{"id":2}')}`,
@@ -65,16 +74,16 @@ describe('formUrlEncodeValue', () => {
     ).toBe('tags=red%20green');
   });
 
-  it('applies the pipeDelimited style from encoding', () => {
+  it('applies the pipeDelimited style from encoding, percent-encoding the delimiter', () => {
     expect(
       formUrlEncodeValue({ tags: ['red', 'green'] }, { tags: { style: 'pipeDelimited' } }),
-    ).toBe('tags=red|green');
+    ).toBe('tags=red%7Cgreen');
   });
 
-  it('applies the deepObject style from encoding', () => {
+  it('applies the deepObject style from encoding, percent-encoding the brackets', () => {
     expect(
       formUrlEncodeValue({ filter: { status: 'active' } }, { filter: { style: 'deepObject' } }),
-    ).toBe('filter[status]=active');
+    ).toBe('filter%5Bstatus%5D=active');
   });
 
   it('spreads object properties into top-level fields for form style with explode=true', () => {
@@ -106,6 +115,56 @@ describe('formUrlEncodeValue', () => {
     expect(formUrlEncodeValue(value, { url: { allowReserved: false } })).toBe(
       'url=https%3A%2F%2Fx.io%2Fa%3Fb%3Dc%26d',
     );
+  });
+
+  it('passes percent-encoded triples through when the encoding sets allowReserved', () => {
+    const value = { q: 'a%20b 100% %2C' };
+    expect(formUrlEncodeValue(value, { q: { allowReserved: true } })).toBe(
+      'q=a%20b%20100%25%20%2C',
+    );
+    expect(formUrlEncodeValue(value, { q: { allowReserved: false } })).toBe(
+      'q=a%2520b%20100%25%20%252C',
+    );
+  });
+
+  it('serializes an XML-typed object as one-line XML under its xml name or the field name', () => {
+    expect(
+      formUrlEncodeValue(
+        { cv: { title: 'CV' }, meta: { year: 2026 } },
+        {
+          cv: { contentType: 'application/xml', xmlName: 'resume' },
+          meta: { contentType: 'application/xml' },
+        },
+      ),
+    ).toBe(
+      `cv=${encodeURIComponent('<resume><title>CV</title></resume>')}&meta=${encodeURIComponent('<meta><year>2026</year></meta>')}`,
+    );
+  });
+
+  it('keeps a JSON-typed string only when it is the JSON text of an object or array', () => {
+    const json = { contentType: 'application/json' };
+    expect(
+      formUrlEncodeValue(
+        { settings: '{"a":1}', list: '[1,2]', id: '123', flag: 'true' },
+        { settings: json, list: json, id: json, flag: json },
+      ),
+    ).toBe(
+      `settings=${encodeURIComponent('{"a":1}')}&list=${encodeURIComponent('[1,2]')}&id=%22123%22&flag=%22true%22`,
+    );
+  });
+
+  it('leaves out null values and empty styled values, unless a JSON content type writes null', () => {
+    expect(
+      formUrlEncodeValue(
+        { a: null, tags: [], ids: ['x', null], color: { R: 1, G: null }, json: null, b: 'x' },
+        {
+          tags: { explode: false },
+          ids: { style: 'form', explode: true },
+          color: { style: 'form', explode: false },
+          json: { contentType: 'application/json' },
+        },
+      ),
+    ).toBe('ids=x&color=R,1&json=null&b=x');
   });
 
   it('sends an empty value for an undefined field with a JSON contentType', () => {

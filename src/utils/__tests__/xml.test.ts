@@ -12,6 +12,12 @@ describe('jsonToXml', () => {
     expect(xml).toContain('</root>');
   });
 
+  it('renders compact XML on one line', () => {
+    expect(jsonToXml({ title: 'Resume', year: 2026 }, 'metadata', { compact: true })).toBe(
+      '<metadata><title>Resume</title><year>2026</year></metadata>',
+    );
+  });
+
   it('does not wrap top-level arrays in <root>', () => {
     const xml = jsonToXml([{ item: 'one' }, { item: 'two' }]);
 
@@ -30,6 +36,9 @@ describe('jsonToXml', () => {
     expect(xml).toContain('<![CDATA[');
     expect(xml).toContain('<html><head><title>Docs</title></head></html>');
     expect(xml).toContain(']]>');
+    expect(jsonToXml({ '#cdata': 'a <b>' }, 'note', { compact: true })).toBe(
+      '<note><![CDATA[a <b>]]></note>',
+    );
   });
 
   it('returns an empty string for null or undefined', () => {

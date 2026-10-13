@@ -230,21 +230,22 @@ describe('useMediaTypeContent active-message fallback', () => {
     expect(result.current.effectiveExampleIds).toEqual(['fallback-ex']);
   });
 
-  it('returns node.schemaId / node.exampleIds when no active message is set', () => {
+  it('resolves the first message when none is active, not the channel-wide example aggregate', () => {
     const { Wrapper } = makeWrapper({});
 
     const node = makePayloadNode({
-      schemaId: 'fallback-schema',
-      exampleIds: ['fallback-ex'],
+      schemaId: 'request-ride-schema',
+      exampleIds: ['req-ex', 'cancel-ex'],
       messagesByKey: {
         requestRide: { schemaId: 'request-ride-schema', exampleIds: ['req-ex'] },
+        cancelRide: { schemaId: 'cancel-ride-schema', exampleIds: ['cancel-ex'] },
       },
     });
 
     const { result } = renderHook(() => useMediaTypeContent(node), { wrapper: Wrapper });
 
-    expect(result.current.effectiveSchemaId).toBe('fallback-schema');
-    expect(result.current.effectiveExampleIds).toEqual(['fallback-ex']);
+    expect(result.current.effectiveSchemaId).toBe('request-ride-schema');
+    expect(result.current.effectiveExampleIds).toEqual(['req-ex']);
   });
 
   it('resolves messagesByKey[activeMessageKey] and reacts to runtime switches', () => {
@@ -314,21 +315,6 @@ describe('useMediaTypeContent active-message fallback', () => {
 
     expect(result.current.effectiveSchemaId).toBe('fallback-schema');
     expect(result.current.effectiveExampleIds).toEqual(['fallback-ex']);
-  });
-
-  it('defaults to the first messagesByKey entry when the node has no public default sample (no message carries a public sample)', () => {
-    const { Wrapper } = makeWrapper({});
-
-    const node = makePayloadNode({
-      messagesByKey: {
-        onlyEvt: { schemaId: 'only-evt-schema', exampleIds: ['req-ex'] },
-      },
-    });
-
-    const { result } = renderHook(() => useMediaTypeContent(node), { wrapper: Wrapper });
-
-    expect(result.current.effectiveSchemaId).toBe('only-evt-schema');
-    expect(result.current.effectiveExampleIds).toEqual(['req-ex']);
   });
 
   it('keeps a stable effectiveExampleIds reference across re-renders with unchanged inputs', () => {

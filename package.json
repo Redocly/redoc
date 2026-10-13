@@ -1,7 +1,7 @@
 {
   "name": "redoc",
-  "version": "3.0.0-rc.3",
-  "description": "ReDoc",
+  "version": "3.0.0-rc.4",
+  "description": "API reference documentation for OpenAPI, AsyncAPI, and GraphQL",
   "repository": {
     "type": "git",
     "url": "git://github.com/Redocly/redoc"
@@ -17,6 +17,14 @@
   "main": "bundles/redoc.js",
   "module": "bundles/redoc.js",
   "types": "bundles/redoc.d.ts",
+  "exports": {
+    ".": {
+      "types": "./bundles/redoc.d.ts",
+      "default": "./bundles/redoc.js"
+    },
+    "./bundles/*": "./bundles/*",
+    "./package.json": "./package.json"
+  },
   "author": "Roman Hotsiy <gotsijroman@gmail.com>",
   "keywords": [
     "OpenAPI",
@@ -36,10 +44,8 @@
   ],
   "files": [
     "bundles",
-    "typings",
-    "LICENSE.md",
-    "README.md",
-    "package.json"
+    "LICENSE",
+    "README.md"
   ],
   "scripts": {
     "start": "vite",
@@ -69,69 +75,69 @@
     "clean": "rimraf bin bundles typings",
     "clear:cache": "scripts/clear-cache.sh",
     "pack:sourcemaps": "npm run build:artifacts && node scripts/minify.js bundles --sourcemaps && find bundles -name \"*.js.map\" -print0 | tar -czvf redoc.sourcemaps.tar.gz --null -T -",
-    "list:licenses": "node ./scripts/list-licenses.js",
-    "license:check": "license-checker --production --onlyAllow 'MIT;ISC;Apache-2.0;BSD;BSD-2-Clause;BSD-3-Clause;CC-BY-4.0;CC0-1.0;Python-2.0' --summary",
+    "list:licenses": "npm run license:check && node ./scripts/list-licenses.js",
+    "license:check": "LICENSE_CHECK=1 vite build --logLevel warn && LICENSE_CHECK=1 vite build --mode standalone --logLevel warn",
     "changeset": "changeset",
     "release": "npm run build && changeset publish --tag next",
     "publish-cdn": "scripts/publish-cdn.sh"
   },
   "peerDependencies": {
     "@redocly/config": "^0.65.0",
-    "react": "^19.2.7",
-    "react-dom": "^19.2.7",
+    "react": "^18.3.0 || ^19.0.0",
+    "react-dom": "^18.3.0 || ^19.0.0",
+    "react-router": "^7.0.0 || ^8.0.0",
     "styled-components": "^6.0.0"
   },
   "dependencies": {
+    "@redocly/redoc-opentelemetry": "^0.5.1"
+  },
+  "devDependencies": {
+    "@changesets/cli": "3.0.3",
     "@markdoc/markdoc": "0.5.2",
+    "@microsoft/api-extractor": "7.58.2",
+    "@playwright/test": "1.60.0",
     "@redocly/allof-merge": "^0.6.9",
     "@redocly/config": "^0.65.0",
     "@redocly/openapi-core": "2.62.1",
-    "@redocly/redoc-opentelemetry": "^0.5.1",
-    "@redocly/theme": "^0.70.0",
+    "@redocly/theme": "0.71.0-next.0",
     "@tanstack/highlight": "0.0.10",
-    "@types/json-schema": "^7.0.15",
-    "dompurify": "^3.4.11",
-    "fast-xml-parser": "^5.5.9",
-    "flexsearch": "^0.8.2",
-    "graphql": "^16.11.0",
-    "htmlparser2": "8.0.2",
-    "jotai": "^2.12.5",
-    "jotai-family": "^1.0.1",
-    "json-pointer": "^0.6.2",
-    "linkedom": "^0.18.9",
-    "openapi-sampler": "^1.7.5",
-    "react-router": "^8.3.0",
-    "slugify": "^1.4.4",
-    "web-vitals": "^6.2.1"
-  },
-  "devDependencies": {
-    "@changesets/cli": "2.29.7",
-    "@microsoft/api-extractor": "7.58.2",
-    "@playwright/test": "1.60.0",
     "@testing-library/jest-dom": "6.6.3",
     "@testing-library/react": "16.3.0",
     "@types/json-pointer": "1.0.34",
+    "@types/json-schema": "^7.0.15",
     "@types/node": "24.1.0",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@typescript/native-preview": "beta",
     "@vitejs/plugin-react": "6.1.0",
     "@vitest/coverage-v8": "^4.1.10",
+    "dompurify": "^3.4.11",
+    "fast-xml-parser": "^5.5.9",
+    "flexsearch": "^0.8.2",
+    "graphql": "^16.11.0",
+    "htmlparser2": "8.0.2",
     "http-server": "14.1.1",
     "jest-styled-components": "7.2.0",
+    "jotai": "^2.12.5",
+    "jotai-family": "^1.0.1",
     "js-yaml": "^5.2.2",
     "jsdom": "^25.0.1",
-    "license-checker": "25.0.1",
+    "json-pointer": "^0.6.2",
+    "linkedom": "^0.18.9",
+    "openapi-sampler": "^1.7.5",
     "oxlint": "1.67.0",
     "path-browserify": "1.0.1",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
+    "react-router": "^8.3.0",
     "rimraf": "5.0.10",
     "rolldown": "^1.2.4",
     "rollup-plugin-bundle-stats": "^4.22.1",
+    "slugify": "^1.4.4",
     "styled-components": "^6.5.3",
     "typescript": "5.9.3",
     "vite": "^8.2.1",
-    "vitest": "^4.1.10"
+    "vitest": "^4.1.10",
+    "web-vitals": "^6.2.1"
   }
 }

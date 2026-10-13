@@ -26,7 +26,7 @@ COPY bundles/redoc.standalone.js /build/bundles/
 
 FROM ${BUNDLE_STAGE} AS bundle
 
-FROM nginx:1.28-alpine@sha256:8f2bcf97c473dfe311e79a510ee540ee02e28ce1e6a64e1ef89bfad32574ef10
+FROM nginx:1.30-alpine@sha256:0985e772fb9f729e6fa0980da05fca5d9c468e870eed43071545afa9d2e27d94
 
 ENV PAGE_TITLE="ReDoc"
 ENV PAGE_FAVICON="favicon.png"

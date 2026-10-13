@@ -125,35 +125,6 @@ describe('GraphQLArgsSection', () => {
     expect(view).toHaveAttribute('data-parent', '@deprecated');
   });
 
-  it('falls back to the precomputed graphqlSchema args when nothing resolves', () => {
-    renderWithMarkdownAdapter({
-      nodeType: 'item',
-      variant: 'graphql-args',
-      graphqlSchema: [{ name: 'limit', type: 'Int' }],
-    } as unknown as ItemContentNode);
-
-    expect(screen.queryByTestId('field-view')).not.toBeInTheDocument();
-    expect(screen.getByText('limit')).toBeInTheDocument();
-    expect(screen.getByText('Int')).toBeInTheDocument();
-  });
-
-  it('renders deprecation admonition', () => {
-    renderWithMarkdownAdapter({
-      nodeType: 'item',
-      variant: 'graphql-args',
-      graphqlSchema: [
-        {
-          name: 'format',
-          type: 'String',
-          deprecationReason: 'Use getBookV2.format instead.',
-        },
-      ],
-    } as unknown as ItemContentNode);
-
-    expect(screen.getByText('Deprecation reason')).toBeInTheDocument();
-    expect(screen.getByText('Use getBookV2.format instead.')).toBeInTheDocument();
-  });
-
   it('renders nothing when there are no args from any source', () => {
     const { container } = renderWithMarkdownAdapter({
       nodeType: 'item',

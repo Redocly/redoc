@@ -7,7 +7,6 @@ get:
   security: []
   tags:
     - Products
-  x-internal: false
   parameters:
     - $ref: ../components/parameters/PhotoSize.yaml
   responses:

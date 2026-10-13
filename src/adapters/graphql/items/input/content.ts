@@ -35,15 +35,6 @@ export function buildInputContent(
       labelTranslationKey: 'inputFields',
       schemaId,
       graphqlTypeName: input.name,
-      graphqlSchema: fieldNames.map((fieldName) => {
-        const field = fields[fieldName];
-        return {
-          name: fieldName,
-          type: field.type.toString(),
-          description: parseMarkdown(field.description, markdownOptions) ?? [],
-          defaultValue: field.defaultValue,
-        };
-      }),
     });
   }
 

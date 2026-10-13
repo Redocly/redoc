@@ -28,6 +28,7 @@ export function PayloadExampleItem({ node }: { node: PayloadExamplesPanelItem })
     activeMediaType,
     effectiveSchemaId,
     effectiveExampleIds,
+    encoding,
     isMessageWithoutPayload,
     onMediaTypeChange,
   } = useMediaTypeContent(node);
@@ -93,6 +94,7 @@ export function PayloadExampleItem({ node }: { node: PayloadExamplesPanelItem })
         payload={payload}
         emptyMessage="// No payload sample"
         mediaType={activeMediaType}
+        encoding={encoding}
       />
     </CodeBlockPanel>
   );

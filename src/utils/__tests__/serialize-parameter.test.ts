@@ -81,6 +81,21 @@ describe('serializeParameterValue', () => {
     });
   });
 
+  describe('delimited query objects', () => {
+    it('joins object properties and values with the style delimiter', () => {
+      const color = { R: 100, G: 200 };
+      expect(
+        serializeParameterValue({ name: 'color', in: 'query', style: 'pipeDelimited' }, color),
+      ).toBe('color=R|100|G|200');
+      expect(
+        serializeParameterValue({ name: 'color', in: 'query', style: 'spaceDelimited' }, color),
+      ).toBe('color=R%20100%20G%20200');
+      expect(serializeParameterValue({ name: 'color', in: 'query', explode: false }, color)).toBe(
+        'color=R,100,G,200',
+      );
+    });
+  });
+
   describe('header parameters', () => {
     it('handles simple style for scalar', () => {
       expect(
@@ -130,6 +145,47 @@ describe('serializeParameterValue', () => {
 
     it('handles unknown location', () => {
       expect(serializeParameterValue({ name: 'x' }, 'val')).toBe('val');
+    });
+  });
+
+  describe('structured items', () => {
+    const point = { x: 1, y: 2 };
+    const pointJson = JSON.stringify(point);
+
+    it('renders object items of an exploded query array as JSON', () => {
+      expect(serializeParameterValue({ name: 'points', in: 'query' }, [point])).toBe(
+        `points=${encodeURIComponent(pointJson)}`,
+      );
+    });
+
+    it('renders object items of a delimited query array as JSON', () => {
+      expect(
+        serializeParameterValue({ name: 'points', in: 'query', style: 'pipeDelimited' }, [
+          point,
+          point,
+        ]),
+      ).toBe(`points=${encodeURIComponent(pointJson)}|${encodeURIComponent(pointJson)}`);
+    });
+
+    it('renders nested values of a deepObject query parameter as JSON', () => {
+      expect(
+        serializeParameterValue(
+          { name: 'filter', in: 'query', style: 'deepObject' },
+          { at: point },
+        ),
+      ).toBe(`filter[at]=${encodeURIComponent(pointJson)}`);
+    });
+
+    it('renders object items in path, header and cookie parameters as JSON', () => {
+      expect(serializeParameterValue({ name: 'p', in: 'path' }, [point])).toBe(pointJson);
+      expect(serializeParameterValue({ name: 'h', in: 'header' }, { at: point })).toBe(
+        `at,${pointJson}`,
+      );
+      expect(serializeParameterValue({ name: 'c', in: 'cookie' }, [point])).toBe(`c=${pointJson}`);
+    });
+
+    it('renders an object for an unknown location as JSON', () => {
+      expect(serializeParameterValue({ name: 'x' }, point)).toBe(pointJson);
     });
   });
 });

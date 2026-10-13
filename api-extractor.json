@@ -1,6 +1,7 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/api-extractor/v7/api-extractor.schema.json",
   "mainEntryPointFilePath": "<projectFolder>/typings/index.d.ts",
+  "bundledPackages": ["@markdoc/markdoc", "@redocly/theme", "@types/json-schema"],
   "compiler": {
     "tsconfigFilePath": "<projectFolder>/tsconfig.json"
   },

@@ -5,7 +5,6 @@ get:
   summary: Get health status
   description: Check the health of the API.
   operationId: getHealth
-  x-internal: true
   responses:
     '200':
       description: OK.

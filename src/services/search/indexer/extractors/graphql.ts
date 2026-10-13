@@ -1,7 +1,12 @@
-import type { GraphqlFieldData, ItemContentNode } from '../../../../types/content.js';
+import type { ItemContentNode } from '../../../../types/content.js';
+import type { GraphqlStoreFieldData } from '../../../../types/graphql-store.js';
 import type { ExtractContext, Extractor } from './context.js';
 
 import { buildGraphqlSuffix, makeDeepLink } from '../../../../utils/deep-link.js';
+import {
+  isGraphqlFieldsNode,
+  resolveGraphqlItemFields,
+} from '../../../../utils/graphql-item-fields.js';
 import { makeParam } from '../param.js';
 import { GRAPHQL_ARGUMENTS_PLACE, fieldsPlaceOf, scopedPlace } from '../places.js';
 import { addRow, describe } from './context.js';
@@ -13,11 +18,12 @@ function resolveGraphqlPathRoot(node: ItemContentNode): string | undefined {
 }
 
 export const graphqlExtractor: Extractor = {
-  matches: (node) => !!node.graphqlSchema,
+  matches: isGraphqlFieldsNode,
   extract(node, ctx) {
-    const fields = Array.isArray(node.graphqlSchema)
-      ? node.graphqlSchema
-      : node.graphqlSchema?.fields;
+    const fields = resolveGraphqlItemFields(node, {
+      schemaStore: ctx.schemaStore,
+      graphqlMeta: ctx.graphqlMeta,
+    })?.fields;
     if (!fields?.length) return;
     extractGraphqlFields(
       fields,
@@ -29,12 +35,13 @@ export const graphqlExtractor: Extractor = {
 };
 
 function extractGraphqlFields(
-  fields: GraphqlFieldData[],
+  fields: GraphqlStoreFieldData[],
   place: string,
   node: ItemContentNode,
   ctx: ExtractContext,
 ): void {
   const listsArguments = node.variant === 'graphql-args';
+  const indexesFieldArguments = node.variant !== 'return-type'; // The type's own page already indexes these field arguments.
   const pathRoot = resolveGraphqlPathRoot(node);
   const deepLinkFor = (suffix: string): string | undefined =>
     ctx.slug && pathRoot ? makeDeepLink(ctx.slug, suffix) : undefined;
@@ -49,7 +56,7 @@ function extractGraphqlFields(
         description: describe(ctx, field.description),
         place,
         path: [],
-        type: field.type ?? 'unknown',
+        type: field.type.display,
         deepLink: deepLinkFor(
           listsArguments
             ? buildGraphqlSuffix({ t: 'argument', path: fieldPath, arg: field.name })
@@ -58,6 +65,7 @@ function extractGraphqlFields(
       }),
     );
 
+    if (!indexesFieldArguments) continue;
     for (const arg of field.args ?? []) {
       addRow(
         ctx,
@@ -66,7 +74,7 @@ function extractGraphqlFields(
           description: describe(ctx, arg.description),
           place: GRAPHQL_ARGUMENTS_PLACE,
           path: [field.name],
-          type: arg.type ?? 'unknown',
+          type: arg.type.display,
           deepLink: deepLinkFor(
             buildGraphqlSuffix({
               t: 'argument',

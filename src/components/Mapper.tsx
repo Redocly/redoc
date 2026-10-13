@@ -1,4 +1,5 @@
 import { memo, type FC, type ReactElement } from 'react';
+import { useAtomValue } from 'jotai';
 
 import type { ContentType, NodeTypes } from '../types/common.js';
 import type {
@@ -11,6 +12,8 @@ import type {
 } from '../types/content.js';
 
 import { SECTION_ATTR } from '../constants/openapi.js';
+import { routingBasePathAtom } from '../jotai/store.js';
+import { joinWithSeparator, normalizePath } from '../utils/url.js';
 import { contentType, nodeTypes } from '../types/common.js';
 import { OverviewPage } from '../pages/OverviewPage.js';
 import { ItemPage } from '../pages/ItemPage.js';
@@ -43,6 +46,7 @@ const OverviewSectionWrapperView = memo(function OverviewSectionWrapperView({
   itemPath?: string;
 }): ReactElement {
   const { children, sectionId } = node;
+  const routingBasePath = useAtomValue(routingBasePathAtom);
   const mapped = children?.map((child, index) => (
     <ComponentMapper
       type={child.nodeType}
@@ -52,7 +56,9 @@ const OverviewSectionWrapperView = memo(function OverviewSectionWrapperView({
       itemPath={itemPath}
     />
   ));
-  const sectionAttrProps = sectionId ? { [SECTION_ATTR]: sectionId } : {};
+  const sectionAttrProps = sectionId
+    ? { [SECTION_ATTR]: normalizePath(joinWithSeparator(routingBasePath, sectionId)) }
+    : {};
   return (
     <div id={itemPath} {...sectionAttrProps}>
       {mapped}

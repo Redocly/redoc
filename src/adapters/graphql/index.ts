@@ -2,6 +2,7 @@ import { buildASTSchema } from 'graphql';
 
 import type { DocumentNode } from 'graphql';
 import type { ApiDocAdapterProps, ApiItem, ApiStore } from '../../types/store.js';
+import type { ParseMarkdownOptions } from '../utils/parseMarkdown.js';
 
 import { createBuildContext } from './build/context.js';
 import { populateGraphqlStore } from './store.js';
@@ -22,7 +23,7 @@ export function processGraphqlDocument({
 } {
   const schema = buildASTSchema(document);
   const store: ApiStore = processContent
-    ? populateGraphqlStore(schema)
+    ? populateGraphqlStore(schema, options as ParseMarkdownOptions)
     : { schemaStore: {}, exampleStore: {}, securitySchemeStore: {} };
   const context = createBuildContext({
     document,

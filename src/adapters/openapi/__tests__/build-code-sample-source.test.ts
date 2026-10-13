@@ -134,6 +134,35 @@ describe('buildCodeSampleSource', () => {
       expect(storeCtx.exampleStore[`${base}/example`]?.value).toEqual({ name: 'Bare' });
     });
 
+    it('carries the form encoding of a media type with its part header samples', () => {
+      const storeCtx = createStoreContext(spec);
+      const operationInfo = makeOperation({
+        requestBody: {
+          content: {
+            'multipart/form-data': {
+              schema: { type: 'object' },
+              encoding: {
+                to: { style: 'form', explode: true },
+                file: { contentType: 'image/png', headers: { 'X-Custom': { schema: {} } } },
+              },
+            },
+            'application/json': {
+              schema: { type: 'object' },
+              encoding: { to: { style: 'form' } },
+            },
+          },
+        },
+      } as Partial<OperationInfo>);
+
+      const source = buildCodeSampleSource(operationInfo, storeCtx, options);
+
+      expect(source.requestBody?.['multipart/form-data']?.encoding).toEqual({
+        to: { style: 'form', explode: true },
+        file: { contentType: 'image/png', headers: { 'X-Custom': 'string' } },
+      });
+      expect(source.requestBody?.['application/json']?.encoding).toBeUndefined();
+    });
+
     it('omits requestBody entirely when the operation has none', () => {
       const storeCtx = createStoreContext(spec);
       const operationInfo = makeOperation();

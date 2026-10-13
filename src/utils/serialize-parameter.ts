@@ -22,8 +22,12 @@ export function serializeParameterValue(param: ParameterLike, value: unknown): s
     case 'cookie':
       return serializeCookie(param.name, style, explode, value);
     default:
-      return String(value);
+      return stringifyItem(value);
   }
+}
+
+function stringifyItem(value: unknown): string {
+  return typeof value === 'object' && value !== null ? JSON.stringify(value) : String(value);
 }
 
 function getDefaultStyle(location?: string): string {
@@ -52,24 +56,26 @@ function serializePath(name: string, style: string, explode: boolean, value: unk
         ? '.'
         : ',';
     const prefix = style === 'label' ? '.' : style === 'matrix' ? `;${name}=` : '';
-    return prefix + value.map(String).join(separator);
+    return prefix + value.map(stringifyItem).join(separator);
   }
   if (typeof value === 'object' && value !== null) {
     const entries = Object.entries(value as Record<string, unknown>);
     if (style === 'label') {
       return (
         '.' +
-        entries.map(([k, v]) => (explode ? `${k}=${String(v)}` : `${k},${String(v)}`)).join('.')
+        entries
+          .map(([k, v]) => (explode ? `${k}=${stringifyItem(v)}` : `${k},${stringifyItem(v)}`))
+          .join('.')
       );
     }
     if (style === 'matrix') {
       return explode
-        ? entries.map(([k, v]) => `;${k}=${String(v)}`).join('')
-        : `;${name}=` + entries.map(([k, v]) => `${k},${String(v)}`).join(',');
+        ? entries.map(([k, v]) => `;${k}=${stringifyItem(v)}`).join('')
+        : `;${name}=` + entries.map(([k, v]) => `${k},${stringifyItem(v)}`).join(',');
     }
     return explode
-      ? entries.map(([k, v]) => `${k}=${String(v)}`).join(',')
-      : entries.map(([k, v]) => `${k},${String(v)}`).join(',');
+      ? entries.map(([k, v]) => `${k}=${stringifyItem(v)}`).join(',')
+      : entries.map(([k, v]) => `${k},${stringifyItem(v)}`).join(',');
   }
   if (style === 'label') return '.' + String(value);
   if (style === 'matrix') return `;${name}=${String(value)}`;
@@ -80,16 +86,18 @@ function serializeQuery(name: string, style: string, explode: boolean, value: un
   if (Array.isArray(value)) {
     if (style === 'form') {
       return explode
-        ? value.map((v) => `${encodeURIComponent(name)}=${encodeURIComponent(String(v))}`).join('&')
-        : `${encodeURIComponent(name)}=${value.map((v) => encodeURIComponent(String(v))).join(',')}`;
+        ? value
+            .map((v) => `${encodeURIComponent(name)}=${encodeURIComponent(stringifyItem(v))}`)
+            .join('&')
+        : `${encodeURIComponent(name)}=${value.map((v) => encodeURIComponent(stringifyItem(v))).join(',')}`;
     }
     if (style === 'spaceDelimited') {
-      return `${encodeURIComponent(name)}=${value.map((v) => encodeURIComponent(String(v))).join('%20')}`;
+      return `${encodeURIComponent(name)}=${value.map((v) => encodeURIComponent(stringifyItem(v))).join('%20')}`;
     }
     if (style === 'pipeDelimited') {
-      return `${encodeURIComponent(name)}=${value.map((v) => encodeURIComponent(String(v))).join('|')}`;
+      return `${encodeURIComponent(name)}=${value.map((v) => encodeURIComponent(stringifyItem(v))).join('|')}`;
     }
-    return `${encodeURIComponent(name)}=${value.map((v) => encodeURIComponent(String(v))).join(',')}`;
+    return `${encodeURIComponent(name)}=${value.map((v) => encodeURIComponent(stringifyItem(v))).join(',')}`;
   }
   if (typeof value === 'object' && value !== null) {
     const entries = Object.entries(value as Record<string, unknown>);
@@ -97,29 +105,32 @@ function serializeQuery(name: string, style: string, explode: boolean, value: un
       return entries
         .map(
           ([k, v]) =>
-            `${encodeURIComponent(name)}[${encodeURIComponent(k)}]=${encodeURIComponent(String(v ?? ''))}`,
+            `${encodeURIComponent(name)}[${encodeURIComponent(k)}]=${encodeURIComponent(stringifyItem(v ?? ''))}`,
         )
         .join('&');
     }
     if (style === 'form' && explode) {
       return entries
-        .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(String(v ?? ''))}`)
+        .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(stringifyItem(v ?? ''))}`)
         .join('&');
     }
-    return `${encodeURIComponent(name)}=${entries.map(([k, v]) => `${encodeURIComponent(k)},${encodeURIComponent(String(v ?? ''))}`).join(',')}`;
+    const delimiter = style === 'spaceDelimited' ? '%20' : style === 'pipeDelimited' ? '|' : ',';
+    return `${encodeURIComponent(name)}=${entries
+      .flatMap(([k, v]) => [encodeURIComponent(k), encodeURIComponent(stringifyItem(v ?? ''))])
+      .join(delimiter)}`;
   }
   return `${encodeURIComponent(name)}=${encodeURIComponent(String(value))}`;
 }
 
 function serializeHeader(_style: string, explode: boolean, value: unknown): string {
   if (Array.isArray(value)) {
-    return value.map(String).join(',');
+    return value.map(stringifyItem).join(',');
   }
   if (typeof value === 'object' && value !== null) {
     const entries = Object.entries(value as Record<string, unknown>);
     return explode
-      ? entries.map(([k, v]) => `${k}=${String(v)}`).join(',')
-      : entries.map(([k, v]) => `${k},${String(v)}`).join(',');
+      ? entries.map(([k, v]) => `${k}=${stringifyItem(v)}`).join(',')
+      : entries.map(([k, v]) => `${k},${stringifyItem(v)}`).join(',');
   }
   return String(value);
 }
@@ -127,14 +138,14 @@ function serializeHeader(_style: string, explode: boolean, value: unknown): stri
 function serializeCookie(name: string, _style: string, explode: boolean, value: unknown): string {
   if (Array.isArray(value)) {
     return explode
-      ? value.map((v) => `${name}=${String(v)}`).join('; ')
-      : `${name}=${value.map(String).join(',')}`;
+      ? value.map((v) => `${name}=${stringifyItem(v)}`).join('; ')
+      : `${name}=${value.map(stringifyItem).join(',')}`;
   }
   if (typeof value === 'object' && value !== null) {
     const entries = Object.entries(value as Record<string, unknown>);
     return explode
-      ? entries.map(([k, v]) => `${k}=${String(v)}`).join('; ')
-      : `${name}=${entries.map(([k, v]) => `${k},${String(v)}`).join(',')}`;
+      ? entries.map(([k, v]) => `${k}=${stringifyItem(v)}`).join('; ')
+      : `${name}=${entries.map(([k, v]) => `${k},${stringifyItem(v)}`).join(',')}`;
   }
   return `${name}=${String(value)}`;
 }

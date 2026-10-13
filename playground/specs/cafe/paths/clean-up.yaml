@@ -1,7 +1,6 @@
 delete:
   tags:
     - Admin
-  x-internal: true
   summary: Delete all data and reseed the cafe API
   description: |
     Reset the cafe database to a clean state and reseed the default menu items.

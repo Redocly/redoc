@@ -44,8 +44,18 @@ vi.mock('../selectors.js', () => ({
   ExampleDescription: ({ description }: { description?: string }) => (
     <div data-testid="example-description" data-description={description} />
   ),
-  PayloadDisplay: ({ payload, emptyMessage }: { payload?: unknown; emptyMessage?: string }) => (
-    <div data-testid="payload">{payload === undefined ? emptyMessage : String(payload)}</div>
+  PayloadDisplay: ({
+    payload,
+    emptyMessage,
+    encoding,
+  }: {
+    payload?: unknown;
+    emptyMessage?: string;
+    encoding?: unknown;
+  }) => (
+    <div data-testid="payload" data-encoding={encoding ? JSON.stringify(encoding) : undefined}>
+      {payload === undefined ? emptyMessage : String(payload)}
+    </div>
   ),
   VariantPicker: () => null,
   PanelDropdownSelect: () => null,
@@ -166,6 +176,29 @@ describe('ResponseExampleItem per-code samples', () => {
 
     expect(screen.getByTestId('payload')).toHaveTextContent('No content');
     expect(screen.getByTestId('payload')).not.toHaveTextContent('sample-of:schema-200');
+  });
+
+  it('passes the active media type form encoding to the payload view', () => {
+    const encoding = { topics: { style: 'form', explode: true } };
+    renderResponseExampleItem({
+      kind: 'response',
+      examples: [],
+      responseCodes: [
+        {
+          code: '200',
+          schemaId: 'schema-200',
+          mediaTypes: ['application/x-www-form-urlencoded'],
+          mediaTypeContent: {
+            'application/x-www-form-urlencoded': { schemaId: 'schema-200', encoding },
+          },
+        },
+      ],
+    });
+
+    expect(screen.getByTestId('payload')).toHaveAttribute(
+      'data-encoding',
+      JSON.stringify(encoding),
+    );
   });
 
   it('still renders the selected code sample when it has content', () => {

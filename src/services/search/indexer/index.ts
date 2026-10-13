@@ -2,6 +2,7 @@ import { hasRbacScope, rbacProp, readRbacScope } from '../../../adapters/rbac.js
 
 import type { OperationParameter } from '@redocly/theme/core/openapi';
 import type { ApiItem, ExampleEntry, SchemaEntry } from '../../../types/store.js';
+import type { GraphqlStoreMeta } from '../../../types/graphql-store.js';
 import type {
   ContentNode,
   ItemContentNode,
@@ -39,6 +40,8 @@ export type SearchIndexerOptions = {
   formatDescription?: DescriptionFormatter;
   /** Enables example rows (the example selector labels); without it they are skipped. */
   exampleStore?: Record<string, ExampleEntry>;
+  /** GraphQL operation arguments resolve through the root types it names. */
+  graphqlMeta?: GraphqlStoreMeta;
 };
 
 export class ApiDocsSearchIndexer {
@@ -48,6 +51,7 @@ export class ApiDocsSearchIndexer {
   #document: Record<string, unknown> | undefined;
   #formatDescription: DescriptionFormatter;
   #exampleStore: Record<string, ExampleEntry> | undefined;
+  #graphqlMeta: GraphqlStoreMeta | undefined;
   #walker: SchemaWalker;
 
   constructor(
@@ -61,6 +65,7 @@ export class ApiDocsSearchIndexer {
     this.#document = document;
     this.#formatDescription = options.formatDescription ?? extractFullText;
     this.#exampleStore = options.exampleStore;
+    this.#graphqlMeta = options.graphqlMeta;
     this.#walker = new SchemaWalker({
       schemaStore,
       document,
@@ -103,6 +108,8 @@ export class ApiDocsSearchIndexer {
       formatDescription: this.#formatDescription,
       hasSchemas: !!this.#schemaStore && !!this.#document,
       exampleStore: this.#exampleStore,
+      schemaStore: this.#schemaStore,
+      graphqlMeta: this.#graphqlMeta,
       isOverview,
     };
   }

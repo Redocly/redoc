@@ -29,10 +29,10 @@ vi.mock('react-router', async (importOriginal) => {
     ...actual,
     useNavigate: (): ReturnType<typeof actual.useNavigate> => {
       const realNavigate = actual.useNavigate();
-      return ((...args: unknown[]) => {
+      return (...args: unknown[]) => {
         navigateSpy(...args);
         (realNavigate as (...navigateArgs: unknown[]) => void)(...args);
-      }) as ReturnType<typeof actual.useNavigate>;
+      };
     },
   };
 });
@@ -41,7 +41,7 @@ function makeRoute(overrides: Partial<RouteItem> = {}): RouteItem {
   return {
     path: '/pets',
     label: 'Pets',
-    content: { contentType: contentType.GROUP, children: [] } as ApiItemContent,
+    content: { contentType: contentType.GROUP, children: [] },
     ...overrides,
   };
 }
@@ -435,7 +435,7 @@ describe('useApiDocsScroll', () => {
         // A real ResizeObserver never notifies an unobserved or disconnected target.
         if (!this.observing) return;
         const entry = { contentRect: { width: 1024, height } } as ResizeObserverEntry;
-        this.callback([entry], this as unknown as ResizeObserver);
+        this.callback([entry], this);
       }
     }
 
@@ -822,6 +822,35 @@ describe('useApiDocsScroll', () => {
 
       expect(scrollIntoViewSpy).toHaveBeenCalledWith({ block: 'start' });
       expect(navigateSpy).not.toHaveBeenCalled();
+    });
+
+    describe('under a hash router, where the legacy fragment arrives as the path', () => {
+      const routes = [makeRoute({ path: '/pets' }), makeRoute({ path: '/pets/getpetbyid' })];
+
+      it.each([['/tag/Pets/operation/getPetById'], ['/operation/getPetById']])(
+        'redirects %s to the operation route',
+        (pathname) => {
+          renderUseApiDocsScroll({
+            routingBasePath: '/',
+            initialEntries: [pathname],
+            activeRoute: undefined,
+            routes,
+          });
+
+          expect(navigateSpy).toHaveBeenCalledWith('/pets/getpetbyid', { replace: true });
+        },
+      );
+
+      it('does not navigate when the path matches no legacy target', () => {
+        renderUseApiDocsScroll({
+          routingBasePath: '/',
+          initialEntries: ['/does/not/exist'],
+          activeRoute: undefined,
+          routes,
+        });
+
+        expect(navigateSpy).not.toHaveBeenCalled();
+      });
     });
 
     it('does not navigate when a missing hash matches no route', () => {

@@ -229,11 +229,11 @@ export type OpenAPIMediaType = {
 };
 
 export type OpenAPIEncoding = {
-  contentType: string;
+  contentType?: string;
   headers?: { [name: string]: Referenced<OpenAPIHeader> };
-  style: OpenAPIParameterStyle;
-  explode: boolean;
-  allowReserved: boolean;
+  style?: OpenAPIParameterStyle;
+  explode?: boolean;
+  allowReserved?: boolean;
 };
 
 export const parameterLocation = {

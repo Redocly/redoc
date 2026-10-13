@@ -356,12 +356,24 @@ function extractNamedExamples(
   return Object.keys(result).length > 0 ? result : undefined;
 }
 
+// Refs inside extensions arrive dereferenced and shared between siblings, so expanding them
+// grows exponentially with nesting; write each one back as the `$ref` the author wrote.
+function collapseResolvedRefs(_key: string, value: unknown): unknown {
+  return isSchemaNode(value) && typeof value['x-original-ref'] === 'string'
+    ? { $ref: value['x-original-ref'] }
+    : value;
+}
+
+function stringifyExtension(value: unknown): string {
+  return typeof value === 'string' ? value : JSON.stringify(value, collapseResolvedRefs);
+}
+
 function extractExtensions(schema: SchemaNode): Record<string, string> | undefined {
   const exts: Record<string, string> = {};
   let found = false;
   for (const key of Object.keys(schema)) {
     if (key.startsWith('x-') && !key.startsWith('x-redocly') && !INTERNAL_EXTENSIONS.has(key)) {
-      exts[key] = stringifyValue(schema[key]);
+      exts[key] = stringifyExtension(schema[key]);
       found = true;
     }
   }

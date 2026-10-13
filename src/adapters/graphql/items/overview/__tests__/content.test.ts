@@ -28,7 +28,6 @@ describe('buildOverviewContent', () => {
       } as ApiDocsOptions,
       markdoc,
       sectionChildren: [],
-      basePath: '/graphql',
     });
 
     const container = result.children[0] as ContainerNode;
@@ -38,7 +37,7 @@ describe('buildOverviewContent', () => {
 
     expect(overviewSection).toMatchObject({
       nodeType: nodeTypes.OVERVIEW_SECTION_WRAPPER,
-      sectionId: '/graphql',
+      sectionId: '/',
     });
     expect(overviewSection.children[0]).toMatchObject({
       nodeType: nodeTypes.HEADER,
@@ -48,7 +47,7 @@ describe('buildOverviewContent', () => {
     const introWrapper = overviewSection.children[1] as OverviewSectionWrapperNode;
     expect(introWrapper).toMatchObject({
       nodeType: nodeTypes.OVERVIEW_SECTION_WRAPPER,
-      sectionId: '/graphql',
+      sectionId: '/',
     });
     expect(introWrapper.children[0]).toMatchObject({
       nodeType: nodeTypes.MARKDOC,
@@ -76,7 +75,6 @@ describe('buildOverviewContent', () => {
     const result = buildOverviewContent({
       options: { info: { title: 'My API', version: '1.0.0' } } as ApiDocsOptions,
       sectionChildren: [],
-      basePath: '/graphql',
     });
 
     const container = result.children[0] as ContainerNode;
@@ -98,7 +96,6 @@ describe('buildOverviewContent', () => {
         hideDownloadButtons: true,
       } as ApiDocsOptions,
       sectionChildren: [],
-      basePath: '/graphql',
     });
 
     const container = result.children[0] as ContainerNode;

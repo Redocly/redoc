@@ -257,6 +257,7 @@ export function ResponseExampleItem({ node }: { node: ResponseExamplesPanelItem 
             : translate('noResponseContent', 'No content')
         }
         mediaType={resolvedMediaType}
+        encoding={activeContent?.encoding}
       />
     </CodeBlockPanel>
   );

@@ -8,6 +8,8 @@ import { itemVariant, nodeTypes } from '../../../../../types/common.js';
 import { graphqlContext } from '../../../buildContext.js';
 import { graphqlTestContext } from '../../../__tests__/graphqlTestContext.js';
 import { buildOperationContent } from '../content.js';
+import { populateGraphqlStore } from '../../../store.js';
+import { getOperationFromStore } from '../../../../../utils/graphql-samples.js';
 import { markdocParser } from '../../../../../components/markdoc/markdocParser.js';
 
 const schema = buildASTSchema(
@@ -83,15 +85,22 @@ describe('buildOperationContent — deprecation rendering', () => {
   });
 });
 
-describe('buildOperationContent — argument deprecation propagation', () => {
-  it('adds deprecationReason to the graphql-args node', () => {
+describe('buildOperationContent — arguments', () => {
+  it('references the operation whose store entry carries the argument deprecation reasons', () => {
     const children = buildContent('getBook');
     const argsNode = children.find(
       (c): c is ItemContentNode =>
         c.nodeType === nodeTypes.ITEM && (c as ItemContentNode).variant === 'graphql-args',
     );
-    expect(argsNode).toBeDefined();
-    expect(argsNode?.graphqlSchema).toMatchObject([
+    expect(argsNode).toMatchObject({
+      graphqlTypeName: 'Query',
+      graphqlFieldName: 'getBook',
+      graphqlOperationType: 'query',
+    });
+    expect(argsNode).not.toHaveProperty('graphqlSchema');
+
+    const store = populateGraphqlStore(schema);
+    expect(getOperationFromStore(store, 'query', 'getBook')?.args).toMatchObject([
       { name: 'id', deprecationReason: undefined },
       {
         name: 'format',

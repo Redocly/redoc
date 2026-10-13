@@ -1,5 +1,4 @@
 import { Component, afterNextRender, input, viewChild } from '@angular/core';
-import { init } from 'redoc/bundles/redoc.standalone.js';
 
 import type { ElementRef } from '@angular/core';
 
@@ -13,7 +12,8 @@ export class RedocView {
   private readonly container = viewChild.required<ElementRef<HTMLElement>>('container');
 
   constructor() {
-    afterNextRender(() => {
+    afterNextRender(async () => {
+      const { init } = await import('redoc/bundles/redoc.standalone.js');
       init(this.specUrl(), {}, this.container().nativeElement);
     });
   }

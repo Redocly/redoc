@@ -42,7 +42,6 @@ describe('buildOverviewContent', () => {
       options,
       protocol: null,
       sectionChildren: [],
-      basePath: '/async',
     });
 
     const container = result.children[0] as ContainerNode;
@@ -53,7 +52,7 @@ describe('buildOverviewContent', () => {
     expect(container.panels?.length).toBeGreaterThan(0);
     expect(overviewSection).toMatchObject({
       nodeType: nodeTypes.OVERVIEW_SECTION_WRAPPER,
-      sectionId: '/async',
+      sectionId: '/',
     });
     expect(overviewSection.children[0]).toMatchObject({
       nodeType: nodeTypes.HEADER,
@@ -63,7 +62,7 @@ describe('buildOverviewContent', () => {
     const introWrapper = overviewSection.children[1] as OverviewSectionWrapperNode;
     expect(introWrapper).toMatchObject({
       nodeType: nodeTypes.OVERVIEW_SECTION_WRAPPER,
-      sectionId: '/async',
+      sectionId: '/',
     });
     expect(introWrapper.children[0].nodeType).toBe(nodeTypes.MARKDOC);
   });
@@ -82,7 +81,6 @@ describe('buildOverviewContent', () => {
       options,
       protocol: null,
       sectionChildren: [],
-      basePath: '/async',
     });
 
     const container = result.children[0] as ContainerNode;
@@ -102,7 +100,6 @@ describe('buildOverviewContent', () => {
       options,
       protocol: null,
       sectionChildren: [],
-      basePath: '/async',
     });
 
     const container = result.children[0] as ContainerNode;
@@ -115,7 +112,6 @@ describe('buildOverviewContent', () => {
       options: { ...options, downloadUrls: [{ title: 'YAML', url: '/asyncapi.yaml' }] },
       protocol: null,
       sectionChildren: [],
-      basePath: '/async',
     });
 
     const container = result.children[0] as ContainerNode;
@@ -132,7 +128,6 @@ describe('buildOverviewContent', () => {
       },
       protocol: null,
       sectionChildren: [],
-      basePath: '/async',
     });
 
     const container = result.children[0] as ContainerNode;

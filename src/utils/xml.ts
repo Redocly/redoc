@@ -5,10 +5,14 @@ const xmlBuilder = new XMLBuilder({
   cdataPropName: '#cdata',
 });
 
-export function jsonToXml(value: unknown): string {
+const compactXmlBuilder = new XMLBuilder({
+  cdataPropName: '#cdata',
+});
+
+export function jsonToXml(value: unknown, rootName = 'root', { compact = false } = {}): string {
   if (value === null || value === undefined) return '';
   if (typeof value !== 'object') return String(value);
 
-  const wrapped = Array.isArray(value) ? value : { root: value };
-  return xmlBuilder.build(wrapped).trimEnd();
+  const wrapped = Array.isArray(value) ? value : { [rootName]: value };
+  return (compact ? compactXmlBuilder : xmlBuilder).build(wrapped).trimEnd();
 }

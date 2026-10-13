@@ -1,7 +1,6 @@
 get:
   tags:
     - Orders
-  x-internal: false
   summary: List all order items with menu item details
   description: |
     Returns an array of order items for a specific order.

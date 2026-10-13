@@ -9,7 +9,7 @@ import { safeSlugify } from '../../utils/string.js';
 import type { ParseMarkdownOptions } from './parseMarkdown.js';
 import { parseMarkdown } from './parseMarkdown.js';
 import { isPlainText } from './isPlainText.js';
-import { joinWithSeparator } from '../../utils/url.js';
+import { joinWithSeparator, normalizePath } from '../../utils/url.js';
 import { buildDeepLinkUrl } from '../../utils/deep-link.js';
 import { getDOMPurify } from './dompurify.js';
 
@@ -385,7 +385,7 @@ function buildSectionItemWithChildren(
   const hasNestedItems = heading.items.length > 0;
 
   const collectedChildren: ContentNode[] = heading.ast?.length
-    ? [toMarkdocNode(heading.ast, joinWithSeparator(basePath, heading.id))]
+    ? [toMarkdocNode(heading.ast, normalizePath(heading.id))]
     : [];
 
   const nestedItems: ApiItem[] = [];
@@ -395,11 +395,10 @@ function buildSectionItemWithChildren(
       basePath,
     );
     nestedItems.push(childItem);
-    const subsectionId = joinWithSeparator(basePath, child.id);
     collectedChildren.push({
       nodeType: nodeTypes.OVERVIEW_SECTION_WRAPPER,
       children: childMarkdoc,
-      sectionId: subsectionId,
+      sectionId: normalizePath(child.id),
     });
   }
 

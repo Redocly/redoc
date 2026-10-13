@@ -47,39 +47,17 @@ const MAX_TREE_DEPTH = 200;
 
 type ImplicitDiscriminatorChild = { ref: string; value: string };
 
-function refCacheKey(
+/**
+ * Cache key of a ref on a reference cycle. A subtree depends on the refs open above it (they
+ * become circular stubs), so it is shared only between occurrences with the same open refs.
+ */
+function recursiveRefCacheKey(
   refKey: string,
   schema: SchemaNode,
-  jsonPointer: string,
-  isRecursive: boolean,
+  activeRefs: ReadonlySet<string>,
 ): string {
   const base = getDiscriminatorObject(schema) ? `${refKey}:d` : refKey;
-  return isRecursive ? `${base}#rec` : `${base}@${jsonPointer}`;
-}
-
-function hasCircularInSubtree(prop: PropertyType): boolean {
-  if (prop.isCircular) return true;
-  if (prop.properties) {
-    for (const child of Object.values(prop.properties)) {
-      if (hasCircularInSubtree(child)) return true;
-    }
-  }
-  if (prop.items) {
-    for (const item of prop.items) {
-      if (hasCircularInSubtree(item)) return true;
-    }
-  }
-  if (prop.switcher) {
-    for (const opt of Object.values(prop.switcher.options)) {
-      if (opt.isCircular) return true;
-      if (opt.properties) {
-        for (const child of Object.values(opt.properties)) {
-          if (hasCircularInSubtree(child)) return true;
-        }
-      }
-    }
-  }
-  return false;
+  return `${base}#rec|${[...activeRefs].sort().join('|')}`;
 }
 
 const NAMED_DEFINITION_REGEX = /^#\/components\/(schemas|pathItems)\/([^/]+)$/;
@@ -116,26 +94,105 @@ function buildPropertyForNode(
     return property;
   }
 
-  const isRecursive = refKey !== undefined && ctx.recursiveRefs.has(refKey);
   const cacheKey =
-    refKey === undefined ? undefined : refCacheKey(refKey, schema, jsonPointer, isRecursive);
-  if (cacheKey) {
-    const cached = ctx.propertyRefCache.get(cacheKey);
-    if (cached) return { ...cached, ...property };
-  }
+    refKey !== undefined && ctx.recursiveRefs.has(refKey)
+      ? recursiveRefCacheKey(refKey, schema, ctx.activeRefs)
+      : undefined;
+  const cached = cacheKey ? ctx.propertyRefCache.get(cacheKey) : undefined;
+  if (cached) return reuseNestedStructure(cached, property);
 
-  if (refKey) ctx.activeRefs.add(refKey);
-  try {
-    attachNestedStructure(property, schema, { ...ctx, depth: ctx.depth + 1 }, jsonPointer);
-  } finally {
-    if (refKey) ctx.activeRefs.delete(refKey);
-  }
+  const activeRefs = new Set(ctx.activeRefs);
+  if (refKey) activeRefs.add(refKey);
+  const nestedCtx = { ...ctx, activeRefs, depth: ctx.depth + 1 };
+  const lazy = deferNestedStructure(property, () => {
+    attachNestedStructure(property, schema, nestedCtx, jsonPointer);
+    property.isExpandable = isExpandableSchema(property);
+  });
+  if (cacheKey) ctx.propertyRefCache.set(cacheKey, lazy);
+  return lazy;
+}
 
-  if (cacheKey && (isRecursive || !hasCircularInSubtree(property))) {
-    ctx.propertyRefCache.set(cacheKey, property);
-  }
-  property.isExpandable = isExpandableSchema(property);
-  return property;
+/** Keys `attachNestedStructure` and `isExpandableSchema` write; reading one builds the level. */
+const DEFERRED_KEYS: ReadonlySet<PropertyKey> = new Set([
+  'properties',
+  'items',
+  'switcher',
+  'example',
+  'accessMode',
+  'enum',
+  'isExpandable',
+]);
+
+// A densely linked spec reaches most of its schemas from every root, so building the tree
+// eagerly costs the whole spec per schema view. Each level is built on first read instead,
+// with the `activeRefs` snapshot it would have had, so the result matches an eager build.
+// Enumerating keys (spread, equality, serialization) builds the level first.
+function deferNestedStructure(property: PropertyType, build: () => void): PropertyType {
+  let pending = true;
+  const ensureBuilt = (key?: PropertyKey): void => {
+    if (!pending || (key !== undefined && !DEFERRED_KEYS.has(key))) return;
+    pending = false;
+    build();
+  };
+  const proxy = new Proxy(property, {
+    get(target, key, receiver) {
+      ensureBuilt(key);
+      return Reflect.get(target, key, receiver);
+    },
+    has(target, key) {
+      ensureBuilt(key);
+      return Reflect.has(target, key);
+    },
+    set(target, key, value, receiver) {
+      ensureBuilt(key);
+      return Reflect.set(target, key, value, receiver);
+    },
+    deleteProperty(target, key) {
+      ensureBuilt(key);
+      return Reflect.deleteProperty(target, key);
+    },
+    getOwnPropertyDescriptor(target, key) {
+      ensureBuilt(key);
+      return Reflect.getOwnPropertyDescriptor(target, key);
+    },
+    ownKeys(target) {
+      ensureBuilt();
+      return Reflect.ownKeys(target);
+    },
+  });
+  deferredTargets.set(proxy, { target: property, ensureBuilt: () => ensureBuilt() });
+  return proxy;
+}
+
+const deferredTargets = new WeakMap<
+  PropertyType,
+  { target: PropertyType; ensureBuilt: () => void }
+>();
+
+/**
+ * Another occurrence of a cached ref: the cached fields with this occurrence's shell on top,
+ * without building the cached level until this one is read. Flags that belong to the
+ * position (`isRequired`, …) come from this occurrence only.
+ */
+function reuseNestedStructure(cached: PropertyType, shell: PropertyType): PropertyType {
+  const source = deferredTargets.get(cached);
+  if (!source) return { ...cached, ...shell };
+  const {
+    isRequired: _isRequired,
+    isAdditionalProperty: _isAdditionalProperty,
+    isPatternProperty: _isPatternProperty,
+    ...shared
+  } = source.target;
+  const occurrence: PropertyType = { ...shared, ...shell };
+  return deferNestedStructure(occurrence, () => {
+    source.ensureBuilt();
+    for (const key of DEFERRED_KEYS) {
+      if (Object.hasOwn(shell, key)) continue;
+      if (Object.hasOwn(source.target, key))
+        Reflect.set(occurrence, key, Reflect.get(source.target, key));
+      else Reflect.deleteProperty(occurrence, key);
+    }
+  });
 }
 
 function isExpandableSchema(property: PropertyType): boolean {

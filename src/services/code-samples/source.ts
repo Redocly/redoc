@@ -1,4 +1,5 @@
 import type { OpenAPIParameterLocation } from '../../types/openapi.js';
+import type { FormFieldEncoding } from '../../utils/form-urlencoded.js';
 import type {
   SecuritySchemeIn,
   SecuritySchemeType,
@@ -57,6 +58,7 @@ export type SecurityRequirement = {
 export type MediaTypeEntry = {
   schemaId?: string;
   exampleIds?: string[];
+  encoding?: Record<string, FormFieldEncoding>;
 };
 
 type DefinitionCodeSample = {

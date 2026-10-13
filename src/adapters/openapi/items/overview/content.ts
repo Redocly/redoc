@@ -20,7 +20,6 @@ import { buildServersPanelContent } from '../../panels/servers.js';
 
 type OverviewContentOptions = {
   downloadUrls?: NormalizedDownloadUrl[];
-  basePath: string;
   sanitize: ApiDocsOptions['sanitize'];
   markdownParser: ApiDocsOptions['markdownParser'];
 } & Partial<ApiDocsOptions>;
@@ -36,7 +35,7 @@ export function buildOverviewContent({
   sectionChildren: ContentNode[];
   options: OverviewContentOptions;
 }): ApiItemContent {
-  const { downloadUrls, hideDownloadButtons, basePath } = options;
+  const { downloadUrls, hideDownloadButtons } = options;
   const info = document.info;
   let label = asString(info?.title) ?? 'API Documentation';
   const headerLabel = info?.version ? `${label} (${info.version})` : label;
@@ -53,10 +52,11 @@ export function buildOverviewContent({
   }
 
   let mergedServers = document.servers ?? [];
-  const normalizedServers = mergedServers.map((server) => ({
-    ...server,
-    description: typeof server.description === 'string' ? server.description : undefined,
-  }));
+  const normalizedServers = mergedServers.map((server) =>
+    Object.assign({}, server, {
+      description: typeof server.description === 'string' ? server.description : undefined,
+    }),
+  );
 
   const serversPanel = buildServersPanelContent(normalizedServers);
 
@@ -74,7 +74,7 @@ export function buildOverviewContent({
         showPageActions: true,
       },
     ],
-    sectionId: basePath,
+    sectionId: '/',
   };
 
   const summary = parseMarkdown(info.summary, options);
@@ -95,7 +95,7 @@ export function buildOverviewContent({
           content: descriptionContent,
         },
       ],
-      sectionId: basePath,
+      sectionId: '/',
     });
   }
 

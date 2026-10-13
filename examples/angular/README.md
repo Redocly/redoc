@@ -21,7 +21,6 @@ npm install redoc
 
 ```ts
 import { Component, afterNextRender, viewChild } from '@angular/core';
-import { init } from 'redoc/bundles/redoc.standalone.js';
 
 import type { ElementRef } from '@angular/core';
 
@@ -30,14 +29,18 @@ export class Docs {
   private readonly container = viewChild.required<ElementRef<HTMLElement>>('container');
 
   constructor() {
-    afterNextRender(() => init('/your-api.yaml', {}, this.container().nativeElement));
+    afterNextRender(async () => {
+      const { init } = await import('redoc/bundles/redoc.standalone.js');
+      init('/your-api.yaml', {}, this.container().nativeElement);
+    });
   }
 }
 ```
 
 `src/app/redoc-view.ts`
-takes a `specUrl` input; the spec type is detected from the document. The Redoc bundle is 2.7 MB, so the production build
-disables Angular's default bundle budgets (`budgets: []` in `angular.json`).
+takes a `specUrl` input; the spec type is detected from the document. The Redoc bundle is 2.7 MB, so it
+is imported dynamically: Angular splits it into a lazy chunk and the initial bundle stays within
+the default production budgets.
 
 ## Docker
 

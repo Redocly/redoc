@@ -215,6 +215,29 @@ describe('schemaProcessor metadata extraction', () => {
     expect(result.extensions).toEqual({ 'x-custom': 'hello', 'x-another': '42' });
   });
 
+  it('should serialize $refs inside extensions as authored instead of expanding them', () => {
+    const depth = 30;
+    const schemas: Record<string, SchemaNode> = {};
+    for (let i = 0; i < depth; i++) {
+      const next = { $ref: `#/components/schemas/S${i + 1}` };
+      schemas[`S${i}`] = {
+        type: 'object',
+        'x-expansionResources': { oneOf: [next, next] },
+        'x-next': next,
+      };
+    }
+    schemas[`S${depth}`] = { type: 'object', properties: { id: { type: 'string' } } };
+    const doc: Document = { openapi: '3.1.0', components: { schemas } };
+
+    const result = schemaProcessor(pageSchema(doc, 'S0'), doc);
+
+    expect(result.extensions).toEqual({
+      'x-expansionResources':
+        '{"oneOf":[{"$ref":"#/components/schemas/S1"},{"$ref":"#/components/schemas/S1"}]}',
+      'x-next': '{"$ref":"#/components/schemas/S1"}',
+    });
+  });
+
   it('should not set extensions when none are present', () => {
     const result = schemaProcessor({ type: 'string' }, emptyDoc);
     expect(result.extensions).toBeUndefined();
@@ -1188,6 +1211,28 @@ describe('schemaProcessor recursive component (transport-domain shape)', () => {
     // Eight references reuse the one memoized Container subtree, adding only per-occurrence
     // shells — not eight full copies.
     expect(eight - one).toBeLessThan(30);
+  });
+
+  it('does not carry isRequired from one occurrence of a recursive ref to another', () => {
+    const doc = makeDocument({
+      Node: { type: 'object', properties: { next: { $ref: '#/components/schemas/Node' } } },
+      Wrapper: {
+        type: 'object',
+        required: ['first'],
+        properties: {
+          first: { $ref: '#/components/schemas/Node' },
+          second: { $ref: '#/components/schemas/Node' },
+        },
+      },
+    });
+    const props = requireProps(
+      schemaProcessor(pageSchema(doc, 'Wrapper'), doc, {
+        rootJsonPointer: '#/components/schemas/Wrapper',
+      }),
+    );
+    expect(props.first.isRequired).toBe(true);
+    expect(props.second.isRequired).toBeFalsy();
+    expect(requireProps(props.second).next).toBeDefined();
   });
 
   it('marks the recursive back-edge circular, not the shared non-recursive leaf', () => {

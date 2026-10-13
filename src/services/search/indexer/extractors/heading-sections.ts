@@ -5,7 +5,7 @@ import { extractFullText } from '../../../../adapters/utils/markdoc.js';
 import { safeSlugify } from '../../../../utils/string.js';
 import { makeParam } from '../param.js';
 import { DESCRIPTION_PLACE, scopedPlace } from '../places.js';
-import { addRow } from './context.js';
+import { addRow, describe } from './context.js';
 
 export function extractHeadingSections(
   content: string | Node | Node[] | undefined,
@@ -46,7 +46,7 @@ export function extractHeadingSections(
       continue;
     }
     if (heading) {
-      const text = extractFullText(node);
+      const text = describe(ctx, node);
       if (text) textParts.push(text);
     }
   }

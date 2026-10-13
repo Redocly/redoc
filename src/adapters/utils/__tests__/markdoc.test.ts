@@ -9,6 +9,7 @@ import {
   extractFirstParagraphText,
   extractFullText,
   extractMarkdownSections,
+  collectMarkdownSections,
   collectMarkdownPlainText,
   sanitizeMarkdownSource,
   resolveMarkdocHeadingDeepSuffix,
@@ -349,6 +350,35 @@ describe('extractMarkdownSections', () => {
     vi.mocked(parseMarkdown).mockReturnValue('A plain description.');
 
     expect(extractMarkdownSections('A plain description.')).toEqual([]);
+  });
+});
+
+describe('collectMarkdownSections', () => {
+  it('links sections under the base path and keeps their section ids relative to it', () => {
+    vi.mocked(parseMarkdown).mockReturnValue([
+      makeHeadingNode('Errors', 1),
+      makeParagraphNode('Error format.'),
+      makeHeadingNode('Rate limits', 2),
+      makeParagraphNode('Request quotas.'),
+    ]);
+
+    const { sectionItems, sectionChildren } = collectMarkdownSections('...', '/docs/pets', {
+      markdownParser: () => undefined,
+    });
+
+    expect(sectionItems).toMatchObject([
+      {
+        link: '/docs/pets/section/errors',
+        items: [{ link: '/docs/pets/section/errors/rate-limits' }],
+      },
+    ]);
+    expect(sectionChildren).toMatchObject([
+      { sectionId: '/section/errors' },
+      {
+        sectionId: '/section/errors/rate-limits',
+        children: [{ sectionId: '/section/errors/rate-limits' }],
+      },
+    ]);
   });
 });
 

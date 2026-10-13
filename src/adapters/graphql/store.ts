@@ -4,11 +4,17 @@ import type { ApiStore, SchemaEntry } from '../../types/store.js';
 import { schemaKind } from '../../types/common.js';
 import { registerSchema } from '../helpers.js';
 import { graphqlDirectiveEntryId, graphqlTypeEntryId } from '../../types/graphql-store.js';
-import { serializeDirective, serializeNamedType } from './serializeType.js';
+import type { ParseMarkdownOptions } from '../utils/parseMarkdown.js';
+import { createGraphqlTypeSerializer } from './serializeType.js';
 
-export function populateGraphqlStore(schema: GraphQLSchema): ApiStore {
+/** Descriptions are parsed into the store when `markdownOptions` carry a parser; see `GraphqlDescription`. */
+export function populateGraphqlStore(
+  schema: GraphQLSchema,
+  markdownOptions?: ParseMarkdownOptions,
+): ApiStore {
   const schemaStore: Record<string, SchemaEntry> = {};
   const hashIndex: Record<string, string> = {};
+  const { serializeNamedType, serializeDirective } = createGraphqlTypeSerializer(markdownOptions);
 
   for (const type of Object.values(schema.getTypeMap())) {
     if (type.name.startsWith('__')) continue;

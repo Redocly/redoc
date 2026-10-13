@@ -24,6 +24,15 @@ describe('getParameterExampleSerializer', () => {
     expect(getParameterExampleSerializer(param({ in: 'header' }))?.('700x700')).toBe('700x700');
   });
 
+  it('renders query examples in the declared style', () => {
+    expect(
+      getParameterExampleSerializer(param({ in: 'query', style: 'pipeDelimited' }))?.(['a', 'b']),
+    ).toBe('imageSize=a|b');
+    expect(
+      getParameterExampleSerializer(param({ in: 'query', explode: false }))?.(['a', 'b']),
+    ).toBe('imageSize=a,b');
+  });
+
   it('returns undefined when the param has no location', () => {
     expect(getParameterExampleSerializer(param({}))).toBeUndefined();
   });

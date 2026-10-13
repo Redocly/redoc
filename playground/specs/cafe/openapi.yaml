@@ -26,10 +26,8 @@ tags:
     description: Statistics operations.
   - name: Health
     description: Health check operations.
-    x-internal: true
   - name: Admin
     description: Internal admin operations.
-    x-internal: true
 paths:
   /menu:
     $ref: paths/menu.yaml

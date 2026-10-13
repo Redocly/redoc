@@ -31,9 +31,6 @@ describe('buildOverviewItem', () => {
     });
 
     expect(vi.mocked(buildOverviewContent)).toHaveBeenCalledOnce();
-    expect(vi.mocked(buildOverviewContent).mock.calls[0][0]).toMatchObject({
-      basePath: '/api',
-    });
     expect(item.type).toBe('link');
     expect(item.link).toBe('/api');
     expect(item.label).toBe('My API');

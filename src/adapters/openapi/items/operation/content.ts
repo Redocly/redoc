@@ -53,11 +53,10 @@ import { isStatusCode } from '../../../../utils/status-code.js';
 import { getExtensionsForDisplay } from '../../../../utils/extract-extensions.js';
 import { openApiContext } from '../../buildContext.js';
 import { buildCodeSampleSource } from '../../build-code-sample-source.js';
+import { pickStoredFormEncoding } from '../../utils/form-encoding.js';
 import { pickOperationServers } from '../../utils/operation.js';
 import { toRelativePath } from '../../../../utils/url.js';
 import { encodeJsonPointerSegment } from '../../../../utils/refPointer.js';
-import { pickFormEncoding } from '../../../../utils/form-urlencoded.js';
-import { isFormUrlEncodedMediaType } from '../../../../utils/media-type.js';
 import {
   hasOpenApiExampleValue,
   resolveOpenApiExampleValue,
@@ -558,9 +557,7 @@ function buildCallbackPayloadPanels(
         }
       }
     }
-    const encoding = isFormUrlEncodedMediaType(mt)
-      ? pickFormEncoding(mtContent.encoding)
-      : undefined;
+    const encoding = pickStoredFormEncoding(mt, mtContent, cbDoc);
     cbMediaTypeSchemas[mt] = {
       schemaId,
       exampleIds: exIds.length > 0 ? exIds : undefined,
@@ -737,6 +734,8 @@ function toParameterData(
     return {
       name: String(param.name ?? ''),
       in: typeof param.in === 'string' ? param.in : undefined,
+      ...(typeof param.style === 'string' && { style: param.style }),
+      ...(typeof param.explode === 'boolean' && { explode: param.explode }),
       schemaId,
       description: normalizeOpenApiDescription(param.description),
       required: param.required === true ? true : undefined,
@@ -945,9 +944,7 @@ function buildRequestChildren(
           ignoreNamedSchemas,
           `${operationInfo.pointer}/requestBody/content/${encodeJsonPointerSegment(mediaType)}`,
         );
-        const encoding = isFormUrlEncodedMediaType(mediaType)
-          ? pickFormEncoding(entry.encoding)
-          : undefined;
+        const encoding = pickStoredFormEncoding(mediaType, entry, doc);
         mediaTypeSchemas[mediaType] = {
           schemaId: mediaTypeSchemaId,
           exampleIds: mediaTypeExampleIds,
@@ -996,6 +993,7 @@ function buildResponsesSection(
 
   const { storeCtx } = openApiContext.get();
   const doc = storeCtx?.document ?? {};
+  const encodesResponses = allowsResponseEncoding(doc.openapi);
   const responses = operationInfo.responses as Record<string, unknown>;
   const responseEntries = Object.entries(responses).filter(([code]) => isStatusCode(code));
   const responsesList = responseEntries.map(([code, rawResponse]) => {
@@ -1037,9 +1035,13 @@ function buildResponsesSection(
           ignoreNamedSchemas,
           `${operationInfo.pointer}/responses/${encodeJsonPointerSegment(code)}/content/${encodeJsonPointerSegment(mediaType)}`,
         );
+        const encoding = encodesResponses
+          ? pickStoredFormEncoding(mediaType, entry, doc)
+          : undefined;
         mediaTypeContent[mediaType] = {
           schemaId: mediaTypeSchemaId,
           exampleIds: mediaTypeExampleIds,
+          ...(encoding && { encoding }),
           ...rbacProp(readRbacScope(schemaSource)),
         };
       }
@@ -1121,6 +1123,13 @@ function buildResponsesSection(
     responses: responsesList,
     pointer: operationInfo.pointer + '/responses',
   };
+}
+
+function allowsResponseEncoding(openapi: unknown): boolean {
+  const [major = 0, minor = 0] = String(openapi ?? '')
+    .split('.')
+    .map(Number);
+  return major > 3 || (major === 3 && minor >= 2);
 }
 
 function collectExampleIds(

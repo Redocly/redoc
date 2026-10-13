@@ -20,13 +20,11 @@ export function buildOverviewContent({
   options,
   protocol,
   sectionChildren,
-  basePath,
 }: {
   document: AsyncApiDefinition;
   options: ApiDocsOptions;
   protocol: string | null;
   sectionChildren: ContentNode[];
-  basePath: string;
 }): ApiItemContent {
   const info = document.info;
   const ast = extractContentUntilFirstHeading(info?.description, options);
@@ -51,14 +49,14 @@ export function buildOverviewContent({
         label: `${info?.title ?? ''} ${info?.version ?? ''}`.trim(),
       },
     ],
-    sectionId: basePath,
+    sectionId: '/',
   };
 
   if (ast?.length) {
     overviewSection.children.push({
       nodeType: nodeTypes.OVERVIEW_SECTION_WRAPPER,
       children: [{ nodeType: nodeTypes.MARKDOC, content: ast }],
-      sectionId: basePath,
+      sectionId: '/',
     });
   }
 

@@ -56,10 +56,34 @@ describe('extractorsFor', () => {
   });
 
   it('routes a graphql node to the graphql extractor only', () => {
-    const node = makeNode({ variant: 'graphql-fields', graphqlSchema: [{ name: 'id' }] });
+    const node = makeNode({ variant: 'graphql-fields', graphqlTypeName: 'Book' });
     const [only, ...rest] = extractorsFor(node);
     expect(rest).toEqual([]);
-    const ctx = makeContext();
+    const ctx = makeContext({
+      schemaStore: {
+        'types/Book': {
+          id: 'types/Book',
+          kind: 'graphql-type',
+          title: 'Book',
+          data: {
+            variant: 'object',
+            name: 'Book',
+            fields: [
+              {
+                name: 'id',
+                type: {
+                  display: 'ID!',
+                  name: 'ID',
+                  isList: false,
+                  isNonNull: true,
+                  isListNonNull: false,
+                },
+              },
+            ],
+          },
+        },
+      },
+    });
     only.extract(node, ctx);
     expect(Object.values(ctx.paramsMap).map((p) => p.place)).toEqual(['fields']);
   });

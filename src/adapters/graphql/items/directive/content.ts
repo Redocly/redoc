@@ -25,13 +25,6 @@ export function buildDirectiveContent(
       label: 'Arguments',
       labelTranslationKey: 'arguments.label',
       graphqlTypeName: directive.name,
-      graphqlSchema: directive.args.map((arg) => ({
-        name: arg.name,
-        type: arg.type.toString(),
-        description: parseMarkdown(arg.description, markdownOptions) ?? [],
-        deprecationReason: arg.deprecationReason || undefined,
-        defaultValue: arg.defaultValue,
-      })),
     });
   }
 

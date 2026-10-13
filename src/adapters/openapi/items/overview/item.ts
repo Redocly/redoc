@@ -24,7 +24,7 @@ export function buildOverviewItems(document: OpenAPIDefinition): ApiItem[] {
     document,
     description,
     sectionChildren,
-    options: { ...context.options, basePath },
+    options: context.options,
   });
 
   let overviewTitle = asString(document.info?.title);

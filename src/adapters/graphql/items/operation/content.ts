@@ -1,4 +1,4 @@
-import { getNamedType, isInterfaceType, isObjectType } from 'graphql';
+import { getNamedType } from 'graphql';
 
 import type { GraphQLField } from 'graphql';
 import type { ApiItemContent, ContentNode, PanelNode } from '../../../../types/content.js';
@@ -65,24 +65,8 @@ export function buildOperationContent(
       graphqlTypeName: rootTypeName,
       graphqlFieldName: operation.name,
       graphqlOperationType: operationType,
-      graphqlSchema: operation.args.map((arg) => ({
-        name: arg.name,
-        type: arg.type.toString(),
-        description: parseMarkdown(arg.description, markdownOptions) ?? [],
-        deprecationReason: arg.deprecationReason || undefined,
-        defaultValue: arg.defaultValue,
-      })),
     });
   }
-
-  const returnTypeFields =
-    isObjectType(returnType) || isInterfaceType(returnType)
-      ? Object.values(returnType.getFields()).map((field) => ({
-          name: field.name,
-          type: field.type.toString(),
-          description: parseMarkdown(field.description ?? undefined, markdownOptions) ?? [],
-        }))
-      : undefined;
 
   children.push({
     nodeType: nodeTypes.ITEM,
@@ -93,11 +77,6 @@ export function buildOperationContent(
     graphqlTypeName: returnType.name,
     graphqlOperationType: operationType,
     graphqlFieldName: operation.name,
-    graphqlSchema: {
-      type: operation.type.toString(),
-      description: parseMarkdown(returnType.description, markdownOptions) ?? [],
-      ...(returnTypeFields && returnTypeFields.length > 0 ? { fields: returnTypeFields } : {}),
-    },
   });
 
   const panels: PanelNode[] = [

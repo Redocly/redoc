@@ -82,6 +82,8 @@ export type EmptyMessageNode = {
 export type ParameterData = {
   name: string;
   in?: string;
+  style?: string;
+  explode?: boolean;
   schemaId: string;
   description?: string | Node | Node[];
   required?: boolean;
@@ -90,28 +92,6 @@ export type ParameterData = {
   examples?: Record<string, ExampleType>;
   badges?: BadgeType[];
   extensions?: Record<string, unknown>;
-};
-
-export type GraphqlFieldData = {
-  name: string;
-  type: string;
-  description?: string | Node[] | Node;
-  deprecated?: boolean;
-  deprecationReason?: string;
-  defaultValue?: unknown;
-  args?: Array<{
-    name: string;
-    type: string;
-    description?: string | Node[] | Node;
-    deprecationReason?: string;
-    defaultValue?: unknown;
-  }>;
-};
-
-export type GraphqlReturnTypeData = {
-  type: string;
-  description?: string | Node[] | Node;
-  fields?: GraphqlFieldData[];
 };
 
 export type ItemContentNode = {
@@ -146,7 +126,6 @@ export type ItemContentNode = {
   schemaId?: string;
   exampleIds?: string[];
   parameters?: ParameterData[];
-  graphqlSchema?: GraphqlFieldData[] | GraphqlReturnTypeData;
   required?: boolean;
   /** Webhook/callback body: the server sends it, so readOnly stays and writeOnly is dropped. */
   isEvent?: boolean;

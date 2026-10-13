@@ -18,7 +18,7 @@ jobs:
       pull-requests: write
     outputs:
       published: ${{ steps.changesets.outputs.published }}
-      publishedPackages: ${{ steps.changesets.outputs.publishedPackages }}
+      publishedPackages: ${{ steps.changesets.outputs.published-packages }}
     steps:
       - name: Checkout Repo
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -32,23 +32,22 @@ jobs:
 
       # The changesets action takes the GitHub Release notes from the CHANGELOG heading that
       # equals the version; without one it posts the whole file and fails after npm publish.
+      # `changeset version` writes that heading as `## <version>`.
       - name: Check CHANGELOG entry
         run: |
           VERSION=$(node -p "require('./package.json').version")
-          grep -qxF "# $VERSION" CHANGELOG.md || {
-            echo "::error file=CHANGELOG.md::Add a '# $VERSION' heading with the release notes"
+          grep -qxF "## $VERSION" CHANGELOG.md || {
+            echo "::error file=CHANGELOG.md::Add a '## $VERSION' heading with the release notes"
             exit 1
           }
 
       - name: Create Release Pull Request or Publish to npm
         id: changesets
-        uses: RomanHotsiy/changesets-action@v1
+        uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
         with:
-          publish: npm run release
-          commit: 'chore: 🔖 release new versions'
-          title: 'chore: 🔖 release new versions'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          publish-script: npm run release
+          commit-message: 'chore: 🔖 release new versions'
+          pr-title: 'chore: 🔖 release new versions'
 
       - name: Upload bundle artifact
         if: steps.changesets.outputs.published == 'true'

@@ -35,23 +35,6 @@ export function buildObjectContent(
       labelTranslationKey: 'fields',
       schemaId,
       graphqlTypeName: object.name,
-      graphqlSchema: fieldNames.map((fieldName) => {
-        const field = fields[fieldName];
-        return {
-          name: fieldName,
-          type: field.type.toString(),
-          description: parseMarkdown(field.description, markdownOptions) ?? [],
-          deprecated: !!field.deprecationReason,
-          deprecationReason: field.deprecationReason || undefined,
-          args: field.args?.map((arg) => ({
-            name: arg.name,
-            type: arg.type.toString(),
-            description: parseMarkdown(arg.description, markdownOptions) ?? [],
-            deprecationReason: arg.deprecationReason || undefined,
-            defaultValue: arg.defaultValue,
-          })),
-        };
-      }),
     });
   }
 

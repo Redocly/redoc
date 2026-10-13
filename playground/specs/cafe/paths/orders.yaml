@@ -1,7 +1,6 @@
 get:
   tags:
     - Orders
-  x-internal: false
   summary: List all orders
   description: Retrieve a collection of orders with optional filtering and pagination.
   operationId: listOrders
@@ -64,7 +63,6 @@ get:
 post:
   tags:
     - Orders
-  x-internal: false
   summary: Create order
   description: |
     Create a new order.

@@ -1,7 +1,6 @@
 post:
   tags:
     - Orders
-  x-internal: false
   operationId: orderNotificationWebhook
   security: []
   summary: Order notification webhook

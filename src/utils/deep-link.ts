@@ -363,18 +363,20 @@ export function hashIsOutsideCallbacks(hashId: string, itemId: string): boolean 
 
 // ── Legacy hash helpers (for scroll) ────────────────────────────────────────
 
+const LEGACY_HASH_RE = /^(tag|operation|paths|section)(\/.*)$/;
+
 /**
- * Detect legacy openapi hash patterns and return normalized suffix.
- * Matches: #tag/..., #operation/..., #paths/...
+ * The route-shaped path (lowercased, leading `/`) a legacy single-page hash points at, or `''`
+ * when the hash has no legacy shape. `#tag/<tag>/operation/<id>` → `/<tag>/<id>`,
+ * `#operation/<id>` → `/<id>`, `#section/<slug>` keeps its `section/` prefix.
  */
 export function getLegacyHash(hash: string): string {
-  const patterns = ['#tag', '#operation', '#paths'];
-  for (const pattern of patterns) {
-    if (hash.includes(pattern)) {
-      return hash.replace(pattern, '').toLowerCase();
-    }
-  }
-  return '';
+  const match = LEGACY_HASH_RE.exec(hashToElementId(hash));
+  if (!match) return '';
+  const [, kind, rest] = match;
+  if (kind === 'section') return `/section${rest}`;
+  if (kind === 'tag') return rest.replace(/^(\/[^/]+)\/operation(?=\/)/, '$1');
+  return rest;
 }
 
 /** Map a legacy single-page hash (`#section/…`, `#tag/…`, `#operation/…`) to its route URL in

@@ -18,6 +18,7 @@ import type {
   GraphqlTypeData,
   GraphqlTypeDataVariant,
   GraphqlTypeReference,
+  GraphqlDescription,
 } from '../../types/graphql-store.js';
 import type { ContentNode } from '../../types/content.js';
 
@@ -28,6 +29,8 @@ import { schemaKind } from '../../types/common.js';
 import { normalizeOptions } from '../../options/normalizeOptions.js';
 import { markdocParser } from '../../components/markdoc/markdocParser.js';
 import { readFixture, collectAllItems } from './utils.js';
+import { isPlainText } from '../utils/isPlainText.js';
+import { isMarkdocAst } from '../utils/markdoc.js';
 
 const BASE_PATH = 'docs/graphql';
 
@@ -75,17 +78,24 @@ function expectedVariant(type: GraphQLNamedType): GraphqlTypeDataVariant {
 type TypeSummary = {
   variant: GraphqlTypeDataVariant;
   name: string;
+  /** Plain text as written; `'markdown'` once the store parsed it. */
   description: string | null;
   fields?: { name: string; display: string; deprecationReason: string | null; argsCount: number }[];
   possibleTypes?: string[];
   enumValues?: string[];
 };
 
+function summarizeDescription(description: GraphqlDescription | null | undefined): string | null {
+  if (description == null) return null;
+  if (typeof description === 'string') return isPlainText(description) ? description : 'markdown';
+  return isMarkdocAst(description) ? 'markdown' : 'invalid';
+}
+
 function summarizeGraphqlJsType(type: GraphQLNamedType): TypeSummary {
   const base = {
     variant: expectedVariant(type),
     name: type.name,
-    description: type.description ?? null,
+    description: summarizeDescription(type.description),
   };
   if (isObjectType(type) || isInterfaceType(type) || isInputObjectType(type)) {
     return {
@@ -111,7 +121,7 @@ function summarizeStoredType(data: GraphqlTypeData): TypeSummary {
   const base = {
     variant: data.variant,
     name: data.name,
-    description: data.description ?? null,
+    description: summarizeDescription(data.description),
   };
   if (data.variant === 'object' || data.variant === 'interface' || data.variant === 'input') {
     return {

@@ -36,7 +36,6 @@ export function buildOverviewItem(info: { title?: string }, options: Options): A
           options: docsOptions,
           protocol,
           sectionChildren,
-          basePath,
         })
       : null,
   };

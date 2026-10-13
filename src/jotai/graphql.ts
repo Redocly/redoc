@@ -45,13 +45,26 @@ export function graphqlOperationKey(
   return operationType && operationName ? `${operationType}:${operationName}` : '';
 }
 
+export function parseGraphqlOperationKey(
+  key: string,
+): { operationType: GraphqlOperationType; operationName: string } | undefined {
+  const separatorIndex = key.indexOf(':');
+  const operationType = key.slice(0, separatorIndex);
+  if (
+    separatorIndex < 1 ||
+    (operationType !== 'query' && operationType !== 'mutation' && operationType !== 'subscription')
+  ) {
+    return undefined;
+  }
+  return { operationType, operationName: key.slice(separatorIndex + 1) };
+}
+
 export const graphqlOperationAtom = atomFamily((key: string) =>
   atom<GraphqlStoreFieldData | undefined>((get) => {
-    const separatorIndex = key.indexOf(':');
-    if (separatorIndex < 1) return undefined;
-    const operationType = key.slice(0, separatorIndex) as GraphqlOperationType;
-    const operationName = key.slice(separatorIndex + 1);
-    return getOperationFromStore(get(storeAtom), operationType, operationName);
+    const parsed = parseGraphqlOperationKey(key);
+    return (
+      parsed && getOperationFromStore(get(storeAtom), parsed.operationType, parsed.operationName)
+    );
   }),
 );
 

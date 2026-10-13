@@ -1,7 +1,6 @@
 get:
   tags:
     - Products
-  x-internal: false
   summary: List all menu items
   description: Retrieve a collection of menu items with optional filtering and pagination.
   operationId: listMenuItems
@@ -56,7 +55,6 @@ get:
 post:
   tags:
     - Products
-  x-internal: false
   summary: Create menu item
   description: Create a new menu item.
   operationId: createMenuItem

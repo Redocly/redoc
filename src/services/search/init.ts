@@ -19,6 +19,7 @@ export async function initializeSearch(
 ): Promise<SearchApi> {
   const indexer = new ApiDocsSearchIndexer(basePath, store.schemaStore, document, {
     exampleStore: store.exampleStore,
+    graphqlMeta: store.graphqlMeta,
   });
   let deadline = Date.now() + FRAME_BUDGET_MS;
 

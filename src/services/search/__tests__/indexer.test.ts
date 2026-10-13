@@ -60,6 +60,40 @@ function makeItemContentNode(
   return { nodeType: nodeTypes.ITEM, variant: 'query', parameters: params, ...overrides };
 }
 
+type GraphqlTestField = {
+  name: string;
+  type: string;
+  description?: Node;
+  args?: GraphqlTestField[];
+};
+
+function graphqlTypeRef(display: string) {
+  return {
+    display,
+    name: display.replace(/[[\]!]/g, ''),
+    isList: display.startsWith('['),
+    isNonNull: display.endsWith('!'),
+    isListNonNull: display.startsWith('[') && display.endsWith('!'),
+  };
+}
+
+function graphqlTypeEntry(name: string, fields: GraphqlTestField[]): Record<string, SchemaEntry> {
+  const toField = (field: GraphqlTestField): Record<string, unknown> => ({
+    name: field.name,
+    type: graphqlTypeRef(field.type),
+    description: field.description,
+    args: field.args?.map(toField),
+  });
+  return {
+    [`types/${name}`]: {
+      id: `types/${name}`,
+      kind: 'graphql-type',
+      title: name,
+      data: { variant: 'object', name, fields: fields.map(toField) },
+    },
+  };
+}
+
 function makeSchemaEntry(data: Record<string, unknown>): SchemaEntry {
   return { id: 'test-schema', kind: 'json-schema', data };
 }
@@ -430,7 +464,7 @@ describe('ApiDocsSearchIndexer', () => {
               {
                 name: 'offset',
                 schemaId: 'offset',
-                description: textNode('Items to skip') as unknown as Node,
+                description: textNode('Items to skip'),
                 required: false,
               },
             ]),
@@ -1090,18 +1124,17 @@ describe('ApiDocsSearchIndexer', () => {
       });
     });
 
-    it('extracts GraphQL fields from graphqlSchema', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+    it('extracts GraphQL fields from the store', () => {
+      const indexer = new ApiDocsSearchIndexer(BASE_PATH, {
+        ...graphqlTypeEntry('Book', [
+          { name: 'title', type: 'String!', description: textNode('Book title') },
+          { name: 'pageCount', type: 'Int', description: textNode('Number of pages') },
+        ]),
+      });
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
-            makeItemContentNode([], {
-              variant: 'graphql-fields',
-              graphqlSchema: [
-                { name: 'title', type: 'String!', description: textNode('Book title') },
-                { name: 'pageCount', type: 'Int', description: textNode('Number of pages') },
-              ],
-            }),
+            makeItemContentNode([], { variant: 'graphql-fields', graphqlTypeName: 'Book' }),
           ]),
         }),
       );
@@ -1121,17 +1154,32 @@ describe('ApiDocsSearchIndexer', () => {
       });
     });
 
-    it('extracts GraphQL arguments from graphqlSchema', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+    it('extracts GraphQL arguments from the store', () => {
+      const indexer = new ApiDocsSearchIndexer(
+        BASE_PATH,
+        {
+          ...graphqlTypeEntry('Query', [
+            {
+              name: 'books',
+              type: '[Book!]!',
+              args: [
+                { name: 'id', type: 'ID!', description: textNode('Book identifier') },
+                { name: 'limit', type: 'Int', description: textNode('Max results') },
+              ],
+            },
+          ]),
+        },
+        undefined,
+        { graphqlMeta: { rootTypes: { query: 'Query' } } },
+      );
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
             makeItemContentNode([], {
               variant: 'graphql-args',
-              graphqlSchema: [
-                { name: 'id', type: 'ID!', description: textNode('Book identifier') },
-                { name: 'limit', type: 'Int', description: textNode('Max results') },
-              ],
+              graphqlTypeName: 'books',
+              graphqlFieldName: 'books',
+              graphqlOperationType: 'query',
             }),
           ]),
         }),
@@ -1144,26 +1192,28 @@ describe('ApiDocsSearchIndexer', () => {
         place: 'arguments',
         type: 'ID!',
       });
+      expect((doc.parameters ?? [])[1]).toMatchObject({
+        name: 'limit',
+        description: 'Max results',
+        type: 'Int',
+      });
     });
 
     it('extracts nested args within GraphQL fields', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+      const indexer = new ApiDocsSearchIndexer(BASE_PATH, {
+        ...graphqlTypeEntry('User', [
+          {
+            name: 'avatarUrl',
+            type: 'URI!',
+            description: textNode('Avatar URL'),
+            args: [{ name: 'size', type: 'Int', description: textNode('Image size in pixels') }],
+          },
+        ]),
+      });
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
-            makeItemContentNode([], {
-              variant: 'graphql-fields',
-              graphqlSchema: [
-                {
-                  name: 'avatarUrl',
-                  type: 'URI!',
-                  description: textNode('Avatar URL'),
-                  args: [
-                    { name: 'size', type: 'Int', description: textNode('Image size in pixels') },
-                  ],
-                },
-              ],
-            }),
+            makeItemContentNode([], { variant: 'graphql-fields', graphqlTypeName: 'User' }),
           ]),
         }),
       );
@@ -1184,38 +1234,42 @@ describe('ApiDocsSearchIndexer', () => {
       });
     });
 
-    it('handles GraphQL fields with AST descriptions', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+    it('indexes return type fields without their arguments', () => {
+      const indexer = new ApiDocsSearchIndexer(BASE_PATH, {
+        ...graphqlTypeEntry('User', [
+          {
+            name: 'avatarUrl',
+            type: 'URI!',
+            description: textNode('Avatar URL'),
+            args: [{ name: 'size', type: 'Int', description: textNode('Image size in pixels') }],
+          },
+        ]),
+      });
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
-            makeItemContentNode([], {
-              variant: 'graphql-fields',
-              graphqlSchema: [
-                {
-                  name: 'name',
-                  type: 'String',
-                  description: textNode('The name field') as unknown as Node[],
-                },
-              ],
-            }),
+            makeItemContentNode([], { variant: 'return-type', graphqlTypeName: 'User' }),
           ]),
         }),
       );
 
       const [doc] = indexer.getResult();
-      expect((doc.parameters ?? [])[0].description).toBe('The name field');
+      expect(doc.parameters).toHaveLength(1);
+      expect((doc.parameters ?? [])[0]).toMatchObject({
+        name: 'avatarUrl',
+        place: 'return type fields',
+        path: [],
+      });
     });
 
     it('handles GraphQL fields with no description', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+      const indexer = new ApiDocsSearchIndexer(BASE_PATH, {
+        ...graphqlTypeEntry('Book', [{ name: 'id', type: 'ID!' }]),
+      });
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
-            makeItemContentNode([], {
-              variant: 'graphql-fields',
-              graphqlSchema: [{ name: 'id', type: 'ID!' }],
-            }),
+            makeItemContentNode([], { variant: 'graphql-fields', graphqlTypeName: 'Book' }),
           ]),
         }),
       );
@@ -1224,22 +1278,18 @@ describe('ApiDocsSearchIndexer', () => {
       expect((doc.parameters ?? [])[0].description).toBe('');
     });
 
-    it('does not require schemaStore for GraphQL field extraction', () => {
+    it('indexes no GraphQL rows without a schema store', () => {
       const indexer = new ApiDocsSearchIndexer(BASE_PATH);
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
-            makeItemContentNode([], {
-              variant: 'graphql-fields',
-              graphqlSchema: [{ name: 'status', type: 'Boolean!' }],
-            }),
+            makeItemContentNode([], { variant: 'graphql-fields', graphqlTypeName: 'Book' }),
           ]),
         }),
       );
 
       const [doc] = indexer.getResult();
-      expect(doc.parameters).toHaveLength(1);
-      expect((doc.parameters ?? [])[0]).toMatchObject({ name: 'status', type: 'Boolean!' });
+      expect(doc.parameters ?? []).toHaveLength(0);
     });
 
     it('skips readOnly fields in request bodies', () => {
@@ -2138,7 +2188,7 @@ describe('ApiDocsSearchIndexer', () => {
                 headingNode('Pagination', 'pets/get/pagination'),
                 textNode('Use the cursor parameter.'),
               ],
-            } as MarkdocNode,
+            },
           ]),
         }),
       );
@@ -2166,7 +2216,7 @@ describe('ApiDocsSearchIndexer', () => {
             {
               nodeType: nodeTypes.MARKDOC,
               content: [headingNode('Usage Notes'), textNode('Some notes.')],
-            } as MarkdocNode,
+            },
           ]),
         }),
       );
@@ -2193,7 +2243,7 @@ describe('ApiDocsSearchIndexer', () => {
                 } as unknown as Node,
                 textNode('Orphan text.'),
               ],
-            } as MarkdocNode,
+            },
           ]),
         }),
       );
