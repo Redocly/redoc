@@ -1,13 +1,5 @@
 <div align="center">
 
-  <a href="https://redocly.com/redoc-ce">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="./images/redoc-3-announcement-dark.gif">
-      <source media="(prefers-color-scheme: light)" srcset="./images/redoc-3-announcement-light.gif">
-      <img alt="Redoc 3.0 — one renderer for OpenAPI 3.2, AsyncAPI, GraphQL, and MCP" src="./images/redoc-3-announcement-light.gif">
-    </picture>
-  </a>
-
   **[Learn what's new in Redoc 3.x →](https://redocly.com/redoc-ce)**
 
 
@@ -53,7 +45,7 @@ enter the URL for your definition and select **TRY IT**.
 - High-level grouping in side menu with the [`x-tagGroups`](https://redocly.com/docs/realm/content/api-docs/openapi-extensions/x-tag-groups) specification extension
 - [Simple integration with React](https://redocly.com/docs/redoc/v3.x/deployment/react)
 - Code samples support (with the `x-codeSamples` specification extension) <br>
-  ![code samples in action](https://raw.githubusercontent.com/Redocly/redoc/main/demo/code-samples-demo.gif)
+  ![code samples in action](./images/code-samples-demo.gif)
 
 ## Usage
 
@@ -121,7 +113,7 @@ with support for specifications like SOAP and additional features including:
 
 A sample of the organizations using Redocly tools in the wild:
 
-- [Rebilly](https://api-reference.rebilly.com/)
+- [Rebilly](https://www.rebilly.com/catalog/all)
 - [Docker Engine](https://docs.docker.com/reference/api/engine/version/v1.56/)
 - [Zuora](https://developer.zuora.com/v1-api-reference/api)
 - [Discourse](https://docs.discourse.org)
