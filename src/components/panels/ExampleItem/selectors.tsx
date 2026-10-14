@@ -295,7 +295,6 @@ export function PayloadDisplay({
           <StyledCodeBlock
             lang="text"
             source={csvSource}
-            maxDisplayLength={MAX_DISPLAYED_STRING_LENGTH}
             header={{
               className: 'code-block-header',
               controls: { copy: { onClick: onCopy('text') } },

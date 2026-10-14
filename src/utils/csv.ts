@@ -29,6 +29,10 @@ function escapeCsvCell(value: CsvCell): string {
  * Returns `undefined` when the payload is not tabular (empty, primitives, or nested
  * objects/arrays in a cell), so the caller can fall back to its default rendering
  * instead of showing a lossy table.
+ *
+ * Rows are separated by LF rather than RFC 4180's CRLF, as this is display text.
+ * Cells starting with `=`, `+`, `-` or `@` are not escaped against formula injection: the
+ * values come from the API description, and escaping would change values such as `-3`.
  */
 export function jsonToCsv(value: unknown): string | undefined {
   const rows = Array.isArray(value) ? value : [value];

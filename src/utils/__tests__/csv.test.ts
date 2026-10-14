@@ -88,6 +88,13 @@ describe('jsonToCsv', () => {
     expect(jsonToCsv([{ toString: 'x' }, { a: 1 }])).toBe('toString,a\nx,\n,1');
   });
 
+  it('treats an own __proto__ key as an ordinary column', () => {
+    const rows = JSON.parse('[{"__proto__":"x","a":1},{"a":2}]');
+
+    expect(jsonToCsv(rows)).toBe('__proto__,a\nx,1\n,2');
+    expect(Object.getPrototypeOf(rows[1])).toBe(Object.prototype);
+  });
+
   it('writes an empty single-column cell as "" so the row is not a blank line', () => {
     expect(jsonToCsv([{ a: 'x' }, { a: '' }, { a: null }])).toBe('a\nx\n""\n""');
   });

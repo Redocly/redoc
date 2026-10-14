@@ -105,6 +105,16 @@ describe('PayloadDisplay', () => {
     expect(getByTestId('code-block-source').textContent).toBe('id,name\n1,Guru');
   });
 
+  it('shows a long CSV table in full, like the XML and form-urlencoded views', () => {
+    const payload = Array.from({ length: 100 }, (_, id) => ({ id, name: `name ${id}` }));
+    const { getByTestId } = render(<PayloadDisplay payload={payload} mediaType="text/csv" />);
+
+    const source = getByTestId('code-block-source').textContent ?? '';
+    expect(source.length).toBeGreaterThan(MAX_DISPLAYED_STRING_LENGTH);
+    expect(source.split('\n')).toHaveLength(101);
+    expect(getByTestId('code-block').hasAttribute('data-max-display-length')).toBe(false);
+  });
+
   it('serializes CSV for application/csv and +csv vendor types', () => {
     for (const mediaType of ['application/csv', 'application/vnd.example+csv']) {
       const { getByTestId, unmount } = render(
