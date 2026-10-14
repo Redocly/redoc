@@ -6,6 +6,7 @@ import { encodeJsonPointerSegment } from '../../utils/refPointer.js';
 import { DEFAULT_WEBHOOKS_TAG_NAME } from '../../constants/openapi.js';
 import { collectComponentClosure, buildComponentsFromClosure } from './component-closure.js';
 import { cloneStrip } from './clone-strip.js';
+import { trimInfoDescription } from './trim-description.js';
 
 import type { SpecSliceScope } from './types.js';
 
@@ -90,6 +91,7 @@ function buildDraft(
   for (const field of SLICE_ROOT_FIELDS) {
     if (document[field] !== undefined) draft[field] = document[field];
   }
+  trimInfoDescription(draft);
 
   if (scope.kind === 'schema') {
     const schemas = isRecord(document.components) ? document.components.schemas : undefined;

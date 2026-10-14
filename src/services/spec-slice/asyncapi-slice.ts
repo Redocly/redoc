@@ -1,6 +1,7 @@
 import { isRecord, resolveJsonPointer } from '../../adapters/helpers.js';
 import { collectComponentClosure, buildComponentsFromClosure } from './component-closure.js';
 import { cloneStrip } from './clone-strip.js';
+import { trimInfoDescription } from './trim-description.js';
 import { parsePointerTokens } from './openapi-slice.js';
 
 import type { SpecSliceScope } from './types.js';
@@ -41,6 +42,7 @@ export function extractAsyncApiSlice(
   for (const field of SLICE_ROOT_FIELDS) {
     if (document[field] !== undefined) draft[field] = document[field];
   }
+  trimInfoDescription(draft);
 
   const channels = isRecord(document.channels) ? document.channels : {};
   const operations = isRecord(document.operations) ? document.operations : {};

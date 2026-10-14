@@ -434,3 +434,18 @@ describe('buildSpecSlice — graphql', () => {
     ).resolves.toBeUndefined();
   });
 });
+
+describe('schema description trimming', () => {
+  it('trims a long schema description in an operation slice', () => {
+    const sdl = `"""${'z'.repeat(150)}"""\nschema {\n  query: Q\n}\ntype Q {\n  a: Int\n}\n`;
+
+    const slice = extractGraphqlSlice(sdl, {
+      kind: 'graphql-operation',
+      operationType: 'query',
+      name: 'a',
+    });
+
+    expect(slice).toContain(`${'z'.repeat(100)} ... trimmed`);
+    expect(slice).not.toContain('z'.repeat(101));
+  });
+});
