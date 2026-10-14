@@ -45,7 +45,6 @@ enter the URL for your definition and select **TRY IT**.
 - High-level grouping in side menu with the [`x-tagGroups`](https://redocly.com/docs/realm/content/api-docs/openapi-extensions/x-tag-groups) specification extension
 - [Simple integration with React](https://redocly.com/docs/redoc/v3.x/deployment/react)
 - Code samples support (with the `x-codeSamples` specification extension) <br>
-  ![code samples in action](./images/code-samples-demo.gif)
 
 ## Usage
 
