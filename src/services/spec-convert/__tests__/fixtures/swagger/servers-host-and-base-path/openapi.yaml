@@ -1,0 +1,7 @@
+openapi: 3.2.0
+info:
+  title: Redocly Cafe
+  version: 1.0.0
+paths: {}
+servers:
+  - url: //cafe.example.test/api/v1

@@ -1,0 +1,42 @@
+openapi: 3.2.0
+info:
+  title: Redocly Cafe
+  version: 1.0.0
+paths:
+  /orders/{orderId}/feedback:
+    parameters:
+      - name: orderId
+        in: path
+        required: true
+        schema:
+          type: string
+    post:
+      operationId: rateOrder
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                visitDate:
+                  type: string
+                  format: date
+                rating:
+                  type: integer
+                  minimum: 1
+                  maximum: 5
+                  default: 5
+                comment:
+                  description: Free-text comment for the kitchen.
+                  type: string
+                  x-display: textarea
+              required:
+                - comment
+      responses:
+        '204':
+          description: Thanks for the feedback.
+    put:
+      operationId: replaceOrderFeedback
+      responses:
+        '204':
+          description: Feedback replaced.

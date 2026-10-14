@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Redoc CE — options from attributes</title>
+  </head>
+  <body style="margin: 0">
+    <!-- Query parameters become `<redoc>` attributes before the deferred module script runs. -->
+    <redoc></redoc>
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const element = document.querySelector('redoc');
+
+      element.setAttribute('spec-url', params.get('spec-url') ?? '/specs/cafe/openapi.yaml');
+      for (const [name, value] of params) {
+        if (name === 'spec-url') continue;
+        element.setAttribute(name, value);
+      }
+    </script>
+    <script type="module" src="/bundles/redoc.standalone.js"></script>
+  </body>
+</html>

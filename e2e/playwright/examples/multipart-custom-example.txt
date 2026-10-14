@@ -1,0 +1,19 @@
+--boundary-separator
+Content-Type: application/json
+
+{
+  "id": "doc_001",
+  "title": "Sample Document",
+  "content": "This is sample content",
+  "createdAt": "2024-01-15T10:00:00Z"
+}
+--boundary-separator
+Content-Type: application/json
+
+{
+  "operationId": "op_001",
+  "status": "success",
+  "resourceId": "user_789",
+  "createdAt": "2024-01-15T11:00:00Z"
+}
+--boundary-separator--

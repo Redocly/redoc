@@ -13,7 +13,11 @@ A clear and concise description of what the bug is.
 **Expected behavior**
 A clear and concise description of what you expected to happen.
 
-**Minimal reproducible OpenAPI snippet(if possible)**
+**Minimal reproducible spec snippet**
+
+
+**Version (of Redoc, Node, OS, Browser)**
+
 
 **Screenshots**
 If applicable, add screenshots to help explain your problem.

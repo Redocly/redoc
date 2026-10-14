@@ -1,0 +1,20 @@
+{
+  "name": "redoc-example-svelte",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "svelte-check && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "redoc": "^3.0.0-rc.1"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^7.3.0",
+    "svelte": "^5.57.0",
+    "svelte-check": "^4.7.6",
+    "typescript": "^5.9.3",
+    "vite": "^8.2.1"
+  }
+}

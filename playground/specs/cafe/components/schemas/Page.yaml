@@ -1,0 +1,41 @@
+type: object
+properties:
+  endCursor:
+    type:
+      - string
+      - 'null'
+    description: |-
+      Use with the `after` query parameter to load the next page of data.
+      When `null`, there is no data.
+      The cursor is opaque and internal structure is subject to change.
+  startCursor:
+    type:
+      - string
+      - 'null'
+    description: |-
+      Use with the `before` query parameter to load the previous page of data.
+      When `null`, there is no data.
+      The cursor is opaque and internal structure is subject to change.
+  hasNextPage:
+    type: boolean
+    description: Indicates if there is a next page with items.
+  hasPrevPage:
+    type: boolean
+    description: Indicates if there is a previous page with items.
+  limit:
+    type: integer
+    minimum: 1
+    maximum: 100
+    default: 10
+    description: Value showing how many items are in the page limit.
+  total:
+    type: integer
+    description: Count of items across all pages.
+    minimum: 0
+required:
+  - endCursor
+  - startCursor
+  - hasNextPage
+  - hasPrevPage
+  - limit
+  - total

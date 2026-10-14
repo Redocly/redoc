@@ -1,0 +1,91 @@
+openapi: 3.2.0
+info:
+  title: Redocly Cafe
+  version: 1.0.0
+paths:
+  /orders:
+    get:
+      operationId: listOrders
+      responses:
+        '200':
+          description: Open orders.
+          headers:
+            X-Queue-Length:
+              description: Orders waiting ahead of this one.
+              schema:
+                type: integer
+                format: int32
+            X-Order-Ids:
+              schema:
+                type: array
+                minItems: 1
+                items:
+                  type: string
+              style: simple
+            X-Station-Ids:
+              schema:
+                type: array
+                items:
+                  type: integer
+              explode: true
+            X-Ticket-Codes:
+              schema:
+                type: array
+                items:
+                  type: string
+              x-collectionFormat: tsv
+            X-Shift:
+              schema:
+                type: string
+                enum:
+                  - morning
+                  - evening
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+              examples:
+                response:
+                  value:
+                    - id: A-17
+                      status: brewing
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+            text/csv:
+              examples:
+                response:
+                  value: |
+                    id,status
+                    A-17,brewing
+        '404':
+          description: ''
+        '500':
+          $ref: '#/components/responses/KitchenDown'
+components:
+  responses:
+    KitchenDown:
+      description: The kitchen is offline.
+      headers:
+        Retry-After:
+          schema:
+            type: integer
+      content:
+        application/json:
+          schema:
+            type: string
+        text/plain:
+          schema:
+            type: string
+  schemas:
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string

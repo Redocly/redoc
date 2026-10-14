@@ -1,0 +1,80 @@
+openapi: 3.2.0
+info:
+  description: Menu photos and their metadata.
+  version: v1
+  title: Redocly Cafe
+  contact:
+    name: Cafe kitchen
+    url: https://cafe.example.test/kitchen
+  license:
+    name: Cafe internal use
+    url: https://cafe.example.test/license
+tags:
+  - name: Menu photos
+paths:
+  /menu/photos:
+    post:
+      tags:
+        - Menu photos
+      summary: Upload a menu photo with optional metadata
+      description: |
+        Send the picture as a file together with the fields that describe it.
+      operationId: uploadMenuPhoto
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                photo:
+                  description: The picture itself.
+                  type: string
+                  format: binary
+                caption:
+                  description: Caption shown under the photo.
+                  example: Iced oat latte
+                  type: string
+                menuItemId:
+                  description: Menu item the photo belongs to.
+                  example: latte-oat-iced
+                  type: string
+                takenBy:
+                  description: Staff member who took the photo.
+                  example: maria
+                  type: string
+      responses:
+        '200':
+          description: Photo stored.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MenuPhoto'
+        '201':
+          description: Photo stored and published.
+        '400':
+          description: The upload was empty.
+      security:
+        - BasicAuth: []
+servers:
+  - url: http://cafe.example.test:8080/media
+  - url: https://cafe.example.test:8080/media
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+  schemas:
+    MenuPhoto:
+      type: object
+      properties:
+        id:
+          type: string
+        caption:
+          type: string
+        menuItemId:
+          type: string
+        uploadedAt:
+          type: string
+          format: date-time
+        url:
+          type: string

@@ -1,0 +1,31 @@
+openapi: 3.2.0
+info:
+  title: Redocly Cafe
+  version: 1.0.0
+paths:
+  /orders:
+    parameters: []
+    post:
+      operationId: createOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewOrder'
+        description: The full order.
+        required: true
+      responses:
+        '201':
+          description: Order placed.
+    put:
+      operationId: replaceOrders
+      responses:
+        '200':
+          description: Orders replaced.
+components:
+  schemas:
+    NewOrder:
+      type: object
+      properties:
+        note:
+          type: string

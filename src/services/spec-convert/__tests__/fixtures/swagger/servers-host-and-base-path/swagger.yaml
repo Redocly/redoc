@@ -1,0 +1,7 @@
+swagger: '2.0'
+info:
+  title: Redocly Cafe
+  version: 1.0.0
+host: cafe.example.test
+basePath: /api/v1
+paths: {}

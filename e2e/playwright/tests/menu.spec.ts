@@ -1,0 +1,730 @@
+import { test, expect } from '@playwright/test';
+
+test.describe('Menu', () => {
+  test('should render menu with auto generated tags', async ({ page }) => {
+    await page.goto('/menu');
+    await expect(page.locator('.menu-content')).toMatchAriaSnapshot(`
+    - list:
+      - listitem:
+        - link "Menu API":
+          - /url: /menu
+      - listitem:
+        - link "cafe":
+          - /url: /menu/cafe
+          - img
+          - text: cafe
+      - listitem:
+        - link "store":
+          - /url: /menu/store
+          - img
+          - text: store
+      - listitem:
+        - link "user":
+          - /url: /menu/user
+          - img
+          - text: user
+    - button "Hide sidebar":
+      - img
+    - img
+    - img
+    `);
+    await page.getByRole('link', { name: 'cafe', exact: true }).click();
+    await expect(page).toHaveURL(/\/menu\/cafe$/);
+    await expect(page.locator('.menu-content')).toMatchAriaSnapshot(`
+    - list:
+      - listitem:
+        - link "Menu API":
+          - /url: /menu
+      - listitem:
+        - link "cafe":
+          - /url: /menu/cafe
+          - img
+          - text: cafe
+        - list:
+          - listitem:
+            - link "Add a new cafe to the store post":
+              - /url: /menu/cafe/addcafe
+          - listitem:
+            - link "Update an existing cafe put":
+              - /url: /menu/cafe/updatecafe
+          - listitem:
+            - link "OperationId with backslash delete":
+              - /url: /menu/cafe/operationidwith%5cbackslash
+          - listitem:
+            - link "Find cafe by ID get":
+              - /url: /menu/cafe/getcafebyid
+          - listitem:
+            - link "Updates a cafe in the store with form data post":
+              - /url: /menu/cafe/updatecafewithform
+          - listitem:
+            - link "Deletes a cafe delete":
+              - /url: /menu/cafe/deletecafe
+          - listitem:
+            - link "uploads an image post":
+              - /url: /menu/cafe/uploadfile
+          - listitem:
+            - link "Finds Cafes by status get":
+              - /url: /menu/cafe/findcafebystatus
+          - listitem:
+            - link "OperationId with quotes get":
+              - /url: /menu/cafe/operationidwith"quotes
+          - listitem:
+            - link "Finds Cafes by tags get":
+              - /url: /menu/cafe/findcafebytags
+      - listitem:
+        - link "store":
+          - /url: /menu/store
+          - img
+          - text: store
+      - listitem:
+        - link "user":
+          - /url: /menu/user
+          - img
+          - text: user
+    - button "Hide sidebar":
+      - img
+    - img
+    - img
+    `);
+    await page.getByRole('link', { name: 'store', exact: true }).click();
+    await expect(page).toHaveURL(/\/menu\/store$/);
+    await expect(page.locator('.menu-content')).toMatchAriaSnapshot(`
+      - list:
+        - listitem:
+          - link "Menu API":
+            - /url: /menu
+        - listitem:
+          - link "cafe":
+            - /url: /menu/cafe
+            - img
+            - text: cafe
+        - listitem:
+          - link "store":
+            - /url: /menu/store
+            - img
+            - text: store
+          - list:
+            - listitem:
+              - link "Returns cafe inventories by status get":
+                - /url: /menu/store/getinventory
+            - listitem:
+              - link "Place an order for a cafe post":
+                - /url: /menu/store/placeorder
+            - listitem:
+              - link "Find purchase order by ID get":
+                - /url: /menu/store/getorderbyid
+            - listitem:
+              - link "Delete purchase order by ID delete":
+                - /url: /menu/store/deleteorder
+            - listitem:
+              - link "Subscribe to the Store events post":
+                - /url: /menu/store/paths/~1store~1subscribe/post
+        - listitem:
+          - link "user":
+            - /url: /menu/user
+            - img
+            - text: user
+      - button "Hide sidebar":
+        - img
+      - img
+      - img
+    `);
+    await page.getByRole('link', { name: 'user' }).first().click();
+    await expect(page).toHaveURL(/\/menu\/user$/);
+
+    await expect(page.locator('.menu-content')).toMatchAriaSnapshot(`
+      - list:
+        - listitem:
+          - link "Menu API":
+            - /url: /menu
+        - listitem:
+          - link "cafe":
+            - /url: /menu/cafe
+            - img
+            - text: cafe
+        - listitem:
+          - link "store":
+            - /url: /menu/store
+            - img
+            - text: store
+        - listitem:
+          - link "user":
+            - /url: /menu/user
+            - img
+            - text: user
+          - list:
+            - listitem:
+              - link "Create user post":
+                - /url: /menu/user/createuser
+            - listitem:
+              - link "Get user by user name get":
+                - /url: /menu/user/getuserbyname
+            - listitem:
+              - link "Updated user put":
+                - /url: /menu/user/updateuser
+            - listitem:
+              - link "Delete user delete":
+                - /url: /menu/user/deleteuser
+            - listitem:
+              - link "Creates list of users with given input array post":
+                - /url: /menu/user/createuserswitharrayinput
+            - listitem:
+              - link "Creates list of users with given input array post":
+                - /url: /menu/user/createuserswithlistinput
+            - listitem:
+              - link "Logs user into the system get":
+                - /url: /menu/user/loginuser
+            - listitem:
+              - link "Logs out current logged in user session get":
+                - /url: /menu/user/logoutuser
+      - button "Hide sidebar":
+        - img
+      - img
+      - img
+    `);
+  });
+
+  test('should render menu with predefined tags', async ({ page }) => {
+    await page.goto('/menu-with-tags');
+    await expect(page.locator('.menu-content')).toMatchAriaSnapshot(`
+    - list:
+      - listitem:
+        - link "Cafe API":
+          - /url: /menu-with-tags
+      - listitem:
+        - link "cafe":
+          - /url: /menu-with-tags/cafe
+          - img
+          - text: cafe
+      - listitem:
+        - link "store":
+          - /url: /menu-with-tags/store
+          - img
+          - text: store
+      - listitem:
+        - link "user":
+          - /url: /menu-with-tags/user
+          - img
+          - text: user
+    - button "Hide sidebar":
+      - img
+    - img
+    - img
+    `);
+    await page.getByRole('link', { name: 'cafe', exact: true }).click();
+    await expect(page).toHaveURL(/\/menu-with-tags\/cafe$/);
+    await expect(page.locator('.menu-content')).toMatchAriaSnapshot(`
+      - list:
+        - listitem:
+          - link "Cafe API":
+            - /url: /menu-with-tags
+        - listitem:
+          - link "cafe":
+            - /url: /menu-with-tags/cafe
+            - img
+            - text: cafe
+          - list:
+            - listitem:
+              - link "ApiResponse schema":
+                - /url: /menu-with-tags/cafe/apiresponse
+            - listitem:
+              - link "Cat schema":
+                - /url: /menu-with-tags/cafe/cat
+            - listitem:
+              - link "Add a new cafe to the store post":
+                - /url: /menu-with-tags/cafe/addcafe
+            - listitem:
+              - link "Update an existing cafe put":
+                - /url: /menu-with-tags/cafe/updatecafe
+            - listitem:
+              - link "OperationId with quotes get":
+                - /url: /menu-with-tags/cafe/operationidwith"quotes
+            - listitem:
+              - link "OperationId with backslash delete":
+                - /url: /menu-with-tags/cafe/operationidwith%5cbackslash
+            - listitem:
+              - link "Find cafe by ID get":
+                - /url: /menu-with-tags/cafe/getcafebyid
+            - listitem:
+              - link "Updates a cafe in the store with form data post":
+                - /url: /menu-with-tags/cafe/updatecafewithform
+            - listitem:
+              - link "Deletes a cafe delete":
+                - /url: /menu-with-tags/cafe/deletecafe
+            - listitem:
+              - link "uploads an image post":
+                - /url: /menu-with-tags/cafe/uploadfile
+            - listitem:
+              - link "Finds Cafes by status get":
+                - /url: /menu-with-tags/cafe/findcafebystatus
+            - listitem:
+              - link "Finds Cafes by tags get":
+                - /url: /menu-with-tags/cafe/findcafebytags
+        - listitem:
+          - link "store":
+            - /url: /menu-with-tags/store
+            - img
+            - text: store
+        - listitem:
+          - link "user":
+            - /url: /menu-with-tags/user
+            - img
+            - text: user
+      - button "Hide sidebar":
+        - img
+      - img
+      - img
+    `);
+  });
+
+  test('should render menu with predefined tags and groups', async ({ page }) => {
+    await page.goto('/menu-with-tag-groups');
+    await expect(page.locator('.menu-content')).toMatchAriaSnapshot(`
+    - list:
+      - listitem:
+        - link "Cafe API":
+          - /url: /menu-with-tag-groups
+      - listitem: General
+      - listitem:
+        - link "Authentication":
+          - /url: /menu-with-tag-groups/authentication
+      - listitem: Cafe
+      - listitem:
+        - link "cafe":
+          - /url: /menu-with-tag-groups/cafe
+          - img
+          - text: cafe
+    - button "Hide sidebar":
+      - img
+    - img
+    - img
+    `);
+    await page.getByRole('link', { name: 'cafe', exact: true }).click();
+    await expect(page).toHaveURL(/\/menu-with-tag-groups\/cafe$/);
+    await expect(page.locator('.menu-content')).toMatchAriaSnapshot(`
+      - list:
+        - listitem:
+          - link "Cafe API":
+            - /url: /menu-with-tag-groups
+        - listitem: General
+        - listitem:
+          - link "Authentication":
+            - /url: /menu-with-tag-groups/authentication
+        - listitem: Cafe
+        - listitem:
+          - link "cafe":
+            - /url: /menu-with-tag-groups/cafe
+            - img
+            - text: cafe
+          - list:
+            - listitem:
+              - link "Add a new cafe to the store post":
+                - /url: /menu-with-tag-groups/cafe/addcafe
+            - listitem:
+              - link "Update an existing cafe put":
+                - /url: /menu-with-tag-groups/cafe/updatecafe
+      - button "Hide sidebar":
+        - img
+      - img
+      - img
+    `);
+  });
+  test('should render menu for asyncapi', async ({ page }) => {
+    await page.goto('/asyncapi');
+    await expect(page.locator('.menu-content')).toMatchAriaSnapshot(`
+      - list:
+        - listitem:
+          - link "WheelyFast - Ride Sharing Platform":
+            - /url: /asyncapi
+        - listitem:
+          - link "Key features of our platform:":
+            - /url: "/asyncapi/section/key-features-of-our-platform:"
+        - listitem:
+          - link "Rides":
+            - /url: /asyncapi/rides
+            - img
+            - text: Rides
+        - listitem:
+          - link "Payments":
+            - /url: /asyncapi/payments
+            - img
+            - text: Payments
+        - listitem:
+          - link "Notifications":
+            - /url: /asyncapi/notifications
+            - img
+            - text: Notifications
+        - listitem:
+          - link "Driver Location Topic topic":
+            - /url: /asyncapi/topics/driver-location
+            - img
+            - text: Driver Location Topic topic
+        - listitem:
+          - link "User Ratings Topic topic":
+            - /url: /asyncapi/topics/ratings
+      - button "Hide sidebar":
+        - img
+      - img
+      - img
+    `);
+    await page.getByRole('link', { name: 'Driver Location Topic topic' }).click();
+    await expect(page.locator('.menu-content')).toMatchAriaSnapshot(`
+      - list:
+        - listitem:
+          - link "WheelyFast - Ride Sharing Platform":
+            - /url: /asyncapi
+        - listitem:
+          - link "Key features of our platform:":
+            - /url: "/asyncapi/section/key-features-of-our-platform:"
+        - listitem:
+          - link "Rides":
+            - /url: /asyncapi/rides
+            - img
+            - text: Rides
+        - listitem:
+          - link "Payments":
+            - /url: /asyncapi/payments
+            - img
+            - text: Payments
+        - listitem:
+          - link "Notifications":
+            - /url: /asyncapi/notifications
+            - img
+            - text: Notifications
+        - listitem:
+          - link "Driver Location Topic topic":
+            - /url: /asyncapi/topics/driver-location
+            - img
+            - text: Driver Location Topic topic
+          - list:
+            - listitem:
+              - link "Produce Location Updates pub":
+                - /url: /asyncapi/topics/driver-location/operations/publishlocationupdates
+            - listitem:
+              - link "Consume Location Data sub":
+                - /url: /asyncapi/topics/driver-location/operations/consumelocationupdates
+        - listitem:
+          - link "User Ratings Topic topic":
+            - /url: /asyncapi/topics/ratings
+      - button "Hide sidebar":
+        - img
+      - img
+      - img
+    `);
+    await page.getByRole('link', { name: 'Notifications', exact: true }).click();
+    await expect(page.locator('.menu-content')).toMatchAriaSnapshot(`
+      - list:
+        - listitem:
+          - link "WheelyFast - Ride Sharing Platform":
+            - /url: /asyncapi
+        - listitem:
+          - link "Key features of our platform:":
+            - /url: "/asyncapi/section/key-features-of-our-platform:"
+        - listitem:
+          - link "Rides":
+            - /url: /asyncapi/rides
+            - img
+            - text: Rides
+        - listitem:
+          - link "Payments":
+            - /url: /asyncapi/payments
+            - img
+            - text: Payments
+        - listitem:
+          - link "Notifications":
+            - /url: /asyncapi/notifications
+            - img
+            - text: Notifications
+          - list:
+            - listitem:
+              - link "Driver Notification Topic topic":
+                - /url: /asyncapi/notifications/topics/driver-notifications
+            - listitem:
+              - link "Passenger Notification Topic topic":
+                - /url: /asyncapi/notifications/topics/passenger-notifications
+        - listitem:
+          - link "Driver Location Topic topic":
+            - /url: /asyncapi/topics/driver-location
+            - img
+            - text: Driver Location Topic topic
+        - listitem:
+          - link "User Ratings Topic topic":
+            - /url: /asyncapi/topics/ratings
+      - button "Hide sidebar":
+        - img
+      - img
+      - img
+    `);
+  });
+
+  test('should render menu for graphql', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('.menu-content')).toMatchAriaSnapshot(`
+      - list:
+        - listitem:
+          - link "Overview":
+            - /url: /
+        - listitem:
+          - link "GraphQL custom group":
+            - /url: /graphql-custom-group
+            - img
+            - text: "GraphQL custom group"
+        - listitem:
+          - link "Other":
+            - /url: /other
+            - img
+            - text: "Other"
+      - button "Hide sidebar":
+        - img
+      - img
+      - img
+    `);
+    await page.getByTestId('Menu/Menu').getByRole('link', { name: 'GraphQL custom group' }).click();
+    await expect(page.locator('.menu-content')).toMatchAriaSnapshot(`
+      - list:
+        - listitem:
+          - link "Overview":
+            - /url: /
+        - listitem:
+          - link "GraphQL custom group":
+            - /url: /graphql-custom-group
+            - img
+            - text: "GraphQL custom group"
+          - list:
+            - listitem:
+              - link "acceptEnterpriseAdministratorInvitation":
+                - /url: /graphql-custom-group/acceptenterpriseadministratorinvitation
+            - listitem:
+              - link "@possibleTypes":
+                - /url: /graphql-custom-group/possibletypes
+        - listitem:
+          - link "Other":
+            - /url: /other
+            - img
+            - text: "Other"
+      - button "Hide sidebar":
+        - img
+      - img
+      - img
+      `);
+    await page.getByRole('link', { name: 'Other', exact: true }).click();
+    await expect(page.locator('.menu-content')).toMatchAriaSnapshot(`
+      - list:
+        - listitem:
+          - link "Overview":
+            - /url: /
+        - listitem:
+          - link "GraphQL custom group":
+            - /url: /graphql-custom-group
+            - img
+            - text: "GraphQL custom group"
+        - listitem:
+          - link "Other":
+            - /url: /other
+            - img
+            - text: "Other"
+          - list:
+            - listitem:
+              - link "Queries":
+                - /url: /other/queries
+                - img
+                - text: "Queries"
+            - listitem:
+              - link "Mutations":
+                - /url: /other/mutations
+                - img
+                - text: "Mutations"
+            - listitem:
+              - link "Directives":
+                - /url: /other/directives
+                - img
+                - text: "Directives"
+            - listitem:
+              - link "Objects":
+                - /url: /other/objects
+                - img
+                - text: "Objects"
+            - listitem:
+              - link "Interfaces":
+                - /url: /other/interfaces
+                - img
+                - text: "Interfaces"
+            - listitem:
+              - link "Unions":
+                - /url: /other/unions
+                - img
+                - text: "Unions"
+            - listitem:
+              - link "Enums":
+                - /url: /other/enums
+                - img
+                - text: "Enums"
+            - listitem:
+              - link "Inputs":
+                - /url: /other/inputs
+                - img
+                - text: "Inputs"
+            - listitem:
+              - link "Scalars":
+                - /url: /other/scalars
+                - img
+                - text: "Scalars"
+      - button "Hide sidebar":
+        - img
+      - img
+      - img
+      `);
+    await page.getByRole('link', { name: 'Queries', exact: true }).first().click();
+    await expect(page.locator('.menu-content')).toMatchAriaSnapshot(`
+      - list:
+        - listitem:
+          - link "Overview":
+            - /url: /
+        - listitem:
+          - link "GraphQL custom group":
+            - /url: /graphql-custom-group
+            - img
+            - text: "GraphQL custom group"
+        - listitem:
+          - link "Other":
+            - /url: /other
+            - img
+            - text: "Other"
+          - list:
+            - listitem:
+              - link "Queries":
+                - /url: /other/queries
+                - img
+                - text: "Queries"
+              - list:
+                - listitem:
+                  - link "codeOfConduct":
+                    - /url: /other/queries/codeofconduct
+                - listitem:
+                  - link "codesOfConduct":
+                    - /url: /other/queries/codesofconduct
+                - listitem:
+                  - link "enterprise":
+                    - /url: /other/queries/enterprise
+                - listitem:
+                  - link "enterpriseAdministratorInvitation":
+                    - /url: /other/queries/enterpriseadministratorinvitation
+                - listitem:
+                  - link "enterpriseAdministratorInvitationByToken":
+                    - /url: /other/queries/enterpriseadministratorinvitationbytoken
+                - listitem:
+                  - link "license":
+                    - /url: /other/queries/license
+                - listitem:
+                  - link "licenses":
+                    - /url: /other/queries/licenses
+                - listitem:
+                  - link "marketplaceCategories":
+                    - /url: /other/queries/marketplacecategories
+                - listitem:
+                  - link "marketplaceCategory":
+                    - /url: /other/queries/marketplacecategory
+                - listitem:
+                  - link "marketplaceListing":
+                    - /url: /other/queries/marketplacelisting
+                - listitem:
+                  - link "marketplaceListings":
+                    - /url: /other/queries/marketplacelistings
+                - listitem:
+                  - link "meta":
+                    - /url: /other/queries/meta
+                - listitem:
+                  - link "node":
+                    - /url: /other/queries/node
+                - listitem:
+                  - link "nodes":
+                    - /url: /other/queries/nodes
+                - listitem:
+                  - link "organization":
+                    - /url: /other/queries/organization
+                - listitem:
+                  - link "rateLimit":
+                    - /url: /other/queries/ratelimit
+                - listitem:
+                  - link "relay":
+                    - /url: /other/queries/relay
+                - listitem:
+                  - link "repository":
+                    - /url: /other/queries/repository
+                - listitem:
+                  - link "repositoryOwner":
+                    - /url: /other/queries/repositoryowner
+                - listitem:
+                  - link "resource":
+                    - /url: /other/queries/resource
+                - listitem:
+                  - link "search":
+                    - /url: /other/queries/search
+                - listitem:
+                  - link "securityAdvisories":
+                    - /url: /other/queries/securityadvisories
+                - listitem:
+                  - link "securityAdvisory":
+                    - /url: /other/queries/securityadvisory
+                - listitem:
+                  - link "securityVulnerabilities":
+                    - /url: /other/queries/securityvulnerabilities
+                - listitem:
+                  - link "sponsorables":
+                    - /url: /other/queries/sponsorables
+                - listitem:
+                  - link "topic":
+                    - /url: /other/queries/topic
+                - listitem:
+                  - link "user":
+                    - /url: /other/queries/user
+                - listitem:
+                  - link "viewer":
+                    - /url: /other/queries/viewer
+            - listitem:
+              - link "Mutations":
+                - /url: /other/mutations
+                - img
+                - text: "Mutations"
+            - listitem:
+              - link "Directives":
+                - /url: /other/directives
+                - img
+                - text: "Directives"
+            - listitem:
+              - link "Objects":
+                - /url: /other/objects
+                - img
+                - text: "Objects"
+            - listitem:
+              - link "Interfaces":
+                - /url: /other/interfaces
+                - img
+                - text: "Interfaces"
+            - listitem:
+              - link "Unions":
+                - /url: /other/unions
+                - img
+                - text: "Unions"
+            - listitem:
+              - link "Enums":
+                - /url: /other/enums
+                - img
+                - text: "Enums"
+            - listitem:
+              - link "Inputs":
+                - /url: /other/inputs
+                - img
+                - text: "Inputs"
+            - listitem:
+              - link "Scalars":
+                - /url: /other/scalars
+                - img
+                - text: "Scalars"
+      - button "Hide sidebar":
+        - img
+      - img
+      - img
+      `);
+  });
+});

@@ -1,0 +1,27 @@
+parameters:
+  - $ref: ../components/parameters/MenuItemId.yaml
+get:
+  operationId: getMenuItemPhoto
+  summary: Retrieve a menu item photo
+  description: Retrieve the product photo image for a specific menu item.
+  security: []
+  tags:
+    - Products
+  parameters:
+    - $ref: ../components/parameters/PhotoSize.yaml
+  responses:
+    '200':
+      description: Menu item photo retrieved successfully.
+      content:
+        image/png:
+          schema:
+            type: string
+            format: binary
+        text/plain:
+          schema:
+            description: Alternative image text.
+            type: string
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml

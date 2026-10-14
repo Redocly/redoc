@@ -1,0 +1,72 @@
+# Covers what the cafe specs cannot: x-codeSamples, a >3-value enum, vendor extensions,
+# and x-metadata. The enum, extension and x-metadata seams are asserted in unit tests;
+# the e2e suite uses this fixture for the code-sample tabs and attribute parsing.
+openapi: 3.1.0
+info:
+  title: Code samples fixture
+  version: 1.0.0
+  description: Fixture for the community edition code-sample and extension seams.
+  x-metadata:
+    owner: platform-team
+    slack: '#redoc-ce'
+servers:
+  - url: https://example.test/v1
+tags:
+  - name: beans
+    description: Bean inventory.
+paths:
+  /beans:
+    post:
+      operationId: createBean
+      summary: Create a bean
+      tags:
+        - beans
+      x-codeSamples:
+        - lang: curl
+          label: cURL
+          source: |
+            curl -X POST https://example.test/v1/beans \
+              -H 'content-type: application/json' \
+              -d '{"roast":"medium"}'
+        - lang: Python
+          label: Python
+          source: |
+            import requests
+            requests.post('https://example.test/v1/beans', json={'roast': 'medium'})
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Bean'
+      responses:
+        '201':
+          description: Created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bean'
+components:
+  schemas:
+    Bean:
+      type: object
+      required:
+        - roast
+      properties:
+        roast:
+          type: string
+          description: How far the bean was roasted.
+          # Six values, so `max-displayed-enum-values="3"` visibly truncates.
+          enum:
+            - light
+            - cinnamon
+            - medium
+            - full-city
+            - dark
+            - french
+        origin:
+          type: string
+          # Unique sentinels: the UI renders these keys with the `x-` prefix stripped.
+          x-foo: extension-foo-value
+          x-bar: extension-bar-value
+          x-unlisted: extension-unlisted-value

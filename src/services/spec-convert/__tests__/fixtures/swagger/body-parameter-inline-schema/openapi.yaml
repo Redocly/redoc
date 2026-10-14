@@ -1,0 +1,16 @@
+openapi: 3.2.0
+info:
+  title: Redocly Cafe
+  version: 1.0.0
+paths:
+  /orders:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        required: true
+      responses:
+        '200':
+          description: Order received.

@@ -1,0 +1,126 @@
+get:
+  tags:
+    - Orders
+  summary: Retrieve an order
+  description: Retrieve a single order by its ID.
+  operationId: getOrderById
+  security:
+    - OAuth2:
+        - orders:read
+  parameters:
+    - $ref: ../components/parameters/OrderId.yaml
+  responses:
+    '200':
+      description: Successful operation.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Order.yaml
+          examples:
+            OrderResponse:
+              dataValue:
+                id: ord_01h1s5z6vf2mm1mz3hevnn9va7
+                customerName: Mary Ann
+                orderItems:
+                  - menuItemId: prd_01h1s5z6vf2mm1mz3hevnn9va7
+                    quantity: 2
+                    comment: No sugar!
+                    discount: 0
+                object: order
+                status: placed
+                totalPrice: 200
+                createdAt: 2026-08-24T14:15:22Z
+                updatedAt: 2026-08-24T14:15:22Z
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml
+patch:
+  tags:
+    - Orders
+  summary: Partially update an order
+  description: |
+    Update an existing order status.
+    Order items cannot be changed - if they need to be updated, the order should be canceled and a new one placed.
+  operationId: updateOrder
+  security:
+    - OAuth2:
+        - orders:write
+  parameters:
+    - $ref: ../components/parameters/OrderId.yaml
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          description: |
+            Partial order update using JSON Merge Patch - only include fields to update.
+          properties:
+            status:
+              $ref: ../components/schemas/OrderStatus.yaml
+          required:
+            - status
+  responses:
+    '200':
+      description: Order updated successfully.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Order.yaml
+          examples:
+            OrderResponse:
+              dataValue:
+                id: ord_01h1s5z6vf2mm1mz3hevnn9va7
+                customerName: Mary Ann
+                orderItems:
+                  - menuItemId: prd_01h1s5z6vf2mm1mz3hevnn9va7
+                    quantity: 2
+                    comment: No sugar!
+                    discount: 0
+                object: order
+                status: completed
+                totalPrice: 200
+                createdAt: 2026-08-24T14:15:22Z
+                updatedAt: 2026-08-24T14:15:22Z
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml
+delete:
+  tags:
+    - Orders
+  summary: Delete an order
+  description: |
+    Delete the order.
+    To keep the order history, the order should be canceled instead of deleted.
+  operationId: deleteOrder
+  security:
+    - OAuth2:
+        - orders:write
+  parameters:
+    - $ref: ../components/parameters/OrderId.yaml
+  responses:
+    '204':
+      description: Order deleted successfully.
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml

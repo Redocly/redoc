@@ -1,0 +1,1321 @@
+openapi: 3.1.0
+servers:
+  - url: //cafe-api.example.com/v2
+    description: Default server
+  - url: //cafe-api.example.com/sandbox
+    description: Sandbox server
+info:
+  description: |
+    This is a sample Cafe API server.
+    You can find out more about OpenAPI at
+    [https://www.openapis.org/](https://www.openapis.org/).
+    For this sample, you can use the api key `special-key` to test the authorization filters.
+
+    # Introduction
+    This API is documented in **OpenAPI format** and is designed to demonstrate
+    a modern cafe management system with menu items, orders, and customer management.
+    It was **extended** to illustrate features of [generator-openapi-repo](https://github.com/Rebilly/generator-openapi-repo)
+    tool and [ReDoc](https://github.com/Redocly/redoc) documentation. In addition to standard
+    OpenAPI syntax we use a few [vendor extensions](https://github.com/Redocly/redoc/blob/master/docs/redoc-vendor-extensions.md).
+
+    # OpenAPI Specification
+    This API is documented in **OpenAPI format** and is designed to demonstrate
+    a modern cafe management system with menu items, orders, and customer management.
+    It was **extended** to illustrate features of [generator-openapi-repo](https://github.com/Rebilly/generator-openapi-repo)
+    tool and [ReDoc](https://github.com/Redocly/redoc) documentation. In addition to standard
+    OpenAPI syntax we use a few [vendor extensions](https://github.com/Redocly/redoc/blob/master/docs/redoc-vendor-extensions.md).
+
+    # Cross-Origin Resource Sharing
+    This API features Cross-Origin Resource Sharing (CORS) implemented in compliance with  [W3C spec](https://www.w3.org/TR/cors/).
+    And that allows cross-domain communication from the browser.
+    All responses have a wildcard same-origin which makes them completely public and accessible to everyone, including any code on any site.
+
+    # Authentication
+
+    Cafe API offers two forms of authentication:
+      - API Key
+      - OAuth2
+    OAuth2 - an open protocol to allow secure authorization in a simple
+    and standard method from web, mobile and desktop applications.
+
+  version: 1.0.0
+  title: Cafe API
+  summary: My lovely Cafe API
+  termsOfService: 'http://swagger.io/terms/'
+  contact:
+    name: API Support
+    email: apiteam@cafe-api.example.com
+    url: https://github.com/Redocly/redoc
+  x-logo:
+    url: 'https://redocly.github.io/redoc/petstore-logo.png'
+    altText: Cafe API logo
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+    identifier: Apache 2.0
+externalDocs:
+  description: Find out how to create Github repo for your OpenAPI spec.
+  url: 'https://github.com/Rebilly/generator-openapi-repo'
+tags:
+  - name: menu
+    description: Everything about your Menu Items
+  - name: cafe
+    description: Access to Cafe orders
+  - name: customer
+    description: Operations about customers
+  - name: webhooks
+    description: Everything about your Webhooks
+  - name: menu_model
+    x-displayName: The MenuItem Model
+    description: |
+      {% schemaDefinition schemaRef="#/components/schemas/MenuItem" /%}
+  - name: cafe_model
+    x-displayName: The Order Model
+    description: |
+      {% schemaDefinition schemaRef="#/components/schemas/Order" exampleRef="#/components/examples/Order" showReadOnly={true} showWriteOnly={true} /%}
+x-tagGroups:
+  - name: General
+    tags:
+      - menu
+      - cafe
+      - webhooks
+  - name: Customer Management
+    tags:
+      - customer
+  - name: Models
+    tags:
+      - menu_model
+      - cafe_model
+paths:
+  /menu:
+    parameters:
+      - name: Accept-Language
+        in: header
+        description: 'The language you prefer for messages. Supported values are en-AU, en-CA, en-GB, en-US'
+        example: en-US
+        required: false
+        schema:
+          type: string
+          default: en-AU
+      - name: cookieParam
+        in: cookie
+        description: Some cookie
+        required: true
+        schema:
+          type: integer
+          format: int64
+    post:
+      tags:
+        - menu
+      summary: Add a new coffee to the store
+      description: Add new menu item to the cafe inventory.
+      operationId: addMenuItem
+      responses:
+        '405':
+          description: Invalid input
+      security:
+        - cafe_auth:
+            - 'write:menu'
+            - 'read:menu'
+      x-codeSamples:
+        - lang: 'C#'
+          source: |
+            Cafe.v1.MenuItem item = new Cafe.v1.MenuItem();
+            item.setApiKey("your api key");
+            item.itemType = Cafe.v1.MenuItem.TYPE_COFFEE;
+            item.name = "Cappuccino";
+            // set other fields
+            CafeResponse response = item.create();
+            if (response.statusCode == HttpStatusCode.Created)
+            {
+              // Successfully created
+            }
+            else
+            {
+              // Something wrong -- check response for errors
+              Console.WriteLine(response.getRawResponse());
+            }
+        - lang: PHP
+          source: |
+            $form = new \Cafe\Entities\MenuItem();
+            $form->setItemType("Coffee");
+            $form->setName("Cappuccino");
+            // set other fields
+            try {
+                $item = $client->menu()->create($form);
+            } catch (UnprocessableEntityException $e) {
+                var_dump($e->getErrors());
+            }
+      requestBody:
+        $ref: '#/components/requestBodies/MenuItem'
+    put:
+      tags:
+        - menu
+      summary: Update an existing menu item
+      description: ''
+      operationId: updateMenuItem
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patterns'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Menu item not found
+        '405':
+          description: Validation exception
+      security:
+        - cafe_auth:
+            - 'write:menu'
+            - 'read:menu'
+      x-codeSamples:
+        - lang: PHP
+          source: |
+            $form = new \Cafe\Entities\MenuItem();
+            $form->setItemId(1);
+            $form->setItemType("Coffee");
+            $form->setName("Cappuccino");
+            // set other fields
+            try {
+                $item = $client->menu()->update($form);
+            } catch (UnprocessableEntityException $e) {
+                var_dump($e->getErrors());
+            }
+      requestBody:
+        $ref: '#/components/requestBodies/MenuItem'
+  '/menu/{itemId}':
+    get:
+      tags:
+        - menu
+      summary: Find menu item by ID
+      description: Returns a single menu item
+      operationId: getMenuItemById
+      parameters:
+        - name: itemId
+          in: path
+          description: ID of menu item to return
+          required: true
+          deprecated: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MenuItem'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/MenuItem'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Menu item not found
+      security:
+        - api_key: []
+    post:
+      tags:
+        - menu
+      summary: Updates a menu item in the cafe with form data
+      description: ''
+      operationId: updateMenuItemWithForm
+      parameters:
+        - name: itemId
+          in: path
+          description: ID of menu item that needs to be updated
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '405':
+          description: Invalid input
+      security:
+        - cafe_auth:
+            - 'write:menu'
+            - 'read:menu'
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  description: Updated name of the menu item
+                  type: string
+                status:
+                  description: Updated status of the menu item
+                  type: string
+    delete:
+      tags:
+        - menu
+      summary: Deletes a menu item
+      description: ''
+      operationId: deleteMenuItem
+      parameters:
+        - name: api_key
+          in: header
+          required: false
+          schema:
+            type: string
+          example: 'Bearer <TOKEN>'
+        - name: itemId
+          in: path
+          description: Menu item id to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '400':
+          description: Invalid menu item value
+      security:
+        - cafe_auth:
+            - 'write:menu'
+            - 'read:menu'
+  '/menu/{itemId}/uploadImage':
+    post:
+      tags:
+        - menu
+      summary: uploads an image
+      description: ''
+      operationId: uploadFile
+      parameters:
+        - name: itemId
+          in: path
+          description: ID of menu item to update
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                unevaluatedProperties:
+                  type: integer
+                  format: int32
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+        - cafe_auth:
+            - 'write:menu'
+            - 'read:menu'
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+  /menu/findByStatus:
+    get:
+      tags:
+        - menu
+      summary: Finds Menu Items by status
+      description: Multiple status values can be provided with comma separated strings
+      operationId: findMenuItemsByStatus
+      parameters:
+        - name: status
+          in: query
+          description: Status values that need to be considered for filter
+          required: true
+          style: form
+          schema:
+            type: array
+            minItems: 1
+            maxItems: 3
+            items:
+              type: string
+              enum:
+                - available
+                - pending
+                - sold
+              default: available
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MenuItem'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MenuItem'
+        '400':
+          description: Invalid status value
+      security:
+        - cafe_auth:
+            - 'write:menu'
+            - 'read:menu'
+  /menu/findByTags:
+    get:
+      tags:
+        - menu
+      summary: Finds Menu Items by tags
+      description: >-
+        Multiple tags can be provided with comma separated strings. Use tag1,
+        tag2, tag3 for testing.
+      operationId: findMenuItemsByTags
+      deprecated: true
+      parameters:
+        - name: tags
+          in: query
+          description: Tags to filter by
+          required: true
+          style: form
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MenuItem'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MenuItem'
+        '400':
+          description: Invalid tag value
+      security:
+        - cafe_auth:
+            - 'write:menu'
+            - 'read:menu'
+  /cafe/inventory:
+    get:
+      tags:
+        - cafe
+      summary: Returns menu item inventory by status
+      description: Returns a map of status codes to quantities
+      operationId: getInventory
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: integer
+                  format: int32
+      security:
+        - api_key: []
+  /cafe/order:
+    post:
+      tags:
+        - cafe
+      summary: Place an order for menu items
+      description: ''
+      operationId: placeOrder
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '400':
+          description: Invalid Order
+          content:
+            application/json:
+              example:
+                status: 400
+                message: 'Invalid Order'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+        description: order placed for purchasing menu items
+        required: true
+  '/cafe/order/{orderId}':
+    get:
+      tags:
+        - cafe
+      summary: Find purchase order by ID
+      description: >-
+        For valid response try integer IDs with value <= 5 or > 10. Other values
+        will generated exceptions
+      operationId: getOrderById
+      parameters:
+        - name: orderId
+          in: path
+          description: ID of order that needs to be fetched
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+            maximum: 5
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Order not found
+    delete:
+      tags:
+        - cafe
+      summary: Delete purchase order by ID
+      description: >-
+        For valid response try integer IDs with value < 1000. Anything above
+        1000 or nonintegers will generate API errors
+      operationId: deleteOrder
+      parameters:
+        - name: orderId
+          in: path
+          description: ID of the order that needs to be deleted
+          required: true
+          schema:
+            type: string
+            minimum: 1
+      responses:
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Order not found
+  /cafe/subscribe:
+    post:
+      tags:
+        - cafe
+      summary: Subscribe to the Cafe events
+      description: Add subscription for cafe events
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                callbackUrl:
+                  type: string
+                  format: uri
+                  description: This URL will be called by the server when the desired event will occur
+                  example: https://myserver.com/send/callback/here
+                eventName:
+                  type: string
+                  description: Event name for the subscription
+                  enum:
+                    - orderInProgress
+                    - orderShipped
+                    - orderDelivered
+                  example: orderInProgress
+              required:
+                - callbackUrl
+                - eventName
+      responses:
+        '201':
+          description: Subscription added
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  subscriptionId:
+                    type: string
+                    example: AAA-123-BBB-456
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                maxItems: 999
+                minItems: 0
+                items:
+                  type: array
+                  maxItems: 777
+                  minItems: 111
+                  items:
+                    type: number
+      callbacks:
+        orderInProgress:
+          '{$request.body#/callbackUrl}?event={$request.body#/eventName}':
+            servers:
+              - url: //callback-url.path-level/v1
+                description: Path level server 1
+              - url: //callback-url.path-level/v2
+                description: Path level server 2
+            post:
+              summary: Order in Progress (Summary)
+              description: A callback triggered every time an Order is updated status to "inProgress" (Description)
+              externalDocs:
+                description: Find out more
+                url: 'https://more-details.com/demo'
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                      properties:
+                        orderId:
+                          type: string
+                          example: '123'
+                        timestamp:
+                          type: string
+                          format: date-time
+                          example: '2018-10-19T16:46:45Z'
+                        status:
+                          type: string
+                          example: 'inProgress'
+                  application/xml:
+                    schema:
+                      type: object
+                      properties:
+                        orderId:
+                          type: string
+                          example: '123'
+                    example: |
+                      <?xml version="1.0" encoding="UTF-8"?>
+                      <root>
+                        <orderId>123</orderId>
+                        <status>inProgress</status>
+                        <timestamp>2018-10-19T16:46:45Z</timestamp>
+                      </root>
+              responses:
+                '200':
+                  description: Callback successfully processed and no retries will be performed
+                  content:
+                    application/json:
+                      schema:
+                        type: object
+                        properties:
+                          someProp:
+                            type: string
+                            example: '123'
+                '299':
+                  description: Response for cancelling subscription
+                '500':
+                  description: Callback processing failed and retries will be performed
+              x-codeSamples:
+                - lang: 'C#'
+                  source: |
+                    Cafe.v1.MenuItem item = new Cafe.v1.MenuItem();
+                    item.setApiKey("your api key");
+                    item.itemType = Cafe.v1.MenuItem.TYPE_COFFEE;
+                    item.name = "Cappuccino";
+                    // set other fields
+                    CafeResponse response = item.create();
+                    if (response.statusCode == HttpStatusCode.Created)
+                    {
+                      // Successfully created
+                    }
+                    else
+                    {
+                      // Something wrong -- check response for errors
+                      Console.WriteLine(response.getRawResponse());
+                    }
+                - lang: PHP
+                  source: |
+                    $form = new \Cafe\Entities\MenuItem();
+                    $form->setItemType("Coffee");
+                    $form->setName("Cappuccino");
+                    // set other fields
+                    try {
+                        $item = $client->menu()->create($form);
+                    } catch (UnprocessableEntityException $e) {
+                        var_dump($e->getErrors());
+                    }
+            put:
+              description: Order in Progress (Only Description)
+              servers:
+                - url: //callback-url.operation-level/v1
+                  description: Operation level server 1 (Operation override)
+                - url: //callback-url.operation-level/v2
+                  description: Operation level server 2 (Operation override)
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                      properties:
+                        orderId:
+                          type: string
+                          example: '123'
+                        timestamp:
+                          type: string
+                          format: date-time
+                          example: '2018-10-19T16:46:45Z'
+                        status:
+                          type: string
+                          example: 'inProgress'
+                  application/xml:
+                    schema:
+                      type: object
+                      properties:
+                        orderId:
+                          type: string
+                          example: '123'
+                    example: |
+                      <?xml version="1.0" encoding="UTF-8"?>
+                      <root>
+                        <orderId>123</orderId>
+                        <status>inProgress</status>
+                        <timestamp>2018-10-19T16:46:45Z</timestamp>
+                      </root>
+              responses:
+                '200':
+                  description: Callback successfully processed and no retries will be performed
+                  content:
+                    application/json:
+                      schema:
+                        type: object
+                        properties:
+                          someProp:
+                            type: string
+                            example: '123'
+        orderShipped:
+          '{$request.body#/callbackUrl}?event={$request.body#/eventName}':
+            post:
+              description: |
+                Very long description
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+                nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+                culpa qui officia deserunt mollit anim id est laborum.
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                      properties:
+                        orderId:
+                          type: string
+                          example: '123'
+                        timestamp:
+                          type: string
+                          format: date-time
+                          example: '2018-10-19T16:46:45Z'
+                        estimatedDeliveryDate:
+                          type: string
+                          format: date-time
+                          example: '2018-11-11T16:00:00Z'
+              responses:
+                '200':
+                  description: Callback successfully processed and no retries will be performed
+        orderDelivered:
+          'http://notificationServer.com?url={$request.body#/callbackUrl}&event={$request.body#/eventName}':
+            post:
+              deprecated: true
+              summary: Order delivered
+              description: A callback triggered every time an Order is delivered to the recipient
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                      properties:
+                        orderId:
+                          type: string
+                          example: '123'
+                        timestamp:
+                          type: string
+                          format: date-time
+                          example: '2018-10-19T16:46:45Z'
+              responses:
+                '200':
+                  description: Callback successfully processed and no retries will be performed
+  /customer:
+    post:
+      tags:
+        - customer
+      summary: Create customer
+      description: This can only be done by the logged in user.
+      operationId: createCustomer
+      responses:
+        default:
+          description: successful operation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+        description: Created customer object
+        required: true
+  '/customer/{username}':
+    get:
+      tags:
+        - customer
+      summary: Get customer by username
+      description: ''
+      operationId: getCustomerByName
+      parameters:
+        - name: username
+          in: path
+          description: 'The name that needs to be fetched. Use user1 for testing. '
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '400':
+          description: Invalid username supplied
+        '404':
+          description: Customer not found
+    put:
+      tags:
+        - customer
+      summary: Updated customer
+      description: This can only be done by the logged in user.
+      operationId: updateCustomer
+      parameters:
+        - name: username
+          in: path
+          description: name that need to be deleted
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid customer supplied
+        '404':
+          description: Customer not found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+        description: Updated customer object
+        required: true
+    delete:
+      tags:
+        - customer
+      summary: Delete customer
+      description: This can only be done by the logged in user.
+      operationId: deleteCustomer
+      parameters:
+        - name: username
+          in: path
+          description: The name that needs to be deleted
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid username supplied
+        '404':
+          description: Customer not found
+  /customer/createWithArray:
+    post:
+      tags:
+        - customer
+      summary: Creates list of customers with given input array
+      description: ''
+      operationId: createCustomersWithArrayInput
+      responses:
+        default:
+          description: successful operation
+      requestBody:
+        $ref: '#/components/requestBodies/CustomerArray'
+  /customer/createWithList:
+    post:
+      tags:
+        - customer
+      summary: Creates list of customers with given input array
+      description: ''
+      operationId: createCustomersWithListInput
+      responses:
+        default:
+          description: successful operation
+      requestBody:
+        $ref: '#/components/requestBodies/CustomerArray'
+  /customer/login:
+    get:
+      tags:
+        - customer
+      summary: Logs customer into the system
+      description: ''
+      operationId: loginCustomer
+      parameters:
+        - name: username
+          in: query
+          description: The customer name for login
+          required: true
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: The password for login in clear text
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          headers:
+            X-Rate-Limit:
+              description: calls per hour allowed by the customer
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              description: date in UTC when token expires
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                response:
+                  value: OK
+            application/xml:
+              schema:
+                type: string
+              examples:
+                response:
+                  value: <Message> OK </Message>
+            text/plain:
+              examples:
+                response:
+                  value: OK
+        '400':
+          description: Invalid username/password supplied
+  /customer/logout:
+    get:
+      tags:
+        - customer
+      summary: Logs out current logged in customer session
+      description: ''
+      operationId: logoutCustomer
+      responses:
+        default:
+          description: successful operation
+components:
+  pathItems:
+    webhooks:
+      put:
+        summary: Get a coffee details after update
+        description: Get a coffee details after update
+        operationId: updatedCoffee
+        tags:
+          - webhooks
+        requestBody:
+          description: Information about coffee in the system
+          content:
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/Coffee'
+        responses:
+          '200':
+            description: update Coffee details
+      post:
+        summary: Create new coffee
+        description: Info about new coffee
+        operationId: createdCoffee
+        tags:
+          - webhooks
+        requestBody:
+          description: Information about coffee in the system
+          content:
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/Coffee'
+        responses:
+          '200':
+            description: create Coffee details
+  schemas:
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
+    Coffee:
+      description: A representation of a coffee
+      allOf:
+        - $ref: '#/components/schemas/MenuItem'
+        - type: object
+          properties:
+            brewingMethod:
+              type: [string, boolean]
+              description: The brewing method for this coffee
+              default: espresso
+              example: french-press
+              enum:
+                - espresso
+                - french-press
+                - pour-over
+                - cold-brew
+          required:
+            - brewingMethod
+    Category:
+      type: object
+      properties:
+        id:
+          description: Category ID
+          $ref: '#/components/schemas/Id'
+        name:
+          description: Category name
+          type: string
+          minLength: 1
+        sub:
+          description: Test Sub Category
+          type: object
+          properties:
+            prop1:
+              type: string
+              description: Dumb Property
+      xml:
+        name: Category
+    Pastry:
+      description: A representation of a pastry
+      allOf:
+        - $ref: '#/components/schemas/MenuItem'
+        - type: object
+          properties:
+            sweetness:
+              type: integer
+              format: int32
+              description: The sweetness level of the pastry
+              default: 5
+              minimum: 1
+              maximum: 10
+          required:
+            - sweetness
+    Tea:
+      description: A representation of a tea
+      allOf:
+        - $ref: '#/components/schemas/MenuItem'
+        - type: object
+          properties:
+            steepingTime:
+              type: number
+              description: Recommended steeping time in minutes
+              example: 3.5
+              multipleOf: .5
+          required:
+            - steepingTime
+    Id:
+      type: integer
+      format: int64
+      readOnly: true
+    Order:
+      type: object
+      properties:
+        id:
+          description: Order ID
+          $ref: '#/components/schemas/Id'
+        itemId:
+          description: Menu Item ID
+          $ref: '#/components/schemas/Id'
+        quantity:
+          type: integer
+          format: int32
+          minimum: 1
+          default: 1
+        shipDate:
+          description: Estimated delivery date
+          type: string
+          format: date-time
+        status:
+          type: string
+          description: Order Status
+          enum:
+            - placed
+            - approved
+            - delivered
+        complete:
+          description: Indicates whenever order was completed or not
+          type: boolean
+          default: false
+          readOnly: true
+        requestId:
+          description: Unique Request Id
+          type: string
+          writeOnly: true
+      xml:
+        name: Order
+    MenuItem:
+      type: object
+      required:
+        - name
+        - photoUrls
+      discriminator:
+        propertyName: itemType
+        mapping:
+          coffee: '#/components/schemas/Coffee'
+          pastry: '#/components/schemas/Pastry'
+          tea: '#/components/schemas/Tea'
+      properties:
+        id:
+          externalDocs:
+            description: 'Find more info here'
+            url: 'https://example.com'
+          description: Menu Item ID
+          $ref: '#/components/schemas/Id'
+        category:
+          description: Categories this menu item belongs to
+          $ref: '#/components/schemas/Category'
+        name:
+          description: The name of the menu item
+          type: string
+          example: Cappuccino
+        photoUrls:
+          description: The list of URLs to photos of the menu item
+          type: [string, integer, 'null']
+          xml:
+            name: photoUrl
+            wrapped: true
+          items:
+            type: string
+            format: url
+          if:
+            x-displayName: isString
+            type: string
+          then:
+            example: value
+          else:
+            x-displayName: notString
+            type: [integer, 'null']
+            minItems: 1
+            maxItems: 20
+        friend:
+          $ref: '#/components/schemas/MenuItem'
+        tags:
+          description: Tags attached to the menu item
+          type: array
+          exclusiveMaximum: 100
+          exclusiveMinimum: 0
+          xml:
+            name: tag
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/Tag'
+        status:
+          type: string
+          description: Menu item status in the cafe
+          enum:
+            - available
+            - pending
+            - sold
+          default: pending
+        itemType:
+          description: Type of menu item
+          type: string
+        brewingMethod:
+          type: [integer]
+          enum:
+            - 0
+            - 1
+            - 2
+      xml:
+        name: MenuItem
+    Tag:
+      type: object
+      properties:
+        id:
+          description: Tag ID
+          $ref: '#/components/schemas/Id'
+        name:
+          description: Tag name
+          type: string
+          minLength: 1
+      xml:
+        name: Tag
+    Customer:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        menuItem:
+          oneOf:
+            - $ref: '#/components/schemas/MenuItem'
+              title: Favorite Item
+            - $ref: '#/components/schemas/Tag'
+        username:
+          description: Customer supplied username
+          type: string
+          minLength: 4
+          example: John78
+        firstName:
+          description: Customer first name
+          type: string
+          minLength: 1
+          example: John
+        lastName:
+          description: Customer last name
+          type: string
+          minLength: 1
+          example: Smith
+        email:
+          description: Customer email address
+          type: string
+          format: email
+          example: john.smith@example.com
+        password:
+          type: string
+          description: >-
+            Customer password, MUST contain a mix of upper and lower case letters,
+            as well as digits
+          format: password
+          minLength: 8
+          pattern: '/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/'
+          example: drowssaP123
+        phone:
+          description: Customer phone number in international format
+          type: string
+          pattern: '/^\+(?:[0-9]-?){6,14}[0-9]$/'
+          example: +1-202-555-0192
+        customerStatus:
+          description: Customer status
+          type: integer
+          format: int32
+        image:
+          description: Customer image
+          type: string
+          contentEncoding: base64
+          contentMediaType: image/png
+        addresses:
+          type: array
+          minItems: 0
+          maxLength: 10
+          prefixItems:
+            - type: object
+              properties:
+                city:
+                  type: string
+                  minLength: 0
+                country:
+                  type: string
+                  minLength: 0
+                street:
+                  description: includes build/apartment number
+                  type: string
+                  minLength: 0
+          items:
+            type: string
+      if:
+        title: customerStatus === 10
+        properties:
+          customerStatus:
+            enum: [10]
+      then:
+        required: ['phone']
+      else:
+        required: []
+      xml:
+        name: Customer
+    Patterns:
+      type: object
+      patternProperties:
+        ^S_\w+\.[1-9]{2,4}$:
+          type: string
+        ^O_\w+\.[1-9]{2,4}$:
+          type: object
+          properties:
+            nested-property:
+              type: string
+  requestBodies:
+    MenuItem:
+      content:
+        application/json:
+          schema:
+            description: My Menu Item
+            title: Menu Item
+            $ref: '#/components/schemas/MenuItem'
+        application/xml:
+          schema:
+            type: 'object'
+            properties:
+              name:
+                type: string
+                description: hooray
+      description: Menu item object that needs to be added to the cafe
+      required: true
+    CustomerArray:
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Customer'
+      description: List of customer object
+      required: true
+  securitySchemes:
+    cafe_auth:
+      description: |
+        Get access to data while protecting your account credentials.
+        OAuth2 is also a safer and more secure way to give you access.
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: 'http://cafe-api.example.com/api/oauth/dialog'
+          scopes:
+            'write:menu': modify menu items in your account
+            'read:menu': read your menu items
+    api_key:
+      description: >
+        For this sample, you can use the api key `special-key` to test the
+        authorization filters.
+      type: apiKey
+      name: api_key
+      in: header
+  examples:
+    Order:
+      value:
+        quantity: 1
+        shipDate: '2018-10-19T16:46:45Z'
+        status: placed
+        complete: false
+webhooks:
+  newMenuItem:
+    post:
+      summary: New menu item
+      description: Information about a new menu item in the system
+      operationId: newMenuItem
+      tags:
+        - webhooks
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MenuItem'
+      responses:
+        '200':
+          description: Return a 200 status to indicate that the data was received successfully
+  myWebhook:
+    $ref: '#/components/pathItems/webhooks'
+    description: Overriding description
+    summary: Overriding summary

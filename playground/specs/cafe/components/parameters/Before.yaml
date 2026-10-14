@@ -1,0 +1,8 @@
+name: before
+in: query
+required: false
+description: |
+  Use the `startCursor` as a value for the `before` parameter to get the previous page.
+schema:
+  type: string
+example: bfg23aksjf23zb1==

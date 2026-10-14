@@ -1,0 +1,57 @@
+openapi: 3.1.0
+info:
+  title: Circular references — Expand all
+  version: 1.0.0
+  description: |
+    Isolated coverage for circular request-body schemas and the Expand all button.
+    - Only circular fields → button hidden
+    - Circular field plus a real nested object → button shown
+
+tags:
+  - name: Circular references
+    description: Expand-all visibility with circular vs mixed schemas.
+
+paths:
+  /circular/only-circular-fields:
+    post:
+      tags: [Circular references]
+      summary: Only circular fields — button hidden
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OnlyCircular'
+      responses:
+        '200':
+          description: OK
+
+  /circular/circular-plus-nested:
+    post:
+      tags: [Circular references]
+      summary: Circular field + real nested field — button shown
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CircularPlusNested'
+      responses:
+        '200':
+          description: OK
+
+components:
+  schemas:
+    OnlyCircular:
+      type: object
+      properties:
+        self:
+          $ref: '#/components/schemas/OnlyCircular'
+
+    CircularPlusNested:
+      type: object
+      properties:
+        self:
+          $ref: '#/components/schemas/CircularPlusNested'
+        meta:
+          type: object
+          properties:
+            createdAt: { type: string, format: date-time }

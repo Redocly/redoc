@@ -1,0 +1,73 @@
+openapi: 3.2.0
+info:
+  version: '1.0'
+  title: Redocly Cafe
+paths:
+  /menu:
+    get:
+      operationId: listMenuItems
+      parameters:
+        - $ref: '#/components/parameters/lang1'
+      responses:
+        '200':
+          description: Specials of the day and the regular menu.
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  specials:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/schema1'
+                  regular:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/schema1'
+            application/json:
+              examples:
+                response:
+                  value:
+                    specials: []
+                    regular: []
+  /menu/{menuItemId}:
+    get:
+      operationId: getMenuItem
+      parameters:
+        - $ref: '#/components/parameters/lang1'
+        - name: menuItemId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: One item.
+  /definitions-pointer:
+    get:
+      operationId: getPrice
+      responses:
+        '200':
+          description: A price.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MenuItem/properties/price'
+components:
+  parameters:
+    lang1:
+      name: lang
+      in: query
+      schema:
+        type: string
+  schemas:
+    MenuItem:
+      type: object
+      properties:
+        price:
+          type: number
+    schema1:
+      type: object
+      properties:
+        label:
+          type: string

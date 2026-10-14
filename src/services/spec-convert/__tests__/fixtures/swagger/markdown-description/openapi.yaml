@@ -1,0 +1,10 @@
+openapi: 3.2.0
+info:
+  title: Redocly Cafe
+  version: 1.0.0
+  description: |
+    ### Ordering
+    Guests order at the counter or from the table, and every order gets a receipt number.
+    Orders move from the counter to the kitchen and then to the pickup shelf.
+    Long order histories are paginated; ask for the next page with the cursor from the previous one.
+paths: {}

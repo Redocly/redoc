@@ -1,0 +1,56 @@
+openapi: 3.2.0
+info:
+  version: '1.0'
+  title: Redocly Cafe
+  description: Orders can carry a list of toppings as form fields.
+paths:
+  /orders:
+    post:
+      operationId: createOrder
+      summary: Place an order
+      description: Toppings come from a shared form parameter.
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                toppings:
+                  description: Toppings for the drink.
+                  type: array
+                  items:
+                    type: string
+              required:
+                - toppings
+        required: true
+      responses:
+        '201':
+          description: Order accepted.
+        '400':
+          description: The form could not be read.
+  /order-items:
+    post:
+      operationId: createOrderItem
+      summary: Add an item to an order
+      description: Extras are declared inline.
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                extras:
+                  description: Extras to add to the item.
+                  type: array
+                  items:
+                    type: string
+              required:
+                - extras
+        required: true
+      responses:
+        '201':
+          description: Item added.
+        '400':
+          description: The form could not be read.
+servers:
+  - url: /cafe

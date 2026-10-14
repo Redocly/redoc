@@ -1,0 +1,59 @@
+swagger: '2.0'
+info:
+  version: '1.0'
+  title: Redocly Cafe
+paths:
+  /menu:
+    get:
+      operationId: listMenuItems
+      parameters:
+        - name: lang
+          in: query
+          type: string
+      responses:
+        '200':
+          description: Specials of the day and the regular menu.
+          schema:
+            type: object
+            properties:
+              specials:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    label:
+                      type: string
+              regular:
+                type: array
+                items:
+                  $ref: '#/paths/~1menu/get/responses/200/schema/properties/specials/items'
+          examples:
+            application/json:
+              specials: []
+              regular: []
+  /menu/{menuItemId}:
+    get:
+      operationId: getMenuItem
+      parameters:
+        - $ref: '#/paths/~1menu/get/parameters/0'
+        - name: menuItemId
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: One item.
+  /definitions-pointer:
+    get:
+      operationId: getPrice
+      responses:
+        '200':
+          description: A price.
+          schema:
+            $ref: '#/definitions/MenuItem/properties/price'
+definitions:
+  MenuItem:
+    type: object
+    properties:
+      price:
+        type: number

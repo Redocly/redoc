@@ -1,0 +1,16 @@
+---
+swagger: '2.0'
+info:
+  title: Redocly Cafe
+  version: ''
+paths:
+  /menu:
+    get:
+      responses:
+        '200':
+          description: The menu.
+          schema:
+            $ref: '#/definitions/Menu%20Item'
+definitions:
+  Menu Item:
+    type: string

@@ -1,0 +1,137 @@
+openapi: 3.0.0
+info:
+  title: SchemaDefinition Markdoc E2E
+  version: 1.0.0
+  description: |
+    Overview intro text.
+
+    {% schemaDefinition schemaRef="#/components/schemas/Pet" /%}
+
+    Overview outro text.
+tags:
+  - name: pet_tag
+    x-displayName: Pet tag
+    description: |
+      Tag description before schema.
+
+      {% schemaDefinition schemaRef="#/components/schemas/Pet" /%}
+
+      Tag description after schema.
+  - name: multi_tag
+    x-displayName: Multiple schemas tag
+    description: |
+      First schema:
+
+      {% schemaDefinition schemaRef="#/components/schemas/Pet" /%}
+
+      Second schema:
+
+      {% schemaDefinition schemaRef="#/components/schemas/Order" /%}
+  - name: read_only_hidden_tag
+    x-displayName: Read-only hidden
+    description: |
+      {% schemaDefinition schemaRef="#/components/schemas/Account" showReadOnly=false /%}
+  - name: write_only_visible_tag
+    x-displayName: Write-only visible
+    description: |
+      {% schemaDefinition schemaRef="#/components/schemas/Account" showWriteOnly=true /%}
+  - name: nested_title_tag
+    x-displayName: Nested title
+    description: |
+      {% schemaDefinition schemaRef="#/components/schemas/ParentWithSignature" /%}
+  - name: oneof_collapse_tag
+    x-displayName: OneOf collapse
+    description: |
+      {% schemaDefinition schemaRef="#/components/schemas/ParentWithEntityMetadata" /%}
+paths:
+  /pets:
+    get:
+      operationId: getPet
+      summary: Get pet
+      tags: [pet_tag]
+      description: |
+        Request description top.
+
+        {% schemaDefinition schemaRef="#/components/schemas/Pet" /%}
+
+        Request description bottom.
+      responses:
+        '200':
+          description: |
+            Response description top.
+
+            {% schemaDefinition schemaRef="#/components/schemas/Order" /%}
+
+            Response description bottom.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pet'
+components:
+  schemas:
+    Pet:
+      type: object
+      required:
+        - name
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+          description: Pet name
+    Order:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        status:
+          type: string
+          enum: [placed, approved, delivered]
+    Account:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        password:
+          type: string
+          writeOnly: true
+    ParentWithSignature:
+      type: object
+      properties:
+        contractSignature:
+          $ref: '#/components/schemas/Signature'
+    Signature:
+      type: object
+      title: Signature
+      properties:
+        base64SvgSignature:
+          type: string
+    ParentWithEntityMetadata:
+      type: object
+      properties:
+        entityMetadata:
+          $ref: '#/components/schemas/EntityMetadata'
+    EntityMetadata:
+      title: EntityMetadata
+      oneOf:
+        - $ref: '#/components/schemas/PnrMetadata'
+        - $ref: '#/components/schemas/EventMetadata'
+    PnrMetadata:
+      type: object
+      title: PnrMetadata
+      properties:
+        pnrId:
+          type: string
+    EventMetadata:
+      type: object
+      title: EventMetadata
+      properties:
+        eventId:
+          type: string

@@ -1,0 +1,18 @@
+swagger: '2.0'
+info:
+  version: ''
+  title: ''
+paths: {}
+definitions:
+  MenuItem:
+    type: object
+    properties:
+      itemKind:
+        type: string
+    x-discriminator:
+      propertyName: itemKind
+      mapping:
+        drink: Beverage
+        pastry: '#/definitions/Pastry'
+  Beverage: {}
+  Pastry: {}

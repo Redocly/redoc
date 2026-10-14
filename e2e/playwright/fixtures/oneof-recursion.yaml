@@ -1,0 +1,429 @@
+openapi: 3.1.0
+info:
+  title: OneOf and Recursive case
+  version: 1.0.0
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  description: >
+    Test OpenAPI description with OneOf labels and descriptions problem
+servers:
+  - url: https://test.com
+
+tags:
+  - name: Cases
+    description: >
+      Test OpenAPI description with OneOf labels and descriptions problem
+security: []
+paths:
+  /label-description:
+    post:
+      tags:
+        - Cases
+      summary: OneOf labels and descriptions
+      operationId: OneOfLabelsAndDescriptions
+      description: >
+        Creates either a StaticDataRequest or CustomDataRequest.
+        StaticDataRequests allow use of MeasureOne's predefined reports.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/StaticDataRequest'
+                - $ref: '#/components/schemas/CustomDataRequest'
+      responses:
+        '201':
+          description: Data request created
+        '400':
+          description: Invalid request
+
+  /description:
+    get:
+      tags:
+        - Cases
+      summary: Show description in specific case
+      operationId: ShowDescriptionInSpecificCase
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SomeParentSchema'
+  /default:
+    post:
+      tags:
+        - Cases
+      summary: Default case
+      operationId: DefaultCase
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/Cat'
+                - $ref: '#/components/schemas/Dog'
+      responses:
+        '200':
+          description: Created (oneOf response body)
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/CatResponse'
+                  - $ref: '#/components/schemas/DogResponse'
+  /dublicate-description:
+    post:
+      tags:
+        - Cases
+      summary: Upload a document
+      description: Upload a document for a specific entity type (e.g., a PNR, Event, or Leg)
+      operationId: uploadDocument
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UploadDocumentRequest'
+        required: true
+components:
+  schemas:
+    Tag:
+      type: object
+      properties:
+        id:
+          description: Tag ID
+          $ref: '#/components/schemas/Id'
+        name:
+          description: Tag name
+          type: string
+          minLength: 1
+      xml:
+        name: Tag
+    Id:
+      type: integer
+      format: int64
+      readOnly: true
+    Cafe:
+      type: object
+      required:
+        - name
+        - photoUrls
+      discriminator:
+        propertyName: cafeType
+        mapping:
+          cat: '#/components/schemas/Cat'
+          dog: '#/components/schemas/Dog'
+      properties:
+        id:
+          externalDocs:
+            description: 'Find more info here'
+            url: 'https://example.com'
+          description: Cafe ID
+          $ref: '#/components/schemas/Id'
+        category:
+          description: Categories this cafe belongs to
+          $ref: '#/components/schemas/Category'
+        name:
+          description: The name given to a cafe
+          type: string
+          example: Guru
+        photoUrls:
+          description: The list of URL to a cute photos featuring cafe
+          type: [string, integer, 'null']
+          xml:
+            name: photoUrl
+            wrapped: true
+          items:
+            type: string
+            format: url
+          if:
+            x-displayName: isString
+            type: string
+          then:
+            example: value
+          else:
+            x-displayName: notString
+            type: [integer, 'null']
+            minItems: 1
+            maxItems: 20
+        friend:
+          $ref: '#/components/schemas/Cafe'
+        tags:
+          description: Tags attached to the cafe
+          type: array
+          exclusiveMaximum: 100
+          exclusiveMinimum: 0
+          xml:
+            name: tag
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/Tag'
+        status:
+          type: string
+          description: Cafe status in the store
+          enum:
+            - available
+            - pending
+            - sold
+          default: pending
+        cafeType:
+          description: Type of a cafe
+          type: string
+        huntingSkill:
+          type: [integer]
+          enum:
+            - 0
+            - 1
+            - 2
+      xml:
+        name: Cafe
+    Category:
+      type: object
+      properties:
+        id:
+          description: Category ID
+          $ref: '#/components/schemas/Id'
+        name:
+          description: Category name
+          type: string
+          minLength: 1
+        sub:
+          description: Test Sub Category
+          type: object
+          properties:
+            prop1:
+              type: string
+              description: Dumb Property
+      xml:
+        name: Category
+    Cat:
+      title: Cat
+      type: object
+      required:
+        - name
+        - huntingSkill
+      properties:
+        name:
+          type: string
+          example: 'Mittens'
+        huntingSkill:
+          type: string
+          description: 'Cat-specific property'
+          enum: [lazy, adventurous, aggressive]
+
+    Dog:
+      title: Dog
+      type: object
+      required:
+        - name
+        - packSize
+      properties:
+        name:
+          type: string
+          example: 'Rex'
+        packSize:
+          type: integer
+          description: 'Dog-specific property (makes this schema distinct from Cat)'
+          minimum: 1
+
+    CatResponse:
+      title: CatResponse
+      type: object
+      required:
+        - id
+        - name
+        - huntingSkill
+      properties:
+        id:
+          type: string
+          example: 'cat_123'
+        name:
+          type: string
+        huntingSkill:
+          type: string
+          enum: [lazy, adventurous, aggressive]
+
+    DogResponse:
+      title: DogResponse
+      type: object
+      required:
+        - id
+        - name
+        - packSize
+      properties:
+        id:
+          type: string
+          example: 'dog_456'
+        name:
+          type: string
+        packSize:
+          type: integer
+    StaticDataRequest:
+      title: Static Data Request
+      type: object
+      description: test Static Data Request
+      properties:
+        type:
+          type: string
+          description: The type of static report requested.
+
+    CustomDataRequest:
+      title: Custom Data Request
+      type: object
+      description: test Custom Data Request
+      properties:
+        fields:
+          type: array
+          items:
+            type: string
+          description: List of data fields requested.
+    UploadDocumentRequest:
+      type: object
+      required:
+        - entityMetadata
+      properties:
+        entityMetadata:
+          $ref: '#/components/schemas/EntityMetadata'
+        name:
+          type: string
+    EntityMetadata:
+      title: EntityMetadata
+      description: Metadata for associated entity of document
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/PnrMetadataWrapper'
+        - $ref: '#/components/schemas/EventMetadataWrapper'
+        - $ref: '#/components/schemas/LegMetadataWrapper'
+    PnrMetadataWrapper:
+      type: object
+      title: PnrMetadataWrapper
+      properties:
+        pnrId:
+          type: string
+    EventMetadataWrapper:
+      type: object
+      title: EventMetadataWrapper
+      properties:
+        eventId:
+          type: string
+    LegMetadataWrapper:
+      type: object
+      title: LegMetadataWrapper
+      properties:
+        legId:
+          type: string
+    Signature:
+      type: object
+      description: Representing customer signature
+      properties:
+        base64SvgSignature:
+          type: string
+          description: Customer confirmation signature SVG value as base 64 string
+      required:
+        - base64SvgSignature
+
+    SomeParentSchema:
+      type: object
+      properties:
+        contractSignature:
+          $ref: '#/components/schemas/Signature'
+          description: The signature SVG for the contract document
+
+    JSONAPIError:
+      type: object
+      description: A JSONAPI-formatted error message.
+      properties:
+        Cases:
+          type: array
+          items:
+            type: object
+            readOnly: true
+            required: ['id', 'code']
+            properties:
+              id:
+                type: string
+                readOnly: true
+              status:
+                type: string
+                readOnly: true
+              code:
+                type: string
+                readOnly: true
+              title:
+                type: string
+                readOnly: true
+              detail:
+                type: string
+                readOnly: true
+              source:
+                type: object
+                readOnly: true
+                properties:
+                  pointer:
+                    type: string
+                    readOnly: true
+                  header:
+                    type: string
+                    readOnly: true
+                  parameter:
+                    type: string
+                    readOnly: true
+
+    Error:
+      x-tags:
+        - Cases
+      description: Problem with dublicate description
+      type: object
+      required: ['error', 'status', 'type', 'title']
+      properties:
+        example_property:
+          anyOf:
+            - title: String
+              type: string
+              description: A plain text value
+            - type: integer
+              description: A number value
+        allowedValues:
+          oneOf:
+            - type: string
+              description: List of allowed values. Available for custom fields with types `string`.
+            - type: array
+              description: List of allowed values. Available for custom fields with types `array`.
+        items:
+          type: string
+
+    OneOfTitle:
+      x-tags:
+        - Cases
+      description: |
+        The problem with dublicate description and show incorrect labels and circular case
+      oneOf:
+        - $ref: '#/components/schemas/RateLimitedProblem'
+        - $ref: '#/components/schemas/RateLimitedJSONAPI'
+
+    RateLimitedProblem:
+      title: Rate Limited Problem
+      description: An RFC7807 'Problem Detail' formatted Rate Limited error.
+      allOf:
+        - $ref: '#/components/schemas/Error'
+      example:
+        status: 429
+        type: 'https://api.honeycomb.io/problems/rate-limited'
+        title: 'You have exceeded your rate limit.'
+        error: 'You have exceeded your rate limit.'
+        detail: 'Please try again after 2025-02-01T15:23:12Z.'
+
+    RateLimitedJSONAPI:
+      title: Rate Limited JSONAPI
+      description: An JSON:API formatted Rate Limited error.
+      allOf:
+        - $ref: '#/components/schemas/JSONAPIError'
+      example:
+        Cases:
+          - id: 06dcdd6508ca822f0e7e2bb4121c1f52
+            code: rate-limited/may-retry
+            title: request rate limit exceeded
+            detail: Please try again after 2025-02-01T15:23:12Z.

@@ -1,10 +1,109 @@
+# Redoc
+
+## 3.0.0
+
+Redoc 3.0 is a new renderer built on the same engine as Redocly's commercial API reference.
+See [What's new in Redoc 3](https://redocly.com/blog/redoc-3-whats-new) and the [migration guide from 2.x](https://redocly.com/docs/redoc-ce/config-migration).
+
+### Features
+
+- **ES module build.** The package and the standalone bundle ship as ES modules.
+  Load the bundle with `<script type="module" src="…/bundles/redoc.standalone.js">` and import `init` (and `hydrate` for server-rendered markup) from it.
+- **Multiple specification types:**
+  One renderer for OpenAPI 3.2, 3.1 and 3.0, Swagger 2.0 (converted to OpenAPI 3 on load), AsyncAPI 3.x and 2.x, GraphQL SDL, and MCP servers described with `x-mcp`.
+  The type is detected from the description.
+  Format adapters load on demand.
+- **OpenAPI 3.2 support:**
+   `additionalOperations`, `querystring` parameters, `itemSchema` for streaming media types, and the tag `summary`, `parent` and `kind` fields for nested navigation.
+- **New design:**
+  Three-panel and stacked layouts (`layout` option), per-entity pages, deep links down to individual fields, and viewport-aware rendering for large descriptions.
+- **Hash and history routing:**
+  Every operation, schema and entity has its own route.
+  - Hash routing (`#/events/listspecialevents`) is the default for the `<redoc>` element, the `init` function and the Docker image, and works on any static host.
+  - History routing gives clean, shareable URLs such as `/docs/events/listspecialevents`. Enable it with `router="history"` and `basePath`.
+    The server must return the page for every path under `basePath`.
+  - The `RedocStandalone` React component uses history routing by default under `basePath`, or the host application's React Router when it renders inside one.
+- **Dark theme:**
+  Built-in light and dark color modes that follow the system preference, with a switcher in the sidebar.
+- **Customization with CSS variables:**
+  Override design tokens such as `--color-primary-base` or `--sidebar-width` in a stylesheet, scoped with `:root.light` and `:root.dark`.
+- Search across operations, schemas, parameters and response codes, always enabled.
+- **Copy for LLM**, **Open in Claude** and **Open in ChatGPT** actions in the page header.
+- New options: `router`, `basePath`, `events`, `codeSamples.languages`, `skipBundle`, `disableTelemetry`, and AsyncAPI and GraphQL options such as `jsonSamplesDepth`, `menu` and `info`.
+- Anonymous OpenTelemetry usage telemetry, on by default.
+
+### Breaking Changes
+
+- The UMD bundle and the global `Redoc` object are removed.
+  `Redoc.init(spec, options, element, callback)` becomes `init(spec, options, element)` imported from the bundle, without a callback.
+- The `theme` option is removed with no compatibility shim.
+  Use CSS variables instead.
+- Requires Node.js 22 or later.
+  Peer dependencies are now `react` and `react-dom` 18.3 or 19, `react-router` 7 or 8, `styled-components` 6 and `@redocly/config`.
+  `mobx` and `core-js` are no longer needed.
+- Deep links use the new route format, for example `#/events/listspecialevents`. 2.x links redirect on load, except links to schemas (`#schema/<name>`) and to single security schemes.
+- Renamed options:
+  - `hideDownloadButton` → `hideDownloadButtons`
+  - `jsonSampleExpandLevel` → `jsonSamplesExpandLevel`
+  - `schemaExpansionLevel` → `schemasExpansionLevel`
+  - `untrustedSpec` → `sanitize`
+  - `generatedPayloadSamplesMaxDepth` → `generatedSamplesMaxDepth`
+  - `requiredPropsFirst` → `sortRequiredPropsFirst` (old name still accepted).
+  `downloadDefinitionUrl` and `downloadFileName` are replaced by `downloadUrls`.
+- Removed options:
+  - `allowedMdComponents`
+  - `disableSearch`
+  - `enumSkipQuotes`
+  - `expandDefaultServerVariables`
+  - `expandResponses`
+  - `expandSingleSchemaField`
+  - `hideFab`
+  - `hideHostname`
+  - `hideRequestPayloadSample`
+  - `hideSecuritySection`
+  - `hideSingleRequestSampleTab`
+  - `labels`
+  - `menuToggle`
+  - `minCharacterLengthToInitSearch`
+  - `nativeScrollbars`
+  - `nonce`
+  - `pathInMiddlePanel`
+  - `payloadSampleIdx`
+  - `showObjectSchemaExamples`,
+  - `showSecuritySchemeType`
+  - `showWebhookVerb`
+  - `sideNavStyle`
+  - `simpleOneOfTypeLabel`
+  - `sortEnumValuesAlphabetically`
+  - `sortOperationsAlphabetically`
+  - `sortPropsAlphabetically`
+  - `sortTagsAlphabetically`
+  - `unstable_ignoreMimeParameters`
+
+## 3.0.0-rc.4
+
+### Bug Fixes
+
+- Fixed issues found in the previous release candidate and improved overall stability ahead of the 3.0.0 release.
+
+## 3.0.0-rc.3
+
+### Features
+
+- Improve code for major release candidate.
+
+### Chores
+
+- Bumped `@redocly/openapi-core` to 2.62.1, `@redocly/config` to 0.65.0 and `@redocly/theme` to 0.70.0.
+- Replaced `prismjs` with `@tanstack/highlight` and `swagger2openapi` with a built-in Swagger 2.0 converter.
+
 # [2.5.4](https://github.com/Redocly/redoc/compare/v2.5.3...v2.5.4) (2026-09-10)
 
 ### Bug Fixes
 
-* Fix accessibility errors reported by pa11y ([#2837](https://github.com/Redocly/redoc/issues/2837)) ([1424bfd](https://github.com/Redocly/redoc/commit/1424bfd0100488a83f462f7047ae7372e2d10c9f))
-* Resolve js-yaml, fast-uri and brace-expansion vulnerabilities ([#2832](https://github.com/Redocly/redoc/issues/2832)) ([6188dc4](https://github.com/Redocly/redoc/commit/6188dc4a1c689de2ed3bdfb6061076d0a73bb949))
-* Bump dompurify from 3.4.6 to 3.4.13 ([#2824](https://github.com/Redocly/redoc/issues/2824)) ([616398b](https://github.com/Redocly/redoc/commit/616398b62bbd11dc5edad173c4520b754325b0bb))
+* Fixed accessibility errors reported by pa11y ([#2837](https://github.com/Redocly/redoc/issues/2837)) ([1424bfd](https://github.com/Redocly/redoc/commit/1424bfd0100488a83f462f7047ae7372e2d10c9f))
+* Resolved js-yaml, fast-uri and brace-expansion vulnerabilities ([#2832](https://github.com/Redocly/redoc/issues/2832)) ([6188dc4](https://github.com/Redocly/redoc/commit/6188dc4a1c689de2ed3bdfb6061076d0a73bb949))
+* Bumped dompurify from 3.4.6 to 3.4.13 ([#2824](https://github.com/Redocly/redoc/issues/2824)) ([616398b](https://github.com/Redocly/redoc/commit/616398b62bbd11dc5edad173c4520b754325b0bb))
 
 
 # [2.5.3](https://github.com/Redocly/redoc/compare/v2.5.1...v2.5.3) (2026-05-27)
@@ -12,7 +111,7 @@
 
 ### Bug Fixes
 
-* Fix vulnerabilities and prevent crash in openapi 3.2
+* Fixed vulnerabilities and prevent crash in openapi 3.2
 * Bumped `openapi-sampler` dependency to include the fix for `readOnly`/`writeOnly` handling in allOf.
 
 
@@ -28,12 +127,12 @@
 
 ### Bug Fixes
 
-* enhance accessibility for menu items with keyboard support ([#2655](https://github.com/Redocly/redoc/issues/2655)) ([2db293b](https://github.com/Redocly/redoc/commit/2db293bfb2973497dd33f31dc99e97f5bb90bbe8))
+* Enhanced accessibility for menu items with keyboard support ([#2655](https://github.com/Redocly/redoc/issues/2655)) ([2db293b](https://github.com/Redocly/redoc/commit/2db293bfb2973497dd33f31dc99e97f5bb90bbe8))
 
 
 ### Features
 
-* add keyboard navigation support to JsonViewer component ([#2654](https://github.com/Redocly/redoc/issues/2654)) ([1b4126f](https://github.com/Redocly/redoc/commit/1b4126fde4531387f49c90f52efbd0c0e5f7b6ea))
+* Added keyboard navigation support to JsonViewer component ([#2654](https://github.com/Redocly/redoc/issues/2654)) ([1b4126f](https://github.com/Redocly/redoc/commit/1b4126fde4531387f49c90f52efbd0c0e5f7b6ea))
 
 
 
@@ -48,7 +147,7 @@
 
 ### Features
 
-* add supporting react 19 in package.json ([#2652](https://github.com/Redocly/redoc/issues/2652)) ([3a74802](https://github.com/Redocly/redoc/commit/3a748022be3a7dc7f98669e1645dd5cda72f1abc))
+* Added support for React 19 in package.json ([#2652](https://github.com/Redocly/redoc/issues/2652)) ([3a74802](https://github.com/Redocly/redoc/commit/3a748022be3a7dc7f98669e1645dd5cda72f1abc))
 
 
 

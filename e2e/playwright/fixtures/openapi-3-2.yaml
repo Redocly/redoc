@@ -1,0 +1,536 @@
+openapi: 3.2.0
+info:
+  title: OpenAPI 3.2 Features Test Suite
+  description: Test suite for OpenAPI 3.2 specific features including dataValue and serializedValue support
+  version: 1.0.0
+servers:
+  - url: 'https://api.example.com/v1'
+
+paths:
+  /examples/json/value:
+    post:
+      summary: JSON with value field
+      description: Test traditional value field in JSON request/response examples
+      operationId: jsonValue
+      tags:
+        - Request Body Examples
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+            examples:
+              example:
+                $ref: '#/components/examples/UserJsonValue'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                example:
+                  $ref: '#/components/examples/UserJsonValue'
+
+  /examples/json/dataValue:
+    post:
+      summary: JSON with dataValue field
+      description: Test OpenAPI 3.2 dataValue field in JSON request/response examples
+      operationId: jsonDataValue
+      tags:
+        - Request Body Examples
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+            examples:
+              example:
+                $ref: '#/components/examples/UserJsonDataValue'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                example:
+                  $ref: '#/components/examples/UserJsonDataValue'
+
+  /examples/json/serializedValue:
+    post:
+      summary: JSON with serializedValue field
+      description: Test OpenAPI 3.2 serializedValue field in JSON request/response examples
+      operationId: jsonSerializedValue
+      tags:
+        - Request Body Examples
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+            examples:
+              example:
+                $ref: '#/components/examples/UserJsonSerializedValue'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                example:
+                  $ref: '#/components/examples/UserJsonSerializedValue'
+
+  /examples/xml/dataValue:
+    post:
+      summary: XML with dataValue field
+      description: Test OpenAPI 3.2 dataValue field in XML request/response examples
+      operationId: xmlDataValue
+      tags:
+        - Request Body Examples
+      requestBody:
+        required: true
+        content:
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/User'
+            examples:
+              example:
+                $ref: '#/components/examples/UserXmlDataValue'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                example:
+                  $ref: '#/components/examples/UserXmlDataValue'
+
+  /examples/xml/serializedValue:
+    post:
+      summary: XML with serializedValue field
+      description: Test OpenAPI 3.2 serializedValue field in XML request/response examples
+      operationId: xmlSerializedValue
+      tags:
+        - Request Body Examples
+      requestBody:
+        required: true
+        content:
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/User'
+            examples:
+              example:
+                $ref: '#/components/examples/UserXmlSerializedValue'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                example:
+                  $ref: '#/components/examples/UserXmlSerializedValue'
+
+  /examples/form-urlencoded/dataValue:
+    post:
+      summary: URL-encoded with dataValue field
+      description: Test OpenAPI 3.2 dataValue field in URL-encoded request/response examples
+      operationId: formUrlencodedDataValue
+      tags:
+        - Request Body Examples
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+            examples:
+              example:
+                $ref: '#/components/examples/UserFormDataValue'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                example:
+                  $ref: '#/components/examples/UserFormDataValue'
+
+  /examples/form-urlencoded/serializedValue:
+    post:
+      summary: URL-encoded with serializedValue field
+      description: Test OpenAPI 3.2 serializedValue field in URL-encoded request/response examples
+      operationId: formUrlencodedSerializedValue
+      tags:
+        - Request Body Examples
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+            examples:
+              example:
+                $ref: '#/components/examples/UserFormSerializedValue'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                example:
+                  $ref: '#/components/examples/UserFormSerializedValue'
+
+  /parameters/path/{userId}:
+    get:
+      summary: Path parameter with dataValue and serializedValue
+      description: Test OpenAPI 3.2 dataValue and serializedValue for path parameters
+      operationId: pathParameter
+      tags:
+        - Parameter Examples
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: User identifier
+          schema:
+            type: string
+          examples:
+            usingDataValue:
+              summary: Path parameter using dataValue
+              dataValue: 'user-12345'
+            usingSerializedValue:
+              summary: Path parameter using serializedValue (URL-encoded)
+              serializedValue: 'user%2Fwith%2Fslashes'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+  /parameters/query:
+    get:
+      summary: Query parameter with dataValue and serializedValue
+      description: Test OpenAPI 3.2 dataValue and serializedValue for query parameters
+      operationId: queryParameter
+      tags:
+        - Parameter Examples
+      parameters:
+        - name: filter
+          in: query
+          description: Filter criteria
+          schema:
+            type: object
+            properties:
+              category:
+                type: string
+              minAge:
+                type: integer
+          examples:
+            usingDataValue:
+              summary: Query parameter using dataValue
+              dataValue:
+                category: 'premium'
+                minAge: 18
+            usingSerializedValue:
+              summary: Query parameter using serializedValue
+              serializedValue: 'filter[category]=premium&filter[minAge]=18'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+
+  /parameters/header:
+    get:
+      summary: Header parameter with dataValue and serializedValue
+      description: Test OpenAPI 3.2 dataValue and serializedValue for header parameters
+      operationId: headerParameter
+      tags:
+        - Parameter Examples
+      parameters:
+        - name: X-API-Key
+          in: header
+          required: true
+          description: API key for authentication
+          schema:
+            type: string
+          examples:
+            usingDataValue:
+              summary: Header parameter using dataValue
+              dataValue: 'sk_live_abcdef123456'
+            usingSerializedValue:
+              summary: Header parameter using serializedValue
+              serializedValue: 'sk_live_encoded_xyz789'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+  /parameters/cookie:
+    get:
+      summary: Cookie parameter with dataValue and serializedValue
+      description: Test OpenAPI 3.2 dataValue and serializedValue for cookie parameters
+      operationId: cookieParameter
+      tags:
+        - Parameter Examples
+      parameters:
+        - name: sessionId
+          in: cookie
+          required: true
+          description: Session identifier
+          schema:
+            type: string
+          examples:
+            usingDataValue:
+              summary: Cookie parameter using dataValue
+              dataValue: 'session_abc123'
+            usingSerializedValue:
+              summary: Cookie parameter using serializedValue
+              serializedValue: 'sessionId=session_special%21%40%23'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+  /headers/response:
+    get:
+      summary: Response headers with dataValue and serializedValue
+      description: Test OpenAPI 3.2 dataValue and serializedValue for response headers
+      operationId: responseHeaders
+      tags:
+        - Response Headers Examples
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          headers:
+            X-Rate-Limit:
+              description: Rate limit information
+              schema:
+                type: integer
+              examples:
+                usingDataValue:
+                  summary: Header using dataValue
+                  dataValue: 1000
+                usingSerializedValue:
+                  summary: Header using serializedValue
+                  serializedValue: '2000'
+            X-Request-Id:
+              description: Request identifier
+              schema:
+                type: string
+              examples:
+                usingDataValue:
+                  summary: Request ID using dataValue
+                  dataValue: 'req-abc123'
+                usingSerializedValue:
+                  summary: Request ID using serializedValue
+                  serializedValue: 'req-xyz789'
+
+  /spec-examples/{username}:
+    get:
+      summary: OpenAPI 3.2 specification examples
+      description: |
+        Examples from the OpenAPI 3.2 specification demonstrating various
+        parameter serialization scenarios with dataValue and serializedValue.
+      operationId: specExamples
+      tags:
+        - OpenAPI 3.2 Spec Examples
+      parameters:
+        - name: username
+          in: path
+          description: username to fetch
+          required: true
+          schema:
+            type: string
+          examples:
+            'Edsger Dijkstra':
+              dataValue: edijkstra
+              serializedValue: edijkstra
+            'Unicode Name':
+              dataValue: diṅnāga
+              serializedValue: di%E1%B9%85n%C4%81ga
+        - name: X-Token
+          in: header
+          description: token to be passed as a header
+          required: true
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int64
+          style: simple
+          examples:
+            Tokens:
+              dataValue:
+                - 12345678
+                - 90099
+              serializedValue: '12345678,90099'
+        - name: thing
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+          examples:
+            ObjectList:
+              dataValue:
+                - one thing
+                - another thing
+              serializedValue: 'thing=one%20thing&thing=another%20thing'
+        - name: coordinates
+          in: query
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - lat
+                  - long
+                properties:
+                  lat:
+                    type: number
+                  long:
+                    type: number
+              examples:
+                Location:
+                  dataValue:
+                    lat: 10
+                    long: 60
+                  serializedValue: '{"lat":10,"long":60}'
+          examples:
+            EncodedLocation:
+              dataValue:
+                lat: 10
+                long: 60
+              serializedValue: coordinates=%7B%22lat%22%3A10%2C%22long%22%3A60%7D
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 'user-123'
+        name:
+          type: string
+          example: 'John Doe'
+        email:
+          type: string
+          format: email
+          example: 'john.doe@example.com'
+        age:
+          type: integer
+          example: 30
+        active:
+          type: boolean
+          example: true
+      required:
+        - id
+        - name
+        - email
+
+  examples:
+    UserJsonValue:
+      summary: JSON user using value field
+      description: Legacy value field for JSON
+      value:
+        id: 'user-value-123'
+        name: 'Alice Johnson'
+        email: 'alice@example.com'
+        age: 28
+        active: true
+
+    UserJsonDataValue:
+      summary: JSON user using dataValue field
+      description: OpenAPI 3.2 dataValue field for JSON
+      dataValue:
+        id: 'user-datavalue-456'
+        name: 'Bob Smith'
+        email: 'bob@example.com'
+        age: 35
+        active: true
+
+    UserJsonSerializedValue:
+      summary: JSON user using serializedValue field
+      description: OpenAPI 3.2 serializedValue field for JSON
+      serializedValue: '{"id":"user-serialized-789","name":"Charlie Brown","email":"charlie@example.com","age":42,"active":false}'
+
+    UserXmlDataValue:
+      summary: XML user using dataValue field
+      description: OpenAPI 3.2 dataValue field for XML
+      dataValue:
+        id: 'user-xml-123'
+        name: 'David Wilson'
+        email: 'david@example.com'
+        age: 31
+        active: true
+
+    UserXmlSerializedValue:
+      summary: XML user using serializedValue field
+      description: OpenAPI 3.2 serializedValue field for XML
+      serializedValue: |
+        <User>
+          <id>user-xml-serialized-456</id>
+          <name>Eve Martinez</name>
+          <email>eve@example.com</email>
+          <age>27</age>
+          <active>true</active>
+        </User>
+
+    UserFormDataValue:
+      summary: Form-urlencoded user using dataValue field
+      description: OpenAPI 3.2 dataValue field for form-urlencoded
+      dataValue:
+        id: 'user-form-789'
+        name: 'Frank Miller'
+        email: 'frank@example.com'
+        age: 45
+        active: false
+
+    UserFormSerializedValue:
+      summary: Form-urlencoded user using serializedValue field
+      description: OpenAPI 3.2 serializedValue field for form-urlencoded
+      serializedValue: 'id=user-form-serialized-999&name=Grace+Lee&email=grace%40example.com&age=29&active=true'

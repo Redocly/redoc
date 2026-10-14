@@ -1,0 +1,88 @@
+openapi: 3.2.0
+info:
+  title: Redocly Cafe
+  version: 1.0.0
+paths:
+  /orders:
+    post:
+      operationId: createOrder
+      requestBody:
+        $ref: '#/components/requestBodies/NewOrder'
+      responses:
+        '201':
+          description: Order placed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+  /orders/{orderId}:
+    put:
+      operationId: replaceOrder
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        $ref: '#/components/requestBodies/NewOrder'
+      responses:
+        '200':
+          description: Order replaced.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+  /order-items:
+    post:
+      requestBody:
+        $ref: '#/components/requestBodies/OrderItemArray'
+      responses:
+        '204':
+          description: Items queued.
+    put:
+      requestBody:
+        $ref: '#/components/requestBodies/OrderItemArray'
+      responses:
+        '204':
+          description: Items replaced.
+servers:
+  - url: https://cafe.example.test
+components:
+  requestBodies:
+    NewOrder:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NewOrder'
+      required: true
+    OrderItemArray:
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/OrderItem'
+  schemas:
+    NewOrder:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+    OrderItem:
+      type: object
+      properties:
+        menuItemId:
+          type: string
+        quantity:
+          type: integer
+          minimum: 1
+    Order:
+      allOf:
+        - $ref: '#/components/schemas/NewOrder'
+        - type: object
+          properties:
+            id:
+              type: string

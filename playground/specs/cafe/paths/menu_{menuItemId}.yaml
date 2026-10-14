@@ -1,0 +1,24 @@
+parameters:
+  - $ref: ../components/parameters/MenuItemId.yaml
+delete:
+  tags:
+    - Products
+  summary: Delete a menu item
+  description: Delete an existing menu item.
+  operationId: deleteMenuItem
+  security:
+    - OAuth2:
+        - menu:write
+  responses:
+    '204':
+      description: Menu item deleted successfully.
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml

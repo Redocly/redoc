@@ -1,0 +1,3 @@
+{"id":"user_001","name":"Alice Johnson","email":"alice.johnson@example.com","active":true}
+{"id":"user_002","name":"Bob Smith","email":"bob.smith@example.com","active":false}
+{"operationId":"op_001","status":"success","resourceId":"user_789","createdAt":"2024-01-15T11:00:00Z"}

@@ -1,0 +1,6 @@
+# Unparseable on purpose: drives the `role="alert"` error path in RedocStandalone.
+openapi: 3.1.0
+info:
+  title: [ unterminated
+  version: 1.0.0
+paths: {}

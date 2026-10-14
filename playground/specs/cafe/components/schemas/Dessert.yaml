@@ -1,0 +1,15 @@
+allOf:
+  - type: object
+    properties:
+      category:
+        description: Menu item category.
+        type: string
+        const: dessert
+      calories:
+        type: number
+        exclusiveMinimum: 0
+        description: Amount of calories.
+    required:
+      - category
+      - calories
+  - $ref: ./MenuBaseItem.yaml

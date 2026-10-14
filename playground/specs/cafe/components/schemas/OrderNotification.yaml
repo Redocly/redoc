@@ -1,0 +1,15 @@
+type: object
+required:
+  - orderId
+  - orderStatus
+  - timestamp
+properties:
+  orderId:
+    type: string
+    description: Unique order identifier.
+  orderStatus:
+    $ref: ./OrderStatus.yaml
+  timestamp:
+    type: string
+    format: date-time
+    description: When the event occurred.

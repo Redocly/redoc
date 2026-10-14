@@ -1,0 +1,20 @@
+server {
+  listen       ${PORT};
+  ${LISTEN_IPV6}
+  server_name  ${HOST};
+
+  root /usr/share/nginx/html;
+
+  # a file is found with the prefix stripped or at its real path; anything else is the page, so
+  # history-router deep links reload
+  location ~ ^/${BASE_PATH_REGEX}(?:/(.*))?$ {
+    include /etc/nginx/handle_options.conf;
+    try_files /$1 $uri /index.html;
+  }
+
+  # also served at the root, as in the Redoc 2.x image, for a proxy that strips the prefix
+  location / {
+    include /etc/nginx/handle_options.conf;
+    try_files $uri /index.html;
+  }
+}

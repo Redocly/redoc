@@ -1,0 +1,237 @@
+get:
+  tags:
+    - Orders
+  summary: List all orders
+  description: Retrieve a collection of orders with optional filtering and pagination.
+  operationId: listOrders
+  security:
+    - OAuth2:
+        - orders:read
+  parameters:
+    - $ref: ../components/parameters/Filter.yaml
+      description: |-
+        Filters the collection items using space-separated `field:value` pairs.
+
+        **Filterable fields:** `customerName`, `status`, `totalPrice`, `createdAt`, `id`
+
+        **Format:** `field1:value1 field2:value2`
+
+        **Supported operators:**
+        - `field:value` - Exact match
+        - `field:value1,value2` - Match any of the comma-separated values (OR)
+        - Time ranges (on `createdAt`): Use `30d` (30 days), `7d` (7 days), `1h` (1 hour), etc.
+
+        **Examples:**
+        - `status:placed` - Filter by a single status.
+        - `status:placed,completed` - Filter by multiple statuses.
+        - `createdAt:30d` - Orders created in the last 30 days.
+        - `id:ord_01h1s5z6vf2mm1mz3hevnn9va7` - Filter by a specific order ID.
+        - `status:placed createdAt:7d` - Combine multiple filters.
+      example: status:placed
+    - $ref: ../components/parameters/Sort.yaml
+      description: |-
+        Sorts the collection by a single field. Prefix with `-` for descending order
+        (for example, `-createdAt`); omit the prefix for ascending order (`createdAt`).
+
+        **Sortable fields:** `customerName`, `status`, `totalPrice`, `createdAt`, `updatedAt`, `id`
+      example: '-createdAt'
+    - $ref: ../components/parameters/Limit.yaml
+    - $ref: ../components/parameters/After.yaml
+    - $ref: ../components/parameters/Before.yaml
+    - $ref: ../components/parameters/Search.yaml
+      description: |-
+        Performs a case-insensitive text search across the searchable fields, returning
+        items where any of them contain the search term as a substring.
+
+        **Searchable fields:** `customerName`, `id`
+      example: John
+  responses:
+    '200':
+      description: Successful operation.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/OrderList.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml
+post:
+  tags:
+    - Orders
+  summary: Create order
+  description: |
+    Create a new order.
+    Order items cannot be changed - if they need to be updated, the order should be canceled and a new one placed.
+  operationId: createOrder
+  x-codeSamples:
+    - lang: curl
+      source: |
+        # Place an order
+        curl -X POST https://api.cafe.example/orders \
+          -H "Authorization: Bearer $CAFE_TOKEN" \
+          -H 'Content-Type: application/json' \
+          -d '{"customerName": "Mary Ann", "orderItems": [{"menuItemId": "prd_01h1", "quantity": 2}]}'
+    - lang: JavaScript
+      source: |
+        // Place an order with fetch
+        const response = await fetch('https://api.cafe.example/orders', {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ customerName: 'Mary Ann', orderItems: [{ menuItemId: 'prd_01h1', quantity: 2 }] }),
+        });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    - lang: TypeScript
+      source: |
+        // Typed order payload
+        type OrderItem = { menuItemId: string; quantity: number; comment?: string };
+        const order: { customerName: string; orderItems: OrderItem[] } = {
+          customerName: 'Mary Ann',
+          orderItems: [{ menuItemId: 'prd_01h1', quantity: 2 }],
+        };
+        await client.post<Order>('/orders', order); // returns 201
+    - lang: Python
+      source: |
+        # Place an order with requests
+        import requests
+
+        response = requests.post(
+            "https://api.cafe.example/orders",
+            headers={"Authorization": f"Bearer {token}"},
+            json={"customerName": "Mary Ann", "orderItems": [{"menuItemId": "prd_01h1", "quantity": 2}]},
+        )
+        response.raise_for_status()
+    - lang: Java
+      source: |
+        // Place an order with java.net.http
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create("https://api.cafe.example/orders"))
+            .header("Authorization", "Bearer " + token)
+            .POST(HttpRequest.BodyPublishers.ofString(body))
+            .build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() != 201) throw new IllegalStateException("Unexpected status");
+    - lang: C#
+      source: |
+        // Place an order with HttpClient
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        using var response = await client.PostAsync("https://api.cafe.example/orders", content);
+        response.EnsureSuccessStatusCode();
+        int created = (int)response.StatusCode; /* 201 */
+    - lang: PHP
+      source: |
+        <?php
+        // Place an order with Guzzle
+        $client = new \GuzzleHttp\Client();
+        $response = $client->post('https://api.cafe.example/orders', [
+            'headers' => ['Authorization' => "Bearer $token"],
+            'json' => ['customerName' => 'Mary Ann', 'orderItems' => [['menuItemId' => 'prd_01h1', 'quantity' => 2]]],
+        ]);
+        echo $response->getStatusCode(); # 201
+    - lang: Go
+      source: |
+        // Place an order with net/http
+        req, err := http.NewRequest("POST", "https://api.cafe.example/orders", bytes.NewBuffer(body))
+        if err != nil {
+            return nil, err
+        }
+        req.Header.Set("Authorization", "Bearer "+token)
+        resp, err := http.DefaultClient.Do(req)
+        defer resp.Body.Close()
+    - lang: Ruby
+      source: |
+        # Place an order with Net::HTTP
+        uri = URI("https://api.cafe.example/orders")
+        request = Net::HTTP::Post.new(uri, "Authorization" => "Bearer #{token}")
+        request.body = { customerName: "Mary Ann", orderItems: [{ menuItemId: "prd_01h1", quantity: 2 }] }.to_json
+        response = Net::HTTP.start(uri.host, uri.port, use_ssl: true) { |http| http.request(request) }
+        raise "unexpected status" unless response.code == "201"
+    - lang: Swift
+      source: |
+        // Place an order with URLSession
+        var request = URLRequest(url: URL(string: "https://api.cafe.example/orders")!)
+        request.httpMethod = "POST"
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.httpBody = try JSONEncoder().encode(order)
+        let (_, response) = try await URLSession.shared.data(for: request)
+        guard (response as? HTTPURLResponse)?.statusCode == 201 else { throw CafeError.unexpected }
+    - lang: Kotlin
+      source: |
+        // Place an order with OkHttp
+        val body = """{"customerName": "Mary Ann", "orderItems": [{"menuItemId": "prd_01h1", "quantity": 2}]}"""
+        val request = Request.Builder()
+            .url("https://api.cafe.example/orders")
+            .header("Authorization", "Bearer $token")
+            .post(body.toRequestBody("application/json".toMediaType()))
+            .build()
+        client.newCall(request).execute().use { response -> check(response.code == 201) }
+    - lang: C++
+      source: |
+        // Place an order with libcurl
+        #include <curl/curl.h>
+        CURL* curl = curl_easy_init();
+        const char* body = "{\"customerName\": \"Mary Ann\"}";
+        curl_easy_setopt(curl, CURLOPT_URL, "https://api.cafe.example/orders");
+        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, body);
+        CURLcode result = curl_easy_perform(curl); /* expect CURLE_OK */
+        curl_easy_cleanup(curl);
+    - lang: Objective-C
+      source: |
+        // Place an order with NSURLSession
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://api.cafe.example/orders"]];
+        request.HTTPMethod = @"POST";
+        [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:nil];
+        [task resume]; /* async */
+  security:
+    - OAuth2:
+        - orders:write
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/Order.yaml
+        examples:
+          OrderRequest:
+            dataValue:
+              customerName: Mary Ann
+              orderItems:
+                - menuItemId: prd_01h1s5z6vf2mm1mz3hevnn9va7
+                  quantity: 2
+                  comment: No sugar!
+                  discount: 0
+  responses:
+    '201':
+      description: Order placed successfully.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Order.yaml
+          examples:
+            OrderResponse:
+              dataValue:
+                id: ord_01h1s5z6vf2mm1mz3hevnn9va7
+                customerName: Mary Ann
+                orderItems:
+                  - menuItemId: prd_01h1s5z6vf2mm1mz3hevnn9va7
+                    quantity: 2
+                    comment: No sugar!
+                    discount: 0
+                object: order
+                status: placed
+                totalPrice: 200
+                createdAt: 2026-08-24T14:15:22Z
+                updatedAt: 2026-08-24T14:15:22Z
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml

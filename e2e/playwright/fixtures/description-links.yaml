@@ -1,0 +1,61 @@
+openapi: 3.0.0
+info:
+  title: Description Links API
+  version: 1.0.0
+  description: |
+    Overview intro paragraph for the Description Links API.
+
+    # Pagination
+
+    List endpoints implement cursor-based pagination. Cross-page description links
+    point at this section.
+
+    # Authentication
+
+    The API supports API keys and OAuth2.
+tags:
+  - name: things
+    description: Operations about things.
+  - name: widgets
+    description: Operations about widgets.
+paths:
+  /things:
+    get:
+      tags:
+        - things
+      summary: List all things
+      operationId: listThings
+      description: |
+        Lists things. These links point at content that lives on other routes:
+
+        - Section: [Go to pagination](#section/pagination)
+        - Legacy operation: [Go to Get a widget](#operation/getWidget)
+        - Legacy tag: [Go to Widgets](#tag/widgets)
+        - Dangling: [Missing section](#section/does-not-exist)
+      parameters:
+        - name: filter
+          in: query
+          required: false
+          description: |
+            Filters the collection items. This field requires a special format.
+            For more information, see [Using pagination with collections](#section/pagination).
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+  /widgets/{id}:
+    get:
+      tags:
+        - widgets
+      summary: Get a widget
+      operationId: getWidget
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK

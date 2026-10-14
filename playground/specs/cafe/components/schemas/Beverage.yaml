@@ -1,0 +1,19 @@
+allOf:
+  - type: object
+    properties:
+      category:
+        description: Menu item category.
+        type: string
+        const: beverage
+      volume:
+        type: number
+        description: Size of the beverage in milliliters.
+        exclusiveMinimum: 0
+      containsCaffeine:
+        type: boolean
+        description: Indicates if the beverage contains caffeine.
+    required:
+      - category
+      - volume
+      - containsCaffeine
+  - $ref: ./MenuBaseItem.yaml

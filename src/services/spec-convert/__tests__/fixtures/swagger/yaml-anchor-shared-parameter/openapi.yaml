@@ -1,0 +1,49 @@
+openapi: 3.2.0
+info:
+  title: Redocly Cafe
+  version: 1.0.0
+  description: Orders, menu and kitchen tickets.
+tags:
+  - name: menu
+    description: What the kitchen can make.
+paths:
+  /menu:
+    get:
+      tags:
+        - menu
+      summary: List menu items
+      description: Returns every item on today's menu.
+      operationId: listMenuItems
+      parameters:
+        - in: header
+          name: X-Barista-Token
+          description: Token handed out at the counter.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The menu.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MenuItem'
+servers:
+  - url: http://cafe.example.test/v1
+components:
+  parameters:
+    baristaToken:
+      in: header
+      name: X-Barista-Token
+      description: Token handed out at the counter.
+      required: false
+      schema:
+        type: string
+  schemas:
+    MenuItem:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string

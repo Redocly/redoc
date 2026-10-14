@@ -1,0 +1,127 @@
+openapi: 3.1.0
+info:
+  title: OneOf/AnyOf Title Test API
+  version: 1.0.0
+  description: API for testing oneOf and anyOf title inheritance
+tags:
+  - name: Plans
+    description: Operations for managing plans (anyOf example)
+  - name: Documents
+    description: Operations for managing documents (oneOf example)
+paths:
+  /plans:
+    post:
+      tags:
+        - Plans
+      summary: Create a plan
+      description: Create a new plan (one-time sale, subscription, or trial-only)
+      operationId: createPlan
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Plan'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plan'
+  /documents:
+    post:
+      tags:
+        - Documents
+      summary: Upload a document
+      description: Upload a document for a specific entity type (e.g., a PNR, Event, or Leg)
+      operationId: uploadDocument
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UploadDocumentRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadDocumentResponse'
+components:
+  schemas:
+    Plan:
+      type: object
+      title: Plan
+      description: A plan can be one of three types
+      anyOf:
+        - $ref: '#/components/schemas/OneTimeSalePlan'
+        - $ref: '#/components/schemas/SubscriptionPlan'
+        - $ref: '#/components/schemas/TrialOnlyPlan'
+    OneTimeSalePlan:
+      type: object
+      title: OneTimeSalePlan
+      properties:
+        name:
+          type: string
+        price:
+          type: number
+    SubscriptionPlan:
+      type: object
+      title: SubscriptionPlan
+      properties:
+        name:
+          type: string
+        monthlyPrice:
+          type: number
+    TrialOnlyPlan:
+      type: object
+      title: TrialOnlyPlan
+      properties:
+        name:
+          type: string
+        trialDays:
+          type: integer
+    EntityMetadata:
+      title: EntityMetadata
+      description: Metadata for associated entity of document
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/PnrMetadataWrapper'
+        - $ref: '#/components/schemas/EventMetadataWrapper'
+        - $ref: '#/components/schemas/LegMetadataWrapper'
+    PnrMetadataWrapper:
+      type: object
+      title: PnrMetadataWrapper
+      properties:
+        pnrId:
+          type: string
+    EventMetadataWrapper:
+      type: object
+      title: EventMetadataWrapper
+      properties:
+        eventId:
+          type: string
+    LegMetadataWrapper:
+      type: object
+      title: LegMetadataWrapper
+      properties:
+        legId:
+          type: string
+    UploadDocumentRequest:
+      type: object
+      required:
+        - entityMetadata
+      properties:
+        entityMetadata:
+          $ref: '#/components/schemas/EntityMetadata'
+        name:
+          type: string
+    UploadDocumentResponse:
+      type: object
+      properties:
+        documentId:
+          type: string
+        status:
+          type: string

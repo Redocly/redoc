@@ -1,0 +1,18 @@
+openapi: 3.2.0
+info:
+  title: Redocly Cafe
+  version: ''
+paths:
+  /menu:
+    get:
+      responses:
+        '200':
+          description: The menu.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Menu_Item'
+components:
+  schemas:
+    Menu_Item:
+      type: string

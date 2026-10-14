@@ -1,0 +1,13 @@
+swagger: '2.0'
+info:
+  title: Redocly Cafe
+  version: 1.0.0
+paths:
+  /menu:
+    get:
+      operationId: listMenuItems
+      parameters:
+        - $ref: '#/parameters/notDeclared'
+      responses:
+        '200':
+          description: The menu.

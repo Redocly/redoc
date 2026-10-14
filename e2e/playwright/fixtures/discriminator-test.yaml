@@ -1,0 +1,127 @@
+openapi: 3.1.0
+info:
+  title: Trip Filters Discriminator Example API
+  version: 1.0.0
+paths:
+  /trips:
+    post:
+      summary: Create trip with filters
+      operationId: createTrip
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTripRequest'
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    CreateTripRequest:
+      type: object
+      required: [tripFilters]
+      properties:
+        tripFilters:
+          type: array
+          items:
+            $ref: '#/components/schemas/TripFilter'
+    TripFilter:
+      type: object
+      required: [filterType]
+      discriminator:
+        propertyName: filterType
+        mapping:
+          DATE: '#/components/schemas/DateFilter'
+          PRICE: '#/components/schemas/PriceFilter'
+          DURATION: '#/components/schemas/DurationFilter'
+          AIRLINE: '#/components/schemas/AirlineFilter'
+          STOPS: '#/components/schemas/StopsFilter'
+          BAGGAGE: '#/components/schemas/BaggageFilter'
+          SEAT: '#/components/schemas/SeatFilter'
+          CLASS: '#/components/schemas/ClassFilter'
+      oneOf:
+        - $ref: '#/components/schemas/DateFilter'
+        - $ref: '#/components/schemas/PriceFilter'
+        - $ref: '#/components/schemas/DurationFilter'
+        - $ref: '#/components/schemas/AirlineFilter'
+        - $ref: '#/components/schemas/StopsFilter'
+        - $ref: '#/components/schemas/BaggageFilter'
+        - $ref: '#/components/schemas/SeatFilter'
+        - $ref: '#/components/schemas/ClassFilter'
+    DateFilter:
+      type: object
+      required: [filterType, from, to]
+      properties:
+        filterType:
+          type: string
+          default: DATE
+        from:
+          type: string
+          format: date
+        to:
+          type: string
+          format: date
+    PriceFilter:
+      type: object
+      required: [filterType, maxPrice]
+      properties:
+        filterType:
+          type: string
+          default: PRICE
+        maxPrice:
+          type: number
+    DurationFilter:
+      type: object
+      required: [filterType, maxHours]
+      properties:
+        filterType:
+          type: string
+          default: DURATION
+        maxHours:
+          type: integer
+    AirlineFilter:
+      type: object
+      required: [filterType, airline]
+      properties:
+        filterType:
+          type: string
+          default: AIRLINE
+        airline:
+          type: string
+    StopsFilter:
+      type: object
+      required: [filterType, maxStops]
+      properties:
+        filterType:
+          type: string
+          default: STOPS
+        maxStops:
+          type: integer
+    BaggageFilter:
+      type: object
+      required: [filterType, included]
+      properties:
+        filterType:
+          type: string
+          default: BAGGAGE
+        included:
+          type: boolean
+    SeatFilter:
+      type: object
+      required: [filterType, seatType]
+      properties:
+        filterType:
+          type: string
+          default: SEAT
+        seatType:
+          type: string
+    ClassFilter:
+      type: object
+      required: [filterType, travelClass]
+      properties:
+        filterType:
+          type: string
+          default: CLASS
+        travelClass:
+          type: string

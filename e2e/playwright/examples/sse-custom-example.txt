@@ -1,0 +1,7 @@
+id: evt_001
+event: user_login
+data: {"userId": "123", "action": "login", "timestamp": "2024-01-15T10:00:00Z"}
+
+id: evt_002
+event: user_update
+data: {"userId": "123", "action": "updated", "fields": ["email", "name"]}

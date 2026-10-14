@@ -1,0 +1,48 @@
+get:
+  tags:
+    - Statistics
+  summary: Get revenue statistics
+  description: |
+    Retrieve revenue statistics for a configurable date range.
+    Returns revenue, order counts, average order amount, and other useful statistics.
+  operationId: getRevenue
+  security:
+    - ApiKey: []
+    - OAuth2:
+        - revenue:read
+  parameters:
+    - name: startDate
+      in: query
+      required: false
+      description: |
+        Start date for the revenue calculation period (ISO 8601 datetime format).
+        Defaults to 30 days ago if not provided.
+      schema:
+        type: string
+        format: date
+      example: '2026-01-01'
+    - name: endDate
+      in: query
+      required: false
+      description: |
+        End date for the revenue calculation period (ISO 8601 datetime format).
+        Defaults to current time if not provided.
+      schema:
+        type: string
+        format: date
+      example: '2026-01-31'
+  responses:
+    '200':
+      description: Revenue statistics retrieved successfully.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/RevenueStatistics.yaml
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '401':
+      $ref: ../components/responses/Unauthorized.yaml
+    '403':
+      $ref: ../components/responses/Forbidden.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml

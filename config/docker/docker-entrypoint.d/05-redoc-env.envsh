@@ -1,0 +1,49 @@
+#!/bin/sh
+# Sourced by the nginx entrypoint before its own scripts, so the exports reach all of them.
+
+if [ -z "${SPEC_URL}" ]; then
+  echo "redoc: SPEC_URL is empty; set it to the URL of the API definition" >&2
+  exit 1
+fi
+
+# "/docs", "docs/" and "docs" all mean the same prefix
+BASE_PATH=$(printf '%s' "${BASE_PATH}" | sed -e 's#//*#/#g' -e 's#^/##' -e 's#/$##')
+case "${BASE_PATH}" in
+  *[!A-Za-z0-9._~/-]*)
+    echo "redoc: BASE_PATH must be a URL path (letters, digits, . _ ~ - and /), got '${BASE_PATH}'" >&2
+    exit 1
+    ;;
+esac
+case "/${BASE_PATH}/" in
+  */./* | */../*)
+    echo "redoc: BASE_PATH must not contain '.' or '..' segments, got '${BASE_PATH}'" >&2
+    exit 1
+    ;;
+esac
+export BASE_PATH
+# the prefix goes into a regex location, where "." would match any character
+BASE_PATH_REGEX=$(printf '%s' "${BASE_PATH}" | sed -e 's/[.]/\\./g')
+export BASE_PATH_REGEX
+
+# a PORT of host:port already names the address to listen on
+LISTEN_IPV6=
+if [ -f /proc/net/if_inet6 ] && [ "${PORT}" = "${PORT#*:}" ]; then
+  LISTEN_IPV6="listen [::]:${PORT};"
+fi
+export LISTEN_IPV6
+
+# everything generated at start-up lives in /tmp so the image also runs with --read-only --tmpfs /tmp
+if ! mkdir -p /tmp/redoc/conf.d 2>/dev/null; then
+  echo "redoc: /tmp is not writable; with --read-only also pass --tmpfs /tmp" >&2
+  exit 1
+fi
+
+# rendered here rather than by nginx's 20-envsubst-on-templates.sh, which stays free for
+# user templates in /etc/nginx/templates
+if [ -n "${BASE_PATH}" ]; then
+  REDOC_NGINX_TEMPLATE=/etc/redoc/nginx/prefix/default.conf.template
+else
+  REDOC_NGINX_TEMPLATE=/etc/redoc/nginx/root/default.conf.template
+fi
+envsubst '${PORT} ${HOST} ${BASE_PATH_REGEX} ${LISTEN_IPV6}' \
+  < "${REDOC_NGINX_TEMPLATE}" > /tmp/redoc/conf.d/default.conf

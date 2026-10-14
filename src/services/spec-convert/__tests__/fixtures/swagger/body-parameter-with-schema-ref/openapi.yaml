@@ -1,0 +1,56 @@
+openapi: 3.2.0
+info:
+  title: Redocly Cafe
+  description: Place and track orders.
+  version: 0.4.2
+  contact:
+    email: orders@cafe.example.test
+paths:
+  /orders:
+    post:
+      summary: Place an order.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewOrder'
+        description: What the guest asked for.
+        required: true
+      responses:
+        '201':
+          description: Order placed.
+        '422':
+          description: The order could not be accepted.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/OrderProblem'
+servers:
+  - url: https://cafe.example.test
+components:
+  schemas:
+    NewOrder:
+      type: object
+      properties:
+        table_number:
+          description: Table the order goes to.
+          type: string
+          example: '07'
+        pager_number:
+          description: Pager handed to the guest.
+          type: string
+          example: '0042'
+      required:
+        - table_number
+    OrderProblem:
+      type: object
+      properties:
+        code:
+          type: string
+          example: '422'
+        title:
+          type: string
+          example: Kitchen closed
+        detail:
+          type: string
+          example: Hot food is served until 21:00

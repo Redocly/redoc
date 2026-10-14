@@ -1,0 +1,41 @@
+openapi: 3.2.0
+info:
+  title: Redocly Cafe
+  version: 1.0.0
+paths:
+  /menu:
+    get:
+      operationId: listMenuItems
+      parameters:
+        - name: search
+          in: query
+          deprecated: true
+          example: oat latte
+          schema:
+            type: string
+        - name: filter
+          in: query
+          schema:
+            type: string
+          allowReserved: true
+        - name: X-Tab-Ids
+          in: header
+          schema:
+            type: array
+            items:
+              type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            exclusiveMaximum: 50
+            default: 20
+        - name: menuItemId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Matching items.

@@ -1,0 +1,44 @@
+openapi: 3.2.0
+info:
+  version: '1.0'
+  title: Redocly Cafe
+paths:
+  /orders:
+    post:
+      operationId: createOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order_Draft'
+        description: The order draft.
+        required: true
+      responses:
+        '204':
+          description: Draft saved.
+        '422':
+          description: Draft rejected.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Problem_422'
+components:
+  schemas:
+    Order_Draft:
+      type: object
+      properties:
+        table_number:
+          description: Table the order goes to.
+          type: string
+          example: '12'
+      required:
+        - table_number
+    Problem_422:
+      type: object
+      properties:
+        code:
+          type: string
+          example: '422'
+        title:
+          type: string
+          example: Unknown table

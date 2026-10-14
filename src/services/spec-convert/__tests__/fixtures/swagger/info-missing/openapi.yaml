@@ -1,0 +1,7 @@
+openapi: 3.2.0
+servers:
+  - url: //cafe.example.test
+info:
+  version: ''
+  title: ''
+paths: {}

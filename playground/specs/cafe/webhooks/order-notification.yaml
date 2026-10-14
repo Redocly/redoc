@@ -1,0 +1,20 @@
+post:
+  tags:
+    - Orders
+  operationId: orderNotificationWebhook
+  security: []
+  summary: Order notification webhook
+  description: Webhook triggered when a new order is placed.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/OrderNotification.yaml
+  responses:
+    '200':
+      description: Webhook received successfully.
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '500':
+      $ref: ../components/responses/InternalServerError.yaml

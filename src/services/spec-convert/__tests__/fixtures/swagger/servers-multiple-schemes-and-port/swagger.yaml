@@ -1,0 +1,16 @@
+swagger: '2.0'
+info:
+  title: Redocly Cafe
+  version: 2.3.0
+host: cafe.example.test:8443
+basePath: /cafe-api/
+schemes:
+  - http
+  - https
+paths:
+  /orders:
+    get:
+      operationId: listOrders
+      responses:
+        '200':
+          description: Orders placed so far.

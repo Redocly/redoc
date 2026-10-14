@@ -1,0 +1,307 @@
+swagger: '2.0'
+info:
+  title: Redocly Cafe
+  description: Browse the menu, place orders and follow them to the pickup shelf.
+  version: 1.4.0
+  termsOfService: https://cafe.example.test/house-rules
+  contact:
+    email: hello@cafe.example.test
+  license:
+    name: Cafe internal use
+    url: https://cafe.example.test/license
+host: cafe.example.test
+basePath: /v1
+tags:
+  - name: menu
+    description: Drinks and food on offer.
+    externalDocs:
+      description: Allergen guide
+      url: https://cafe.example.test/allergens
+  - name: orders
+    description: Orders and their items.
+schemes:
+  - https
+  - http
+paths:
+  /menu:
+    get:
+      tags: [menu]
+      summary: List menu items
+      operationId: listMenuItems
+      produces: [application/json, application/xml]
+      parameters:
+        - name: category
+          in: query
+          description: Categories to include.
+          required: true
+          type: array
+          items:
+            type: string
+            enum: [coffee, tea, pastry]
+            default: coffee
+          collectionFormat: multi
+      responses:
+        '200':
+          description: Menu items in the chosen categories.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/MenuItem'
+        '400':
+          description: Unknown category.
+      security:
+        - OAuth2: [menu:read]
+    post:
+      tags: [menu]
+      summary: Add a menu item
+      operationId: createMenuItem
+      consumes: [application/json, application/xml]
+      produces: [application/json, application/xml]
+      parameters:
+        - in: body
+          name: body
+          description: Item to put on the menu.
+          required: true
+          schema:
+            $ref: '#/definitions/MenuItem'
+      responses:
+        '405':
+          description: The item could not be added.
+      security:
+        - OAuth2: [menu:write, menu:read]
+  '/menu/{menuItemId}':
+    get:
+      tags: [menu]
+      summary: Get one menu item
+      operationId: getMenuItem
+      produces: [application/json]
+      parameters:
+        - name: menuItemId
+          in: path
+          description: Item to look up.
+          required: true
+          type: integer
+          format: int64
+          maximum: 999
+          minimum: 1
+      responses:
+        '200':
+          description: The item.
+          schema:
+            $ref: '#/definitions/MenuItem'
+        '404':
+          description: No such item.
+      security:
+        - ApiKey: []
+    post:
+      tags: [menu]
+      summary: Update an item with form data
+      operationId: updateMenuItemWithForm
+      consumes: [application/x-www-form-urlencoded]
+      parameters:
+        - name: menuItemId
+          in: path
+          required: true
+          type: integer
+          format: int64
+        - name: name
+          in: formData
+          description: New name for the item.
+          required: false
+          type: string
+        - name: status
+          in: formData
+          description: New availability.
+          required: false
+          type: string
+      responses:
+        '405':
+          description: Invalid form.
+    delete:
+      tags: [menu]
+      summary: Remove a menu item
+      operationId: deleteMenuItem
+      parameters:
+        - name: X-Manager-Key
+          in: header
+          required: false
+          type: string
+        - name: menuItemId
+          in: path
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '404':
+          description: No such item.
+  '/menu/{menuItemId}/photo':
+    post:
+      tags: [menu]
+      summary: Upload a photo of the item
+      operationId: uploadMenuItemPhoto
+      consumes: [multipart/form-data]
+      produces: [application/json]
+      parameters:
+        - name: menuItemId
+          in: path
+          required: true
+          type: integer
+          format: int64
+        - name: caption
+          in: formData
+          description: Caption for the photo.
+          required: false
+          type: string
+        - name: file
+          in: formData
+          description: The photo.
+          required: false
+          type: file
+      responses:
+        '200':
+          description: Photo stored.
+          schema:
+            $ref: '#/definitions/UploadResult'
+  /orders:
+    post:
+      tags: [orders]
+      summary: Place an order
+      operationId: createOrder
+      produces: [application/json]
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/Order'
+      responses:
+        '200':
+          description: Order placed.
+          schema:
+            $ref: '#/definitions/Order'
+          headers:
+            X-Ready-In:
+              type: integer
+              format: int32
+              description: Minutes until pickup.
+            X-Ready-At:
+              type: string
+              format: date-time
+  '/orders/{orderId}':
+    get:
+      tags: [orders]
+      summary: Get an order
+      operationId: getOrder
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          type: integer
+          maximum: 10
+          minimum: 1
+          format: int64
+      responses:
+        '200':
+          description: The order.
+          schema:
+            $ref: '#/definitions/Order'
+securityDefinitions:
+  OAuth2:
+    type: oauth2
+    authorizationUrl: https://auth.cafe.example.test/authorize
+    flow: implicit
+    scopes:
+      menu:read: See the menu.
+      menu:write: Change the menu.
+  ApiKey:
+    type: apiKey
+    name: api_key
+    in: header
+definitions:
+  Order:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      menuItemId:
+        type: integer
+        format: int64
+      quantity:
+        type: integer
+        format: int32
+      pickupAt:
+        type: string
+        format: date-time
+      status:
+        type: string
+        description: Where the order is.
+        enum: [placed, brewing, ready]
+      paid:
+        type: boolean
+        default: false
+    xml:
+      name: Order
+  Category:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+    xml:
+      name: Category
+  OrderItem:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      label:
+        type: string
+    xml:
+      name: OrderItem
+  MenuItem:
+    type: object
+    required: [name, photoUrls]
+    properties:
+      id:
+        type: integer
+        format: int64
+      category:
+        $ref: '#/definitions/Category'
+      name:
+        type: string
+        example: Flat white
+      photoUrls:
+        type: array
+        xml:
+          name: photoUrl
+          wrapped: true
+        items:
+          type: string
+      extras:
+        type: array
+        xml:
+          name: extra
+          wrapped: true
+        items:
+          $ref: '#/definitions/OrderItem'
+      status:
+        type: string
+        description: Availability today.
+        enum: [available, sold-out]
+    xml:
+      name: MenuItem
+  UploadResult:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+externalDocs:
+  description: Cafe handbook
+  url: https://cafe.example.test/handbook

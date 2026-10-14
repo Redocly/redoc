@@ -1,0 +1,22 @@
+openapi: 3.2.0
+info:
+  title: Redocly Cafe
+  version: 1.0.0
+paths:
+  /menu:
+    get:
+      operationId: listMenuItems
+      responses:
+        default:
+          description: Default response
+    head:
+      operationId: checkMenu
+      responses:
+        '200':
+          description: ''
+          content:
+            '*/*':
+              schema:
+                type: string
+        '304':
+          description: ''

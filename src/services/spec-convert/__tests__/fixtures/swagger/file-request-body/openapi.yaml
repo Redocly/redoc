@@ -1,0 +1,27 @@
+openapi: 3.2.0
+info:
+  title: Redocly Cafe
+  version: 1.0.0
+paths:
+  /menu/{menuItemId}/photo:
+    put:
+      operationId: replaceMenuPhoto
+      parameters:
+        - name: menuItemId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/octet-stream: {}
+        x-max-size: 2MB
+      responses:
+        '204':
+          description: Photo replaced.
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: binary

@@ -1,0 +1,30 @@
+openapi: 3.1.0
+info:
+  title: Docker Smoke API
+  version: 1.0.0
+tags:
+  # dots in the tag and the operationId put a dot in history-router paths
+  - name: Orders v1.2
+paths:
+  /orders:
+    get:
+      tags: [Orders v1.2]
+      operationId: orders.list
+      summary: List orders
+      responses:
+        '200':
+          description: OK
+  /orders/{id}:
+    get:
+      tags: [Orders v1.2]
+      operationId: orders.get
+      summary: Get order
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK

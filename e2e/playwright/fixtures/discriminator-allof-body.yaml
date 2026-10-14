@@ -1,0 +1,243 @@
+openapi: 3.0.0
+info:
+  title: Discriminator allOf-wrapped body
+  version: 1.0.0
+  description: |
+    Minimal spec used to verify discriminator-state sync between the schema
+    panel and the code-sample panel when the request body is wrapped in
+    `allOf` (a common OpenAPI 3.0 idiom).
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+  - url: http://localhost:8080
+security:
+  - cafe_auth: []
+paths:
+  /cafe:
+    put:
+      tags:
+        - cafe
+      summary: Update an existing cafe
+      operationId: updateCafe
+      requestBody:
+        $ref: '#/components/requestBodies/Cafe'
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Invalid input
+  /pet:
+    put:
+      tags:
+        - pets
+      summary: Update a pet
+      operationId: updatePet
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pet'
+      responses:
+        '200':
+          description: OK
+  /vehicle:
+    put:
+      tags:
+        - vehicles
+      summary: Update a vehicle
+      operationId: updateVehicle
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Vehicle'
+      responses:
+        '200':
+          description: OK
+  /document:
+    put:
+      tags:
+        - documents
+      summary: Update a document
+      operationId: updateDocument
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/Doc'
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    Doc:
+      description: defaultMapping host; the body above wraps it in allOf.
+      type: object
+      required:
+        - docType
+      discriminator:
+        propertyName: docType
+        defaultMapping: '#/components/schemas/DocNote'
+        mapping:
+          article: '#/components/schemas/DocArticle'
+          note: '#/components/schemas/DocNote'
+      properties:
+        docType:
+          type: string
+    DocArticle:
+      allOf:
+        - $ref: '#/components/schemas/Doc'
+        - type: object
+          properties:
+            headline:
+              type: string
+          required:
+            - headline
+    DocNote:
+      allOf:
+        - $ref: '#/components/schemas/Doc'
+        - type: object
+          properties:
+            body:
+              type: string
+          required:
+            - body
+    Pet:
+      description: Implicit discriminator host — no mapping, variants derive from allOf back-references.
+      type: object
+      required:
+        - petType
+        - name
+      discriminator:
+        propertyName: petType
+      properties:
+        petType:
+          type: string
+        name:
+          type: string
+    PetCat:
+      allOf:
+        - $ref: '#/components/schemas/Pet'
+        - type: object
+          properties:
+            huntingSkill:
+              type: string
+          required:
+            - huntingSkill
+    PetDog:
+      allOf:
+        - $ref: '#/components/schemas/Pet'
+        - type: object
+          properties:
+            packSize:
+              type: integer
+          required:
+            - packSize
+    Vehicle:
+      description: Discriminator without mapping over an explicit oneOf list.
+      type: object
+      required:
+        - vehicleType
+      discriminator:
+        propertyName: vehicleType
+      oneOf:
+        - $ref: '#/components/schemas/Bike'
+        - $ref: '#/components/schemas/Car'
+      properties:
+        vehicleType:
+          type: string
+    Bike:
+      type: object
+      title: Bike
+      required:
+        - vehicleType
+        - gears
+      properties:
+        vehicleType:
+          type: string
+        gears:
+          type: integer
+    Car:
+      type: object
+      title: Car
+      required:
+        - vehicleType
+        - doors
+      properties:
+        vehicleType:
+          type: string
+        doors:
+          type: integer
+    Cat:
+      description: A cat variant of Cafe.
+      allOf:
+        - $ref: '#/components/schemas/Cafe'
+        - type: object
+          properties:
+            huntingSkill:
+              type: string
+              description: The measured skill for hunting
+              default: lazy
+              enum: [clueless, lazy, adventurous, aggressive]
+          required:
+            - huntingSkill
+    Dog:
+      description: A dog variant of Cafe.
+      allOf:
+        - $ref: '#/components/schemas/Cafe'
+        - type: object
+          properties:
+            packSize:
+              type: integer
+              format: int32
+              minimum: 1
+          required:
+            - packSize
+    HoneyBee:
+      description: A bee variant of Cafe.
+      allOf:
+        - $ref: '#/components/schemas/Cafe'
+        - type: object
+          properties:
+            honeyPerDay:
+              type: number
+          required:
+            - honeyPerDay
+    Cafe:
+      type: object
+      required:
+        - name
+      discriminator:
+        propertyName: cafeType
+        mapping:
+          cat: '#/components/schemas/Cat'
+          dog: '#/components/schemas/Dog'
+          bee: '#/components/schemas/HoneyBee'
+      properties:
+        name:
+          type: string
+          description: The name given to a cafe
+        cafeType:
+          type: string
+          description: Type of a cafe
+  requestBodies:
+    Cafe:
+      content:
+        application/json:
+          schema:
+            allOf:
+              - description: My Cafe
+                title: Cafe Latte
+              - $ref: '#/components/schemas/Cafe'
+      description: Cafe object that needs to be added to the store
+      required: true
+  securitySchemes:
+    cafe_auth:
+      type: apiKey
+      name: api_key
+      in: header

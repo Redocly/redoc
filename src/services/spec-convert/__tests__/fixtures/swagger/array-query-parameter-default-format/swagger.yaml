@@ -1,0 +1,36 @@
+swagger: '2.0'
+info:
+  title: Redocly Cafe
+  version: '1.0'
+host: cafe.example.test
+basePath: /api
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /menu:
+    get:
+      summary: Filter the menu.
+      operationId: listMenuItems
+      produces:
+        - application/json
+      parameters:
+        - name: allergens
+          in: query
+          description: Allergens to leave out.
+          required: true
+          type: array
+          items:
+            type: string
+      responses:
+        '202':
+          description: Filter accepted.
+          schema:
+            type: object
+            properties:
+              note:
+                type: string
+                description: What the kitchen will do with the filter.

@@ -1,0 +1,43 @@
+openapi: 3.2.0
+info:
+  version: '1.0'
+  title: Redocly Cafe
+paths:
+  /orders/{orderId}:
+    get:
+      operationId: getOrder
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The order and its previous version.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  current:
+                    $ref: '#/components/schemas/schema1'
+                  previous:
+                    $ref: '#/components/schemas/schema1'
+            text/xml:
+              schema:
+                type: object
+                properties:
+                  current:
+                    $ref: '#/components/schemas/schema1'
+                  previous:
+                    $ref: '#/components/schemas/schema1'
+components:
+  schemas:
+    schema1:
+      title: Order snapshot
+      type: object
+      properties:
+        status:
+          type: string
+          description: Where the order is right now.

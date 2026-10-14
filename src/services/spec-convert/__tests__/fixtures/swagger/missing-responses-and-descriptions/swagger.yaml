@@ -1,0 +1,16 @@
+swagger: '2.0'
+info:
+  title: Redocly Cafe
+  version: 1.0.0
+paths:
+  /menu:
+    get:
+      operationId: listMenuItems
+    head:
+      operationId: checkMenu
+      responses:
+        '200':
+          schema:
+            type: string
+        '304':
+          description:

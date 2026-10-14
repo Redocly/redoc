@@ -1,0 +1,9 @@
+name: sort
+description: |-
+  To sort by id in descending order use `-id`.
+  To sort by id in ascending order use `id`.
+in: query
+required: false
+schema:
+  type: string
+example: '-name'

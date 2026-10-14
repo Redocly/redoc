@@ -1,0 +1,11 @@
+name: photoSize
+in: query
+description: Photo size to retrieve.
+required: false
+schema:
+  type: string
+  enum:
+    - thumbnail
+    - medium
+    - large
+  default: medium

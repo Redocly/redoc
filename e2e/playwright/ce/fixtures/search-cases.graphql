@@ -1,0 +1,90 @@
+"""
+Search Cases GraphQL. Every description here is a query in SEARCH-CASES.md.
+"""
+schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}
+
+"Caps how many calls one client may make per minute"
+directive @rateLimited("Requests allowed per minute for one client" rpm: Int!) on FIELD_DEFINITION
+
+"Anything addressable by a ledger identifier."
+interface Node {
+  "Ledger identifier of the node."
+  id: ID!
+}
+
+type Query {
+  "Fetch one order by its ledger identifier"
+  order("Ledger identifier of the order to fetch." id: ID!): Order
+
+  "List orders, newest first."
+  orders(
+    "Only orders in this lifecycle status"
+    status: OrderStatus
+    "Maximum number of orders returned in one page"
+    first: Int = 20
+  ): [Order!]!
+
+  "Search orders and warehouses in one query."
+  search(term: String!): [SearchResult!]! @rateLimited(rpm: 30)
+}
+
+type Mutation {
+  "Create an order from the cart"
+  placeOrder(input: PlaceOrderInput!): Order!
+}
+
+type Subscription {
+  "Fires whenever an order changes lifecycle status."
+  orderUpdated("Restrict the stream to one order." id: ID): Order!
+}
+
+"An order in the ledger."
+type Order implements Node {
+  id: ID!
+  "Lifecycle status of the order."
+  status: OrderStatus!
+  "Carrier tracking number once dispatched"
+  trackingNumber: String
+  "Warehouse fulfilling the order."
+  warehouse: Warehouse
+}
+
+"A fulfilment site."
+type Warehouse implements Node {
+  id: ID!
+  "Short code of the fulfilment site."
+  code: String!
+  "Maximum pallets the site can hold at once"
+  capacityPallets: Int!
+}
+
+"Either an order or a warehouse."
+union SearchResult = Order | Warehouse
+
+"Lifecycle of an order."
+enum OrderStatus {
+  "Order accepted but not yet packed"
+  PLACED
+  "All items boxed and labelled"
+  PACKED
+  "Handed to the carrier"
+  SHIPPED
+}
+
+input PlaceOrderInput {
+  "Promotional coupon redeemed through GraphQL"
+  couponCode: String
+  "Line items of the cart."
+  items: [OrderItemInput!]!
+}
+
+input OrderItemInput {
+  "Stock keeping unit of the line."
+  sku: String!
+  "Units requested."
+  quantity: Int!
+}

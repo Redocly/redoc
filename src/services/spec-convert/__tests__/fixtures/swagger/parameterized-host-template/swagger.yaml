@@ -1,0 +1,30 @@
+swagger: '2.0'
+info:
+  title: Redocly Cafe
+  version: 1.0.0
+schemes:
+  - https
+basePath: /v1
+x-ms-parameterized-host:
+  hostTemplate: '{branch}.{region}.cafe.example.test'
+  parameters:
+    - name: ''
+      in: path
+      required: true
+      type: string
+      description: Cafe branch, for example downtown.
+    - $ref: '#/parameters/RegionHost'
+parameters:
+  RegionHost:
+    in: path
+    required: true
+    type: string
+    enum: [eu, us]
+    x-ms-parameter-location: client
+paths:
+  /menu:
+    get:
+      operationId: listMenuItems
+      responses:
+        '200':
+          description: The menu of this branch.

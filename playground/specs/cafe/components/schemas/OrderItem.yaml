@@ -1,0 +1,27 @@
+type: object
+properties:
+  menuItemId:
+    type: string
+    description: ID of the menu item to add to the order.
+    writeOnly: true
+  menuItem:
+    allOf:
+      - $ref: ./MenuItem.yaml
+    description: Menu item that is part of the order.
+    readOnly: true
+  quantity:
+    type: integer
+    minimum: 1
+    description: Quantity of the menu item.
+  discount:
+    type: integer
+    minimum: 0
+    description: Discount amount in cents (absolute value).
+    default: 0
+  comment:
+    type: string
+    maxLength: 500
+    description: Optional comment for the order item (e.g., "No sugar").
+required:
+  - menuItemId
+  - quantity

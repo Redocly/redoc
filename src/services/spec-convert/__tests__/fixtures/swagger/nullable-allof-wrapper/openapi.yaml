@@ -1,0 +1,39 @@
+openapi: 3.2.0
+info:
+  title: Redocly Cafe
+  version: 1.0.0
+paths: {}
+components:
+  schemas:
+    OrderItem:
+      type: object
+      properties:
+        menuItemId:
+          type: string
+    Order:
+      type: object
+      properties:
+        lastItem:
+          anyOf:
+            - allOf:
+                - $ref: '#/components/schemas/OrderItem'
+            - type: 'null'
+          description: Item added most recently, if any.
+        pickup:
+          anyOf:
+            - oneOf:
+                - type: string
+                  format: date-time
+                - type: integer
+            - type: 'null'
+          readOnly: true
+        discount:
+          anyOf:
+            - anyOf:
+                - type: number
+                - type: string
+              not:
+                type: boolean
+            - type: 'null'
+        note:
+          description: Free text for the barista.
