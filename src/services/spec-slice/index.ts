@@ -13,6 +13,7 @@ export {
   ASSISTANT_LINK_BASES,
   buildInlinePromptLink,
   buildFetchSpecPromptLink,
+  wrapSliceForCopy,
 } from './assistant-links.js';
 export type { SliceContentKind, SpecSliceScope } from './types.js';
 

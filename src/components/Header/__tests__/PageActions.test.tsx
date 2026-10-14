@@ -71,6 +71,27 @@ describe('PageActions', () => {
     await waitFor(() => expect(copy).toHaveBeenCalledWith('sliced: yaml\n'));
   });
 
+  it('wraps a partial slice with the title and full-spec link when copying', async () => {
+    const copy = vi.spyOn(ClipboardService, 'copyCustom').mockImplementation(() => {});
+    renderPageActions(
+      makeSlice({
+        getText: async () => 'sliced: yaml\n',
+        scope: { kind: 'schema', name: 'Pet' },
+        title: 'Petstore – Pet',
+      }),
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: /Copy/ }));
+
+    await waitFor(() =>
+      expect(copy).toHaveBeenCalledWith(
+        '# Petstore – Pet\n\n' +
+          'This is a subset of the full specification, which you can find here: https://api.example.com/openapi.yaml, limited to the Pet schema.\n\n' +
+          '```yaml\nsliced: yaml\n```\n',
+      ),
+    );
+  });
+
   it('opens a tab synchronously and navigates it to the inline link', async () => {
     const fakeTab = { location: { href: '' }, close: vi.fn() };
     const open = vi.spyOn(window, 'open').mockReturnValue(fakeTab as unknown as Window);
