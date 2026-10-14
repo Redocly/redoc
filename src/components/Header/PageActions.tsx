@@ -24,6 +24,7 @@ import {
   ASSISTANT_LINK_BASES,
   buildInlinePromptLink,
   buildFetchSpecPromptLink,
+  wrapSliceForCopy,
 } from '../../services/spec-slice/index.js';
 
 type CopyState = 'idle' | 'processing' | 'done';
@@ -71,7 +72,10 @@ export function PageActions({ pageSlug }: { pageSlug: string }): JSX.Element | n
     if (state === 'processing') return;
     setState('processing');
     try {
-      const text = await specSlice.getText();
+      const text = wrapSliceForCopy(await specSlice.getText(), {
+        ...specSlice,
+        specUrl: resolveSpecUrl(specSlice.specUrl),
+      });
       ClipboardService.copyCustom(text);
       setState('done');
       report('copy', 'copied');

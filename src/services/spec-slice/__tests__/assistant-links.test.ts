@@ -6,6 +6,7 @@ import {
   buildFetchSpecPromptLink,
   buildInlinePromptLink,
   describeSliceScope,
+  wrapSliceForCopy,
 } from '../assistant-links.js';
 
 function expectDefined<T>(value: T | null | undefined): T {
@@ -111,6 +112,40 @@ describe('buildFetchSpecPromptLink', () => {
 
     expect(new URL(link).searchParams.get('q')).toBe(
       `Read ${specUrl} and answer questions based on the content.`,
+    );
+  });
+});
+
+describe('wrapSliceForCopy', () => {
+  it('returns the document untouched for the full-document scope', () => {
+    expect(
+      wrapSliceForCopy('openapi: 3.1.0\n', { scope: { kind: 'document' }, contentKind: 'yaml' }),
+    ).toBe('openapi: 3.1.0\n');
+  });
+
+  it('wraps a partial slice with a title, the spec link and a fenced block', () => {
+    const text = wrapSliceForCopy('openapi: 3.1.0\n', {
+      scope: { kind: 'operation', pathName: '/pets', httpVerb: 'get', source: 'paths' },
+      contentKind: 'yaml',
+      title: 'Petstore – List pets',
+      specUrl: 'https://api.example.com/openapi.yaml',
+    });
+
+    expect(text).toBe(
+      '# Petstore – List pets\n\n' +
+        'This is a subset of the full specification, which you can find here: https://api.example.com/openapi.yaml, limited to the GET /pets operation.\n\n' +
+        '```yaml\nopenapi: 3.1.0\n```\n',
+    );
+  });
+
+  it('omits the link and heading when they are unknown', () => {
+    const text = wrapSliceForCopy('type Query { a: Int }', {
+      scope: { kind: 'graphql-type', name: 'Query' },
+      contentKind: 'graphql',
+    });
+
+    expect(text).toBe(
+      'This is a subset of the full specification, limited to the Query type.\n\n```graphql\ntype Query { a: Int }\n```\n',
     );
   });
 });

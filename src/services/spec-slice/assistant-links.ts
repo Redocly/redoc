@@ -61,3 +61,21 @@ export function buildFetchSpecPromptLink(
   url.searchParams.set('q', `Read ${specUrl} and ${question}.`);
   return url.toString();
 }
+
+export function wrapSliceForCopy(
+  content: string,
+  {
+    scope,
+    contentKind,
+    title,
+    specUrl,
+  }: { scope: SpecSliceScope; contentKind: SliceContentKind; title?: string; specUrl?: string },
+): string {
+  const about = describeSliceScope(scope);
+  if (!about) return content;
+
+  const heading = title ? `# ${title}\n\n` : '';
+  const source = specUrl ? `, which you can find here: ${specUrl}` : '';
+
+  return `${heading}This is a subset of the full specification${source}, limited to ${about}.\n\n\`\`\`${contentKind}\n${content.trimEnd()}\n\`\`\`\n`;
+}
