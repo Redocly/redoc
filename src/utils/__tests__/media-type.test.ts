@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 
 import {
+  isCsvMediaType,
   isJsonLikeMediaType,
   isSequentialMediaType,
   langFromMime,
@@ -59,6 +60,11 @@ describe('langFromMime', () => {
     expect(langFromMime('application/atom+xml')).toBe('xml');
   });
 
+  it('returns text for CSV types', () => {
+    expect(langFromMime('text/csv')).toBe('text');
+    expect(langFromMime('application/csv; charset=utf-8')).toBe('text');
+  });
+
   it('falls back to clike for unknown / undefined', () => {
     expect(langFromMime('text/plain')).toBe('clike');
     expect(langFromMime(undefined)).toBe('clike');
@@ -81,3 +87,25 @@ describe('normalizeLanguageForHighlight', () => {
   });
 });
 
+describe('isCsvMediaType', () => {
+  it('matches CSV media types regardless of case and parameters', () => {
+    expect(isCsvMediaType('text/csv')).toBe(true);
+    expect(isCsvMediaType('application/csv')).toBe(true);
+    expect(isCsvMediaType('TEXT/CSV')).toBe(true);
+    expect(isCsvMediaType('text/csv; charset=utf-8')).toBe(true);
+    expect(isCsvMediaType('text/csv;header=present')).toBe(true);
+    expect(isCsvMediaType('application/vnd.example+csv')).toBe(true);
+    expect(isCsvMediaType('text/x-csv')).toBe(true);
+    expect(isCsvMediaType('application/x-csv')).toBe(true);
+    expect(isCsvMediaType('text/comma-separated-values')).toBe(true);
+  });
+
+  it('returns false for other media types', () => {
+    expect(isCsvMediaType('application/json')).toBe(false);
+    expect(isCsvMediaType('text/plain')).toBe(false);
+    expect(isCsvMediaType('text/csvx')).toBe(false);
+    expect(isCsvMediaType('csv')).toBe(false);
+    expect(isCsvMediaType(undefined)).toBe(false);
+    expect(isCsvMediaType('')).toBe(false);
+  });
+});

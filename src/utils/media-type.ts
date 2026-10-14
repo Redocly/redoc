@@ -31,6 +31,7 @@ export function langFromMime(contentType: string | undefined): string {
   }
   if (normalized.includes('multipart/mixed')) return 'multipart-mixed';
   if (normalized.includes('text/event-stream')) return 'yaml';
+  if (isCsvMediaType(normalized)) return 'text';
   if (normalized.includes('json')) return 'json';
 
   return 'clike';
@@ -51,3 +52,10 @@ export function isFormUrlEncodedMediaType(contentType: string | undefined): bool
   return !!contentType && contentType.toLowerCase().includes(MediaTypes.URL_ENCODED);
 }
 
+const CSV_SUBTYPES: ReadonlySet<string> = new Set(['csv', 'x-csv', 'comma-separated-values']);
+
+export function isCsvMediaType(contentType: string | undefined): boolean {
+  if (!contentType) return false;
+  const subtype = contentType.toLowerCase().split(';')[0].trim().split('/')[1] ?? '';
+  return CSV_SUBTYPES.has(subtype) || subtype.endsWith('+csv');
+}
