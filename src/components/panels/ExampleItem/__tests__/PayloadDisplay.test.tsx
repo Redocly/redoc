@@ -80,6 +80,58 @@ describe('PayloadDisplay', () => {
     );
   });
 
+  it('serializes an array of flat records as CSV for text/csv', () => {
+    const { getByTestId } = render(
+      <PayloadDisplay
+        payload={[
+          { date: '2023-02-02', keyword: 'shoes, red', clicks: 3 },
+          { date: '2023-02-03', keyword: 'boots', clicks: 0 },
+        ]}
+        mediaType="text/csv"
+      />,
+    );
+
+    expect(getByTestId('code-block').getAttribute('data-lang')).toBe('text');
+    expect(getByTestId('code-block-source').textContent).toBe(
+      'date,keyword,clicks\n2023-02-02,"shoes, red",3\n2023-02-03,boots,0',
+    );
+  });
+
+  it('serializes a single flat object as a one-row CSV table', () => {
+    const { getByTestId } = render(
+      <PayloadDisplay payload={{ id: 1, name: 'Guru' }} mediaType="text/csv; charset=utf-8" />,
+    );
+
+    expect(getByTestId('code-block-source').textContent).toBe('id,name\n1,Guru');
+  });
+
+  it('serializes CSV for application/csv and +csv vendor types', () => {
+    for (const mediaType of ['application/csv', 'application/vnd.example+csv']) {
+      const { getByTestId, unmount } = render(
+        <PayloadDisplay payload={[{ id: 1 }]} mediaType={mediaType} />,
+      );
+
+      expect(getByTestId('code-block-source').textContent).toBe('id\n1');
+      unmount();
+    }
+  });
+
+  it('falls back to the JSON source for a CSV payload that is not tabular', () => {
+    const payload = [{ id: 1, tags: ['a', 'b'] }];
+    const { getByTestId } = render(<PayloadDisplay payload={payload} mediaType="text/csv" />);
+
+    expect(getByTestId('code-block-source').textContent).toBe(JSON.stringify(payload, null, 2));
+  });
+
+  it('shows a string CSV example as written, as plain text', () => {
+    const { getByTestId } = render(
+      <PayloadDisplay payload={'id,name\n1,Guru'} mediaType="text/csv" />,
+    );
+
+    expect(getByTestId('code-block').getAttribute('data-lang')).toBe('text');
+    expect(getByTestId('code-block-source').textContent).toBe('id,name\n1,Guru');
+  });
+
   it('renders the empty message when the payload is null', () => {
     const { getByTestId } = render(
       <PayloadDisplay payload={null} emptyMessage="// nothing here" />,

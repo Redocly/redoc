@@ -11,6 +11,7 @@ import { RESOURCES, useTelemetry } from '../../../telemetry/index.js';
 import { useCopyCodeTelemetry } from '../../../hooks/useCopyCodeTelemetry.js';
 import { MAX_DISPLAYED_STRING_LENGTH } from '../../../constants/rendering.js';
 import {
+  isCsvMediaType,
   isFormUrlEncodedMediaType,
   isJsonLikeMediaType,
   isSequentialMediaType,
@@ -32,6 +33,7 @@ import {
 import { DefaultMappingOptionLabel } from '../../Schema/views/DefaultMappingOptionLabel.js';
 import { jsonToXml } from '../../../utils/xml.js';
 import { formUrlEncodeValue } from '../../../utils/form-urlencoded.js';
+import { jsonToCsv } from '../../../utils/csv.js';
 import { apiSpecType } from '../../../types/common.js';
 
 export function VariantPicker({
@@ -285,6 +287,22 @@ export function PayloadDisplay({
           }}
         />
       );
+    }
+    if (isCsvMediaType(mediaType)) {
+      const csvSource = jsonToCsv(payload);
+      if (csvSource !== undefined) {
+        return (
+          <StyledCodeBlock
+            lang="text"
+            source={csvSource}
+            maxDisplayLength={MAX_DISPLAYED_STRING_LENGTH}
+            header={{
+              className: 'code-block-header',
+              controls: { copy: { onClick: onCopy('text') } },
+            }}
+          />
+        );
+      }
     }
     if (isSequential || (mediaType && !isJsonLike)) {
       const source = JSON.stringify(payload, null, 2);
