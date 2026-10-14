@@ -333,3 +333,24 @@ describe('extractOpenApiSlice', () => {
     expect(Object.keys(webhooks)).toEqual(['hook']);
   });
 });
+
+describe('info description trimming', () => {
+  it('trims a long info description in a partial slice and leaves short ones intact', () => {
+    const long = 'x'.repeat(150);
+    const doc = deepFreeze({ ...makeMinimalDoc(), info: { title: 'Long', description: long } });
+    const scope = {
+      kind: 'operation',
+      pathName: '/things',
+      httpVerb: 'get',
+      source: 'paths',
+    } as const;
+
+    const trimmed = expectDefined(extractOpenApiSlice(doc, scope)).document.info as {
+      description: string;
+    };
+    expect(trimmed.description).toBe(`${'x'.repeat(100)} ... trimmed`);
+
+    const short = expectDefined(extractOpenApiSlice(makeMinimalDoc(), scope)).document.info;
+    expect(short).toEqual({ title: 'Minimal', version: '1.0.0' });
+  });
+});

@@ -231,6 +231,21 @@ describe('useCopySpecSlice — GraphQL', () => {
   });
 });
 
+describe('useCopySpecSlice — title', () => {
+  it('joins the API title and the page label', () => {
+    const route = makeRoute('pets', { itemVariant: itemVariant.SCHEMA, meta: { name: 'Pet' } });
+    route.label = 'Pet';
+    const { result } = renderCopySpecSlice({
+      specType: 'openapi',
+      definition: { openapi: '3.1.0', info: { title: 'Petstore' } },
+      routes: [route],
+      pageSlug: 'pets',
+    });
+
+    expect(expectDefined(result.current).title).toBe('Petstore – Pet');
+  });
+});
+
 describe('useCopySpecSlice — OpenAPI regression', () => {
   it('keeps yaml slices working for record definitions', async () => {
     const definition = {

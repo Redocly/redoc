@@ -363,3 +363,17 @@ describe('extractAsyncApiSlice — document scope', () => {
     expect(doc.operations).toEqual(source.operations);
   });
 });
+
+describe('info description trimming', () => {
+  it('trims a long info description in a channel slice', () => {
+    const doc = deepFreeze({
+      ...makeChannelsFixture(),
+      info: { title: 'Lights', description: 'y'.repeat(150) },
+    });
+
+    const slice = expectDefined(extractAsyncApiSlice(doc, { kind: 'channel', channelId: 'alpha' }));
+    expect((slice.document.info as { description: string }).description).toBe(
+      `${'y'.repeat(100)} ... trimmed`,
+    );
+  });
+});

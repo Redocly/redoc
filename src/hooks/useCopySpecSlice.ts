@@ -5,6 +5,7 @@ import type { RouteIndex, RouteItem } from '../utils/routing.js';
 import type { SliceContentKind, SpecSliceScope } from '../services/spec-slice/index.js';
 
 import { apiSpecType } from '../types/common.js';
+import { isRecord } from '../adapters/helpers.js';
 import {
   definitionAtom,
   definitionUrlAtom,
@@ -20,6 +21,7 @@ type CopySpecSlice = {
   contentKind: SliceContentKind;
   scope: SpecSliceScope;
   specUrl?: string;
+  title?: string;
 };
 
 function findRouteBySlug(
@@ -62,6 +64,11 @@ export function useCopySpecSlice(pageSlug: string): CopySpecSlice | null {
 
     const contentKind: SliceContentKind = specType === apiSpecType.GRAPHQL ? 'graphql' : 'yaml';
 
+    const apiTitle = isRecord(definition) && isRecord(definition.info) && definition.info.title;
+    const title =
+      [apiTitle, route?.label].filter((part) => typeof part === 'string' && part).join(' – ') ||
+      undefined;
+
     const getText = async () => {
       const text = await buildSpecSlice(specType, definition, scope);
       if (text === undefined) {
@@ -70,6 +77,12 @@ export function useCopySpecSlice(pageSlug: string): CopySpecSlice | null {
       return text;
     };
 
-    return { getText, contentKind, scope, specUrl: definitionUrl ?? downloadUrls?.[0]?.url };
+    return {
+      getText,
+      contentKind,
+      scope,
+      specUrl: definitionUrl ?? downloadUrls?.[0]?.url,
+      title,
+    };
   }, [definition, definitionUrl, downloadUrls, routeIndex, specType, basePath, pageSlug]);
 }

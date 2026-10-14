@@ -1,4 +1,5 @@
 import { Kind, OperationTypeNode, parse, print, visit } from 'graphql';
+import { trimDescription } from './trim-description.js';
 
 import type {
   ASTNode,
@@ -202,7 +203,10 @@ export function extractGraphqlSlice(sdl: string, scope: SpecSliceScope): string 
     schemaEntries.length && (index.schemaDef || hasNonDefaultRootName)
       ? {
           kind: Kind.SCHEMA_DEFINITION,
-          description: index.schemaDef?.description,
+          description: index.schemaDef?.description && {
+            ...index.schemaDef.description,
+            value: trimDescription(index.schemaDef.description.value),
+          },
           directives: index.schemaDef?.directives,
           operationTypes: schemaEntries,
         }
