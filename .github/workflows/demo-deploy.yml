@@ -8,7 +8,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  DEMO_DEPLOY_BRANCH: demo-deploy-3x
+  DEMO_DEPLOY_BRANCH: demo-deploy
   PAGES_DIR: pages
 
 jobs:
@@ -66,14 +66,12 @@ jobs:
           ref: gh-pages
           path: ${{ env.PAGES_DIR }}
 
-      - name: Update 3.x Demo
+      - name: Update Demo
         run: |
           cd ${{ env.PAGES_DIR }}
           git switch -c ${{ env.DEMO_DEPLOY_BRANCH }}
-          rm -rf 3.x
-          mkdir 3.x
-          cp -a "$GITHUB_WORKSPACE/demo/dist/." 3.x/
-          cp 3.x/404.html 404.html
+          rm -rf assets specs
+          cp -a "$GITHUB_WORKSPACE/demo/dist/." .
 
       - name: Check for Changes
         id: check
@@ -94,7 +92,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           {
-            echo "chore: update 3.x demo to ${{ steps.source.outputs.version }} [demo-deploy]"
+            echo "chore: update demo to ${{ steps.source.outputs.version }} [demo-deploy]"
             echo ""
             echo "Source: ${{ github.sha }}"
           } > /tmp/commit_msg.txt
@@ -120,21 +118,21 @@ jobs:
           fi
         env:
           GH_TOKEN: ${{ github.token }}
-          PR_TITLE: 'chore: update 3.x demo to ${{ steps.source.outputs.version }} [demo-deploy]'
+          PR_TITLE: 'chore: update demo to ${{ steps.source.outputs.version }} [demo-deploy]'
           PR_BODY: |
-            ## Automated 3.x Demo Update
+            ## Automated Demo Update
 
-            Freshly built demo app and `redoc.standalone.js` for the `3.x/` directory.
+            Freshly built demo app and `redoc.standalone.js` for the site root.
 
             ### Details
             - **Source Commit**: ${{ github.sha }}
             - **Engine Version**: ${{ steps.source.outputs.version }}
 
-            Merging this PR deploys it. The root `404.html` (site-wide SPA fallback)
-            is refreshed from the demo build.
+            Merging this PR deploys it. `404.html` (site-wide SPA fallback)
+            is a copy of `index.html` from the demo build.
 
             ### Review checklist
-            - [ ] `3.x/index.html` and the root `404.html` reference the same hashed `assets/index-*.js`
+            - [ ] `index.html` and `404.html` reference the same hashed `assets/index-*.js`
             - [ ] Demo works locally: check out this branch and serve the repo root
 
             ---
