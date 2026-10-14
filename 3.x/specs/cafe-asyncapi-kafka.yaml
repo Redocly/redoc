@@ -28,7 +28,7 @@ info:
     name: MIT
     url: https://opensource.org/licenses/MIT
   externalDocs:
-    description: Redocly Cafe event catalog
+    description: Redocly Cafe event stream
     url: https://redocly.com/docs
   tags:
     - name: orders

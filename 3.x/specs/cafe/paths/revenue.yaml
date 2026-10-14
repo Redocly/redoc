@@ -1,10 +1,6 @@
 get:
   tags:
     - Statistics
-  x-internal: false
-  x-catalogRelations:
-    - type: ownedBy
-      key: dark-side
   summary: Get revenue statistics
   description: |
     Retrieve revenue statistics for a configurable date range.

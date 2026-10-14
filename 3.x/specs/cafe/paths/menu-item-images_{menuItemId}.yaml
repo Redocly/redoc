@@ -7,10 +7,6 @@ get:
   security: []
   tags:
     - Products
-  x-internal: false
-  x-catalogRelations:
-    - type: ownedBy
-      key: dark-side
   parameters:
     - $ref: ../components/parameters/PhotoSize.yaml
   responses:

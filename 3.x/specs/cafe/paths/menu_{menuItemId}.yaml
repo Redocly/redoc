@@ -3,10 +3,6 @@ parameters:
 delete:
   tags:
     - Products
-  x-internal: false
-  x-catalogRelations:
-    - type: ownedBy
-      key: dark-side
   summary: Delete a menu item
   description: Delete an existing menu item.
   operationId: deleteMenuItem

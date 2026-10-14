@@ -39,6 +39,7 @@ defaultContentType: application/json
 servers:
   broker:
     host: mqtt.cafe.redocly.com:8883
+    pathname: /devices
     protocol: secure-mqtt
     protocolVersion: '5'
     title: Cafe MQTT broker
@@ -89,6 +90,8 @@ operations:
       $ref: '#/channels/machineTelemetry'
     title: Publish telemetry
     summary: Sent by the machine firmware on a fixed interval.
+    security:
+      - $ref: '#/components/securitySchemes/deviceCert'
     tags:
       - name: telemetry
     bindings:
@@ -107,6 +110,11 @@ operations:
       subscribers with persistent sessions.
     tags:
       - name: alerts
+    reply:
+      channel:
+        $ref: '#/channels/machineTelemetry'
+      messages:
+        - $ref: '#/channels/machineTelemetry/messages/telemetry'
     bindings:
       mqtt:
         qos: 2
@@ -155,6 +163,9 @@ components:
       title: Machine alert
       summary: An emergency condition detected by the firmware.
       contentType: application/json
+      correlationId:
+        description: Ties every alert to the machine that raised it.
+        location: $message.payload#/machineId
       payload:
         $ref: '#/components/schemas/alertPayload'
       examples:

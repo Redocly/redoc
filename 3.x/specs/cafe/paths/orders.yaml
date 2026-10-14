@@ -1,10 +1,6 @@
 get:
   tags:
     - Orders
-  x-internal: false
-  x-catalogRelations:
-    - type: ownedBy
-      key: dark-side
   summary: List all orders
   description: Retrieve a collection of orders with optional filtering and pagination.
   operationId: listOrders
@@ -67,15 +63,130 @@ get:
 post:
   tags:
     - Orders
-  x-internal: false
-  x-catalogRelations:
-    - type: ownedBy
-      key: dark-side
   summary: Create order
   description: |
     Create a new order.
     Order items cannot be changed - if they need to be updated, the order should be canceled and a new one placed.
   operationId: createOrder
+  x-codeSamples:
+    - lang: curl
+      source: |
+        # Place an order
+        curl -X POST https://api.cafe.example/orders \
+          -H "Authorization: Bearer $CAFE_TOKEN" \
+          -H 'Content-Type: application/json' \
+          -d '{"customerName": "Mary Ann", "orderItems": [{"menuItemId": "prd_01h1", "quantity": 2}]}'
+    - lang: JavaScript
+      source: |
+        // Place an order with fetch
+        const response = await fetch('https://api.cafe.example/orders', {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ customerName: 'Mary Ann', orderItems: [{ menuItemId: 'prd_01h1', quantity: 2 }] }),
+        });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    - lang: TypeScript
+      source: |
+        // Typed order payload
+        type OrderItem = { menuItemId: string; quantity: number; comment?: string };
+        const order: { customerName: string; orderItems: OrderItem[] } = {
+          customerName: 'Mary Ann',
+          orderItems: [{ menuItemId: 'prd_01h1', quantity: 2 }],
+        };
+        await client.post<Order>('/orders', order); // returns 201
+    - lang: Python
+      source: |
+        # Place an order with requests
+        import requests
+
+        response = requests.post(
+            "https://api.cafe.example/orders",
+            headers={"Authorization": f"Bearer {token}"},
+            json={"customerName": "Mary Ann", "orderItems": [{"menuItemId": "prd_01h1", "quantity": 2}]},
+        )
+        response.raise_for_status()
+    - lang: Java
+      source: |
+        // Place an order with java.net.http
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create("https://api.cafe.example/orders"))
+            .header("Authorization", "Bearer " + token)
+            .POST(HttpRequest.BodyPublishers.ofString(body))
+            .build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() != 201) throw new IllegalStateException("Unexpected status");
+    - lang: C#
+      source: |
+        // Place an order with HttpClient
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        using var response = await client.PostAsync("https://api.cafe.example/orders", content);
+        response.EnsureSuccessStatusCode();
+        int created = (int)response.StatusCode; /* 201 */
+    - lang: PHP
+      source: |
+        <?php
+        // Place an order with Guzzle
+        $client = new \GuzzleHttp\Client();
+        $response = $client->post('https://api.cafe.example/orders', [
+            'headers' => ['Authorization' => "Bearer $token"],
+            'json' => ['customerName' => 'Mary Ann', 'orderItems' => [['menuItemId' => 'prd_01h1', 'quantity' => 2]]],
+        ]);
+        echo $response->getStatusCode(); # 201
+    - lang: Go
+      source: |
+        // Place an order with net/http
+        req, err := http.NewRequest("POST", "https://api.cafe.example/orders", bytes.NewBuffer(body))
+        if err != nil {
+            return nil, err
+        }
+        req.Header.Set("Authorization", "Bearer "+token)
+        resp, err := http.DefaultClient.Do(req)
+        defer resp.Body.Close()
+    - lang: Ruby
+      source: |
+        # Place an order with Net::HTTP
+        uri = URI("https://api.cafe.example/orders")
+        request = Net::HTTP::Post.new(uri, "Authorization" => "Bearer #{token}")
+        request.body = { customerName: "Mary Ann", orderItems: [{ menuItemId: "prd_01h1", quantity: 2 }] }.to_json
+        response = Net::HTTP.start(uri.host, uri.port, use_ssl: true) { |http| http.request(request) }
+        raise "unexpected status" unless response.code == "201"
+    - lang: Swift
+      source: |
+        // Place an order with URLSession
+        var request = URLRequest(url: URL(string: "https://api.cafe.example/orders")!)
+        request.httpMethod = "POST"
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.httpBody = try JSONEncoder().encode(order)
+        let (_, response) = try await URLSession.shared.data(for: request)
+        guard (response as? HTTPURLResponse)?.statusCode == 201 else { throw CafeError.unexpected }
+    - lang: Kotlin
+      source: |
+        // Place an order with OkHttp
+        val body = """{"customerName": "Mary Ann", "orderItems": [{"menuItemId": "prd_01h1", "quantity": 2}]}"""
+        val request = Request.Builder()
+            .url("https://api.cafe.example/orders")
+            .header("Authorization", "Bearer $token")
+            .post(body.toRequestBody("application/json".toMediaType()))
+            .build()
+        client.newCall(request).execute().use { response -> check(response.code == 201) }
+    - lang: C++
+      source: |
+        // Place an order with libcurl
+        #include <curl/curl.h>
+        CURL* curl = curl_easy_init();
+        const char* body = "{\"customerName\": \"Mary Ann\"}";
+        curl_easy_setopt(curl, CURLOPT_URL, "https://api.cafe.example/orders");
+        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, body);
+        CURLcode result = curl_easy_perform(curl); /* expect CURLE_OK */
+        curl_easy_cleanup(curl);
+    - lang: Objective-C
+      source: |
+        // Place an order with NSURLSession
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://api.cafe.example/orders"]];
+        request.HTTPMethod = @"POST";
+        [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:nil];
+        [task resume]; /* async */
   security:
     - OAuth2:
         - orders:write
