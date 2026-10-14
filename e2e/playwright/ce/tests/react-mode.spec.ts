@@ -49,7 +49,7 @@ test('shows children until the definition resolves, then replaces them', async (
   const held = new Promise<void>((resolve) => {
     release = resolve;
   });
-  await page.route('**/specs/cafe/openapi.yaml', async (route) => {
+  await page.route('**/specs/cafe.yaml', async (route) => {
     await held;
     await route.continue();
   });

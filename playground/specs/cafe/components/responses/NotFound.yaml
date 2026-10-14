@@ -1,5 +1,0 @@
-description: Resource not found.
-content:
-  application/problem+json:
-    schema:
-      $ref: ../schemas/Error.yaml

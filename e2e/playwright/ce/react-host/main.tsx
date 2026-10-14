@@ -14,7 +14,7 @@ import {
 
 /** One `?case=` per contract the library promises a React embedder. */
 
-const CAFE = '/specs/cafe/openapi.yaml';
+const CAFE = '/specs/cafe.yaml';
 const BASE = '/react';
 const DEEP_BASE = '/react/docs';
 

@@ -32,7 +32,7 @@ const definition = {
   },
 };
 
-const DOWNLOAD_URLS = [{ title: 'Bespoke download', url: '/specs/cafe/openapi.yaml' }];
+const DOWNLOAD_URLS = [{ title: 'Bespoke download', url: '/specs/cafe.yaml' }];
 
 describe('standalone init()', () => {
   let host: HTMLElement;

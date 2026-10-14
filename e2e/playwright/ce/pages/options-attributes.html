@@ -12,7 +12,7 @@
       const params = new URLSearchParams(window.location.search);
       const element = document.querySelector('redoc');
 
-      element.setAttribute('spec-url', params.get('spec-url') ?? '/specs/cafe/openapi.yaml');
+      element.setAttribute('spec-url', params.get('spec-url') ?? '/specs/cafe.yaml');
       for (const [name, value] of params) {
         if (name === 'spec-url') continue;
         element.setAttribute(name, value);

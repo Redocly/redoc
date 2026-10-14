@@ -5,7 +5,7 @@ import { StandalonePage } from '../page-objects/StandalonePage.js';
 
 // One spec type exercises the click → deep-link → section-visible path end to end; the
 // AsyncAPI/GraphQL index builds are covered by engine.ce.test.ts and init-graphql.ce.test.ts.
-const SPEC_TYPES = [{ label: 'OpenAPI', specUrl: '/specs/cafe/openapi.yaml', term: 'menu' }];
+const SPEC_TYPES = [{ label: 'OpenAPI', specUrl: '/specs/cafe.yaml', term: 'menu' }];
 
 for (const { label, specUrl, term } of SPEC_TYPES) {
   test(`indexes a ${label} definition and its hits deep-link into the docs`, async ({ page }) => {

@@ -1,7 +1,0 @@
-name: after
-in: query
-required: false
-description: Use the `endCursor` as a value for the `after` parameter to get the next page.
-schema:
-  type: string
-example: a25fgaksjf23la==
