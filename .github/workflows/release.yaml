@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     branches:
-      - v3.0.0
+      - main
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: false
@@ -11,6 +11,7 @@ concurrency:
 jobs:
   release:
     name: Release
+    if: github.repository == 'Redocly/redoc'
     runs-on: ubuntu-latest
     permissions:
       id-token: write # Required for OIDC

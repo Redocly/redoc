@@ -69,5 +69,29 @@ describe('loadAndBundleDefinition', () => {
         `${window.location.origin}/docs/sub/openapi.yaml`,
       );
     });
+
+    it('resolves a relative $ref in an inline spec against the page', async () => {
+      window.history.replaceState(null, '', '/docs/sub/index.html');
+      const fetchMock = vi.fn().mockResolvedValue(
+        new Response('type: object\nproperties: {id: {type: string}}\n', {
+          status: 200,
+          headers: { 'content-type': 'application/yaml' },
+        }),
+      );
+      vi.stubGlobal('fetch', fetchMock);
+
+      const bundled = (await loadAndBundleDefinition({
+        openapi: '3.1.0',
+        info: { title: 'T', version: '1' },
+        paths: {},
+        components: { schemas: { Pet: { $ref: 'schemas/pet.yaml' } } },
+      })) as { components: { schemas: Record<string, Record<string, unknown>> } };
+
+      expect(String(fetchMock.mock.calls[0][0])).toBe(
+        `${window.location.origin}/docs/sub/schemas/pet.yaml`,
+      );
+      // the bundler hoists the external file into components
+      expect(bundled.components.schemas.pet).toMatchObject({ type: 'object' });
+    });
   });
 });

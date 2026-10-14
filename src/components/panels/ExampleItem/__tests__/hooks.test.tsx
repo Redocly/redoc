@@ -197,6 +197,37 @@ describe('Sync invariant (nested oneOf at entityMetadata): museum.yml /dublicate
     ]);
   });
 
+  it.each([
+    ['example', { example: { name: 'Trip' } }],
+    ['examples', { examples: [{ name: 'Trip' }] }],
+  ])(
+    'hides the switcher when the body has its own %s: the sample is that example whatever the pick',
+    (_keyword, ownExample) => {
+      const store = makeNestedOneOfSchemaStore();
+      Object.assign(store.body.data, ownExample);
+      const { Wrapper } = makeWrapper(store);
+      const { result } = renderHook(() => useSchemaVariantSelection('body'), {
+        wrapper: Wrapper,
+      });
+
+      expect(result.current).toBeUndefined();
+    },
+  );
+
+  it.each([
+    ['an empty examples list', { examples: [] }],
+    ['a named examples map', { examples: { trip: { value: { name: 'Trip' } } } }],
+  ])('keeps the switcher when the body has %s: the sampler ignores it', (_shape, ownExamples) => {
+    const store = makeNestedOneOfSchemaStore();
+    Object.assign(store.body.data, ownExamples);
+    const { Wrapper } = makeWrapper(store);
+    const { result } = renderHook(() => useSchemaVariantSelection('body'), {
+      wrapper: Wrapper,
+    });
+
+    expect(result.current?.options).toHaveLength(3);
+  });
+
   it('right-panel hook follows middle-panel selection at activeOneOf[entityMetadata/One of:]', () => {
     const { jotaiStore, Wrapper } = makeWrapper(makeNestedOneOfSchemaStore());
     jotaiStore.set(itemStoreAtom(TEST_ITEM_ID), {

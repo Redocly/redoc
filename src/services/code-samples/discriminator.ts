@@ -272,7 +272,14 @@ export function collectNestedVariantAxes(
   visitedRefs: Set<string> = new Set(),
   path: string[] = [],
 ): Map<string, SchemaVariantAxis> {
-  if (!schemaData) return out;
+  // The sampler returns a schema's own example as is, so no variant below it changes the sample.
+  if (
+    !schemaData ||
+    schemaData.example !== undefined ||
+    (Array.isArray(schemaData.examples) && schemaData.examples.length > 0)
+  ) {
+    return out;
+  }
 
   const walkChild = (value: unknown, childPath: string[] = path): void => {
     if (!value || typeof value !== 'object') return;

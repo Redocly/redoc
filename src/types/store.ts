@@ -169,4 +169,5 @@ export type ApiStore = {
   /** From OpenAPI `info.x-logo`. Rendered by the standalone sidebar. */
   logo?: SidebarLogo;
   specType?: ApiSpecType;
+  convertedFrom?: string;
 };

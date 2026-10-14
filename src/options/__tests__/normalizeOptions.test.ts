@@ -196,6 +196,26 @@ describe('normalizeOptions', () => {
       expect(result.fieldExpandLevel).toBe(2);
     });
 
+    it('turns show-built-in attribute strings into booleans', () => {
+      const normalize = (value?: string) =>
+        normalizeOptions({
+          specType: 'graphql',
+          downloadUrls: [],
+          metadata: {},
+          showBuiltInScalars: value,
+          showBuiltInDirectives: value,
+        } as unknown as RawApiDocsOptions);
+
+      for (const value of ['true', '']) {
+        expect(normalize(value).showBuiltInScalars).toBe(true);
+        expect(normalize(value).showBuiltInDirectives).toBe(true);
+      }
+      for (const value of ['false', undefined]) {
+        expect(normalize(value).showBuiltInScalars).toBe(false);
+        expect(normalize(value).showBuiltInDirectives).toBe(false);
+      }
+    });
+
   });
 
   describe('AsyncAPI', () => {

@@ -8,7 +8,8 @@ type EnterpriseOnlyOptionKey =
   | 'oAuth2RedirectURI'
   | 'feedback'
   | 'hideInfoMetadata'
-  | 'showSchemaCatalogLinks';
+  | 'showSchemaCatalogLinks'
+  | 'servers';
 
 export type EditionRedocConfig = Omit<RedocConfig, EnterpriseOnlyOptionKey>;
 export type EditionAsyncApiConfig = Omit<AsyncApiConfig, EnterpriseOnlyOptionKey>;

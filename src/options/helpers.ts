@@ -18,6 +18,10 @@ export function argValueToBoolean(val?: string | boolean, defaultValue?: boolean
   return val;
 }
 
+export function isTelemetryDisabled(value: unknown): boolean {
+  return value === true || String(value) === 'true';
+}
+
 export function argValueToNumber(value: number | string | undefined, defaultValue = 0): number {
   if (typeof value === 'string') {
     return parseInt(value, 10);
@@ -109,6 +113,7 @@ export function normalizeCodeSamples(value?: RedocConfig['codeSamples']): CodeSa
     DEFAULT_LANGUAGES.map(({ label }): { lang: string; label?: string } => ({ lang: label }));
   return {
     ...config,
+    // oxlint-disable-next-line oxc/no-map-spread -- must not mutate the caller's options
     languages: configured.map((entry) => ({
       ...entry,
       key: getLangKey(entry),
@@ -146,6 +151,7 @@ export function normalizeDownloadUrls(
   if (valid.length !== entries.length) {
     console.warn('Ignoring "downloadUrls" entries without a string "url":', downloadUrls);
   }
+  // oxlint-disable-next-line oxc/no-map-spread -- must not mutate the caller's options
   return valid.map((url) => ({
     ...url,
     title: typeof url.title === 'string' ? url.title : getFileNameFromUrl(url.url, type),

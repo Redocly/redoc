@@ -15,7 +15,11 @@ import { buildItems } from './adapters/build.js';
 import { markdocParser } from './components/markdoc/markdocParser.js';
 import { TypeOfUsageContext } from './telemetry/TypeOfUsageContext.js';
 import { reportDefinitionLoadFailed } from './telemetry/index.js';
-import { argValueToBoolean, normalizeDownloadUrls } from './options/helpers.js';
+import {
+  argValueToBoolean,
+  isTelemetryDisabled,
+  normalizeDownloadUrls,
+} from './options/helpers.js';
 import { isRecord } from './utils/is-record.js';
 import { normalizePath } from './utils/url.js';
 import { convertedDownloadUrl, convertedFileName, resolveSpec } from './utils/resolveSpec.js';
@@ -73,7 +77,10 @@ async function prepareApiDocs({
     specUrl !== undefined &&
     normalizeDownloadUrls(options.downloadUrls ?? [], resolved.type).length === 0;
   const convertedUrl =
-    usesDefaultDownload && convertedDownload && resolved.convertedFrom
+    usesDefaultDownload &&
+    convertedDownload &&
+    resolved.convertedFrom &&
+    resolved.type === apiSpecType.ASYNCAPI
       ? convertedDownloadUrl(resolved.document)
       : undefined;
   const downloadUrls =
@@ -109,7 +116,7 @@ async function prepareApiDocs({
 
   return {
     items,
-    store,
+    store: { ...store, convertedFrom: resolved.convertedFrom },
     options: mergedOptions,
     specType: resolved.type,
     timings: { resolveSpecMs, buildItemsMs },
@@ -129,10 +136,6 @@ function blobDownloadUrls(options: RawApiDocsOptions): string[] {
 
 function revokeAll(urls: string[]): void {
   for (const url of urls) URL.revokeObjectURL(url);
-}
-
-function isTelemetryDisabled(value: unknown): boolean {
-  return value === true || String(value) === 'true';
 }
 
 /** Loads and bundles the spec, builds the item model, and renders `RedoclyApiDocsStandalone`. */
@@ -168,7 +171,8 @@ const RedocStandalone = ({
     prepareApiDocs({
       spec,
       specUrl,
-      options,
+      // The opt-out stays live through telemetryConfig; a copy frozen in the prepared options would outlive it.
+      options: { ...options, disableTelemetry: undefined },
       basePath,
     })
       .then((result) => {
@@ -231,6 +235,6 @@ const RedocStandalone = ({
   );
 };
 
-export { RedocStandalone, prepareApiDocs, isTelemetryDisabled };
+export { RedocStandalone, prepareApiDocs };
 export type { RedocStandaloneProps };
 export default RedocStandalone;

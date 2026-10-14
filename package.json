@@ -1,6 +1,6 @@
 {
   "name": "redoc",
-  "version": "3.0.0-rc.4",
+  "version": "3.0.0",
   "description": "API reference documentation for OpenAPI, AsyncAPI, and GraphQL",
   "repository": {
     "type": "git",
@@ -78,11 +78,11 @@
     "list:licenses": "npm run license:check && node ./scripts/list-licenses.js",
     "license:check": "LICENSE_CHECK=1 vite build --logLevel warn && LICENSE_CHECK=1 vite build --mode standalone --logLevel warn",
     "changeset": "changeset",
-    "release": "npm run build && changeset publish --tag next",
+    "release": "npm run build && changeset publish",
     "publish-cdn": "scripts/publish-cdn.sh"
   },
   "peerDependencies": {
-    "@redocly/config": "^0.65.0",
+    "@redocly/config": ">=0.65.0",
     "react": "^18.3.0 || ^19.0.0",
     "react-dom": "^18.3.0 || ^19.0.0",
     "react-router": "^7.0.0 || ^8.0.0",
@@ -98,7 +98,7 @@
     "@playwright/test": "1.60.0",
     "@redocly/allof-merge": "^0.6.9",
     "@redocly/config": "^0.65.0",
-    "@redocly/openapi-core": "2.62.1",
+    "@redocly/openapi-core": "2.63.0",
     "@redocly/theme": "0.71.0-next.0",
     "@tanstack/highlight": "0.0.10",
     "@testing-library/jest-dom": "6.6.3",

@@ -23,6 +23,7 @@ import { usePageTelemetry } from './hooks/usePageTelemetry.js';
 import { EntryPage } from './pages/EntryPage.js';
 import { ErrorBoundary } from './components/ErrorBoundary.js';
 import { compose } from './utils/compose.js';
+import { isTelemetryDisabled } from './options/helpers.js';
 import { withRouter } from './hoc/withRouter.js';
 import { withStoreProvider } from './hoc/withStoreProvider.js';
 
@@ -30,6 +31,7 @@ type RedoclyApiDocsInnerProps = {
   items: ApiItem[];
   basePath: string;
   markdownAdapter: MarkdownAdapter;
+  options?: RawApiDocsOptions;
   telemetryConfig?: Partial<RedocTelemetryConfig>;
   initialTelemetry?: InitialTelemetryContext;
 };
@@ -43,7 +45,11 @@ type RedoclyApiDocsProps = RedoclyApiDocsInnerProps & {
 const RedoclyApiDocsComponent = (props: RedoclyApiDocsInnerProps): ReactElement => {
   const { items = [], basePath, markdownAdapter, telemetryConfig, initialTelemetry } = props;
   const { routeIndex } = useApiDocsRoutes(items, basePath);
-  const telemetry = useRedocTelemetryInstance(telemetryConfig);
+  const disableTelemetry = isTelemetryDisabled(props.options?.disableTelemetry);
+  const telemetry = useRedocTelemetryInstance({
+    ...telemetryConfig,
+    ...(disableTelemetry ? { disabled: true } : {}),
+  });
   return (
     <MarkdownAdapterProvider value={markdownAdapter}>
       <TelemetryContext.Provider value={telemetry}>

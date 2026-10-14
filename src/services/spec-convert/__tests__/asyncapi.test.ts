@@ -3,7 +3,7 @@ import { describe, it, expect } from 'vitest';
 import { normalizeAsyncApiDefinition } from '../asyncapi.js';
 
 function normalize(document: Record<string, unknown>): Record<string, any> {
-  return normalizeAsyncApiDefinition(structuredClone(document)) as unknown as Record<string, any>;
+  return normalizeAsyncApiDefinition(structuredClone(document));
 }
 
 const V2 = {
@@ -266,6 +266,24 @@ describe('normalizeAsyncApiDefinition — AsyncAPI 2.x', () => {
 
     expect(converted.operations.op).toMatchObject({ summary: 'second', description: 'trait' });
     expect(converted.operations.op.traits).toBeUndefined();
+  });
+
+  it('ignores a __proto__ key in a trait', () => {
+    const converted = normalize({
+      asyncapi: '2.6.0',
+      info: { title: 't', version: '1' },
+      channels: {
+        a: {
+          publish: {
+            operationId: 'op',
+            traits: [JSON.parse('{"summary": "trait", "__proto__": {"polluted": true}}')],
+          },
+        },
+      },
+    });
+
+    expect(converted.operations.op.summary).toBe('trait');
+    expect(({} as Record<string, unknown>).polluted).toBeUndefined();
   });
 
   it('splits a message that references a component with oneOf', () => {

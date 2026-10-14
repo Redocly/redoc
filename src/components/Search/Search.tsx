@@ -1,3 +1,5 @@
+import '../../crypto-uuid-compat.js';
+
 import { useEffect, useRef } from 'react';
 import { styled } from 'styled-components';
 

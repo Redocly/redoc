@@ -1,5 +1,3 @@
-import './crypto-uuid-compat.js';
-
 import { createElement } from 'react';
 import { createRoot, hydrateRoot, type Root } from 'react-dom/client';
 import { HashRouter } from 'react-router';
@@ -8,11 +6,13 @@ import type { ReactElement } from 'react';
 import type { RedocStandaloneProps } from './RedocStandalone.js';
 import type { TypeOfUsage } from './telemetry/RedocTelemetry.js';
 
-import { RedocStandalone, isTelemetryDisabled, prepareApiDocs } from './RedocStandalone.js';
+import { RedocStandalone, prepareApiDocs } from './RedocStandalone.js';
 import { TypeOfUsageContext } from './telemetry/TypeOfUsageContext.js';
 import { RedoclyApiDocsStandalone } from './RedoclyApiDocsStandalone.js';
 import { logoFromSpec } from './utils/x-logo.js';
 import { decodeDeepLinkSeparator } from './hooks/deepLinkHash.js';
+import { isTelemetryDisabled } from './options/helpers.js';
+import pkg from '../package.json' with { type: 'json' };
 
 export { RedocStandalone };
 export type { RedocStandaloneProps };
@@ -199,6 +199,16 @@ function autoInit(): void {
   if (specUrl) {
     init(specUrl, {}, element);
   }
+}
+
+if (typeof document !== 'undefined') {
+  console.info(
+    `\n%c Redoc %c ${pkg.version} %c\n\n%chttps://github.com/Redocly/redoc\n`,
+    'background:#0044D4 ; padding: 1px; border-radius: 3px 0 0 3px;  color: #fff; border:1px solid #0044D4',
+    'background:#ffffff ; padding: 1px; border:1px solid #0044D4; border-radius: 0 3px 3px 0; color: #0044D4',
+    'background:transparent',
+    'font-size: 10px; font-style: italic;',
+  );
 }
 
 autoInit();

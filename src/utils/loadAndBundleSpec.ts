@@ -6,7 +6,6 @@ import type { OpenAPIDefinition, ParsedDocument } from '../types/openapi.js';
 
 import { IS_BROWSER } from '@redocly/theme/core/openapi';
 
-import { convertSwaggerToOpenApi } from '../services/spec-convert/index.js';
 import { DefinitionLoadError, errorMessage } from './definitionLoadError.js';
 
 export async function loadOpenapiConfig(): Promise<RedocConfig> {
@@ -44,7 +43,10 @@ export async function loadAndBundleDefinition(
   }
 
   if (typeof specUrlOrObject === 'object' && specUrlOrObject !== null) {
-    bundleOpts.doc = createParsedDocument(specUrlOrObject) as unknown as Document;
+    // Relative $refs in an inline spec resolve against the page; with an empty ref openapi-core
+    // falls back to `process.cwd()`, which does not exist in the browser.
+    const absoluteRef = (IS_BROWSER && bundleOpts.base) || '';
+    bundleOpts.doc = createParsedDocument(specUrlOrObject, absoluteRef) as unknown as Document;
   } else {
     bundleOpts.ref = specUrlOrObject;
   }
@@ -65,13 +67,12 @@ export async function loadAndBundleDefinition(
     throw new DefinitionLoadError(stage, message, lastStatus);
   }
 
-  if (parsed.swagger !== undefined) return convertSwaggerToOpenApi(parsed) as OpenAPIDefinition;
   return parsed;
 }
 
-function createParsedDocument(specUrlOrObject: Record<string, unknown> | string) {
+function createParsedDocument(specUrlOrObject: Record<string, unknown>, absoluteRef: string) {
   return {
-    source: { absoluteRef: '' },
+    source: { absoluteRef },
     parsed: specUrlOrObject,
   };
 }

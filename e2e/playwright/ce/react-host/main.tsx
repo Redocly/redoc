@@ -185,11 +185,10 @@ const CASES: Record<string, () => React.ReactElement> = {
 
 const CASE_BASE_PATHS: Record<string, string> = { 'base-path': DEEP_BASE };
 
-const requestedCase = new URLSearchParams(window.location.search).get('case');
-const name =
-  requestedCase && Object.prototype.hasOwnProperty.call(CASES, requestedCase)
-    ? requestedCase
-    : 'definition-url';
+const cases = new Map(Object.entries(CASES));
+const requestedCase = new URLSearchParams(window.location.search).get('case') ?? '';
+const name = cases.has(requestedCase) ? requestedCase : 'definition-url';
+const renderCase = cases.get(name) ?? CASES['definition-url'];
 
 alignUrlWithBasePath(CASE_BASE_PATHS[name] ?? BASE);
 
@@ -198,4 +197,4 @@ if (!container) {
   throw new Error('Missing #root in react-host/index.html');
 }
 
-createRoot(container).render(CASES[name]());
+createRoot(container).render(renderCase());

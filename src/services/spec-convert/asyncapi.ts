@@ -110,13 +110,15 @@ function inlineRootRefs(
   );
   const siblings: Array<[Obj, Obj]> = [];
   for (const [id, value] of Object.entries(root)) {
-    if (!isRef(value)) continue;
+    if (id === '__proto__' || !isRef(value)) continue;
     const target = resolveInDoc<Obj>(doc, value);
     if (!target) continue;
     const rootValue = inlined.has(target) ? copy(target) : target;
     root[id] = rootValue;
     inlined.add(rootValue);
-    const rest = Object.fromEntries(Object.entries(value).filter(([name]) => name !== '$ref'));
+    const rest = Object.fromEntries(
+      Object.entries(value).filter(([name]) => name !== '$ref' && name !== '__proto__'),
+    );
     if (Object.keys(rest).length > 0) siblings.push([rootValue, rest]);
   }
   const fromComponents = asObj(asObj(doc.components)[key]);
@@ -319,6 +321,7 @@ function mergeTraitsInto(doc: Obj, target: Obj, winner: TraitPrecedence): void {
  */
 function mergeInto(target: Obj, source: Obj, winner: 'source' | 'target'): void {
   for (const [key, value] of Object.entries(source)) {
+    if (key === '__proto__') continue;
     const current = target[key];
     if (isRecord(current) && isRecord(value) && !isRef(current) && !isRef(value)) {
       mergeInto(current, value, winner);

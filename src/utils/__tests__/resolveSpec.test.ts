@@ -66,7 +66,10 @@ describe('resolveSpec', () => {
       });
 
       expect(swagger.type).toBe('openapi');
+      expect(swagger.convertedFrom).toBe('2.0');
+      expect((swagger.document as Record<string, unknown>).openapi).toBe('3.2.0');
       expect(events.type).toBe('asyncapi');
+      expect(events.convertedFrom).toBeUndefined();
       expect(loadAndBundleDefinition).toHaveBeenCalledTimes(2);
     });
 
@@ -75,6 +78,13 @@ describe('resolveSpec', () => {
 
       expect(resolved).toMatchObject({ type: 'graphql', sdl: SDL });
       expect(resolved.document).toMatchObject({ kind: 'Document' });
+    });
+
+    it('reads SDL with a long CRLF comment header in linear time', async () => {
+      const spec = '#\r\n'.repeat(40) + SDL;
+      const resolved = await resolveSpec({ spec, skipBundle: false });
+
+      expect(resolved).toMatchObject({ type: 'graphql', sdl: spec });
     });
 
     it('reads YAML without an API key as GraphQL and reports its syntax error', async () => {

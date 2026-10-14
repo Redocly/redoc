@@ -23,7 +23,8 @@ const FLEXSEARCH_DIST = dirname(createRequire(import.meta.url).resolve('flexsear
 export default defineConfig({
   test: {
     globals: true,
-    reporters: process.env.CI ? ['verbose', 'json'] : ['default'],
+    reporters: process.env.CI ? ['default', 'json'] : ['default'],
+    silent: process.env.CI ? 'passed-only' : false,
     outputFile: {
       json: 'report.test-timing.json',
     },

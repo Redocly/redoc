@@ -307,6 +307,7 @@ export function buildInitialPayload(input: InitialPayloadInput): InitialItem {
   const counts = countItems(items);
   const document = isRecord(definition) ? definition : undefined;
   const scan = document ? scanDocument(document) : undefined;
+  const specVersion = majorMinor(apiStore.convertedFrom) ?? scan?.specVersion;
   const variant = counts.byVariant;
 
   const shape: Shape = {
@@ -358,7 +359,7 @@ export function buildInitialPayload(input: InitialPayloadInput): InitialItem {
     ...(input.typeOfUsage ? { typeOfUsage: input.typeOfUsage } : {}),
     operationsCount: counts.operations,
     schemasCount: Object.keys(apiStore.schemaStore ?? {}).length,
-    ...(scan?.specVersion ? { specVersion: scan.specVersion } : {}),
+    ...(specVersion ? { specVersion } : {}),
     extensionsCount: scan?.extensionsCount ?? 0,
     ...(scan && Object.keys(scan.redocExtensions).length
       ? { redocExtensions: scan.redocExtensions }

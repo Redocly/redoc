@@ -90,7 +90,7 @@ describe('body parameters', () => {
         {
           ...body,
           'x-examples': { 'application/json': { latte: { value: { item: 'latte' } } } },
-          'x-internal-note': 'kitchen only',
+          'x-kitchen-note': 'kitchen only',
         },
       ],
       responses: ok,
@@ -99,7 +99,7 @@ describe('body parameters', () => {
     expect(requestBody['x-examples']).toEqual({
       'application/json': { latte: { value: { item: 'latte' } } },
     });
-    expect(requestBody['x-internal-note']).toBe('kitchen only');
+    expect(requestBody['x-kitchen-note']).toBe('kitchen only');
     expect(requestBody.content).toEqual({ 'application/json': { schema: { type: 'object' } } });
   });
 

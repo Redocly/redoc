@@ -2,6 +2,7 @@ import { describe, it, expect, vi } from 'vitest';
 
 import {
   argValueToBoolean,
+  isTelemetryDisabled,
   argValueToNumber,
   argValueToInt,
   argValueToExpandLevel,
@@ -36,6 +37,20 @@ describe('argValueToBoolean', () => {
   it('returns boolean value as-is', () => {
     expect(argValueToBoolean(true)).toBe(true);
     expect(argValueToBoolean(false)).toBe(false);
+  });
+});
+
+describe('isTelemetryDisabled', () => {
+  it('opts out only with the literal true', () => {
+    expect(isTelemetryDisabled(true)).toBe(true);
+    expect(isTelemetryDisabled('true')).toBe(true);
+  });
+
+  it('keeps telemetry on for a bare attribute, false, or no value', () => {
+    expect(isTelemetryDisabled('')).toBe(false);
+    expect(isTelemetryDisabled('false')).toBe(false);
+    expect(isTelemetryDisabled(false)).toBe(false);
+    expect(isTelemetryDisabled(undefined)).toBe(false);
   });
 });
 

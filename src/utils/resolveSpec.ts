@@ -4,7 +4,10 @@ import { dump } from 'js-yaml';
 
 import { DefinitionLoadError, errorMessage } from './definitionLoadError.js';
 import { loadAndBundleDefinition } from './loadAndBundleSpec.js';
-import { normalizeAsyncApiDefinition } from '../services/spec-convert/index.js';
+import {
+  convertSwaggerToOpenApi,
+  normalizeAsyncApiDefinition,
+} from '../services/spec-convert/index.js';
 import { isRecord } from './is-record.js';
 import { parseYaml } from './yaml.js';
 import { apiSpecType } from '../types/common.js';
@@ -13,9 +16,9 @@ const GRAPHQL_URL_PATTERN = /\.(graphql|gql)([?#]|$)/i;
 const JSON_START_PATTERN = /^\s*[[{]/;
 /** The first line that is not blank, a comment or `---` names an OpenAPI or AsyncAPI version. */
 const API_KEY_FIRST_LINE =
-  /^(?:[ \t]*(?:#[^\n]*)?\r?\n|---[ \t]*\r?\n)*[ \t]*['"]?(?:openapi|swagger|asyncapi)['"]?[ \t]*:/;
+  /^(?:[ \t]*(?:#[^\r\n]*)?\r?\n|---[ \t]*\r?\n)*[ \t]*['"]?(?:openapi|swagger|asyncapi)['"]?[ \t]*:/;
 
-/** `convertedFrom` is the AsyncAPI 2.x version the document was converted to 3.0 from. */
+/** `convertedFrom` is the Swagger 2.0 or AsyncAPI 2.x version the document was converted from. */
 export type ResolvedSpec = {
   document: unknown;
   type: ApiSpecType;
@@ -125,15 +128,23 @@ async function resolveDocument(
   document: Record<string, unknown>,
   skipBundle: boolean,
 ): Promise<ResolvedSpec> {
-  return toAsyncApi3({
+  return convert({
     document: skipBundle ? document : await bundle(document),
     type: documentSpecType(document),
   });
 }
 
-function toAsyncApi3(resolved: ResolvedSpec): ResolvedSpec {
+function convert(resolved: ResolvedSpec): ResolvedSpec {
   const { document } = resolved;
-  if (resolved.type !== apiSpecType.ASYNCAPI || !isRecord(document)) return resolved;
+  if (!isRecord(document)) return resolved;
+  if (document.swagger !== undefined) {
+    return {
+      ...resolved,
+      document: convertSwaggerToOpenApi(document),
+      convertedFrom: String(document.swagger),
+    };
+  }
+  if (resolved.type !== apiSpecType.ASYNCAPI) return resolved;
   const version = String(document.asyncapi);
   // The bundle can share objects with a caller-provided spec object, and the conversion is in place.
   const converted = normalizeAsyncApiDefinition(cloneDocument(document));
@@ -168,7 +179,7 @@ async function resolveUrl(url: string, skipBundle: boolean): Promise<ResolvedSpe
   }
   try {
     const document = await bundle(url);
-    return toAsyncApi3({ document, type: documentSpecType(document) });
+    return convert({ document, type: documentSpecType(document) });
   } catch (bundleError) {
     const text = await fetchText(url);
     if (/^\s*<(!doctype|html)/i.test(text)) {
@@ -187,7 +198,7 @@ async function resolveUrl(url: string, skipBundle: boolean): Promise<ResolvedSpe
 
 /**
  * Loads `spec` (an object, its JSON or YAML text, or GraphQL SDL) or else `specUrl`, bundles it
- * unless `skipBundle`, and converts AsyncAPI documents to 3.x. Throws `DefinitionLoadError`.
+ * unless `skipBundle`, and converts Swagger 2.0 and AsyncAPI 2.x. Throws `DefinitionLoadError`.
  */
 export async function resolveSpec({
   spec,

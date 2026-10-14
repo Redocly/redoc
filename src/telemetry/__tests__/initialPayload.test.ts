@@ -194,6 +194,7 @@ describe('buildInitialPayload', () => {
       schemaStore: { Pet: {}, Owner: {} },
       exampleStore: {},
       securitySchemeStore: { key: { id: 'key', type: 'apiKey' } },
+      convertedFrom: '2.0',
     } as unknown as ApiStore;
     const payload = buildInitialPayload({
       uri: 'urn:redocly:redoc:ui:page',
@@ -214,7 +215,7 @@ describe('buildInitialPayload', () => {
       typeOfUsage: 'html',
       operationsCount: 2,
       schemasCount: 2,
-      specVersion: '3.1',
+      specVersion: '2.0',
       hasCodeSamples: true,
       resolveSpecMs: 120,
       buildItemsMs: 40,
