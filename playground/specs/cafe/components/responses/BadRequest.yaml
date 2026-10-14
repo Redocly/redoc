@@ -1,5 +1,0 @@
-description: Bad request - invalid input parameters.
-content:
-  application/problem+json:
-    schema:
-      $ref: ../schemas/Error.yaml

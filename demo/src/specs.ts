@@ -1,4 +1,4 @@
-export const DEFAULT_SPEC = 'specs/cafe/openapi.yaml';
+export const DEFAULT_SPEC = 'specs/cafe.yaml';
 
 export type SpecOption = { value: string; label: string };
 
