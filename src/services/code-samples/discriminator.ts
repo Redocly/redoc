@@ -618,7 +618,7 @@ export function applyActiveVariantsToSchema(
 
     const node = value as Record<string, unknown>;
     // Ref targets collapse as their own store entries.
-    if (typeof node.$ref === 'string') return node;
+    if (typeof node.$ref === 'string') return withSampledRefSiblings(node, schemaStore);
 
     if (!isEntryRoot) {
       const host = collapseDiscriminatorHost(
@@ -668,6 +668,33 @@ export function applyActiveVariantsToSchema(
   };
 
   return collapse(data, parentPath, true) as Record<string, unknown>;
+}
+
+const SAMPLE_VALUE_KEYWORDS = ['example', 'examples'];
+const SAMPLED_REF_TARGET_KEYWORDS = ['type', 'xml', 'readOnly', 'writeOnly'];
+
+/**
+ * openapi-sampler follows a `$ref` and drops its siblings, so an `example` set next to the
+ * `$ref` (allowed for Schema Objects since OpenAPI 3.1) is lost. When a sibling gives the
+ * example, inline the siblings instead, with the target keywords the sampler still reads for
+ * that value (type, XML naming, readOnly / writeOnly); siblings win, as in the schema view.
+ */
+function withSampledRefSiblings(
+  node: Record<string, unknown>,
+  schemaStore: Record<string, SchemaEntry>,
+): Record<string, unknown> {
+  const { $ref: _ref, ...siblings } = node;
+  if (!SAMPLE_VALUE_KEYWORDS.some((key) => siblings[key] !== undefined)) return node;
+
+  const targetId = resolveStoreIdFromRef(node, schemaStore);
+  const target = targetId ? schemaStore[targetId].data : undefined;
+  if (!target) return node;
+
+  const inherited: Record<string, unknown> = {};
+  for (const key of SAMPLED_REF_TARGET_KEYWORDS) {
+    if (target[key] !== undefined) inherited[key] = target[key];
+  }
+  return { ...inherited, ...siblings };
 }
 
 /**

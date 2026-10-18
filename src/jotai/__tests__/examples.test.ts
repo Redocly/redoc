@@ -537,3 +537,61 @@ describe('generatedExampleAtom discriminator host keywords', () => {
     ).toEqual({ drink: { kind: 'coffee', style: 'espresso', shots: 0 } });
   });
 });
+
+describe('generatedExampleAtom ($ref siblings)', () => {
+  const numberId = 'components/schemas/ExampleNumber';
+  const rangeId = 'components/schemas/ExampleRange';
+  const schemaStore: Record<string, SchemaEntry> = {
+    [numberId]: {
+      id: numberId,
+      kind: schemaKind.JSON_SCHEMA,
+      data: { description: 'A number', type: 'number' },
+    },
+    [rangeId]: {
+      id: rangeId,
+      kind: schemaKind.JSON_SCHEMA,
+      data: {
+        type: 'object',
+        properties: {
+          min: { $ref: `#/${numberId}`, minimum: 0, maximum: 50, example: 10 },
+          max: { $ref: `#/${numberId}`, minimum: 51, maximum: 100, examples: [55] },
+          step: { $ref: `#/${numberId}`, description: 'No example' },
+        },
+      },
+    },
+  };
+
+  it('uses an example or examples set next to a $ref', () => {
+    const store = setupStore({ schemaStore });
+    const key = buildExampleAtomKey(rangeId, 'response', 'application/json', ITEM_ID);
+
+    expect(store.get(generatedExampleAtom(key))).toEqual({ min: 10, max: 55, step: 0 });
+  });
+
+  it('keeps the property elements in XML samples', () => {
+    const store = setupStore({ schemaStore });
+    const key = buildExampleAtomKey(rangeId, 'response', 'application/xml', ITEM_ID);
+    const sample = store.get(generatedExampleAtom(key));
+
+    expect(sample).toContain('<min>10</min>');
+    expect(sample).toContain('<max>55</max>');
+    expect(sample).toContain('<step>0</step>');
+  });
+
+  it('uses an example set next to a $ref at the schema root', () => {
+    const aliasId = 'components/schemas/Limit';
+    const store = setupStore({
+      schemaStore: {
+        ...schemaStore,
+        [aliasId]: {
+          id: aliasId,
+          kind: schemaKind.JSON_SCHEMA,
+          data: { $ref: `#/${numberId}`, example: 42 },
+        },
+      },
+    });
+    const key = buildExampleAtomKey(aliasId, 'response', 'application/json', ITEM_ID);
+
+    expect(store.get(generatedExampleAtom(key))).toBe(42);
+  });
+});
