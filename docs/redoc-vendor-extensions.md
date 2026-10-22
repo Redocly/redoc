@@ -236,7 +236,7 @@ source: console.log('Hello World');
 
 | Field Name     | Type   | Description |
 | :------------- | :------: | :---------- |
-| x-badges | [[Badge Object](https://redocly.com/docs/realm/author/reference/openapi-extensions/x-badges#badge-object)] | A list of badges associated with the operation |
+| x-badges | [[Badge Object](https://redocly.com/docs/platform/author/reference/openapi-extensions/x-badges#badge-object)] | A list of badges associated with the operation |
 
 ## Parameter Object
 Extends the OpenAPI [Parameter Object](https://redocly.com/docs/openapi-visual-reference/parameter/)
@@ -338,7 +338,7 @@ Shows in the selectpicker only the items `cat` and `bee`, even though the `Dog` 
 
 | Field Name     | Type   | Description |
 | :------------- | :------: | :---------- |
-| x-enumDescriptions | [[Enum Description Object](https://redocly.com/docs/realm/author/reference/openapi-extensions/x-enum-descriptions#enum-description-object)] | A list of the enum values and descriptions to include in the documentation. |
+| x-enumDescriptions | [[Enum Description Object](https://redocly.com/docs/platform/author/reference/openapi-extensions/x-enum-descriptions#enum-description-object)] | A list of the enum values and descriptions to include in the documentation. |
 
 #### How to use with Redoc
 The enum (short for "enumeration") fields in OpenAPI allow you to restrict the value of a field to a list of allowed values. These values need to be short and machine-readable, but that can make them harder for humans to parse and work with.
