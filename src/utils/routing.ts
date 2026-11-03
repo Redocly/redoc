@@ -6,6 +6,7 @@ import { tryDecodeURIComponent } from './string.js';
 
 export type RouteItem = {
   path: string;
+  previousPath?: string;
   label: string;
   content: ApiItemContent;
   badges?: BadgeData[];
@@ -167,6 +168,8 @@ function toRouteItem(item: ApiItem): RouteItem {
   const deprecated = 'deprecated' in item ? (item.deprecated as boolean | undefined) : undefined;
   return {
     path,
+    previousPath:
+      item.previousRouteSlug && tryDecodeURIComponent(item.previousRouteSlug).toLowerCase(),
     label: item.label ?? '',
     content: item.content as ApiItemContent,
     badges,

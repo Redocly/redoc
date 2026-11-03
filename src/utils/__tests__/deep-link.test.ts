@@ -3,7 +3,9 @@ import { describe, it, expect } from 'vitest';
 import type { RouteItem } from '../routing.js';
 
 import { contentType } from '../../types/common.js';
-import { buildRouteIndex } from '../routing.js';
+import { buildRouteIndex, collectRoutesRecursively } from '../routing.js';
+import { collectMarkdownSections } from '../../adapters/utils/markdoc.js';
+import { markdocParser } from '../../components/markdoc/markdocParser.js';
 import {
   appendVariantSuffix,
   serializeFieldParams,
@@ -449,6 +451,67 @@ describe('resolveLegacyHashToRoute', () => {
     );
   });
 
+
+  describe('old ids of description headings renamed from all of their inline text', () => {
+    const sectionRouteIndex = (description: string) => {
+      const { sectionItems } = collectMarkdownSections(description, '/docs', {
+        markdownParser: markdocParser,
+      });
+      const allRoutes: RouteItem[] = [];
+      collectRoutesRecursively({
+        apiItems: sectionItems,
+        allRoutes,
+        tagsWithItems: [],
+        parentTag: null,
+      });
+      return buildRouteIndex(allRoutes, [], '/docs');
+    };
+
+    it('resolves the old id of a formatted heading and of a child of a formatted H1', () => {
+      const index = sectionRouteIndex(
+        '# Intro **now**\n\n## Child\n\n# Plain\n\n## Header with **bold**\n',
+      );
+
+      expect(resolveLegacyHashToRoute('#section/intro', '/docs', index)).toBe(
+        '/docs/section/intro-now',
+      );
+      expect(resolveLegacyHashToRoute('#section/intro/child', '/docs', index)).toBe(
+        '/docs/section/intro-now/child',
+      );
+      expect(resolveLegacyHashToRoute('#section/plain/header-with', '/docs', index)).toBe(
+        '/docs/section/plain/header-with-bold',
+      );
+    });
+
+    it('keeps the tail of an old id past a renamed heading', () => {
+      const index = sectionRouteIndex('# Intro **now**\n\n## Child\n');
+
+      expect(resolveLegacyHashToRoute('#section/intro/api_key', '/docs', index)).toBe(
+        '/docs/section/intro-now#section/intro-now/api_key',
+      );
+    });
+
+    it('does not let an old id shadow a route that has it as its current path', () => {
+      const index = buildRouteIndex(
+        [
+          { ...makeRoute('/docs/section/item-one'), previousPath: '/docs/section/item' },
+          makeRoute('/docs/section/item'),
+        ],
+        [],
+        '/docs',
+      );
+
+      expect(resolveLegacyHashToRoute('#section/item', '/docs', index)).toBe('/docs/section/item');
+    });
+
+    it('sends an old id two headings shared to the first of them', () => {
+      const index = sectionRouteIndex('# Top\n\n## Same **a**\n\n## Same **b**\n');
+
+      expect(resolveLegacyHashToRoute('#section/top/same', '/docs', index)).toBe(
+        '/docs/section/top/same-a',
+      );
+    });
+  });
 
   it('returns undefined for a hash that matches no route', () => {
     expect(resolveLegacyHashToRoute('#does/not/exist', '/docs', routeIndex)).toBeUndefined();
