@@ -95,7 +95,7 @@
     "@changesets/cli": "3.0.3",
     "@markdoc/markdoc": "0.5.2",
     "@microsoft/api-extractor": "7.58.2",
-    "@playwright/test": "1.60.0",
+    "@playwright/test": "1.64.1",
     "@redocly/allof-merge": "^0.6.9",
     "@redocly/config": "^0.65.0",
     "@redocly/openapi-core": "2.63.0",
