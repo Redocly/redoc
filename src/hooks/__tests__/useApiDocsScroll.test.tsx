@@ -853,6 +853,41 @@ describe('useApiDocsScroll', () => {
       });
     });
 
+    describe('the old id of a renamed description heading', () => {
+      const routes = [
+        makeRoute({ path: '/docs' }),
+        makeRoute({
+          path: '/docs/section/intro-now',
+          previousPath: '/docs/section/intro',
+          content: null as unknown as ApiItemContent,
+        }),
+      ];
+
+      it('redirects the old path to the renamed section', () => {
+        renderUseApiDocsScroll({
+          routingBasePath: '/docs',
+          initialEntries: ['/docs/section/intro'],
+          activeRoute: undefined,
+          routes,
+        });
+
+        expect(navigateSpy).toHaveBeenCalledWith('/docs/section/intro-now', { replace: true });
+      });
+
+      it('redirects the old single-page hash to the renamed section', () => {
+        getElementByIdSpy.mockReturnValue(null);
+
+        renderUseApiDocsScroll({
+          routingBasePath: '/docs',
+          initialEntries: ['/docs#section/intro'],
+          activeRoute: routes[0],
+          routes,
+        });
+
+        expect(navigateSpy).toHaveBeenCalledWith('/docs/section/intro-now', { replace: true });
+      });
+    });
+
     it('does not navigate when a missing hash matches no route', () => {
       getElementByIdSpy.mockReturnValue(null);
 

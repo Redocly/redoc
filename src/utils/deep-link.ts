@@ -393,6 +393,8 @@ export function resolveLegacyHashToRoute(
   const direct = normalizePath(joinWithSeparator(basePath, id));
   if (resolveRouteByPathname(routeIndex, direct)) return direct;
 
+  const renamed = routeIndex.allRoutes.find((route) => route.previousPath === direct.toLowerCase());
+  if (renamed) return renamed.path;
 
   const legacyHash = getLegacyHash(hash);
   if (!legacyHash) return undefined;
@@ -400,7 +402,9 @@ export function resolveLegacyHashToRoute(
   const segments = legacyHash.split('/').filter(Boolean);
   for (let end = segments.length; end > 0; end--) {
     const candidate = '/' + segments.slice(0, end).join('/');
-    const match = routeIndex.allRoutes.find((route) => route.path.endsWith(candidate));
+    const match =
+      routeIndex.allRoutes.find((route) => route.path.endsWith(candidate)) ??
+      routeIndex.allRoutes.find((route) => route.previousPath?.endsWith(candidate));
     if (!match) continue;
 
     const suffix = segments.slice(end).join('/');

@@ -12,6 +12,7 @@ import type { RouteItem, TagWithItems } from '../routing.js';
 
 import { buildItems } from '../../adapters/build.js';
 import { markdocParser } from '../../components/markdoc/markdocParser.js';
+import { buildMarkdownSectionItem, extractMarkdownSections } from '../../adapters/utils/markdoc.js';
 import {
   buildRouteIndex,
   buildTopLevelEntries,
@@ -107,6 +108,13 @@ describe('collectRoutesRecursively', () => {
       const { allRoutes } = runCollect([item]);
       expect(allRoutes[0].badges).toEqual([badge]);
       expect(allRoutes[0].deprecated).toBe(true);
+    });
+
+    it('should carry the previous id of a renamed section as previousPath', () => {
+      const [heading] = extractMarkdownSections(markdocParser('# Header with **bold**\n'));
+      const { allRoutes } = runCollect([buildMarkdownSectionItem({ heading, basePath: '/docs' })]);
+      expect(allRoutes[0].path).toBe('/docs/section/header-with-bold');
+      expect(allRoutes[0].previousPath).toBe('/docs/section/header-with');
     });
   });
 

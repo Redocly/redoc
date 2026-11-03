@@ -496,6 +496,8 @@ export type OperationInfo = {
 
 export type MarkdownHeading = {
   id: string;
+  /** The id this heading had before it was renamed; absent when unchanged or when another heading in the document has that id. */
+  previousId?: string;
   name: string;
   level: number;
   items: MarkdownHeading[];

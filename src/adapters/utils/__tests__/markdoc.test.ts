@@ -16,6 +16,7 @@ import {
   resolveMarkdocHeadingIds,
 } from '../markdoc.js';
 import { parseMarkdown } from '../parseMarkdown.js';
+import { markdocParser } from '../../../components/markdoc/markdocParser.js';
 import { buildDeepLinkUrl, makeDeepLink } from '../../../utils/deep-link.js';
 
 vi.mock('../parseMarkdown.js', () => ({ parseMarkdown: vi.fn() }));
@@ -351,6 +352,69 @@ describe('extractMarkdownSections', () => {
 
     expect(extractMarkdownSections('A plain description.')).toEqual([]);
   });
+
+  it('names and slugs a heading from all of its inline text, not just the first text node', () => {
+    vi.mocked(parseMarkdown).mockReturnValue(
+      markdocParser(
+        '# Header 1\n\n## Header 1.1 with **bold**\n\n## Header 1.2 with _italic_\n\n## **Bold** then `code`\n',
+      ),
+    );
+
+    const result = extractMarkdownSections('...');
+
+    expect(result[0].items.map(({ id, name }) => ({ id, name }))).toEqual([
+      { id: 'section/header-1/header-1.1-with-bold', name: 'Header 1.1 with bold' },
+      { id: 'section/header-1/header-1.2-with-italic', name: 'Header 1.2 with italic' },
+      { id: 'section/header-1/bold-then-code', name: 'Bold then code' },
+    ]);
+  });
+
+  it('keeps the old first-text-node id as previousId only for headings whose id changed', () => {
+    vi.mocked(parseMarkdown).mockReturnValue(
+      markdocParser(
+        '# Intro **now**\n\n## Child\n\n# Plain\n\n## Header with **bold**\n\n## Same\n',
+      ),
+    );
+
+    const [intro, plain] = extractMarkdownSections('...');
+    const headings = [intro, ...intro.items, plain, ...plain.items];
+
+    expect(headings.map(({ id, previousId }) => ({ id, previousId }))).toEqual([
+      { id: 'section/intro-now', previousId: 'section/intro' },
+      { id: 'section/intro-now/child', previousId: 'section/intro/child' },
+      { id: 'section/plain', previousId: undefined },
+      { id: 'section/plain/header-with-bold', previousId: 'section/plain/header-with' },
+      { id: 'section/plain/same', previousId: undefined },
+    ]);
+  });
+
+  it('drops a previousId that another heading in the document has as its current id', () => {
+    vi.mocked(parseMarkdown).mockReturnValue(
+      markdocParser('# Top\n\n## ![logo](x) Branding\n\n## Item **one**\n\n## Item\n'),
+    );
+
+    const [top] = extractMarkdownSections('...');
+
+    expect(top.items.map(({ id, previousId }) => ({ id, previousId }))).toEqual([
+      { id: 'section/top/branding', previousId: undefined },
+      { id: 'section/top/item-one', previousId: undefined },
+      { id: 'section/top/item', previousId: undefined },
+    ]);
+  });
+
+  it('keeps a previousId shared by several headings on the first of them only', () => {
+    vi.mocked(parseMarkdown).mockReturnValue(
+      markdocParser('# Top\n\n## Same **a**\n\n## Same **b**\n\n## Same _c_\n'),
+    );
+
+    const [top] = extractMarkdownSections('...');
+
+    expect(top.items.map(({ id, previousId }) => ({ id, previousId }))).toEqual([
+      { id: 'section/top/same-a', previousId: 'section/top/same' },
+      { id: 'section/top/same-b', previousId: undefined },
+      { id: 'section/top/same-c', previousId: undefined },
+    ]);
+  });
 });
 
 describe('collectMarkdownSections', () => {
@@ -360,6 +424,7 @@ describe('collectMarkdownSections', () => {
       makeParagraphNode('Error format.'),
       makeHeadingNode('Rate limits', 2),
       makeParagraphNode('Request quotas.'),
+      ...(markdocParser('# Limits **v2**\n\n## Quotas\n') as Node[]),
     ]);
 
     const { sectionItems, sectionChildren } = collectMarkdownSections('...', '/docs/pets', {
@@ -371,6 +436,16 @@ describe('collectMarkdownSections', () => {
         link: '/docs/pets/section/errors',
         items: [{ link: '/docs/pets/section/errors/rate-limits' }],
       },
+      {
+        link: '/docs/pets/section/limits-v2',
+        previousRouteSlug: '/docs/pets/section/limits',
+        items: [
+          {
+            link: '/docs/pets/section/limits-v2/quotas',
+            previousRouteSlug: '/docs/pets/section/limits/quotas',
+          },
+        ],
+      },
     ]);
     expect(sectionChildren).toMatchObject([
       { sectionId: '/section/errors' },
@@ -378,6 +453,8 @@ describe('collectMarkdownSections', () => {
         sectionId: '/section/errors/rate-limits',
         children: [{ sectionId: '/section/errors/rate-limits' }],
       },
+      { sectionId: '/section/limits-v2' },
+      { sectionId: '/section/limits-v2/quotas' },
     ]);
   });
 });
@@ -485,12 +562,16 @@ describe('resolveMarkdocHeadingIds', () => {
 describe('re-stamping an already-stamped AST', () => {
   it('resolves to the same ids on a repeated run over the same nodes', () => {
     const tagHeading = makeHeadingNode('Guides', 2);
-    vi.mocked(parseMarkdown).mockReturnValue([tagHeading]);
+    const [formattedHeading] = markdocParser('## Header with **bold**\n') as Node[];
+    vi.mocked(parseMarkdown).mockReturnValue([tagHeading, formattedHeading]);
 
     extractMarkdownSections('...', undefined, 'users', true);
     const second = extractMarkdownSections('...', undefined, 'users', true);
 
-    expect(second[0].id).toBe('users/guides');
+    expect(second.map(({ id, previousId }) => ({ id, previousId }))).toEqual([
+      { id: 'users/guides', previousId: undefined },
+      { id: 'users/header-with-bold', previousId: 'users/header-with' },
+    ]);
     expect(tagHeading.attributes.id).toBe('users/guides');
 
     const opHeading = makeHeadingNode('Details', 3);

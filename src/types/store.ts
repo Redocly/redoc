@@ -75,6 +75,7 @@ export type ItemMeta = {
 export type ApiItem = ResolvedNavItem & {
   content: ApiItemContent | null;
   httpVerb?: string;
+  previousRouteSlug?: string;
 };
 
 export type SchemaEntry = {
