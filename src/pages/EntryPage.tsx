@@ -70,8 +70,8 @@ function EntryPageComponent({ routeIndex, basePath }: EntryPageProps): ReactElem
 
   // Before hydration, render only the active entry and the entries after it,
   // so a deep-linked visitor sees their content at the top of the SSR HTML
-  // without waiting for JS to scroll. After hydration the full tree renders
-  // and `useApiDocsScroll` re-scrolls in the same commit, hiding the shift.
+  // without waiting for JS to scroll. Once the hydrated page has painted, the full
+  // tree renders and `useApiDocsScroll` re-scrolls in the same commit, hiding the shift.
   const visibleEntries = useMemo<TopLevelEntry[]>(() => {
     if (isHydrated || !activePath) return topLevelEntries;
 
@@ -120,4 +120,3 @@ function EntryPageComponent({ routeIndex, basePath }: EntryPageProps): ReactElem
 }
 
 export const EntryPage = memo(EntryPageComponent);
-

@@ -1,6 +1,7 @@
 import { parse as parseGraphQL } from 'graphql';
 import { afterEach, describe, it, expect } from 'vitest';
 import { cleanup, render } from '@testing-library/react';
+import { createStore, Provider as JotaiProvider } from 'jotai';
 import { MemoryRouter } from 'react-router';
 
 import type { ApiItem, ApiStore } from '../../../types/store.js';
@@ -11,7 +12,7 @@ import { normalizeOptions } from '../../../options/normalizeOptions.js';
 import { markdocParser } from '../../../components/markdoc/markdocParser.js';
 import { MarkdownAdapterProvider } from '../../../contexts/markdownAdapter.js';
 import { createMarkdocAdapter } from '../../../components/markdoc/markdocAdapter.js';
-import { StoreProvider } from '../../../hoc/withStoreProvider.js';
+import { globalStoreAtom } from '../../../jotai/store.js';
 import { ItemPage } from '../../../pages/ItemPage.js';
 import { deepLinkToId } from '../../../utils/deep-link.js';
 import { ApiDocsSearchIndexer } from '../indexer/index.js';
@@ -101,7 +102,7 @@ function indexFields(items: ApiItem[], store: ApiStore): IndexedField[] {
     .filter((param) => param.deepLink)
     .map((param) => ({
       name: param.name as string,
-      place: param.place as string,
+      place: param.place,
       deepLink: param.deepLink as string,
     }));
 }
@@ -112,13 +113,15 @@ function renderItemAtHash(items: ApiItem[], store: ApiStore, deepLink: string): 
   if (!item?.content) throw new Error(`No item renders ${deepLink}`);
 
   window.location.hash = `#${hash}`;
+  const jotaiStore = createStore();
+  jotaiStore.set(globalStoreAtom, { items: [], store, options: normalizeOptions(RAW_OPTIONS) });
   return render(
     <MemoryRouter initialEntries={[{ pathname: item.link, hash: `#${hash}` }]}>
-      <StoreProvider apiStore={store} options={RAW_OPTIONS}>
+      <JotaiProvider store={jotaiStore}>
         <MarkdownAdapterProvider value={createMarkdocAdapter()}>
           <ItemPage content={item.content} itemPath={item.link as string} />
         </MarkdownAdapterProvider>
-      </StoreProvider>
+      </JotaiProvider>
     </MemoryRouter>,
   ).container;
 }

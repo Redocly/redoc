@@ -1,0 +1,546 @@
+openapi: 3.0.3
+info:
+  title: Discriminator hosts that share graph-bearing properties
+  version: 1.0.0
+  description: >-
+    `Account` and `LinkedAccount` both list `PersonAccount` and `BusinessAccount` and both carry the
+    account fields; the variants inherit `Account` only. The fields link to an activity log whose
+    entries link back to both hosts.
+paths:
+  /accounts:
+    put:
+      tags:
+        - accounts
+      operationId: upsertAccount
+      summary: Create or update an account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Account'
+      responses:
+        '204':
+          description: Stored
+components:
+  schemas:
+    Account:
+      type: object
+      description: A person or a business. Lists its variants itself and carries the shared fields.
+      required:
+        - kind
+      discriminator:
+        propertyName: kind
+        mapping:
+          person: '#/components/schemas/PersonAccount'
+          business: '#/components/schemas/BusinessAccount'
+      anyOf:
+        - $ref: '#/components/schemas/PersonAccount'
+        - $ref: '#/components/schemas/BusinessAccount'
+      properties:
+        id:
+          type: string
+          description: Unique account id.
+        kind:
+          type: string
+          enum:
+            - person
+            - business
+        name:
+          type: string
+          description: Display name.
+        createdAt:
+          type: string
+          format: date-time
+        activityLog:
+          type: array
+          description: Everything that happened to the account, newest first.
+          items:
+            $ref: '#/components/schemas/Activity'
+        auditTrail:
+          type: array
+          description: Entries reviewed by compliance.
+          items:
+            $ref: '#/components/schemas/Activity'
+        attributes:
+          type: object
+          description: Free-form attributes.
+          additionalProperties:
+            type: string
+        contacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactPoint'
+    LinkedAccount:
+      type: object
+      description: >-
+        An account seen from another record. Lists the same variants with its own copy of the shared
+        fields plus the link role.
+      discriminator:
+        propertyName: kind
+        mapping:
+          person: '#/components/schemas/PersonAccount'
+          business: '#/components/schemas/BusinessAccount'
+      anyOf:
+        - $ref: '#/components/schemas/PersonAccount'
+        - $ref: '#/components/schemas/BusinessAccount'
+      properties:
+        id:
+          type: string
+          description: Unique account id.
+        kind:
+          type: string
+          enum:
+            - person
+            - business
+        name:
+          type: string
+          description: Display name.
+        createdAt:
+          type: string
+          format: date-time
+        activityLog:
+          type: array
+          description: Everything that happened to the account, newest first.
+          items:
+            $ref: '#/components/schemas/Activity'
+        auditTrail:
+          type: array
+          description: Entries reviewed by compliance.
+          items:
+            $ref: '#/components/schemas/Activity'
+        attributes:
+          type: object
+          description: Free-form attributes.
+          additionalProperties:
+            type: string
+        contacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactPoint'
+        role:
+          type: string
+          description: Role of the account in the record that links it.
+    PersonAccount:
+      allOf:
+        - $ref: '#/components/schemas/Account'
+        - type: object
+          properties:
+            firstName:
+              type: string
+            lastName:
+              type: string
+    BusinessAccount:
+      allOf:
+        - $ref: '#/components/schemas/Account'
+        - type: object
+          properties:
+            registrationNumber:
+              type: string
+            members:
+              type: array
+              description: People acting for the business.
+              items:
+                $ref: '#/components/schemas/LinkedAccount'
+    ContactPoint:
+      type: object
+      properties:
+        channel:
+          type: string
+          enum:
+            - email
+            - phone
+        value:
+          type: string
+        owner:
+          $ref: '#/components/schemas/Account'
+    Activity:
+      description: One entry of an activity log.
+      oneOf:
+        - $ref: '#/components/schemas/SignUp'
+        - $ref: '#/components/schemas/SignIn'
+        - $ref: '#/components/schemas/SignOut'
+        - $ref: '#/components/schemas/Purchase'
+        - $ref: '#/components/schemas/Refund'
+        - $ref: '#/components/schemas/Dispute'
+        - $ref: '#/components/schemas/Payout'
+        - $ref: '#/components/schemas/Transfer'
+        - $ref: '#/components/schemas/Review'
+        - $ref: '#/components/schemas/SupportRequest'
+        - $ref: '#/components/schemas/PasswordReset'
+        - $ref: '#/components/schemas/Invite'
+        - $ref: '#/components/schemas/Verification'
+        - $ref: '#/components/schemas/Closure'
+        - $ref: '#/components/schemas/Reopening'
+        - $ref: '#/components/schemas/Export'
+      discriminator:
+        propertyName: activityType
+        mapping:
+          signUp: '#/components/schemas/SignUp'
+          signIn: '#/components/schemas/SignIn'
+          signOut: '#/components/schemas/SignOut'
+          purchase: '#/components/schemas/Purchase'
+          refund: '#/components/schemas/Refund'
+          dispute: '#/components/schemas/Dispute'
+          payout: '#/components/schemas/Payout'
+          transfer: '#/components/schemas/Transfer'
+          review: '#/components/schemas/Review'
+          supportRequest: '#/components/schemas/SupportRequest'
+          passwordReset: '#/components/schemas/PasswordReset'
+          invite: '#/components/schemas/Invite'
+          verification: '#/components/schemas/Verification'
+          closure: '#/components/schemas/Closure'
+          reopening: '#/components/schemas/Reopening'
+          export: '#/components/schemas/Export'
+    SignUp:
+      type: object
+      required:
+        - activityType
+      properties:
+        activityType:
+          type: string
+          enum:
+            - signUp
+        at:
+          type: string
+          format: date-time
+        participants:
+          type: array
+          description: Accounts involved in the activity.
+          items:
+            $ref: '#/components/schemas/LinkedAccount'
+        initiator:
+          $ref: '#/components/schemas/Account'
+        channel:
+          type: string
+          description: Where the account was created.
+    SignIn:
+      type: object
+      required:
+        - activityType
+      properties:
+        activityType:
+          type: string
+          enum:
+            - signIn
+        at:
+          type: string
+          format: date-time
+        participants:
+          type: array
+          description: Accounts involved in the activity.
+          items:
+            $ref: '#/components/schemas/LinkedAccount'
+        initiator:
+          $ref: '#/components/schemas/Account'
+        ipAddress:
+          type: string
+          description: Address the session came from.
+    SignOut:
+      type: object
+      required:
+        - activityType
+      properties:
+        activityType:
+          type: string
+          enum:
+            - signOut
+        at:
+          type: string
+          format: date-time
+        participants:
+          type: array
+          description: Accounts involved in the activity.
+          items:
+            $ref: '#/components/schemas/LinkedAccount'
+        initiator:
+          $ref: '#/components/schemas/Account'
+        sessionId:
+          type: string
+          description: Session that ended.
+    Purchase:
+      type: object
+      required:
+        - activityType
+      properties:
+        activityType:
+          type: string
+          enum:
+            - purchase
+        at:
+          type: string
+          format: date-time
+        participants:
+          type: array
+          description: Accounts involved in the activity.
+          items:
+            $ref: '#/components/schemas/LinkedAccount'
+        initiator:
+          $ref: '#/components/schemas/Account'
+        orderId:
+          type: string
+          description: Order that was paid.
+    Refund:
+      type: object
+      required:
+        - activityType
+      properties:
+        activityType:
+          type: string
+          enum:
+            - refund
+        at:
+          type: string
+          format: date-time
+        participants:
+          type: array
+          description: Accounts involved in the activity.
+          items:
+            $ref: '#/components/schemas/LinkedAccount'
+        initiator:
+          $ref: '#/components/schemas/Account'
+        amount:
+          type: number
+          description: Amount returned.
+    Dispute:
+      type: object
+      required:
+        - activityType
+      properties:
+        activityType:
+          type: string
+          enum:
+            - dispute
+        at:
+          type: string
+          format: date-time
+        participants:
+          type: array
+          description: Accounts involved in the activity.
+          items:
+            $ref: '#/components/schemas/LinkedAccount'
+        initiator:
+          $ref: '#/components/schemas/Account'
+        caseId:
+          type: string
+          description: Case opened with the issuer.
+    Payout:
+      type: object
+      required:
+        - activityType
+      properties:
+        activityType:
+          type: string
+          enum:
+            - payout
+        at:
+          type: string
+          format: date-time
+        participants:
+          type: array
+          description: Accounts involved in the activity.
+          items:
+            $ref: '#/components/schemas/LinkedAccount'
+        initiator:
+          $ref: '#/components/schemas/Account'
+        payoutId:
+          type: string
+          description: Payout batch.
+    Transfer:
+      type: object
+      required:
+        - activityType
+      properties:
+        activityType:
+          type: string
+          enum:
+            - transfer
+        at:
+          type: string
+          format: date-time
+        participants:
+          type: array
+          description: Accounts involved in the activity.
+          items:
+            $ref: '#/components/schemas/LinkedAccount'
+        initiator:
+          $ref: '#/components/schemas/Account'
+        destination:
+          type: string
+          description: Receiving account.
+    Review:
+      type: object
+      required:
+        - activityType
+      properties:
+        activityType:
+          type: string
+          enum:
+            - review
+        at:
+          type: string
+          format: date-time
+        participants:
+          type: array
+          description: Accounts involved in the activity.
+          items:
+            $ref: '#/components/schemas/LinkedAccount'
+        initiator:
+          $ref: '#/components/schemas/Account'
+        rating:
+          type: number
+          description: Stars given.
+    SupportRequest:
+      type: object
+      required:
+        - activityType
+      properties:
+        activityType:
+          type: string
+          enum:
+            - supportRequest
+        at:
+          type: string
+          format: date-time
+        participants:
+          type: array
+          description: Accounts involved in the activity.
+          items:
+            $ref: '#/components/schemas/LinkedAccount'
+        initiator:
+          $ref: '#/components/schemas/Account'
+        ticketId:
+          type: string
+          description: Ticket opened.
+    PasswordReset:
+      type: object
+      required:
+        - activityType
+      properties:
+        activityType:
+          type: string
+          enum:
+            - passwordReset
+        at:
+          type: string
+          format: date-time
+        participants:
+          type: array
+          description: Accounts involved in the activity.
+          items:
+            $ref: '#/components/schemas/LinkedAccount'
+        initiator:
+          $ref: '#/components/schemas/Account'
+        requestedFrom:
+          type: string
+          description: Address that asked for the reset.
+    Invite:
+      type: object
+      required:
+        - activityType
+      properties:
+        activityType:
+          type: string
+          enum:
+            - invite
+        at:
+          type: string
+          format: date-time
+        participants:
+          type: array
+          description: Accounts involved in the activity.
+          items:
+            $ref: '#/components/schemas/LinkedAccount'
+        initiator:
+          $ref: '#/components/schemas/Account'
+        inviteeEmail:
+          type: string
+          description: Who was invited.
+    Verification:
+      type: object
+      required:
+        - activityType
+      properties:
+        activityType:
+          type: string
+          enum:
+            - verification
+        at:
+          type: string
+          format: date-time
+        participants:
+          type: array
+          description: Accounts involved in the activity.
+          items:
+            $ref: '#/components/schemas/LinkedAccount'
+        initiator:
+          $ref: '#/components/schemas/Account'
+        documentType:
+          type: string
+          description: Document that was checked.
+    Closure:
+      type: object
+      required:
+        - activityType
+      properties:
+        activityType:
+          type: string
+          enum:
+            - closure
+        at:
+          type: string
+          format: date-time
+        participants:
+          type: array
+          description: Accounts involved in the activity.
+          items:
+            $ref: '#/components/schemas/LinkedAccount'
+        initiator:
+          $ref: '#/components/schemas/Account'
+        reason:
+          type: string
+          description: Why the account was closed.
+    Reopening:
+      type: object
+      required:
+        - activityType
+      properties:
+        activityType:
+          type: string
+          enum:
+            - reopening
+        at:
+          type: string
+          format: date-time
+        participants:
+          type: array
+          description: Accounts involved in the activity.
+          items:
+            $ref: '#/components/schemas/LinkedAccount'
+        initiator:
+          $ref: '#/components/schemas/Account'
+        approvedBy:
+          type: string
+          description: Who approved it.
+    Export:
+      type: object
+      required:
+        - activityType
+      properties:
+        activityType:
+          type: string
+          enum:
+            - export
+        at:
+          type: string
+          format: date-time
+        participants:
+          type: array
+          description: Accounts involved in the activity.
+          items:
+            $ref: '#/components/schemas/LinkedAccount'
+        initiator:
+          $ref: '#/components/schemas/Account'
+        format:
+          type: string
+          description: Format of the exported data.

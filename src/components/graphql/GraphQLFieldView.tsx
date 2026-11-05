@@ -1,4 +1,4 @@
-import { useState, useEffect, memo, useMemo, useRef } from 'react';
+import { memo, useMemo, useRef } from 'react';
 import { useAtomValue } from 'jotai';
 
 import type { ReactElement } from 'react';
@@ -29,6 +29,7 @@ import {
   isGraphqlDeepLinkAncestor,
 } from '../../utils/deep-link.js';
 import { useDeepLinkUrl } from '../../hooks/useDeepLinkSection.js';
+import { useCollapsibleState } from '../../hooks/useExpandableSection.js';
 import { useSpecTranslate } from '../../hooks/useTranslate.js';
 import { useSchemaFieldTelemetry } from '../../telemetry/index.js';
 import { globalOptionsAtom } from '../../jotai/store.js';
@@ -51,7 +52,7 @@ interface GraphQLFieldViewProps {
   fieldExpandLevel: number;
   parentTypeName?: string;
   parentRequiresScopes?: GraphqlRequiresScopes | null;
-  expanded?: boolean;
+  sectionKey?: string;
 }
 
 function GraphQLFieldViewComponent({
@@ -61,7 +62,7 @@ function GraphQLFieldViewComponent({
   fieldExpandLevel: treeDepth,
   parentTypeName,
   parentRequiresScopes,
-  expanded,
+  sectionKey,
 }: GraphQLFieldViewProps): ReactElement {
   const { fieldExpandLevel: maxExpandDepth, schemasExpansionLevel } =
     useAtomValue(globalOptionsAtom);
@@ -80,17 +81,19 @@ function GraphQLFieldViewComponent({
 
   const expandByDefault = isWithinExpansionLevel(treeDepth, schemasExpansionLevel, 0);
 
-  const [userToggleTypes, setUserToggleTypes] = useState<boolean | undefined>(undefined);
-  const [userToggleArguments, setUserToggleArguments] = useState<boolean | undefined>(undefined);
-
-  useEffect(() => {
-    setUserToggleTypes(undefined);
-    setUserToggleArguments(undefined);
-  }, [expanded]);
-
-  const expandedTypes = userToggleTypes ?? expanded ?? (isDeepLinkTarget || expandByDefault);
-  const expandedArguments =
-    userToggleArguments ?? expanded ?? (isDeepLinkTarget || expandByDefault);
+  const expandable = isGraphqlFieldExpandable(field, treeDepth, maxExpandDepth, lookup);
+  const args = field.args ?? [];
+  const hasArgs = args.length > 0;
+  const [expandedTypes, setExpandedTypes] = useCollapsibleState(
+    expandable ? sectionKey : undefined,
+    expandByDefault,
+    isDeepLinkTarget,
+  );
+  const [expandedArguments, setExpandedArguments] = useCollapsibleState(
+    expandable && hasArgs ? sectionKey : undefined,
+    expandByDefault,
+    isDeepLinkTarget,
+  );
 
   const isDeprecated = !!field.deprecationReason;
   const deprecationReasonAst = useMemo(
@@ -98,15 +101,13 @@ function GraphQLFieldViewComponent({
     [field.deprecationReason, adapter],
   );
   const isRequired = !!isArgument && !!field.required;
-  const args = field.args ?? [];
-  const hasArgs = args.length > 0;
   const returnTypeFieldCount = countNamedTypeFields(field.type.name, lookup);
   const typeEstimatedHeight = returnTypeFieldCount * ESTIMATED_FIELD_ROW_HEIGHT;
   const argsEstimatedHeight = args.length * ESTIMATED_FIELD_ROW_HEIGHT;
   const toggleArguments = (): void => {
     const next = !expandedArguments;
     reportToggle({ depth: treeDepth, expanded: next, childCount: args.length, kind: 'arguments' });
-    setUserToggleArguments(next);
+    setExpandedArguments(next);
   };
   const toggleReturnType = (): void => {
     const next = !expandedTypes;
@@ -116,9 +117,8 @@ function GraphQLFieldViewComponent({
       childCount: returnTypeFieldCount,
       kind: 'returnType',
     });
-    setUserToggleTypes(next);
+    setExpandedTypes(next);
   };
-  const expandable = isGraphqlFieldExpandable(field, treeDepth, maxExpandDepth, lookup);
   const showBorder = !expandable || !expandedTypes;
   const fieldId = isArgument
     ? parentTypeName
@@ -201,7 +201,7 @@ function GraphQLFieldViewComponent({
                     args={args}
                     fieldExpandLevel={childTreeDepth}
                     parentName={graphqlPath}
-                    expanded={expanded}
+                    sectionKey={sectionKey}
                   />
                 </LazyMount>
               </ViewNested>
@@ -221,7 +221,7 @@ function GraphQLFieldViewComponent({
                   typeName={field.type.name}
                   contrast={!contrast}
                   fieldExpandLevel={childTreeDepth}
-                  expanded={expanded}
+                  sectionKey={sectionKey}
                   parentPath={graphqlPath}
                 />
               </LazyMount>

@@ -8,7 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "redoc": "^3.0.0-rc.1",
+    "redoc": "^3.0.0",
     "vue": "^3.5.0"
   },
   "devDependencies": {

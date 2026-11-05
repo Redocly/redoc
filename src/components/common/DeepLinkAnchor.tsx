@@ -1,5 +1,4 @@
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
 import { styled, css, keyframes } from 'styled-components';
 import { Link } from 'react-router';
 import { useUrlHash } from '../../hooks/useUrlHash.js';
@@ -12,6 +11,7 @@ import { SharedLinkIcon } from '@redocly/theme/icons/LinkIcon/LinkIconSymbol';
 import { globalOptionsAtom } from '../../jotai/store.js';
 import { hashToElementId } from '../../utils/deep-link.js';
 import { useTranslate } from '../../hooks/useTranslate.js';
+import { BodyPortal } from './BodyPortal.js';
 
 /** Keeps the tooltip from flashing while the pointer crosses the page. */
 const TOOLTIP_HOVER_DELAY_MS = 500;
@@ -151,17 +151,18 @@ function DeepLinkAnchorComponent({
  *  so the tooltip renders in `document.body`. */
 function DeepLinkTooltip({ at }: { at: TooltipPosition }): ReactElement {
   const translate = useTranslate();
-  return createPortal(
-    <Tooltip
-      aria-hidden="true"
-      data-testid="deep-link-tooltip"
-      data-placement={at.placement}
-      $placement={at.placement}
-      style={{ left: at.x, top: at.y }}
-    >
-      {translate('openapi.deepLink.tooltip', 'Link to this section')}
-    </Tooltip>,
-    document.body,
+  return (
+    <BodyPortal>
+      <Tooltip
+        aria-hidden="true"
+        data-testid="deep-link-tooltip"
+        data-placement={at.placement}
+        $placement={at.placement}
+        style={{ left: at.x, top: at.y }}
+      >
+        {translate('openapi.deepLink.tooltip', 'Link to this section')}
+      </Tooltip>
+    </BodyPortal>
   );
 }
 

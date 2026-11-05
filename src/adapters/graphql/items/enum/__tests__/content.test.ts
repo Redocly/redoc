@@ -18,7 +18,6 @@ const schema = buildASTSchema(
 
 const markdownSanitize: MarkdownSanitizeOptions = {
   sanitize: false,
-  unstable_hooks: {},
 };
 
 describe('buildEnumContent', () => {

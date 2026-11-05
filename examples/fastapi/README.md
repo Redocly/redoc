@@ -16,12 +16,15 @@ Then open http://localhost:8000.
 
 FastAPI already ships Redoc — version 2, at `/redoc`, rendered by `get_redoc_html()`. That helper
 writes a classic `<script>` tag, and the Redoc 3 bundle is an ES module, so it cannot be swapped in
-with `redoc_js_url` alone. `main.py` shows the replacement:
+with `redoc_js_url` alone. `main.py` uses the workaround from
+[FastAPI discussion #16486](https://github.com/fastapi/fastapi/discussions/16486):
 
 - `FastAPI(redoc_url=None)` turns the built-in page off,
-- one route returns a `<redoc spec-url>` tag plus `<script type="module" src="…">`.
+- one route renders the page with `get_redoc_html()` and changes its tag to
+  `<script type="module" src="…">`,
+- `with_google_fonts=False` skips the Google Fonts stylesheet; Redoc 3 uses the system font.
 
-Point `spec-url` at your own API description — in a real app that is `app.openapi_url`
+Point `openapi_url` at your own API description — in a real app that is `app.openapi_url`
 (`/openapi.json`). `REDOC_URL` (environment variable) overrides where the bundle is loaded from,
 for self-hosting or pinning another version.
 

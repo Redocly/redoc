@@ -40,10 +40,11 @@ export function ScopeTagWithTooltip({
   return (
     <InlineItem>
       <Tooltip placement="bottom" arrowPosition={arrowPosition} tip={resolvedTip}>
-        <FocusableWrapper role="button" tabIndex={0} aria-label={ariaLabel ?? text}>
-          <ScopeTag>
+        <FocusableWrapper tabIndex={0}>
+          <ScopeTag aria-hidden>
             <TruncatedText $large={large}>{label}</TruncatedText>
           </ScopeTag>
+          <SrOnly>{ariaLabel ?? text}</SrOnly>
         </FocusableWrapper>
       </Tooltip>
     </InlineItem>
@@ -71,6 +72,18 @@ const FocusableWrapper = styled.span`
     outline: 1px solid var(--link-color-primary);
     border-radius: var(--border-radius-md);
   }
+`;
+
+const SrOnly = styled.span`
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
 `;
 
 const InlineItem = styled.span`

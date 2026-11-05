@@ -13,11 +13,7 @@ import {
 import { GraphQLReturnTypeDetails } from '../GraphQLReturnTypeDetails.js';
 import { GraphQLTypeViewByName } from '../GraphQLTypeView.js';
 import { ArrowIcon } from '../ArrowIcon.js';
-import {
-  useCollapsibleEntryKey,
-  useExpandableSection,
-  useRegisterCollapsibleEntry,
-} from '../../../hooks/useExpandableSection.js';
+import { useExpandableSection } from '../../../hooks/useExpandableSection.js';
 import { graphqlTypeHasExpandableFields } from '../../../utils/graphql-type-expansion.js';
 import { globalOptionsAtom } from '../../../jotai/store.js';
 
@@ -32,11 +28,7 @@ export function ReturnTypeSection({ node }: { node: ItemContentNode }): ReactEle
 
   const namedReturnType = useAtomValue(graphqlTypeDataAtom(typeName ?? ''));
   const isExpandable = graphqlTypeHasExpandableFields(namedReturnType, 0, maxExpandDepth, lookup);
-  const isExpanded = useExpandableSection(node.variant, isExpandable);
-  useRegisterCollapsibleEntry(
-    useCollapsibleEntryKey(isExpandable ? node.variant : undefined),
-    Boolean(isExpanded),
-  );
+  useExpandableSection(node.variant, isExpandable);
 
   if (operationField) {
     return (
@@ -48,14 +40,16 @@ export function ReturnTypeSection({ node }: { node: ItemContentNode }): ReactEle
         <GraphQLTypeViewByName
           typeName={typeName ?? ''}
           fieldExpandLevel={0}
-          expanded={isExpanded}
+          sectionKey={node.variant}
         />
       </div>
     );
   }
 
   if (typeName) {
-    return <GraphQLTypeViewByName typeName={typeName} fieldExpandLevel={0} expanded={isExpanded} />;
+    return (
+      <GraphQLTypeViewByName typeName={typeName} fieldExpandLevel={0} sectionKey={node.variant} />
+    );
   }
 
   return <></>;

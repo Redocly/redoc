@@ -4,13 +4,11 @@ import { createStore, Provider as JotaiProvider } from 'jotai';
 import { MemoryRouter, useLocation } from 'react-router';
 import { ClipboardService } from '@redocly/theme/core/openapi';
 
-import type { GlobalStoreAtom } from '../../../jotai/store.js';
-
 import { globalStoreAtom } from '../../../jotai/store.js';
 import { normalizeOptions } from '../../../options/normalizeOptions.js';
 import { URL_REPLACE_EVENT } from '../../../hooks/useRouterHashBridge.js';
 import { DeepLinkAnchor } from '../DeepLinkAnchor.js';
-import type { Node } from '@markdoc/markdoc';
+import type { Node } from '@redocly/markdoc';
 import type { ApiDocsOptions } from '../../../types/options.js';
 
 const TO = '/docs/pets/listpets#pets/listpets/t=field&path=limit';
@@ -31,12 +29,12 @@ function renderAnchor() {
       basePath: '',
       markdownParser: function (
         _: string,
-        __?: Partial<Pick<ApiDocsOptions, 'sanitize' | 'unstable_hooks'>>,
+        __?: Partial<Pick<ApiDocsOptions, 'sanitize'>>,
       ): Node | Node[] | undefined {
         throw new Error('Function not implemented.');
       },
     }),
-  } as GlobalStoreAtom);
+  });
 
   render(
     <MemoryRouter>

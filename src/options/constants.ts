@@ -2,7 +2,6 @@ import { LayoutVariant } from '@redocly/config';
 
 export const DEFAULT_LAYOUT = LayoutVariant.THREE_PANEL;
 
-
 export const DEFAULT_MAX_DISPLAYED_ENUM_VALUES = 10;
 
 export const DEFAULT_ROUTING_BASE_PATH = '';
@@ -14,4 +13,3 @@ export const GRAPHQL_DEFAULT_FIELD_EXPAND_LEVEL = 4;
 
 export const JSON_SAMPLES_EXPAND_LEVEL_DEFAULT = 2;
 export const GENERATED_SAMPLES_MAX_DEPTH_DEFAULT = 8;
-

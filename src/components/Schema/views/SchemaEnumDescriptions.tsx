@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 
 import type { ReactElement } from 'react';
-import type { Node } from '@markdoc/markdoc';
+import type { Node } from '@redocly/markdoc';
 
 import { Markdown as MarkdownWrapper } from '@redocly/theme/components/Markdown/Markdown';
 

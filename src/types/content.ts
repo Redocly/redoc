@@ -1,5 +1,5 @@
 import type { AdmonitionProps } from '@redocly/theme/components/Admonition/Admonition';
-import type { Node } from '@markdoc/markdoc';
+import type { Node } from '@redocly/markdoc';
 import type { OpenAPIResponse } from './openapi.js';
 import type { CodeSampleSource } from '../services/code-samples/index.js';
 import type { BadgeData, ServerData, nodeTypes, panelKind } from './common.js';
@@ -96,7 +96,6 @@ export type ParameterData = {
 
 export type ItemContentNode = {
   nodeType: typeof nodeTypes.ITEM;
-
 
   variant:
     | 'headers'
@@ -217,7 +216,6 @@ export type SecurityNode = {
   requirements: SecurityRequirementDetail[];
 };
 
-
 export type MarkdocNode = {
   nodeType: typeof nodeTypes.MARKDOC;
   content: string | Node[] | Node;
@@ -277,7 +275,6 @@ type MultiChildPanelBase<TKind extends PanelItem['kind']> = {
   children: PanelItemsByKind<TKind>[];
 };
 
-
 export type PanelTag = {
   text: string;
   color?: string;
@@ -313,7 +310,6 @@ export type EmailPanelItem = {
   withCopyButton?: boolean;
   copyContent?: string;
 };
-
 
 export type ServersPanelItem = {
   kind: typeof panelKind.SERVERS;
@@ -572,14 +568,12 @@ export type OverviewNode = MultiChildPanelBase<
   typeof panelKind.EXTERNAL_LINK | typeof panelKind.EMAIL | typeof panelKind.ATTRIBUTE
 >;
 
-
 export type McpNode = MultiChildPanelBase<
   | typeof panelKind.ATTRIBUTE
   | typeof panelKind.TAGS
   | typeof panelKind.EXTERNAL_LINK
   | typeof panelKind.CONNECT_MCP_BUTTON
 >;
-
 
 export type MediaTypeContent = {
   schemaId?: string;

@@ -37,8 +37,6 @@ vi.mock('../../../../utils/graphql-type-expansion.js', () => ({
 const useExpandableSection = vi.fn();
 vi.mock('../../../../hooks/useExpandableSection.js', () => ({
   useExpandableSection: (...args: unknown[]) => useExpandableSection(...args),
-  useCollapsibleEntryKey: vi.fn(),
-  useRegisterCollapsibleEntry: vi.fn(),
 }));
 
 vi.mock('../../../../hooks/useTranslate.js', () => ({
@@ -57,17 +55,17 @@ vi.mock('../../GraphQLFieldView.js', () => ({
   GraphQLFieldView: ({
     field,
     parentTypeName,
-    expanded,
+    sectionKey,
   }: {
     field: { name: string };
     parentTypeName?: string;
-    expanded?: boolean;
+    sectionKey?: string;
   }) => (
     <div
       data-testid="field-view"
       data-name={field.name}
       data-parent={parentTypeName ?? ''}
-      data-override={String(expanded)}
+      data-section-key={sectionKey ?? ''}
     />
   ),
 }));
@@ -146,10 +144,9 @@ describe('GraphQLArgsSection', () => {
     expect(useExpandableSection).toHaveBeenLastCalledWith('graphql-args', true);
   });
 
-  it('forwards the expand-all override to each field', () => {
+  it('passes its section key to each field, so field toggles reach the section button', () => {
     getOperation.mockReturnValue({ args: [{ name: 'first' }] });
-    useExpandableSection.mockReturnValue(true);
     renderWithMarkdownAdapter(opNode);
-    expect(screen.getByTestId('field-view')).toHaveAttribute('data-override', 'true');
+    expect(screen.getByTestId('field-view')).toHaveAttribute('data-section-key', 'graphql-args');
   });
 });

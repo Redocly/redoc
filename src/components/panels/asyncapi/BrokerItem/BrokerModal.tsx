@@ -1,18 +1,14 @@
 import { styled } from 'styled-components';
-import { useId, useState, useRef } from 'react';
+import { useState } from 'react';
 
 import type { BrokerData } from '../../../../types/asyncapi.js';
 
-import { Button } from '@redocly/theme/components/Button/Button';
-import { Typography } from '@redocly/theme/components/Typography/Typography';
 import { Segmented } from '@redocly/theme/components/Segmented/Segmented';
-import { CloseIcon } from '@redocly/theme/icons/CloseIcon/CloseIcon';
 import { DatabaseIcon } from '@redocly/theme/icons/DatabaseIcon/DatabaseIcon';
 import { KafkaIcon } from '@redocly/theme/icons/KafkaIcon/KafkaIcon';
 import { RabbitMQIcon } from '@redocly/theme/icons/RabbitMQIcon/RabbitMQIcon';
-import { useFocusTrap } from '@redocly/theme/core/openapi';
 
-import { useModalDismiss } from '../../../../hooks/useModalDismiss.js';
+import { Modal } from '../../../common/Modal.js';
 import { BrokerOverviewSection } from './BrokerOverviewSection.js';
 import { BrokerBindingsSection } from './BrokerBindingsSection.js';
 
@@ -44,11 +40,6 @@ const BrokerIcon = ({ protocol }: { protocol: Protocol }) => {
 
 export const BrokerModal = ({ broker, onClose, panelLabel }: BrokerModalProps) => {
   const [selectedBlock, setSelectedBlock] = useState(0);
-  const modalRef = useRef<HTMLDivElement>(null);
-  const titleId = useId();
-
-  useModalDismiss(modalRef, onClose);
-  useFocusTrap(modalRef);
 
   const options = [...SEGMENT_OPTIONS];
 
@@ -57,85 +48,31 @@ export const BrokerModal = ({ broker, onClose, panelLabel }: BrokerModalProps) =
   }
 
   return (
-    <StyledBackground data-component-name="BrokerModal/BrokerModal">
-      <Wrapper
-        ref={modalRef}
-        tabIndex={0}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby={titleId}
-      >
-        <Close onClick={onClose} data-testid="close" variant="ghost" icon={<CloseIcon />} />
-        <Title id={titleId}>
-          <BrokerIcon protocol={broker.protocol || ''} />
+    <Modal
+      data-component-name="BrokerModal/BrokerModal"
+      icon={<BrokerIcon protocol={broker.protocol || ''} />}
+      title={
+        <>
           {broker.protocol}: {broker.name}
-        </Title>
+        </>
+      }
+      onClose={onClose}
+      tabs={
         <Segmented
           value={selectedBlock}
           onChange={({ value }) => setSelectedBlock(value)}
           options={options}
         />
-        <SegmentWrapper>
-          {selectedBlock === 0 && <BrokerOverviewSection broker={broker} />}
-          {selectedBlock === 2 && <BrokerBindingsSection broker={broker} panelLabel={panelLabel} />}
-        </SegmentWrapper>
-      </Wrapper>
-    </StyledBackground>
+      }
+    >
+      <SegmentWrapper>
+        {selectedBlock === 0 && <BrokerOverviewSection broker={broker} />}
+        {selectedBlock === 2 && <BrokerBindingsSection broker={broker} panelLabel={panelLabel} />}
+      </SegmentWrapper>
+    </Modal>
   );
 };
 
-const StyledBackground = styled.div`
-  background: var(--bg-color-modal-overlay);
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  z-index: var(--z-index-popover);
-  left: 0;
-  top: 0;
-  pointer-events: auto;
-`;
-
-const Wrapper = styled.div`
-  background: var(--bg-color);
-  box-shadow: var(--bg-raised-shadow);
-  border-radius: var(--border-radius-lg);
-  padding: var(--spacing-lg);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  position: absolute;
-  width: 720px;
-  max-width: 100%;
-  height: auto;
-  max-height: 600px;
-  overflow-y: scroll;
-  left: 50%;
-  top: 100px;
-  transform: translateX(-50%);
-  .tag-grey span {
-    font-size: var(--font-size-base);
-    line-height: var(--line-height-base);
-  }
-`;
-
-const Close = styled(Button)`
-  position: absolute;
-  right: var(--spacing-md);
-  top: var(--spacing-md);
-`;
-
-const Title = styled(Typography)`
-  display: flex;
-  align-items: center;
-  font-size: var(--h4-font-size);
-  font-weight: var(--h4-font-weight);
-  margin-bottom: var(--spacing-lg);
-  svg {
-    margin-right: var(--spacing-xs);
-  }
-`;
-
 const SegmentWrapper = styled.div`
-  padding-top: var(--spacing-base);
   width: 100%;
 `;

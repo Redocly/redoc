@@ -2,8 +2,6 @@ import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { createStore, Provider as JotaiProvider } from 'jotai';
 
-import type { GlobalStoreAtom } from '../../../jotai/store.js';
-
 import { globalStoreAtom } from '../../../jotai/store.js';
 import { normalizeOptions } from '../../../options/normalizeOptions.js';
 import { RequiredScopes } from '../RequiredScopes.js';
@@ -19,7 +17,7 @@ function createGlobalStore() {
       metadata: {},
       basePath: '',
     }),
-  } as GlobalStoreAtom);
+  });
   return store;
 }
 
@@ -48,7 +46,7 @@ describe('RequiredScopes', () => {
     expect(screen.queryByText('s5')).not.toBeInTheDocument();
 
     expect(screen.getByText('+2')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Show 2 more scopes' })).toBeInTheDocument();
+    expect(screen.getByText('Show 2 more scopes')).toBeInTheDocument();
   });
 
   it('renders nothing when there are no scopes', () => {

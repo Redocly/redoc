@@ -1,0 +1,312 @@
+openapi: 3.0.3
+info:
+  title: Schemas that subtypes extend through allOf
+  version: 1.0.0
+  description: >-
+    `Account` is extended by `PersonAccount` and `BusinessAccount` through `allOf` and listed with
+    them by `AccountRecord`; its `history` reaches a ledger graph whose entries link back to
+    `AccountRecord`. The schema pages of `Account` and its subtypes are the pages under test.
+paths:
+  /accounts:
+    put:
+      tags:
+        - accounts
+      operationId: upsertAccount
+      summary: Create or update an account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountRecord'
+      responses:
+        '204':
+          description: Stored
+components:
+  schemas:
+    Account:
+      type: object
+      description: >-
+        The fields every account has. Subtypes extend it through allOf; `AccountRecord` lists it
+        next to them.
+      properties:
+        id:
+          type: string
+        kind:
+          type: string
+          enum:
+            - person
+            - business
+        displayName:
+          type: string
+        history:
+          type: array
+          description: Ledger entries, newest first.
+          items:
+            $ref: '#/components/schemas/LedgerEntry'
+    PersonAccount:
+      allOf:
+        - $ref: '#/components/schemas/Account'
+        - type: object
+          properties:
+            firstName:
+              type: string
+            lastName:
+              type: string
+    BusinessAccount:
+      allOf:
+        - $ref: '#/components/schemas/Account'
+        - type: object
+          properties:
+            registrationNumber:
+              type: string
+    AccountRecord:
+      type: object
+      description: An account as other records refer to it.
+      oneOf:
+        - $ref: '#/components/schemas/Account'
+        - $ref: '#/components/schemas/PersonAccount'
+        - $ref: '#/components/schemas/BusinessAccount'
+      discriminator:
+        propertyName: kind
+        mapping:
+          person: '#/components/schemas/PersonAccount'
+          business: '#/components/schemas/BusinessAccount'
+    LedgerEntry:
+      description: One ledger entry; every entry links to the account and to the entries it relates to.
+      oneOf:
+        - $ref: '#/components/schemas/Deposit'
+        - $ref: '#/components/schemas/Withdrawal'
+        - $ref: '#/components/schemas/Transfer'
+        - $ref: '#/components/schemas/Fee'
+        - $ref: '#/components/schemas/Interest'
+        - $ref: '#/components/schemas/Refund'
+        - $ref: '#/components/schemas/Chargeback'
+        - $ref: '#/components/schemas/Adjustment'
+      discriminator:
+        propertyName: entryType
+        mapping:
+          deposit: '#/components/schemas/Deposit'
+          withdrawal: '#/components/schemas/Withdrawal'
+          transfer: '#/components/schemas/Transfer'
+          fee: '#/components/schemas/Fee'
+          interest: '#/components/schemas/Interest'
+          refund: '#/components/schemas/Refund'
+          chargeback: '#/components/schemas/Chargeback'
+          adjustment: '#/components/schemas/Adjustment'
+    Deposit:
+      type: object
+      required:
+        - entryType
+      properties:
+        entryType:
+          type: string
+          enum:
+            - deposit
+        amount:
+          type: number
+        owner:
+          $ref: '#/components/schemas/AccountRecord'
+        relatedWithdrawal:
+          $ref: '#/components/schemas/Withdrawal'
+        relatedTransfer:
+          $ref: '#/components/schemas/Transfer'
+        relatedFee:
+          $ref: '#/components/schemas/Fee'
+        relatedInterest:
+          $ref: '#/components/schemas/Interest'
+        relatedRefund:
+          $ref: '#/components/schemas/Refund'
+        relatedChargeback:
+          $ref: '#/components/schemas/Chargeback'
+        relatedAdjustment:
+          $ref: '#/components/schemas/Adjustment'
+    Withdrawal:
+      type: object
+      required:
+        - entryType
+      properties:
+        entryType:
+          type: string
+          enum:
+            - withdrawal
+        amount:
+          type: number
+        owner:
+          $ref: '#/components/schemas/AccountRecord'
+        relatedDeposit:
+          $ref: '#/components/schemas/Deposit'
+        relatedTransfer:
+          $ref: '#/components/schemas/Transfer'
+        relatedFee:
+          $ref: '#/components/schemas/Fee'
+        relatedInterest:
+          $ref: '#/components/schemas/Interest'
+        relatedRefund:
+          $ref: '#/components/schemas/Refund'
+        relatedChargeback:
+          $ref: '#/components/schemas/Chargeback'
+        relatedAdjustment:
+          $ref: '#/components/schemas/Adjustment'
+    Transfer:
+      type: object
+      required:
+        - entryType
+      properties:
+        entryType:
+          type: string
+          enum:
+            - transfer
+        amount:
+          type: number
+        owner:
+          $ref: '#/components/schemas/AccountRecord'
+        relatedDeposit:
+          $ref: '#/components/schemas/Deposit'
+        relatedWithdrawal:
+          $ref: '#/components/schemas/Withdrawal'
+        relatedFee:
+          $ref: '#/components/schemas/Fee'
+        relatedInterest:
+          $ref: '#/components/schemas/Interest'
+        relatedRefund:
+          $ref: '#/components/schemas/Refund'
+        relatedChargeback:
+          $ref: '#/components/schemas/Chargeback'
+        relatedAdjustment:
+          $ref: '#/components/schemas/Adjustment'
+    Fee:
+      type: object
+      required:
+        - entryType
+      properties:
+        entryType:
+          type: string
+          enum:
+            - fee
+        amount:
+          type: number
+        owner:
+          $ref: '#/components/schemas/AccountRecord'
+        relatedDeposit:
+          $ref: '#/components/schemas/Deposit'
+        relatedWithdrawal:
+          $ref: '#/components/schemas/Withdrawal'
+        relatedTransfer:
+          $ref: '#/components/schemas/Transfer'
+        relatedInterest:
+          $ref: '#/components/schemas/Interest'
+        relatedRefund:
+          $ref: '#/components/schemas/Refund'
+        relatedChargeback:
+          $ref: '#/components/schemas/Chargeback'
+        relatedAdjustment:
+          $ref: '#/components/schemas/Adjustment'
+    Interest:
+      type: object
+      required:
+        - entryType
+      properties:
+        entryType:
+          type: string
+          enum:
+            - interest
+        amount:
+          type: number
+        owner:
+          $ref: '#/components/schemas/AccountRecord'
+        relatedDeposit:
+          $ref: '#/components/schemas/Deposit'
+        relatedWithdrawal:
+          $ref: '#/components/schemas/Withdrawal'
+        relatedTransfer:
+          $ref: '#/components/schemas/Transfer'
+        relatedFee:
+          $ref: '#/components/schemas/Fee'
+        relatedRefund:
+          $ref: '#/components/schemas/Refund'
+        relatedChargeback:
+          $ref: '#/components/schemas/Chargeback'
+        relatedAdjustment:
+          $ref: '#/components/schemas/Adjustment'
+    Refund:
+      type: object
+      required:
+        - entryType
+      properties:
+        entryType:
+          type: string
+          enum:
+            - refund
+        amount:
+          type: number
+        owner:
+          $ref: '#/components/schemas/AccountRecord'
+        relatedDeposit:
+          $ref: '#/components/schemas/Deposit'
+        relatedWithdrawal:
+          $ref: '#/components/schemas/Withdrawal'
+        relatedTransfer:
+          $ref: '#/components/schemas/Transfer'
+        relatedFee:
+          $ref: '#/components/schemas/Fee'
+        relatedInterest:
+          $ref: '#/components/schemas/Interest'
+        relatedChargeback:
+          $ref: '#/components/schemas/Chargeback'
+        relatedAdjustment:
+          $ref: '#/components/schemas/Adjustment'
+    Chargeback:
+      type: object
+      required:
+        - entryType
+      properties:
+        entryType:
+          type: string
+          enum:
+            - chargeback
+        amount:
+          type: number
+        owner:
+          $ref: '#/components/schemas/AccountRecord'
+        relatedDeposit:
+          $ref: '#/components/schemas/Deposit'
+        relatedWithdrawal:
+          $ref: '#/components/schemas/Withdrawal'
+        relatedTransfer:
+          $ref: '#/components/schemas/Transfer'
+        relatedFee:
+          $ref: '#/components/schemas/Fee'
+        relatedInterest:
+          $ref: '#/components/schemas/Interest'
+        relatedRefund:
+          $ref: '#/components/schemas/Refund'
+        relatedAdjustment:
+          $ref: '#/components/schemas/Adjustment'
+    Adjustment:
+      type: object
+      required:
+        - entryType
+      properties:
+        entryType:
+          type: string
+          enum:
+            - adjustment
+        amount:
+          type: number
+        owner:
+          $ref: '#/components/schemas/AccountRecord'
+        relatedDeposit:
+          $ref: '#/components/schemas/Deposit'
+        relatedWithdrawal:
+          $ref: '#/components/schemas/Withdrawal'
+        relatedTransfer:
+          $ref: '#/components/schemas/Transfer'
+        relatedFee:
+          $ref: '#/components/schemas/Fee'
+        relatedInterest:
+          $ref: '#/components/schemas/Interest'
+        relatedRefund:
+          $ref: '#/components/schemas/Refund'
+        relatedChargeback:
+          $ref: '#/components/schemas/Chargeback'

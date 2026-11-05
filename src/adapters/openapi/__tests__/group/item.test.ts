@@ -401,4 +401,3 @@ describe('OpenAPI 3.2 tag features', () => {
     expect(items[0].label).toBe('Pets');
   });
 });
-

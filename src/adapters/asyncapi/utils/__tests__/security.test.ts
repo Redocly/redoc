@@ -93,4 +93,3 @@ describe('buildSecurityRequirements', () => {
     ).toEqual([['userPass'], ['userPass'], ['X509']]);
   });
 });
-

@@ -5,7 +5,7 @@ import { MemoryRouter } from 'react-router';
 
 import type { ReactElement } from 'react';
 import type { GlobalStoreAtom } from '../../../../jotai/store.js';
-import type { PropertyType, SwitcherOptionType } from '../../../../types/schema.js';
+import type { PropertyType } from '../../../../types/schema.js';
 
 import { globalStoreAtom } from '../../../../jotai/store.js';
 import { normalizeOptions } from '../../../../options/normalizeOptions.js';
@@ -42,28 +42,27 @@ function renderRow(
           fieldName="kind"
           property={property}
           isFirst
-          mappingKeys={['a', 'b', 'c']}
           optionEntries={[
             [
               'a',
               {
                 isDeprecated: false,
                 isDefaultMapping: false,
-              } as SwitcherOptionType,
+              },
             ],
             [
               'b',
               {
                 isDeprecated: false,
                 isDefaultMapping: false,
-              } as SwitcherOptionType,
+              },
             ],
             [
               'c',
               {
                 isDeprecated: false,
                 isDefaultMapping: false,
-              } as SwitcherOptionType,
+              },
             ],
           ]}
           activeIdx={0}
@@ -89,17 +88,10 @@ function domSnapshotWithoutClasses(element: HTMLElement): string {
 }
 
 describe('DiscriminatorPropertyRow', () => {
-  it('renders mapping keys as enum fallback and snapshots enum subtree', () => {
+  it('renders no enum row when the property has no enum', () => {
     render(renderRow({ type: 'string' }));
 
-    const enumRow = screen.getByTestId('schema-enum-values');
-    expect(enumRow).toHaveTextContent('Enum:');
-    expect(enumRow).toHaveTextContent('"a"');
-    expect(enumRow).toHaveTextContent('"b"');
-    expect(enumRow).toHaveTextContent('"c"');
-    expect(domSnapshotWithoutClasses(enumRow)).toMatchInlineSnapshot(
-      `"<div><span>Enum:</span><span>"a"</span><span>"b"</span><span>"c"</span></div>"`,
-    );
+    expect(screen.queryByTestId('schema-enum-values')).toBeNull();
   });
 
   it('renders Value label for single enum value and snapshots enum subtree', () => {
@@ -145,21 +137,20 @@ describe('DiscriminatorPropertyRow', () => {
             fieldName="kind"
             property={{ type: 'string' }}
             isFirst
-            mappingKeys={['a', 'b']}
             optionEntries={[
               [
                 'a',
                 {
                   isDeprecated: false,
                   isDefaultMapping: false,
-                } as SwitcherOptionType,
+                },
               ],
               [
                 'b',
                 {
                   isDeprecated: false,
                   isDefaultMapping: false,
-                } as SwitcherOptionType,
+                },
               ],
             ]}
             activeIdx={0}

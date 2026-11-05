@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import type { ApiItem, ApiStore } from '../../types/store.js';
 
+import { normalizeOptions } from '../../options/normalizeOptions.js';
 import {
   buildInitialPayload,
   countItems,
@@ -53,36 +54,76 @@ describe('isLocalhost', () => {
 });
 
 describe('nonDefaultOptions', () => {
-  it('keeps primitives, coerces attribute strings and hides everything else', () => {
+  const normalized = normalizeOptions({ specType: 'openapi', markdownParser: () => undefined });
+
+  it('keeps option primitives, coerces attribute strings and hides skipped options', () => {
     expect(
-      nonDefaultOptions({
-        hideDownloadButtons: true,
-        jsonSamplesExpandLevel: '3',
-        expandResponses: 'false',
-        layout: 'stacked',
-        theme: { colors: {} },
-        onDeepLinkClick: () => undefined,
-        scrollYOffset: 'nav',
-        specType: 'openapi',
-        metadata: { title: 'Acme' },
-        downloadUrls: [{ url: 'https://x' }],
-        info: { title: 'secret' },
-        undefinedValue: undefined,
-      }),
+      nonDefaultOptions(
+        {
+          hideDownloadButtons: true,
+          jsonSamplesExpandLevel: '3',
+          layout: 'stacked',
+          onDeepLinkClick: () => undefined,
+          scrollYOffset: 'nav',
+          specType: 'openapi',
+          metadata: { title: 'Acme' },
+          downloadUrls: [{ url: 'https://x' }],
+          info: { title: 'secret' },
+          showExtensions: undefined,
+        },
+        normalized,
+      ),
     ).toEqual({
       hideDownloadButtons: true,
       jsonSamplesExpandLevel: 3,
-      expandResponses: false,
       layout: 'stacked',
-      theme: true,
       onDeepLinkClick: true,
       scrollYOffset: true,
     });
   });
 
+  it('reports Redoc 2 options by value, like current options', () => {
+    expect(
+      nonDefaultOptions(
+        {
+          expandResponses: '200,201',
+          hideHostname: 'true',
+          sideNavStyle: 'path-only',
+          theme: { colors: {} },
+          nonce: 'r4nd0m',
+        },
+        normalized,
+      ),
+    ).toEqual({
+      expandResponses: true,
+      hideHostname: true,
+      sideNavStyle: 'path-only',
+      theme: true,
+    });
+  });
+
+  it('reports any other prop by the type of its value, never the value', () => {
+    expect(
+      nonDefaultOptions(
+        {
+          dataTenantId: '48213',
+          tags: ['a'],
+          onCustom: () => undefined,
+          hideLoading: true,
+        },
+        normalized,
+      ),
+    ).toEqual({
+      dataTenantId: 'string',
+      tags: 'array',
+      onCustom: 'function',
+      hideLoading: true,
+    });
+  });
+
   it('returns undefined when nothing was set', () => {
-    expect(nonDefaultOptions(undefined)).toBeUndefined();
-    expect(nonDefaultOptions({ specType: 'openapi' })).toBeUndefined();
+    expect(nonDefaultOptions(undefined, normalized)).toBeUndefined();
+    expect(nonDefaultOptions({ specType: 'openapi' }, normalized)).toBeUndefined();
   });
 });
 
@@ -145,9 +186,8 @@ const openapi = {
 };
 
 describe('scanDocument', () => {
-  it('reports extension usage, callbacks and the spec version without values', () => {
+  it('reports extension usage and callbacks without values', () => {
     expect(scanDocument(openapi)).toMatchObject({
-      specVersion: '3.1',
       extensionsCount: 3,
       redocExtensions: { logo: true, tagGroups: true },
       hasCodeSamples: true,
@@ -166,7 +206,6 @@ describe('scanDocument', () => {
       operations: { send: { reply: {} } },
     });
     expect(scan).toMatchObject({
-      specVersion: '3.0',
       protocols: { kafkaSecure: true, other: true },
       hasBindings: true,
       hasReply: true,
@@ -188,6 +227,45 @@ describe('openApiSecurityShape', () => {
 });
 
 describe('buildInitialPayload', () => {
+  it('takes the spec version from the store', () => {
+    const apiStore = {
+      specType: 'openapi',
+      schemaStore: {},
+      exampleStore: {},
+      securitySchemeStore: {},
+      specVersion: '3.1.0',
+    } as unknown as ApiStore;
+    const payload = buildInitialPayload({
+      uri: 'urn:redocly:redoc:ui:page',
+      layout: 'three-panel',
+      items: [],
+      apiStore,
+      hostname: 'docs.example.com',
+      landedOn: 'operation',
+    });
+    expect(payload.specVersion).toBe('3.1');
+  });
+
+  it('falls back to the store version when the source version is not major.minor', () => {
+    const apiStore = {
+      specType: 'openapi',
+      schemaStore: {},
+      exampleStore: {},
+      securitySchemeStore: {},
+      convertedFrom: '2',
+      specVersion: '3.2.0',
+    } as unknown as ApiStore;
+    const payload = buildInitialPayload({
+      uri: 'urn:redocly:redoc:ui:page',
+      layout: 'three-panel',
+      items: [],
+      apiStore,
+      hostname: 'docs.example.com',
+      landedOn: 'operation',
+    });
+    expect(payload.specVersion).toBe('3.2');
+  });
+
   it('assembles the load event from the store, the document and the shell context', () => {
     const apiStore = {
       specType: 'openapi',

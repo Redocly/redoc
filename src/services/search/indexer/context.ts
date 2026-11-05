@@ -1,4 +1,4 @@
-import type { Node } from '@markdoc/markdoc';
+import type { Node } from '@redocly/markdoc';
 
 export type AsyncMessageSubsection = 'payload' | 'headers' | 'bindings';
 

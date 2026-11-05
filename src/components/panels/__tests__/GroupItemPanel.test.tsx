@@ -1,16 +1,31 @@
 import { it, expect, vi, afterEach } from 'vitest';
 import { cleanup, render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
+import { Provider, createStore } from 'jotai';
 import '@testing-library/jest-dom/vitest';
 
 import type { GroupItemNode, GroupItemsPanelItem } from '../../../types/content.js';
+import type { ApiSpecType } from '../../../types/common.js';
 import type { ReactElement, ReactNode } from 'react';
 
 import { GroupPanelItem } from '../GroupPanelItem.js';
-import { panelKind } from '../../../types/common.js';
+import { apiSpecType, panelKind } from '../../../types/common.js';
 
 const mocks = vi.hoisted(() => ({
   normalizeUrl: vi.fn((href: string) => href),
+  specType: 'openapi' as ApiSpecType,
+}));
+
+vi.mock('../../../jotai/store.js', async () => {
+  const { atom } = await import('jotai');
+  return { specTypeAtom: atom(() => mocks.specType) };
+});
+vi.mock('@redocly/theme/components/Tag/Tag', () => ({
+  Tag: ({ children, textTransform }: { children: ReactNode; textTransform?: string }) => (
+    <span data-testid="tag" data-text-transform={textTransform}>
+      {children}
+    </span>
+  ),
 }));
 
 vi.mock('../../../hooks/useNormalizeUrl.js', () => ({
@@ -57,6 +72,7 @@ afterEach(() => {
   cleanup();
   vi.clearAllMocks();
   mocks.normalizeUrl.mockImplementation((href: string) => href);
+  mocks.specType = apiSpecType.OPENAPI;
 });
 
 function renderInRouter(ui: ReactElement) {
@@ -277,3 +293,32 @@ it('strips the path prefix from child-tag hrefs so the theme Link does not apply
     vi.unstubAllEnvs();
   }
 });
+
+it.each([
+  { specType: apiSpecType.GRAPHQL, textTransform: 'none' },
+  { specType: apiSpecType.OPENAPI, textTransform: null },
+])(
+  'sets text-transform $textTransform on item badges for $specType',
+  ({ specType, textTransform }) => {
+    mocks.specType = specType;
+    render(
+      <Provider store={createStore()}>
+        <MemoryRouter>
+          <GroupPanelItem
+            {...createNode({
+              children: [
+                {
+                  kind: panelKind.GROUP_ITEMS,
+                  title: 'Overview',
+                  items: [{ ...createItem('menu'), badges: [{ name: '(...args)' }] }],
+                },
+              ],
+            })}
+          />
+        </MemoryRouter>
+      </Provider>,
+    );
+
+    expect(screen.getByText('(...args)').getAttribute('data-text-transform')).toBe(textTransform);
+  },
+);

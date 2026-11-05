@@ -1,7 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import type { Node } from '@markdoc/markdoc';
-import type { ApiItem } from '../../../types/store.js';
+import type { Node } from '@redocly/markdoc';
 import type { ContentNode, ItemContentNode } from '../../../types/content.js';
 import type { OpenAPIDefinition } from '../../../types/openapi.js';
 
@@ -44,7 +43,7 @@ function documentWithCallbackDescription(description: string): OpenAPIDefinition
         },
       },
     },
-  } as unknown as OpenAPIDefinition;
+  };
 }
 
 function documentWithTwoUrlExpressions(): OpenAPIDefinition {
@@ -69,7 +68,7 @@ function documentWithTwoUrlExpressions(): OpenAPIDefinition {
         },
       },
     },
-  } as unknown as OpenAPIDefinition;
+  };
 }
 
 function collectContentNodes(nodes: ContentNode[] = []): ContentNode[] {
@@ -87,11 +86,11 @@ async function findCallbackNodes(document: OpenAPIDefinition): Promise<ItemConte
     options,
   });
 
-  return collectAllItems(items as ApiItem[])
+  return collectAllItems(items)
     .flatMap((item) => collectContentNodes(item.content?.children as ContentNode[]))
     .filter(
       (node): node is ItemContentNode =>
-        node.nodeType === nodeTypes.ITEM && (node as ItemContentNode).variant === 'callback',
+        node.nodeType === nodeTypes.ITEM && node.variant === 'callback',
     );
 }
 
@@ -191,6 +190,47 @@ describe('callback ids', () => {
   });
 });
 
+describe('callback parameters', () => {
+  it('merges the callback path-item parameters into an operation that declares its own', async () => {
+    const node = await findCallbackNode({
+      openapi: '3.1.0',
+      info: { title: 'T', version: '1' },
+      paths: {
+        '/jobs': {
+          post: {
+            operationId: 'createJob',
+            responses: { '202': { description: 'accepted' } },
+            callbacks: {
+              jobCompleted: {
+                '{$request.body#/callbackUrl}': {
+                  parameters: [{ name: 'X-Signature', in: 'header', schema: { type: 'string' } }],
+                  post: {
+                    parameters: [{ name: 'attempt', in: 'query', schema: { type: 'integer' } }],
+                    responses: { '200': { description: 'ok' } },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    } as unknown as OpenAPIDefinition);
+
+    const names: string[] = [];
+    const walk = (value: unknown): void => {
+      if (!value || typeof value !== 'object') return;
+      const record = value as Record<string, unknown>;
+      if (Array.isArray(record.parameters)) {
+        names.push(...record.parameters.map((p) => (p as { name?: string }).name ?? ''));
+      }
+      Object.values(record).forEach(walk);
+    };
+    walk(node.callback?.contentChildren);
+
+    expect(names).toEqual(['attempt', 'X-Signature']);
+  });
+});
+
 describe('callback payload sample', () => {
   it('uses the same schema id as the callback body', async () => {
     const { items } = await processOpenApiDocument({
@@ -225,7 +265,7 @@ describe('callback payload sample', () => {
             Event: { type: 'object', oneOf: [{ title: 'Created' }, { title: 'Deleted' }] },
           },
         },
-      } as unknown as OpenAPIDefinition,
+      },
       basePath: '/api',
       options,
     });
@@ -251,8 +291,8 @@ describe('callback payload sample', () => {
 
 function findHeadings(ast: Node | Node[]): Node[] {
   const roots = Array.isArray(ast) ? ast : [ast];
-  return roots.flatMap((node) => [
-    ...(node.type === 'heading' ? [node] : []),
-    ...findHeadings(node.children ?? []),
-  ]);
+  return roots.flatMap((node) => {
+    const nested = findHeadings(node.children ?? []);
+    return node.type === 'heading' ? [node].concat(nested) : nested;
+  });
 }

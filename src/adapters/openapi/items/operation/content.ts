@@ -1,8 +1,7 @@
-import type { Node } from '@markdoc/markdoc';
+import type { Node } from '@redocly/markdoc';
 import type {
   ApiItemContent,
   ContentNode,
-  ExamplesNode,
   ItemContentNode,
   MediaTypeContent,
   PanelNode,
@@ -47,14 +46,22 @@ import {
   registerSchema,
   resolveContent,
   resolveRef,
+  withErrorHandling,
 } from '../../../helpers.js';
 import { applyIgnoreNamedSchemasDeep } from '../../utils/applyIgnoreNamedSchemasDeep.js';
 import { isStatusCode } from '../../../../utils/status-code.js';
+import { normalizeBadges } from '../../../../utils/normalize-badges.js';
 import { getExtensionsForDisplay } from '../../../../utils/extract-extensions.js';
 import { openApiContext } from '../../buildContext.js';
 import { buildCodeSampleSource } from '../../build-code-sample-source.js';
 import { pickStoredFormEncoding } from '../../utils/form-encoding.js';
-import { pickOperationServers } from '../../utils/operation.js';
+import { securityRequirements } from '../../utils/security.js';
+import {
+  definitionCodeSamples,
+  getOperationLabel,
+  pickOperationServers,
+  serversWithUrl,
+} from '../../utils/operation.js';
 import { toRelativePath } from '../../../../utils/url.js';
 import { encodeJsonPointerSegment } from '../../../../utils/refPointer.js';
 import {
@@ -85,13 +92,9 @@ export function createCallbackIdFactory(): (name: string, httpVerb: string) => s
   };
 }
 
-export function buildItemContent(operationInfo: OperationInfo, pageSlug: string): ApiItemContent {
+function _buildItemContent(operationInfo: OperationInfo, pageSlug: string): ApiItemContent {
   const { options, storeCtx, basePath } = openApiContext.get();
-  const operationName =
-    operationInfo.summary ||
-    operationInfo.operationId ||
-    operationInfo.pathName ||
-    'Unknown Operation';
+  const operationName = getOperationLabel(operationInfo);
   const children: ContentNode[] = [];
   const isWebhook = operationInfo.isWebhook || false;
 
@@ -123,32 +126,31 @@ export function buildItemContent(operationInfo: OperationInfo, pageSlug: string)
 
   const ignoreNamedSchemas = options.ignoreNamedSchemas;
 
-  const definitionSamples = operationInfo['x-codeSamples']?.map(({ lang, label, source }) => ({
-    lang,
-    label,
-    source,
-  }));
+  const definitionSamples = definitionCodeSamples(
+    operationInfo['x-codeSamples'],
+    getOperationLabel(operationInfo),
+  );
 
-  const rawServers = pickOperationServers(
+  let mergedServers: OpenAPIServer[] = pickOperationServers(
     operationInfo.servers,
     storeCtx?.document?.servers as OpenAPIServer[] | undefined,
-  ) as OpenAPIServer[];
-
-  let mergedServers = rawServers.filter((s): s is OpenAPIServer => typeof s?.url === 'string');
+  );
   const opServers = mergedServers.map((s) => {
     const serverRbac = readRbacScope(s);
-    return {
-      url: s.url ?? '',
-      name: s.name,
-      description: typeof s.description === 'string' ? s.description : undefined,
-      variables:
-        s.variables && Object.keys(s.variables).length > 0
-          ? Object.fromEntries(
-              Object.entries(s.variables).map(([k, v]) => [k, { default: v.default }]),
-            )
-          : undefined,
-      ...rbacProp(serverRbac),
-    };
+    return Object.assign(
+      {
+        url: s.url,
+        name: s.name,
+        description: typeof s.description === 'string' ? s.description : undefined,
+        variables:
+          s.variables && Object.keys(s.variables).length > 0
+            ? Object.fromEntries(
+                Object.entries(s.variables).map(([k, v]) => [k, { default: v.default }]),
+              )
+            : undefined,
+      },
+      rbacProp(serverRbac),
+    );
   });
 
   const requestChildren = buildRequestChildren(operationInfo, ignoreNamedSchemas, isWebhook);
@@ -166,7 +168,7 @@ export function buildItemContent(operationInfo: OperationInfo, pageSlug: string)
   const hasSchemaDefinition = descriptionSegments.some((s) => s.kind === 'schemaDefinition');
 
   const bodyNode = requestChildren.find(
-    (child) => child.nodeType === nodeTypes.ITEM && (child as ItemContentNode).variant === 'body',
+    (child) => child.nodeType === nodeTypes.ITEM && child.variant === 'body',
   ) as ItemContentNode | undefined;
 
   const codeSampleSource = buildCodeSampleSourceFromContext(
@@ -177,9 +179,7 @@ export function buildItemContent(operationInfo: OperationInfo, pageSlug: string)
   );
   const bodySchemaId = bodyNode?.schemaId;
   const bodyMediaTypes = bodyNode?.mediaTypes;
-  const bodyMediaTypeSchemas = bodyNode?.mediaTypeSchemas as
-    | Record<string, { schemaId?: string; exampleIds?: string[] }>
-    | undefined;
+  const bodyMediaTypeSchemas = bodyNode?.mediaTypeSchemas;
 
   const bodyRbac = readRbacScope(bodyNode);
 
@@ -293,10 +293,8 @@ export function buildItemContent(operationInfo: OperationInfo, pageSlug: string)
           code: response.code,
           schemaId: response.schemaId,
           exampleIds: response.exampleIds,
-          mediaTypes: response.mediaTypes as string[] | undefined,
-          mediaTypeContent: response.mediaTypeContent as
-            | Record<string, { schemaId?: string; exampleIds?: string[] }>
-            | undefined,
+          mediaTypes: response.mediaTypes,
+          mediaTypeContent: response.mediaTypeContent,
           ...rbacProp(rbac),
         };
       });
@@ -314,7 +312,7 @@ export function buildItemContent(operationInfo: OperationInfo, pageSlug: string)
               examples: [],
             },
           ],
-        } as ExamplesNode);
+        });
       }
 
       const responsesRbac = readRbacScope(operationInfo.responses);
@@ -341,7 +339,6 @@ export function buildItemContent(operationInfo: OperationInfo, pageSlug: string)
     children.push(...buildCallbackSections(operationInfo, operationId, ignoreNamedSchemas));
   }
 
-
   const hasBodyExamples = requestChildren.some((child) => {
     const item = child as ItemContentNode;
     return item.variant === 'body' && ((item.exampleIds?.length ?? 0) > 0 || !!item.schemaId);
@@ -361,6 +358,8 @@ export function buildItemContent(operationInfo: OperationInfo, pageSlug: string)
     children,
   };
 }
+
+export const buildItemContent = withErrorHandling(getOperationLabel, _buildItemContent);
 
 function buildCallbackSections(
   operationInfo: OperationInfo,
@@ -446,10 +445,7 @@ function buildCallbackOperationSection(
   }
 
   const cbExternalDocs = callback.externalDocs as { url: string; description?: string } | undefined;
-  const cbExtensions = getExtensionsForDisplay(
-    callback as Record<string, unknown>,
-    options.showExtensions,
-  );
+  const cbExtensions = getExtensionsForDisplay(callback, options.showExtensions);
 
   let cbDescription;
   if (callback.description) {
@@ -491,7 +487,7 @@ function buildCallbackOperationSection(
         variant: 'callback',
         callback: callbackItem,
         pointer: operationInfo.pointer + '/callbacks',
-      } as ItemContentNode,
+      },
     ],
     panels: opPanels,
     ...rbacProp(cbRbac),
@@ -566,14 +562,12 @@ function buildCallbackPayloadPanels(
     if (schemaId) cbHasExamples = true;
   }
 
-  const cbDefSamples = callback['x-codeSamples'] as
-    | { lang: string; label?: string; source: string }[]
-    | undefined;
+  const cbDefSamples = definitionCodeSamples(callback['x-codeSamples'], callbackId);
   const cbHasSamples = cbHasExamples || (cbDefSamples?.length ?? 0) > 0;
 
   if (!cbHasSamples) return opPanels;
 
-  const cbServers = (
+  const cbServers = serversWithUrl(
     callback.servers as
       | {
           url?: string;
@@ -581,15 +575,8 @@ function buildCallbackPayloadPanels(
           description?: string;
           variables?: Record<string, { default?: string }>;
         }[]
-      | undefined
-  )
-    ?.filter((s) => s.url)
-    .map(({ url, name, description, variables }) => ({
-      url: url as string,
-      name,
-      description,
-      variables,
-    }));
+      | undefined,
+  ).map(({ url, name, description, variables }) => ({ url, name, description, variables }));
 
   opPanels.push({
     children: [
@@ -598,7 +585,7 @@ function buildCallbackPayloadPanels(
         callbackName: callbackId,
         path: cbOpInfo.pathName,
         httpVerb: cbOpInfo.httpVerb,
-        servers: cbServers?.length ? cbServers : undefined,
+        servers: cbServers.length ? cbServers : undefined,
         definitionSamples: cbDefSamples,
         mediaTypes: cbMediaTypes.length > 0 ? cbMediaTypes : undefined,
         mediaTypeSchemas:
@@ -646,8 +633,8 @@ function buildResponseHeadersSchema(
 
   for (const [name, rawHeader] of Object.entries(headers)) {
     if (isRbacKey(name)) continue;
-    const resolvedHeader =
-      resolveRef<OpenAPIHeader>(doc, rawHeader, ignoreNamedSchemas) ?? (rawHeader as OpenAPIHeader);
+    const resolvedHeader: OpenAPIHeader =
+      resolveRef<OpenAPIHeader>(doc, rawHeader, ignoreNamedSchemas) ?? {};
 
     const headerContent = resolveContent(doc, resolvedHeader);
     const firstContentEntry = headerContent
@@ -716,20 +703,16 @@ function toParameterData(
       const firstMime = Object.keys(contentMap)[0];
       const inner = firstMime ? contentMap[firstMime]?.schema : undefined;
       if (inner && typeof inner === 'object') {
-        data = inner as Record<string, unknown>;
+        data = inner;
       }
     }
     const schemaId = registerSchema(storeCtx.schemaStore, storeCtx.hashIndex, {
       kind: schemaKind.JSON_SCHEMA,
       data,
     });
-    const paramBadges = param['x-badges'];
-    const schemaBadges = (data as { 'x-badges'?: unknown })['x-badges'];
-    const badges = Array.isArray(paramBadges)
-      ? (paramBadges as ParameterData['badges'])
-      : Array.isArray(schemaBadges)
-        ? (schemaBadges as ParameterData['badges'])
-        : undefined;
+    const badges =
+      normalizeBadges(param['x-badges']) ??
+      normalizeBadges((data as { 'x-badges'?: unknown })['x-badges']);
     const extensions = getExtensionsForDisplay(param, options.showExtensions);
     return {
       name: String(param.name ?? ''),
@@ -812,7 +795,7 @@ function buildRequestChildren(
         labelTranslationKey: 'path',
         parameters: toParameterData(pathParams, ignoreNamedSchemas),
         pointer: operationInfo.pointer + '/parameters',
-      } as ItemContentNode);
+      });
     }
 
     if (queryParams.length > 0 && !hasQuerystringParams) {
@@ -823,7 +806,7 @@ function buildRequestChildren(
         labelTranslationKey: 'query',
         parameters: toParameterData(queryParams, ignoreNamedSchemas),
         pointer: operationInfo.pointer + '/parameters',
-      } as ItemContentNode);
+      });
     }
 
     if (querystringRegular.length > 0) {
@@ -834,7 +817,7 @@ function buildRequestChildren(
         labelTranslationKey: 'querystring',
         parameters: toParameterData(querystringRegular, ignoreNamedSchemas),
         pointer: operationInfo.pointer + '/parameters',
-      } as ItemContentNode);
+      });
     }
 
     for (const param of querystringWithContent) {
@@ -856,10 +839,7 @@ function buildRequestChildren(
             data: resolvedSchema,
           });
         }
-        const mediaTypeExampleIds = collectExampleIds(
-          entry as Record<string, unknown>,
-          ignoreNamedSchemas,
-        );
+        const mediaTypeExampleIds = collectExampleIds(entry, ignoreNamedSchemas);
         mediaTypeSchemas[mediaType] = {
           schemaId: mediaTypeSchemaId,
           exampleIds: mediaTypeExampleIds,
@@ -886,7 +866,7 @@ function buildRequestChildren(
         pointer: operationInfo.pointer + '/parameters',
         ...(description !== undefined ? { description } : {}),
         ...rbacProp(readRbacScope(param)),
-      } as ItemContentNode);
+      });
     }
 
     if (cookieParams.length > 0) {
@@ -897,7 +877,7 @@ function buildRequestChildren(
         labelTranslationKey: 'cookie',
         parameters: toParameterData(cookieParams, ignoreNamedSchemas),
         pointer: operationInfo.pointer + '/parameters',
-      } as ItemContentNode);
+      });
     }
 
     if (headerParams.length > 0) {
@@ -908,14 +888,13 @@ function buildRequestChildren(
         labelTranslationKey: 'header',
         parameters: toParameterData(headerParams, ignoreNamedSchemas),
         pointer: operationInfo.pointer + '/parameters',
-      } as ItemContentNode);
+      });
     }
   }
 
   if (operationInfo.requestBody) {
-    const requestBody =
-      resolveRef<OpenAPIRequestBody>(doc, operationInfo.requestBody, ignoreNamedSchemas) ??
-      (operationInfo.requestBody as OpenAPIRequestBody);
+    const requestBody: OpenAPIRequestBody =
+      resolveRef<OpenAPIRequestBody>(doc, operationInfo.requestBody, ignoreNamedSchemas) ?? {};
     const bodyContent = resolveContent(doc, requestBody);
     const mediaTypes = bodyContent ? Object.keys(bodyContent) : undefined;
 
@@ -977,7 +956,7 @@ function buildRequestChildren(
       pointer: operationInfo.pointer + '/requestBody',
       ...(bodyDescription !== undefined ? { description: bodyDescription } : {}),
       ...rbacProp(bodyRbac),
-    } as ItemContentNode);
+    });
   }
 
   return children;
@@ -1102,19 +1081,21 @@ function buildResponsesSection(
         `${RESPONSES_SECTION_DEEPLINK_SUFFIX}/${code}/summary`,
       );
     }
-    return {
-      code,
-      summary,
-      description,
-      mediaType: firstMediaType,
-      mediaTypes: allMediaTypes.length > 0 ? allMediaTypes : undefined,
-      mediaTypeContent,
-      schemaId,
-      exampleIds,
-      headers: response.headers,
-      headerSchemaId,
-      ...rbacProp(responseRbac),
-    };
+    return Object.assign(
+      {
+        code,
+        summary,
+        description,
+        mediaType: firstMediaType,
+        mediaTypes: allMediaTypes.length > 0 ? allMediaTypes : undefined,
+        mediaTypeContent,
+        schemaId,
+        exampleIds,
+        headers: response.headers,
+        headerSchemaId,
+      },
+      rbacProp(responseRbac),
+    );
   });
 
   return {
@@ -1179,15 +1160,10 @@ function collectExampleIds(
 
 function buildOperationSecuritySection(operationInfo: OperationInfo): SecurityNode | undefined {
   const { storeCtx, options } = openApiContext.get();
-  if (
-    !operationInfo.security ||
-    !Array.isArray(operationInfo.security) ||
-    operationInfo.security.length === 0
-  ) {
-    return undefined;
-  }
+  const requirements = securityRequirements(operationInfo.security);
+  if (!requirements || requirements.length === 0) return undefined;
 
-  const securityRequirements: { schemes: SecuritySchemeDetail[] }[] = operationInfo.security
+  const securityNodeRequirements: { schemes: SecuritySchemeDetail[] }[] = requirements
     .map((securityRequirement) => {
       const entries = Object.entries(securityRequirement);
       if (entries.length === 0) return null;
@@ -1198,23 +1174,25 @@ function buildOperationSecuritySection(operationInfo: OperationInfo): SecurityNo
         .map(([name, scopes]) => {
           const resolvedScheme = storeCtx?.securitySchemeStore[name];
           const schemeRbac = readRbacScope(rawSchemes?.[name]) ?? readRbacScope(resolvedScheme);
-          return {
-            name,
-            scopes: Array.isArray(scopes) ? scopes : undefined,
-            type: resolvedScheme?.type,
-            scheme: resolvedScheme?.scheme,
-            bearerFormat: resolvedScheme?.bearerFormat,
-            in: resolvedScheme?.in,
-            paramName: resolvedScheme?.paramName,
-            description: resolvedScheme?.description
-              ? parseMarkdown(resolvedScheme.description, options)
-              : resolvedScheme?.description,
-            openIdConnectUrl: resolvedScheme?.openIdConnectUrl,
-            oauth2MetadataUrl: resolvedScheme?.oauth2MetadataUrl,
-            deprecated: resolvedScheme?.deprecated,
-            flows: resolvedScheme?.flows,
-            ...rbacProp(schemeRbac),
-          };
+          return Object.assign(
+            {
+              name,
+              scopes: Array.isArray(scopes) ? scopes : undefined,
+              type: resolvedScheme?.type,
+              scheme: resolvedScheme?.scheme,
+              bearerFormat: resolvedScheme?.bearerFormat,
+              in: resolvedScheme?.in,
+              paramName: resolvedScheme?.paramName,
+              description: resolvedScheme?.description
+                ? parseMarkdown(resolvedScheme.description, options)
+                : resolvedScheme?.description,
+              openIdConnectUrl: resolvedScheme?.openIdConnectUrl,
+              oauth2MetadataUrl: resolvedScheme?.oauth2MetadataUrl,
+              deprecated: resolvedScheme?.deprecated,
+              flows: resolvedScheme?.flows,
+            },
+            rbacProp(schemeRbac),
+          );
         })
         .filter((scheme) => scheme.name);
 
@@ -1222,11 +1200,11 @@ function buildOperationSecuritySection(operationInfo: OperationInfo): SecurityNo
     })
     .filter((requirement): requirement is NonNullable<typeof requirement> => requirement !== null);
 
-  if (securityRequirements.length === 0) return undefined;
+  if (securityNodeRequirements.length === 0) return undefined;
 
   return {
     nodeType: nodeTypes.SECURITY,
-    requirements: securityRequirements,
+    requirements: securityNodeRequirements,
   };
 }
 

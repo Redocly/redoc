@@ -1,6 +1,6 @@
 import type { SchemaNode } from '../../types/schema.js';
 
-import { buildDisplayType, detectJsonSchemaType, stringifyValue } from './propertyBuilder.js';
+import { buildDisplayType, schemaType, stringifyValue } from './propertyBuilder.js';
 
 export type VariantLabel = {
   label: string;
@@ -8,8 +8,9 @@ export type VariantLabel = {
 };
 
 export function deriveVariantLabel(variant: SchemaNode, parentSchema: SchemaNode): VariantLabel {
-  const variantMergedWithParent = { type: parentSchema.type, ...variant };
-  const varType = variantMergedWithParent.type || detectJsonSchemaType(variantMergedWithParent);
+  const variantMergedWithParent =
+    (variant as unknown) === false ? variant : { type: parentSchema.type, ...variant };
+  const varType = schemaType(variantMergedWithParent);
   const { typePrefix, displayType, displayFormat } = buildDisplayType(
     variantMergedWithParent,
     varType,

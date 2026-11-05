@@ -1,16 +1,18 @@
 import { Component } from 'react';
 import { styled } from 'styled-components';
 
-import type { ReactNode, ErrorInfo, ContextType } from 'react';
+import type { ReactElement, ReactNode, ErrorInfo, ContextType } from 'react';
 
 import { breakpoints } from '@redocly/theme/core/openapi';
 import { Accordion } from '@redocly/theme/markdoc/components/Accordion/Accordion';
 
-import { getPageUri, sanitizeErrorDetails, TelemetryContext } from '../telemetry/index.js';
+import { sendErrorTelemetry, TelemetryContext } from '../telemetry/index.js';
 
 type ErrorBoundaryProps = {
   children: ReactNode;
   fallback?: ReactNode;
+  /** `page` (default) replaces the page body; any other scope renders nothing in its place. */
+  scope?: 'page' | 'section' | 'node' | 'sidebar';
 };
 
 type ErrorBoundaryState = {
@@ -33,20 +35,12 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
     console.error('[api-docs] Rendering error:', error, errorInfo.componentStack);
-    const telemetry = this.context;
-    try {
-      telemetry.sendErrorMessage([
-        {
-          id: 'errorBoundaryCatch',
-          object: 'error',
-          uri: getPageUri(),
-          ...(telemetry.typeOfUsage ? { typeOfUsage: telemetry.typeOfUsage } : {}),
-          details: sanitizeErrorDetails(error, errorInfo.componentStack),
-        },
-      ]);
-    } catch (telemetryError) {
-      console.error('[api-docs] error telemetry failed:', telemetryError);
-    }
+    sendErrorTelemetry(
+      this.context,
+      errorEventId(this.props.scope),
+      error,
+      errorInfo.componentStack,
+    );
   }
 
   render(): ReactNode {
@@ -54,25 +48,36 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
       if (this.props.fallback) {
         return this.props.fallback;
       }
-      return (
-        <ErrorWrapper role="alert" className="api-docs-error-page">
-          <ErrorContent>
-            <Title>Something went wrong rendering the API documentation.</Title>
-            <DetailsAccordion title="Error details" expanded={false}>
-              <Message>{this.state.error?.message}</Message>
-            </DetailsAccordion>
-            <ButtonRow>
-              <ReloadButton type="button" onClick={() => window.location.reload()}>
-                Reload page
-              </ReloadButton>
-            </ButtonRow>
-          </ErrorContent>
-        </ErrorWrapper>
-      );
+      if (this.props.scope && this.props.scope !== 'page') {
+        return null;
+      }
+      return <ErrorPage message={this.state.error?.message} />;
     }
 
     return this.props.children;
   }
+}
+
+function ErrorPage({ message }: { message?: string }): ReactElement {
+  return (
+    <ErrorWrapper role="alert" className="api-docs-error-page">
+      <ErrorContent>
+        <Title>Something went wrong rendering the API documentation.</Title>
+        <DetailsAccordion title="Error details" expanded={false}>
+          <Message>{message}</Message>
+        </DetailsAccordion>
+        <ButtonRow>
+          <ReloadButton type="button" onClick={() => window.location.reload()}>
+            Reload page
+          </ReloadButton>
+        </ButtonRow>
+      </ErrorContent>
+    </ErrorWrapper>
+  );
+}
+
+function errorEventId(scope: ErrorBoundaryProps['scope']): string {
+  return !scope || scope === 'page' ? 'errorBoundaryCatch' : `errorBoundaryCatch.${scope}`;
 }
 
 const ErrorWrapper = styled.div`

@@ -31,6 +31,7 @@ import {
   StyledSelectDropdown,
 } from './styled.js';
 import { DefaultMappingOptionLabel } from '../../Schema/views/DefaultMappingOptionLabel.js';
+import { NestedPortalScope } from '../../common/BodyPortal.js';
 import { jsonToXml } from '../../../utils/xml.js';
 import { formUrlEncodeValue } from '../../../utils/form-urlencoded.js';
 import { jsonToCsv } from '../../../utils/csv.js';
@@ -196,20 +197,22 @@ export function PanelDropdownSelect({
         </SelectDropdownTriggerButton>
       }
     >
-      <SelectDropdownMenu>
-        {options.map((option) => (
-          <SelectDropdownMenuItem
-            key={option.key ?? option.value}
-            active={option.value === activeOption?.value}
-            onAction={() => onChange(option.value)}
-            suffix={
-              option.value === activeOption?.value ? <SelectDropdownCheckmarkIcon /> : undefined
-            }
-          >
-            <SelectDropdownLabel>{option.labelNode ?? option.label}</SelectDropdownLabel>
-          </SelectDropdownMenuItem>
-        ))}
-      </SelectDropdownMenu>
+      <NestedPortalScope>
+        <SelectDropdownMenu>
+          {options.map((option) => (
+            <SelectDropdownMenuItem
+              key={option.key ?? option.value}
+              active={option.value === activeOption?.value}
+              onAction={() => onChange(option.value)}
+              suffix={
+                option.value === activeOption?.value ? <SelectDropdownCheckmarkIcon /> : undefined
+              }
+            >
+              <SelectDropdownLabel>{option.labelNode ?? option.label}</SelectDropdownLabel>
+            </SelectDropdownMenuItem>
+          ))}
+        </SelectDropdownMenu>
+      </NestedPortalScope>
     </StyledSelectDropdown>
   );
 }

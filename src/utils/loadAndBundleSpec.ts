@@ -1,5 +1,5 @@
 import { createEmptyRedoclyConfig } from '@redocly/openapi-core/lib/bundle-oas';
-import { bundle, type Document } from '@redocly/openapi-core';
+import { BaseResolver, bundle, detectSpec, type Document } from '@redocly/openapi-core';
 
 import type { RedocConfig } from '@redocly/config';
 import type { OpenAPIDefinition, ParsedDocument } from '../types/openapi.js';
@@ -7,13 +7,14 @@ import type { OpenAPIDefinition, ParsedDocument } from '../types/openapi.js';
 import { IS_BROWSER } from '@redocly/theme/core/openapi';
 
 import { DefinitionLoadError, errorMessage } from './definitionLoadError.js';
+import { reportError } from '../telemetry/reportError.js';
 
 export async function loadOpenapiConfig(): Promise<RedocConfig> {
   try {
     const config = createEmptyRedoclyConfig();
     return (config?.resolvedConfig.openapi || {}) as RedocConfig;
   } catch {
-    return {} as RedocConfig;
+    return {};
   }
 }
 
@@ -42,6 +43,10 @@ export async function loadAndBundleDefinition(
     config.resolve.http.customFetch = trackedFetch as typeof config.resolve.http.customFetch;
   }
 
+  // Shared with the bundle, so the fallback below reads the already-fetched root document.
+  const externalRefResolver = new BaseResolver(config.resolve);
+  bundleOpts.externalRefResolver = externalRefResolver;
+
   if (typeof specUrlOrObject === 'object' && specUrlOrObject !== null) {
     // Relative $refs in an inline spec resolve against the page; with an empty ref openapi-core
     // falls back to `process.cwd()`, which does not exist in the browser.
@@ -64,10 +69,38 @@ export async function loadAndBundleDefinition(
         : /yaml|json|parse|unexpected token/i.test(message)
           ? 'parse'
           : 'bundle';
-    throw new DefinitionLoadError(stage, message, lastStatus);
+    const unbundled =
+      stage === 'bundle' ? await readUnbundled(bundleOpts, externalRefResolver) : undefined;
+    if (unbundled === undefined) throw new DefinitionLoadError(stage, message, lastStatus);
+    reportError(
+      'bundleDocument',
+      error,
+      'Could not bundle the API description; rendering it as is',
+    );
+    return unbundled;
   }
 
   return parsed;
+}
+
+// The root document as parsed, when it parsed into a supported description: external `$ref`s
+// stay unresolved.
+async function readUnbundled(
+  opts: Parameters<typeof bundle>[0],
+  resolver: BaseResolver,
+): Promise<ParsedDocument | undefined> {
+  const document =
+    opts.doc ??
+    (opts.ref === undefined
+      ? undefined
+      : await resolver.resolveDocument(opts.base ?? null, opts.ref, true));
+  if (document === undefined || document instanceof Error) return undefined;
+  try {
+    detectSpec(document.parsed);
+  } catch {
+    return undefined;
+  }
+  return document.parsed as ParsedDocument;
 }
 
 function createParsedDocument(specUrlOrObject: Record<string, unknown>, absoluteRef: string) {

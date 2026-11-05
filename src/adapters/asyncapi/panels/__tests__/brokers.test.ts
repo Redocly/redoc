@@ -109,7 +109,7 @@ describe('buildBrokersPanelContent — security', () => {
       info: { title: 'T', version: '1.0' },
       servers,
     } as unknown as AsyncApiDefinition;
-    const storeCtx = createStoreContext(document as unknown as Record<string, unknown>);
+    const storeCtx = createStoreContext(document);
     storeCtx.securitySchemeStore.userPass = { id: 'userPass', type: 'userPassword' };
 
     const brokers = asyncApiContext.run({ storeCtx } as AsyncApiBuildContext, () =>
@@ -143,7 +143,7 @@ describe('buildBrokersPanelContent — security', () => {
         securitySchemes: { userPass: { type: 'userPassword' }, certs: { type: 'X509' } },
       },
     });
-    const storeCtx = createStoreContext(document as unknown as Record<string, unknown>);
+    const storeCtx = createStoreContext(document);
     storeCtx.securitySchemeStore.userPass = { id: 'userPass', type: 'userPassword' };
     storeCtx.securitySchemeStore.certs = { id: 'certs', type: 'X509' };
 
@@ -160,3 +160,62 @@ describe('buildBrokersPanelContent — security', () => {
   });
 });
 
+describe('buildBrokersPanelContent — invalid server host', () => {
+  it('omits a missing or non-text host and pathname instead of passing them through', () => {
+    const servers = {
+      missing: { protocol: 'kafka' },
+      object: { host: { name: 'broker' }, pathname: ['/v1'], protocol: 'kafka' },
+    } as unknown as Record<string, AsyncApiServer>;
+
+    const brokers = buildBrokersPanelContent(servers, 'kafka', SANITIZE, DOCUMENT).children[0]
+      .brokers;
+
+    expect(brokers.map(({ url, pathname }) => ({ url, pathname }))).toEqual([
+      { url: undefined, pathname: undefined },
+      { url: undefined, pathname: undefined },
+    ]);
+  });
+
+  it('shows a numeric host as text', () => {
+    const servers = { prod: { host: 8080, protocol: 'kafka' } } as unknown as Record<
+      string,
+      AsyncApiServer
+    >;
+
+    const brokers = buildBrokersPanelContent(servers, 'kafka', SANITIZE, DOCUMENT).children[0]
+      .brokers;
+
+    expect(brokers[0].url).toBe('8080');
+  });
+});
+
+describe('buildBrokersPanelContent — bindings', () => {
+  it('leaves bindings out when the server has none, or none that is an object', () => {
+    const servers = {
+      none: { host: 'broker.example.com', protocol: 'kafka' },
+      invalid: { host: 'broker.example.com', protocol: 'kafka', bindings: { kafka: 'yes' } },
+    } as unknown as Record<string, AsyncApiServer>;
+
+    const brokers = buildBrokersPanelContent(servers, 'kafka', SANITIZE, DOCUMENT).children[0]
+      .brokers;
+
+    expect(brokers.map(({ bindings }) => bindings)).toEqual([undefined, undefined]);
+  });
+
+  it('keeps the object bindings', () => {
+    const servers = {
+      prod: {
+        host: 'broker.example.com',
+        protocol: 'kafka',
+        bindings: { kafka: { schemaRegistryUrl: 'https://registry.example.com' }, mqtt: 1 },
+      },
+    } as unknown as Record<string, AsyncApiServer>;
+
+    const brokers = buildBrokersPanelContent(servers, 'kafka', SANITIZE, DOCUMENT).children[0]
+      .brokers;
+
+    expect(brokers[0].bindings).toEqual({
+      kafka: { schemaRegistryUrl: 'https://registry.example.com' },
+    });
+  });
+});

@@ -1,0 +1,65 @@
+swagger: '2.0'
+info: { title: Sw, version: '1', description: d }
+host: example.com
+basePath: /v1
+schemes: [https]
+consumes: [application/json]
+produces: [application/json]
+tags: [{ name: pets, description: d }]
+securityDefinitions:
+  key: { type: apiKey, in: header, name: X-Key }
+  oauth:
+    {
+      type: oauth2,
+      flow: accessCode,
+      authorizationUrl: 'https://example.com/a',
+      tokenUrl: 'https://example.com/t',
+      scopes: { read: r },
+    }
+security: [{ key: [] }]
+parameters:
+  Lim: { name: limit, in: query, type: integer, default: 10 }
+responses:
+  Err: { description: err, schema: { $ref: '#/definitions/Err' } }
+paths:
+  /pets/{id}:
+    parameters:
+      - { name: id, in: path, required: true, type: integer }
+    get:
+      tags: [pets]
+      operationId: getPet
+      parameters:
+        - $ref: '#/parameters/Lim'
+        - { name: tags, in: query, type: array, items: { type: string }, collectionFormat: csv }
+      responses:
+        '200':
+          description: ok
+          headers: { X-R: { type: integer } }
+          schema: { $ref: '#/definitions/Pet' }
+          examples: { application/json: { id: 1 } }
+        default: { $ref: '#/responses/Err' }
+    post:
+      consumes: [multipart/form-data]
+      parameters:
+        - { name: file, in: formData, type: file }
+        - { name: note, in: formData, type: string }
+      responses:
+        '200': { description: ok }
+    put:
+      parameters:
+        - { name: body, in: body, required: true, schema: { $ref: '#/definitions/Pet' } }
+      responses:
+        '200': { description: ok }
+definitions:
+  Base: { type: object, required: [id], properties: { id: { type: integer } } }
+  Pet:
+    allOf:
+      - $ref: '#/definitions/Base'
+      - type: object
+        discriminator: kind
+        required: [kind]
+        properties:
+          kind: { type: string, enum: [a, b] }
+          tags: { type: array, items: { type: string } }
+          extra: { type: object, additionalProperties: { type: integer } }
+  Err: { type: object, properties: { code: { type: integer } } }

@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { renderToString } from 'react-dom/server';
 
-import type { MarkdownAdapter, PreparedApiDocs } from 'redoc';
+import type { PreparedApiDocs } from 'redoc';
 
 import {
   Redoc,
   RedocStandalone,
   ServerStyleSheet,
   convertSwagger2OpenAPI,
+  createMarkdocAdapter,
   prepareApiDocs,
 } from 'redoc';
 
@@ -33,14 +34,7 @@ function alignUrlWithBasePath(basePath: string): void {
   window.history.replaceState(null, '', `${basePath}${window.location.search}`);
 }
 
-/**
- * No adapter factory is exported and `useMarkdownAdapter()` throws on an empty context, so every
- * low-level consumer hand-rolls one. Descriptions arrive as Markdoc ASTs this cannot render.
- */
-const NOOP_MARKDOWN_ADAPTER: MarkdownAdapter = {
-  parse: (source) => source,
-  render: () => null,
-};
+const MARKDOWN_ADAPTER = createMarkdocAdapter();
 
 const INLINE_DEFINITION = {
   openapi: '3.1.0',
@@ -116,7 +110,7 @@ function LowLevel() {
       store={prepared.store}
       options={prepared.options}
       basePath={BASE}
-      markdownAdapter={NOOP_MARKDOWN_ADAPTER}
+      markdownAdapter={MARKDOWN_ADAPTER}
     />
   );
 }
@@ -139,7 +133,7 @@ function StyleSheet() {
                 store={prepared.store}
                 options={prepared.options}
                 basePath={BASE}
-                markdownAdapter={NOOP_MARKDOWN_ADAPTER}
+                markdownAdapter={MARKDOWN_ADAPTER}
               />,
             ),
           );

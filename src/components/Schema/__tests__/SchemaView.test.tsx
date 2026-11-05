@@ -11,7 +11,7 @@ import { normalizeOptions } from '../../../options/normalizeOptions.js';
 import { MarkdownAdapterProvider } from '../../../contexts/markdownAdapter.js';
 import { createMarkdocAdapter } from '../../markdoc/markdocAdapter.js';
 import { SchemaView } from '../SchemaView.js';
-import type { Node } from '@markdoc/markdoc';
+import type { Node } from '@redocly/markdoc';
 import type { ApiDocsOptions } from '../../../types/options.js';
 
 const emptyStore = {
@@ -31,7 +31,7 @@ function renderSchemaView(schema: OpenAPISchema, schemasExpansionLevel?: number 
     schemasExpansionLevel,
     markdownParser: function (
       _: string,
-      __?: Partial<Pick<ApiDocsOptions, 'sanitize' | 'unstable_hooks'>>,
+      __?: Partial<Pick<ApiDocsOptions, 'sanitize'>>,
     ): Node | Node[] | undefined {
       throw new Error('Function not implemented.');
     },
@@ -64,7 +64,7 @@ describe('SchemaView default level', () => {
           oneOf: [{ type: 'object', properties: { id: { type: 'string' } } }, { type: 'null' }],
         },
       },
-    } as OpenAPISchema);
+    });
 
     expect(screen.getByText(/^show/i)).toBeInTheDocument();
   });
@@ -92,10 +92,26 @@ describe('SchemaView single-element tuple arrays', () => {
             maxItems: 1,
           },
         },
-      } as OpenAPISchema,
+      },
       'all',
     );
 
     expect(screen.getByText('[0]')).toBeInTheDocument();
+  });
+});
+
+describe('SchemaView boolean schemas', () => {
+  it.each([true, false])('renders nothing for a %s root schema', (schema) => {
+    expect(() => renderSchemaView(schema as unknown as OpenAPISchema)).not.toThrow();
+  });
+
+  it('labels a false property as no value allowed', () => {
+    renderSchemaView({
+      type: 'object',
+      properties: { never: false, anything: true },
+    } as unknown as OpenAPISchema);
+
+    expect(screen.getByText('no value allowed')).toBeInTheDocument();
+    expect(screen.getByText('any')).toBeInTheDocument();
   });
 });

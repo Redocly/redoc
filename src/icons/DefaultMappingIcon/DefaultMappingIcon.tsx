@@ -2,6 +2,8 @@ type IconProps = React.SVGProps<SVGSVGElement> & { 'data-component-name'?: strin
 
 import { styled } from 'styled-components';
 
+import { DARK_MODE_ANCESTOR } from '../../constants/color-mode.js';
+
 const Icon = (props: IconProps) => (
   <svg
     width="12"
@@ -24,7 +26,7 @@ export const DefaultMappingIcon = styled(Icon).attrs({
 })<IconProps>`
   path {
     fill: var(--color-warm-grey-11);
-    html.dark & {
+    ${DARK_MODE_ANCESTOR} & {
       fill: var(--text-color-secondary);
     }
   }

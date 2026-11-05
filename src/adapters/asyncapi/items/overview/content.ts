@@ -14,8 +14,10 @@ import { contentType, nodeTypes } from '../../../../types/common.js';
 import { buildDownloadPanelContent } from '../../panels/download.js';
 import { buildOverviewPanelContent } from '../../panels/overview.js';
 import { buildBrokersPanelContent } from '../../panels/brokers.js';
+import { withErrorHandling } from '../../../helpers.js';
+import { asString } from '../../../../utils/string.js';
 
-export function buildOverviewContent({
+function _buildOverviewContent({
   document,
   options,
   protocol,
@@ -84,3 +86,9 @@ export function buildOverviewContent({
     children: [containerNode],
   };
 }
+
+export const buildOverviewContent = withErrorHandling(
+  ({ document }) => asString(document.info?.title) ?? 'Overview',
+  _buildOverviewContent,
+  contentType.OVERVIEW,
+);

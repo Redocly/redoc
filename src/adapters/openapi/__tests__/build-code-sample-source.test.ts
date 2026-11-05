@@ -21,7 +21,7 @@ function makeOperation(overrides: Partial<OperationInfo> = {}): OperationInfo {
     isWebhook: false,
     isAdditionalOperation: false,
     ...overrides,
-  } as OperationInfo;
+  };
 }
 
 const options = {} as ApiDocsOptions;
@@ -35,7 +35,7 @@ describe('buildCodeSampleSource', () => {
       });
       const operationInfo = makeOperation({
         servers: [{ url: 'https://op.example.com' }],
-      } as Partial<OperationInfo>);
+      });
 
       const source = buildCodeSampleSource(operationInfo, storeCtx, options);
 
@@ -65,7 +65,7 @@ describe('buildCodeSampleSource', () => {
           },
           { name: 'x-trace', in: 'header', schema: { type: 'string' } },
         ],
-      } as Partial<OperationInfo>);
+      });
 
       const source = buildCodeSampleSource(operationInfo, storeCtx, options);
 
@@ -77,6 +77,64 @@ describe('buildCodeSampleSource', () => {
       });
       expect(source.parameters.header).toHaveLength(1);
       expect(source.parameters.query).toEqual([]);
+    });
+
+    it('accepts a boolean parameter schema', () => {
+      const storeCtx = createStoreContext(spec);
+      const operationInfo = makeOperation({
+        parameters: [{ name: 'q', in: 'query', schema: true }],
+      });
+
+      const source = buildCodeSampleSource(operationInfo, storeCtx, options);
+
+      expect(source.parameters.query[0]).toMatchObject({ name: 'q', example: undefined });
+    });
+
+    it('takes a named example from the media type of a content parameter', () => {
+      const storeCtx = createStoreContext({
+        ...spec,
+        components: { examples: { Open: { value: { status: 'open' } } } },
+      });
+      const operationInfo = makeOperation({
+        parameters: [
+          {
+            name: 'filter',
+            in: 'query',
+            content: {
+              'application/json': {
+                schema: { type: 'object' },
+                examples: { open: { $ref: '#/components/examples/Open' } },
+              },
+            },
+          },
+        ],
+      });
+
+      const source = buildCodeSampleSource(operationInfo, storeCtx);
+
+      expect(source.parameters.query[0]?.example).toEqual({ status: 'open' });
+    });
+
+    it('prefers the media type example of a content parameter over its schema example', () => {
+      const storeCtx = createStoreContext(spec);
+      const operationInfo = makeOperation({
+        parameters: [
+          {
+            name: 'filter',
+            in: 'query',
+            content: {
+              'application/json': {
+                schema: { type: 'object', example: { status: 'closed' } },
+                example: { status: 'open' },
+              },
+            },
+          },
+        ],
+      });
+
+      const source = buildCodeSampleSource(operationInfo, storeCtx);
+
+      expect(source.parameters.query[0]?.example).toEqual({ status: 'open' });
     });
 
   });
@@ -91,7 +149,7 @@ describe('buildCodeSampleSource', () => {
       };
       const operationInfo = makeOperation({
         security: [{ oauth2: ['read', 'write'] }],
-      } as Partial<OperationInfo>);
+      });
 
       const source = buildCodeSampleSource(operationInfo, storeCtx, options);
 
@@ -104,7 +162,7 @@ describe('buildCodeSampleSource', () => {
       const storeCtx = createStoreContext(spec);
       const operationInfo = makeOperation({
         security: [{ missingScheme: [] }],
-      } as Partial<OperationInfo>);
+      });
 
       const source = buildCodeSampleSource(operationInfo, storeCtx, options);
 
@@ -124,7 +182,7 @@ describe('buildCodeSampleSource', () => {
             },
           },
         },
-      } as Partial<OperationInfo>);
+      });
 
       const source = buildCodeSampleSource(operationInfo, storeCtx, options);
 
@@ -152,7 +210,7 @@ describe('buildCodeSampleSource', () => {
             },
           },
         },
-      } as Partial<OperationInfo>);
+      });
 
       const source = buildCodeSampleSource(operationInfo, storeCtx, options);
 

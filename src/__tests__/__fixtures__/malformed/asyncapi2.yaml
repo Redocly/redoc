@@ -1,0 +1,51 @@
+asyncapi: 2.6.0
+info: { title: A2, version: '1', description: d }
+servers:
+  prod:
+    url: 'mqtt://{env}.example.com'
+    protocol: mqtt
+    variables: { env: { default: api, enum: [api, dev] } }
+    security: [{ user: [] }]
+tags: [{ name: t1 }]
+channels:
+  user/{id}:
+    description: c
+    parameters:
+      id: { description: id, schema: { type: string, enum: [a, b] } }
+    subscribe:
+      operationId: onUser
+      summary: s
+      tags: [{ name: t1 }]
+      traits: [{ $ref: '#/components/operationTraits/T' }]
+      message:
+        oneOf:
+          - $ref: '#/components/messages/M1'
+          - $ref: '#/components/messages/M2'
+    publish:
+      operationId: sendUser
+      message: { $ref: '#/components/messages/M1' }
+components:
+  securitySchemes:
+    user: { type: userPassword }
+  operationTraits:
+    T: { description: trait, bindings: { mqtt: { qos: 1 } } }
+  messageTraits:
+    MT: { headers: { type: object, properties: { t: { type: string } } } }
+  messages:
+    M1:
+      name: M1
+      payload: { $ref: '#/components/schemas/User' }
+      traits: [{ $ref: '#/components/messageTraits/MT' }]
+      examples: [{ payload: { id: 1 } }]
+    M2:
+      name: M2
+      payload: { type: string, enum: [x, y] }
+  schemas:
+    User:
+      type: object
+      required: [id]
+      discriminator: kind
+      properties:
+        id: { type: integer }
+        kind: { type: string }
+        list: { type: array, items: { type: string } }

@@ -49,7 +49,6 @@
     "bundles",
     ".tmp",
     "typings",
-    "redoc",
     "bin",
     "**/__tests__/**/*",
     "vitest.setup.ts"

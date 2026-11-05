@@ -1,4 +1,4 @@
-import type { Node } from '@markdoc/markdoc';
+import type { Node } from '@redocly/markdoc';
 
 /** Raw when the store was built without a markdown parser (`buildGraphqlStoreFromSdl`). */
 export type GraphqlDescription = string | Node | Node[];

@@ -19,12 +19,16 @@ import type { AdapterBuildContextInput, StoreContext } from '../../../types/stor
 import { parseMarkdown } from '../../utils/parseMarkdown.js';
 import { JsonPointer } from '../utils/JsonPointer.js';
 import { DEFAULT_WEBHOOKS_TAG_NAME } from '../../../constants/openapi.js';
-import { SUPPORTED_MCP_TYPES } from '../constants.js';
-import { titleize } from '../utils/helpers.js';
 import { resolveRef } from '../../helpers.js';
 import { resolvePathItemRef } from '../utils/resolvePathItemRef.js';
+import { parameterList, pickOperationServers } from '../utils/operation.js';
+import { securityRequirements } from '../utils/security.js';
+import { mcpEntities } from '../utils/mcp.js';
 import { HTTP_METHODS, isOperationName } from '../../../utils/http-methods.js';
+import { normalizeBadges } from '../../../utils/normalize-badges.js';
 import { isRbacKey, readRbacScope, rbacProp } from '../../rbac.js';
+import { isRecord } from '../../../utils/is-record.js';
+import { asString } from '../../../utils/string.js';
 
 type BuildContextWithDocument = AdapterBuildContextInput & {
   document: OpenAPIDefinition;
@@ -36,6 +40,20 @@ function isNonNavTag(tag: OpenAPITag): boolean {
   return tag.kind === 'badge' || tag.kind === 'audience';
 }
 
+/** The `document.tags` entries that are objects with a string `name`. */
+export function documentTags(document: OpenAPIDefinition): OpenAPITag[] {
+  const tags: unknown = document.tags;
+  return Array.isArray(tags)
+    ? tags.filter((tag): tag is OpenAPITag => isRecord(tag) && typeof tag.name === 'string')
+    : [];
+}
+
+/** The string entries of an operation's `tags`. */
+function operationTagNames(operation: OpenAPIOperation): string[] {
+  const tags: unknown = operation.tags;
+  return Array.isArray(tags) ? tags.filter((tag): tag is string => typeof tag === 'string') : [];
+}
+
 export function createBuildContext({
   document,
   options,
@@ -44,8 +62,9 @@ export function createBuildContext({
   processContent = true,
 }: BuildContextWithDocument): BuildContext {
   const tagsMap = new Map<string, TagData>();
+  const tags = documentTags(document);
 
-  for (const tag of document.tags || []) {
+  for (const tag of tags) {
     const extTag = tag as OpenAPITagExtended;
     tagsMap.set(tag.name, {
       tag: extTag,
@@ -55,7 +74,7 @@ export function createBuildContext({
     });
   }
 
-  for (const tag of document.tags || []) {
+  for (const tag of tags) {
     const extTag = tag as OpenAPITagExtended;
     if (extTag.parent && !isNonNavTag(tag)) {
       tagsMap.get(extTag.parent)?.children.push(tag.name);
@@ -66,7 +85,7 @@ export function createBuildContext({
     ensureTagExists(tagsMap, options.schemaDefinitionsTagName);
   }
 
-  const badgeTags = (document.tags || []).filter(isNonNavTag);
+  const badgeTags = tags.filter(isNonNavTag);
 
   const context: BuildContext = {
     document,
@@ -108,28 +127,15 @@ function collectAllOperations(document: OpenAPIDefinition, context: BuildContext
 }
 
 function collectMcpTags(document: OpenAPIDefinition, context: BuildContext): void {
-  const mcp = document['x-mcp'];
-
-  if (!mcp) return;
-
-  for (const collectionType of SUPPORTED_MCP_TYPES) {
-    const entities = mcp[collectionType];
-    
-    if (!entities?.length) continue;
-
-    for (const entity of entities) {
-      const entityTags =
-        entity.tags && entity.tags.length > 0 ? entity.tags : [titleize(collectionType)];
-
-      for (const tagName of entityTags) {
-        if (!context.tagsMap.has(tagName)) {
-          context.tagsMap.set(tagName, {
-            tag: { name: tagName },
-            operations: [],
-            children: [],
-          });
-          context.collectedTagOrder.push(tagName);
-        }
+  for (const entity of mcpEntities(document)) {
+    for (const tagName of entity.tags) {
+      if (!context.tagsMap.has(tagName)) {
+        context.tagsMap.set(tagName, {
+          tag: { name: tagName },
+          operations: [],
+          children: [],
+        });
+        context.collectedTagOrder.push(tagName);
       }
     }
   }
@@ -144,7 +150,7 @@ function operationWithPathItemDefaults(
     ...operation,
     summary: operation.summary ?? pathItem.summary,
     description: (operation.description ?? pathItem.description) as OpenAPIOperation['description'],
-    servers: operation.servers ?? pathItem.servers,
+    servers: pickOperationServers(operation.servers, pathItem.servers),
   };
 }
 
@@ -169,7 +175,7 @@ function collectOperationsFromPaths(
 
     if (!pathItem) continue;
 
-    const pathLevelParams: Referenced<OpenAPIParameter>[] = pathItem.parameters ?? [];
+    const pathLevelParams = parameterList(pathItem.parameters) ?? [];
 
     for (const httpVerb of Object.keys(pathItem).filter(
       isOperationName,
@@ -189,8 +195,9 @@ function collectOperationsFromPaths(
     }
 
     const additionalOps = pathItem.additionalOperations;
-    if (additionalOps) {
+    if (isRecord(additionalOps)) {
       for (const [httpVerb, operation] of Object.entries(additionalOps)) {
+        if (!isRecord(operation)) continue;
         addOperationToTags(
           operationWithPathItemDefaults(pathItem, operation),
           pathName,
@@ -211,7 +218,11 @@ function asParameter(p: unknown): ParameterLike {
   return (typeof p === 'object' && p !== null ? p : {}) as ParameterLike;
 }
 
-function mergeParameters(
+/**
+ * The operation's parameters followed by the path-level ones it does not override. Identity is
+ * the resolved `in` + `name`; entries are returned as written, `$ref` included.
+ */
+export function mergeOperationParameters(
   pathParams: Referenced<OpenAPIParameter>[],
   operationParams: Referenced<OpenAPIParameter>[] | undefined,
   document: Record<string, unknown>,
@@ -250,8 +261,9 @@ function addOperationToTags(
   context: BuildContext,
   pathLevelParams: Referenced<OpenAPIParameter>[] = [],
 ): void {
-  const tags = operation.tags?.length
-    ? operation.tags
+  const ownTags = operationTagNames(operation);
+  const tags = ownTags.length
+    ? ownTags
     : isWebhook
       ? [DEFAULT_WEBHOOKS_TAG_NAME]
       : [''];
@@ -303,17 +315,10 @@ function createOperationInfo(
 ): OperationInfo {
   const { options, storeCtx } = context;
   const opExtDocs = operation.externalDocs;
-  const xBadges = operation['x-badges'];
+  const operationBadges: BadgeData[] = normalizeBadges(operation['x-badges']) ?? [];
 
-  const operationBadges: BadgeData[] =
-    xBadges?.map((b) => ({
-      name: b.name,
-      color: b.color,
-      position: b.position,
-    })) ?? [];
-
-  if (operation.tags && badgeTags.length > 0) {
-    for (const operationTagName of operation.tags) {
+  if (badgeTags.length > 0) {
+    for (const operationTagName of operationTagNames(operation)) {
       const badgeTag = badgeTags.find((t) => t.name === operationTagName);
       if (badgeTag) {
         operationBadges.push({
@@ -333,23 +338,25 @@ function createOperationInfo(
     pointer: JsonPointer.compile(['paths', pathName, httpVerb]),
     pathName,
     httpVerb: normalizeOperationHttpVerb(httpVerb),
-    operationId: operation.operationId,
+    operationId: asString(operation.operationId),
     summary: operation.summary,
     description: parseMarkdown(operation.description, options),
     deprecated: operation.deprecated,
     isWebhook,
     isAdditionalOperation,
     tags,
-    parameters: mergeParameters(
+    parameters: mergeOperationParameters(
       pathLevelParams,
-      operation.parameters,
+      parameterList(operation.parameters),
       storeCtx.document,
       options.ignoreNamedSchemas,
     ),
     requestBody: operation.requestBody,
     responses: operation.responses,
     servers: operation.servers,
-    security: operation.security ?? context.document.security,
+    security:
+      securityRequirements(operation.security) ??
+      securityRequirements(context.document.security),
     callbacks: normalizeCallbacks(
       operation.callbacks,
       storeCtx?.document ?? {},
@@ -383,7 +390,7 @@ export function normalizeCallbacks(
       if (!pathItem || typeof pathItem !== 'object') continue;
 
       const pathServers = pathItem.servers;
-      const pathParams = pathItem.parameters;
+      const pathParams = parameterList(pathItem.parameters) ?? [];
       const operations: NormalizedCallbackOperation[] = [];
 
       for (const [method, opValue] of Object.entries(pathItem)) {
@@ -395,14 +402,19 @@ export function normalizeCallbacks(
           httpVerb: normalizeOperationHttpVerb(method.toLowerCase()),
           pathName: urlExpression,
           summary: op.summary,
-          operationId: op.operationId,
+          operationId: asString(op.operationId),
           description: op.description,
           deprecated: op.deprecated,
           requestBody: op.requestBody,
           responses: op.responses,
           security: op.security,
-          servers: op.servers ?? pathServers,
-          parameters: op.parameters ?? pathParams,
+          servers: pickOperationServers(op.servers, pathServers),
+          parameters: mergeOperationParameters(
+            pathParams,
+            parameterList(op.parameters),
+            document,
+            ignoreNamedSchemas,
+          ),
           externalDocs: op.externalDocs,
         };
         for (const [k, v] of Object.entries(op)) {

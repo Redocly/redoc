@@ -3,7 +3,12 @@ import type { AsyncApiDefinition, AsyncApiSecurityScheme } from '../../types/asy
 import type { ApiDocsOptions } from '../../types/options.js';
 
 import { schemaKind } from '../../types/common.js';
-import { registerSchema, registerExample, registerSecurityScheme } from '../helpers.js';
+import {
+  registerSchema,
+  registerBooleanSchema,
+  registerExample,
+  registerSecurityScheme,
+} from '../helpers.js';
 import { readRbacScope, rbacProp, splitRbacSection } from '../rbac.js';
 import { resolveAsyncApiSchema } from './utils/resolve-schema.js';
 import { resolveInDoc } from './utils/resolveInDoc.js';
@@ -24,6 +29,16 @@ export function populateAsyncApiStore(
   if (components.schemas) {
     const { sectionRbac, entries } = splitRbacSection(components.schemas);
     for (const [name, schema] of entries) {
+      if (typeof schema === 'boolean') {
+        registerBooleanSchema(schemaStore, {
+          id: `components/schemas/${name}`,
+          kind: schemaKind.JSON_SCHEMA,
+          title: name,
+          booleanSchema: schema,
+          ...rbacProp(sectionRbac),
+        });
+        continue;
+      }
       const resolved = resolveAsyncApiSchema(schema);
       if (resolved) {
         registerSchema(schemaStore, hashIndex, {

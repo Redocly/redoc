@@ -1,6 +1,6 @@
 import { hasRbacScope } from '../../../../adapters/rbac.js';
 
-import type { Node } from '@markdoc/markdoc';
+import type { Node } from '@redocly/markdoc';
 import type { Extractor } from './context.js';
 
 import { buildFieldDeepLink } from '../deep-links.js';

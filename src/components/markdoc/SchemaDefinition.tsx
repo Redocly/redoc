@@ -13,13 +13,10 @@ import { useResolvedExamples } from '../ItemContent/hooks.js';
 import { SchemaView } from '../Schema/SchemaView.js';
 import { Markdown } from '../common/Markdown.js';
 import { ContentWrapper } from '../common/ContentWrapper.js';
-import {
-  detectJsonSchemaType,
-  isPrimitiveLikeSchema,
-} from '../../services/schema/propertyBuilder.js';
+import { isPrimitiveLikeSchema, schemaType } from '../../services/schema/propertyBuilder.js';
 
 function isStructuralSchema(data: SchemaNode): boolean {
-  const type = data.type || detectJsonSchemaType(data);
+  const type = schemaType(data);
   return !isPrimitiveLikeSchema(data, type);
 }
 

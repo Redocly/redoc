@@ -1,7 +1,10 @@
 import { styled } from 'styled-components';
 import { Fragment, memo, useMemo, useState, type ReactElement } from 'react';
+import { useAtomValue } from 'jotai';
 
 import type { GroupItemNode } from '../../types/content.js';
+
+import { apiSpecType } from '../../types/common.js';
 
 import { Button } from '@redocly/theme/components/Button/Button';
 import { Tooltip } from '@redocly/theme/components/Tooltip/Tooltip';
@@ -11,6 +14,7 @@ import { NavigationBadge, TextBadge } from '../common/Badge.js';
 import { useSpecTranslate } from '../../hooks/useTranslate.js';
 import { resolveText } from '../../utils/resolveText.js';
 import { useNavigationUrlNormalizer } from '../../hooks/useNormalizeUrl.js';
+import { specTypeAtom } from '../../jotai/store.js';
 
 const MAX_OPERATIONS = 8;
 
@@ -26,6 +30,7 @@ const GroupOperationRow = memo(function GroupOperationRow({
   item,
   deprecatedLabel,
 }: GroupOperationRowProps): ReactElement {
+  const isGraphQL = useAtomValue(specTypeAtom) === apiSpecType.GRAPHQL;
   return (
     <Tooltip disabled={!item.summary} tip={item.summary} placement="left">
       <TagItem to={item.href} variant="outlined" size="large">
@@ -44,7 +49,12 @@ const GroupOperationRow = memo(function GroupOperationRow({
                 key={badge.name}
                 placement="top"
               >
-                <StyledNavigationBadge color={badge.color}>{badge.name}</StyledNavigationBadge>
+                <StyledNavigationBadge
+                  color={badge.color}
+                  textTransform={isGraphQL ? 'none' : undefined}
+                >
+                  {badge.name}
+                </StyledNavigationBadge>
               </Tooltip>
             ))}
           {item.deprecated && (

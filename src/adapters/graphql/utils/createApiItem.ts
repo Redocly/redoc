@@ -97,7 +97,6 @@ export function createApiItem<T>(params: CreateApiItemParams<T>): ApiItem | null
     markdownOptions: context.options,
   }) as ApiItemContent;
 
-
   // GraphQL SDL can't be addressed by a JSON pointer, so capture the source
   // line/column from the graphql-js AST for WYSIWYG cursor sync.
   const position = getGraphqlNodePosition(params.source);

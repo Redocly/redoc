@@ -3,8 +3,9 @@ import type { ApiDocsOptions } from '../../../../types/options.js';
 
 import { contentType, itemVariant, nodeTypes } from '../../../../types/common.js';
 import { parseMarkdown } from '../../../utils/parseMarkdown.js';
+import { withErrorHandling } from '../../../helpers.js';
 
-export function buildSchemaDefinitionContent(
+function _buildSchemaDefinitionContent(
   schemaName: string,
   title: string | undefined,
   options: ApiDocsOptions,
@@ -42,3 +43,8 @@ export function buildSchemaDefinitionContent(
     children,
   };
 }
+
+export const buildSchemaDefinitionContent = withErrorHandling(
+  (schemaName, title) => title ?? schemaName,
+  _buildSchemaDefinitionContent,
+);

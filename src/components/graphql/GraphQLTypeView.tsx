@@ -12,7 +12,7 @@ interface NamedTypeRendererProps {
   typeName: string;
   contrast?: boolean;
   fieldExpandLevel?: number;
-  expanded?: boolean;
+  sectionKey?: string;
   parentPath?: string;
 }
 
@@ -20,7 +20,7 @@ function NamedTypeRendererComponent({
   typeName,
   contrast,
   fieldExpandLevel = 0,
-  expanded,
+  sectionKey,
   parentPath,
 }: NamedTypeRendererProps) {
   const typeData = useAtomValue(graphqlTypeDataAtom(typeName));
@@ -47,7 +47,7 @@ function NamedTypeRendererComponent({
         name={typeName}
         contrast={contrast}
         fieldExpandLevel={fieldExpandLevel}
-        expanded={expanded}
+        sectionKey={sectionKey}
         parentPath={parentPath}
       />
     );

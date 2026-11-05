@@ -11,6 +11,8 @@ import { readRbacScope, rbacProp, splitRbacSection } from '../../rbac.js';
 import { buildSecurityRequirements } from '../utils/security.js';
 import { asyncApiContext } from '../buildContext.js';
 import { resolveInDoc } from '../utils/resolveInDoc.js';
+import { asString } from '../../../utils/string.js';
+import { objectBindings } from '../build/utils.js';
 
 export function buildBrokersPanelContent(
   servers: Record<string, AsyncApiServer>,
@@ -54,19 +56,20 @@ export function toBrokerData(
         markdownOptions,
       )
     : [];
+  const bindings = objectBindings(server.bindings, name, document);
   return {
     name,
-    url: server.host,
+    url: asString(server.host),
     description: parseMarkdown(server.description, markdownOptions) ?? [],
     variables: resolveServerVariables(document, server.variables),
     protocol: server.protocol,
     protocolVersion: server.protocolVersion,
-    pathname: server.pathname,
+    pathname: asString(server.pathname),
     title: server.title,
     summary: server.summary,
     tags: server.tags,
     externalDocs: server.externalDocs,
-    bindings: server.bindings,
+    bindings: bindings.length > 0 ? Object.fromEntries(bindings) : undefined,
     security: security.length > 0 ? security : undefined,
     ...rbacProp(readRbacScope(entry) ?? readRbacScope(server) ?? sectionRbac),
   };

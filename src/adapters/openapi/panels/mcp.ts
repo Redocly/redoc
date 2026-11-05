@@ -3,6 +3,7 @@ import type { OpenAPIDefinition } from '../../../types/openapi.js';
 
 import { panelKind } from '../../../types/common.js';
 import { MCP_SERVER_EXPERIMENTAL_CAPABILITIES, PAGE_ACTIONS_MCP } from '../constants.js';
+import { serversWithUrl } from '../utils/operation.js';
 
 export function buildMcpPanelContent(document: OpenAPIDefinition): McpNode | null {
   const mcpInfo = document?.['x-mcp'];
@@ -10,8 +11,7 @@ export function buildMcpPanelContent(document: OpenAPIDefinition): McpNode | nul
     return null;
   }
 
-  const mcpServers = mcpInfo?.servers ?? document.servers ?? [];
-  const mcpEndpoint = mcpServers[0]?.url ?? '';
+  const mcpEndpoint = serversWithUrl(mcpInfo.servers ?? document.servers)[0]?.url ?? '';
   const mcpItems: McpNode['children'] = [];
 
   if (mcpInfo?.protocolVersion) {

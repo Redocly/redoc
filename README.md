@@ -1,7 +1,7 @@
 <div align="center">
 
   **[Learn what's new in Redoc 3.x →](https://redocly.com/redoc-ce)**
-
+  **[Redoc 3.x migration guide →](https://redocly.com/docs/redoc/config-migration)**
 
 # Generate beautiful API documentation from OpenAPI, AsyncAPI, and GraphQL
 
@@ -9,7 +9,6 @@
 
   [![npm](https://img.shields.io/npm/dm/redoc.svg)](https://www.npmjs.com/package/redoc) [![jsDelivr status](https://data.jsdelivr.com/v1/package/npm/redoc/badge)](https://www.jsdelivr.com/package/npm/redoc)
 </div>
-
 
 ## About Redoc
 
@@ -37,12 +36,12 @@ enter the URL for your definition and select **TRY IT**.
 - Responsive three-panel design with menu/scrolling synchronization
 - Support for OpenAPI 3.2, OpenAPI 3.1, OpenAPI 3.0, and Swagger 2.0
 - Support for AsyncAPI 3.x and GraphQL (SDL) — the format is detected from the document
-- MCP (Model Context Protocol) server documentation with the [`x-mcp`](https://redocly.com/docs/realm/content/api-docs/openapi-extensions/x-mcp) specification extension
+- MCP (Model Context Protocol) server documentation with the [`x-mcp`](https://redocly.com/docs/platform/content/api-docs/openapi-extensions/x-mcp) specification extension
 - Improved built-in search
 - **Copy**, **Open in ChatGPT**, and **Open in Claude** actions on every page to work with the docs in your AI assistant
-- Dark mode and theming with [CSS variables](https://redocly.com/docs/realm/branding/css-variables)
+- Dark mode and theming with [CSS variables](https://redocly.com/docs/platform/branding/css-variables)
 - Ability to integrate your API introduction into the side menu
-- High-level grouping in side menu with the [`x-tagGroups`](https://redocly.com/docs/realm/content/api-docs/openapi-extensions/x-tag-groups) specification extension
+- High-level grouping in side menu with the [`x-tagGroups`](https://redocly.com/docs/platform/content/api-docs/openapi-extensions/x-tag-groups) specification extension
 - [Simple integration with React](https://redocly.com/docs/redoc/v3.x/deployment/react)
 - Code samples support (with the `x-codeSamples` specification extension) <br>
 
@@ -93,17 +92,17 @@ Redoc is Redocly's community-edition product. Looking for something more?
 We also offer [Redoc](https://redocly.com/redoc)
 with support for specifications like SOAP and additional features including:
 
-* Try-it panel (Replay)
-* Automated code samples
-* Mock server
-* Feedback widgets
-* Role-based access control
-* Full customization
-* Lint
+- Try-it panel (Replay)
+- Automated code samples
+- Mock server
+- Feedback widgets
+- Role-based access control
+- Full customization
+- Lint
 
 ### Documentation and resources
 
-- [Realm + Reunite](https://redocly.com/docs/realm) - we take care of the hosting, which includes everything you need for documentation.
+- [Realm + Reunite](https://redocly.com/docs/platform) - we take care of the hosting, which includes everything you need for documentation.
 - [Redoc](https://redocly.com/docs/redoc/v3.x) - detailed documentation for this open source project
 - [Command-line interface to bundle your docs into a web-ready HTML file](https://redocly.com/docs/cli/commands/build-docs/)
 - API linting, bundling, and much more with open source [Redocly CLI](https://redocly.com/docs/cli)
@@ -127,22 +126,22 @@ _Pull requests to add your own API page to the list are welcome_
 Redoc is highly configurable, see the [configuration documentation](https://redocly.com/docs/redoc/v3.x/config) for details.
 
 ### OpenAPI specification extensions
-Redoc uses the following [specification extensions](https://redocly.com/docs/realm/content/api-docs/openapi-extensions):
+Redoc uses the following [specification extensions](https://redocly.com/docs/platform/content/api-docs/openapi-extensions):
 
-* [`x-logo`](https://redocly.com/docs/realm/content/api-docs/openapi-extensions) - is used to specify API logo
-* [`x-traitTag`](https://redocly.com/docs/realm/content/api-docs/openapi-extensions/x-trait-tag) - useful for tags that refer to non-navigation properties like Pagination, Rate-Limits, etc
-* [`x-codeSamples`](https://redocly.com/docs/realm/content/api-docs/openapi-extensions/x-code-samples) - specify operation code samples
-* [`x-badges`](https://redocly.com/docs/realm/content/api-docs/openapi-extensions/x-badges) - specify operation badges
-* [`x-enumDescriptions`](https://redocly.com/docs/realm/content/api-docs/openapi-extensions/x-enum-descriptions) - list of the enum values and descriptions to include in the documentation
-* [`x-examples`](https://redocly.com/docs/realm/content/api-docs/openapi-extensions/x-examples) - specify JSON example for requests
-* [`x-nullable`](https://redocly.com/docs/realm/content/api-docs/openapi-extensions/x-nullable) - mark schema param as a nullable
-* [`x-displayName`](https://redocly.com/docs/realm/content/api-docs/openapi-extensions/x-display-name) - specify human-friendly names for the menu categories
-* [`x-tagGroups`](https://redocly.com/docs/realm/content/api-docs/openapi-extensions/x-tag-groups) - group tags by categories in the side menu
-* [`x-mcp`](https://redocly.com/docs/realm/content/api-docs/openapi-extensions/x-mcp) - document MCP (Model Context Protocol) servers, their tools and capabilities
-* [`x-servers`](https://redocly.com/docs/realm/content/api-docs/openapi-extensions/x-servers) - ability to specify different servers for API (backported from OpenAPI 3.0)
-* [`x-additionalPropertiesName`](https://redocly.com/docs/realm/content/api-docs/openapi-extensions/x-additional-properties-name) - ability to supply a descriptive name for the additional property keys
-* [`x-summary`](https://redocly.com/docs/realm/content/api-docs/openapi-extensions/x-summary) - for Response object, use as the response button text, with description rendered under the button
-* [`x-explicitMappingOnly`](https://redocly.com/docs/realm/content/api-docs/openapi-extensions) - in Schemas, display a more descriptive property name in objects with additionalProperties when viewing the property list with an object
+- [`x-logo`](https://redocly.com/docs/platform/content/api-docs/openapi-extensions) - is used to specify API logo
+- [`x-traitTag`](https://redocly.com/docs/platform/content/api-docs/openapi-extensions/x-trait-tag) - useful for tags that refer to non-navigation properties like Pagination, Rate-Limits, etc
+- [`x-codeSamples`](https://redocly.com/docs/platform/content/api-docs/openapi-extensions/x-code-samples) - specify operation code samples
+- [`x-badges`](https://redocly.com/docs/platform/content/api-docs/openapi-extensions/x-badges) - specify operation badges
+- [`x-enumDescriptions`](https://redocly.com/docs/platform/content/api-docs/openapi-extensions/x-enum-descriptions) - list of the enum values and descriptions to include in the documentation
+- [`x-examples`](https://redocly.com/docs/platform/content/api-docs/openapi-extensions/x-examples) - specify JSON example for requests
+- [`x-nullable`](https://redocly.com/docs/platform/content/api-docs/openapi-extensions/x-nullable) - mark schema param as a nullable
+- [`x-displayName`](https://redocly.com/docs/platform/content/api-docs/openapi-extensions/x-display-name) - specify human-friendly names for the menu categories
+- [`x-tagGroups`](https://redocly.com/docs/platform/content/api-docs/openapi-extensions/x-tag-groups) - group tags by categories in the side menu
+- [`x-mcp`](https://redocly.com/docs/platform/content/api-docs/openapi-extensions/x-mcp) - document MCP (Model Context Protocol) servers, their tools and capabilities
+- [`x-servers`](https://redocly.com/docs/platform/content/api-docs/openapi-extensions/x-servers) - ability to specify different servers for API (backported from OpenAPI 3.0)
+- [`x-additionalPropertiesName`](https://redocly.com/docs/platform/content/api-docs/openapi-extensions/x-additional-properties-name) - ability to supply a descriptive name for the additional property keys
+- [`x-summary`](https://redocly.com/docs/platform/content/api-docs/openapi-extensions/x-summary) - for Response object, use as the response button text, with description rendered under the button
+- [`x-explicitMappingOnly`](https://redocly.com/docs/platform/content/api-docs/openapi-extensions) - in Schemas, display a more descriptive property name in objects with additionalProperties when viewing the property list with an object
 
 ## Examples
 
@@ -155,7 +154,6 @@ Two deliveries have nothing to copy and are documented rather than built:
 [`examples/docker`](examples/docker) for the official `redocly/redoc` image and
 [`examples/cli`](examples/cli) for `redocly build-docs`.
 
-
 ## Releases
 
 **The README for the `1.x` version is on the [v1.x](https://github.com/Redocly/redoc/tree/v1.x) branch.**
@@ -163,6 +161,7 @@ Two deliveries have nothing to copy and are documented rather than built:
 **The README for the `2.x` version is on the [v2.x](https://github.com/Redocly/redoc/tree/v2.x) branch.**
 
 All the 2.x and 3.x releases are deployed to npm and can be used with Redocly-cdn:
+
 - particular release, for example:
   - `v2.0.0`: https://cdn.redoc.ly/redoc/v2.0.0/bundles/redoc.standalone.js
   - `v3.0.0`: https://cdn.redoc.ly/redoc/v3.0.0/bundles/redoc.standalone.js
@@ -170,6 +169,7 @@ All the 2.x and 3.x releases are deployed to npm and can be used with Redocly-cd
 - `latest` release: https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js
 
 Additionally, all the 1.x releases are hosted on our GitHub Pages-based CDN **(deprecated)**:
+
 - particular release, for example `v1.2.0`: https://rebilly.github.io/ReDoc/releases/v1.2.0/redoc.min.js
 - `v1.x.x` release: https://rebilly.github.io/ReDoc/releases/v1.x.x/redoc.min.js
 - `latest` release: https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js - points to latest 1.x.x release since 2.x releases are not hosted on this CDN but on unpkg.
@@ -179,4 +179,5 @@ Additionally, all the 1.x releases are hosted on our GitHub Pages-based CDN **(d
 Redoc collects anonymous usage and performance data to help prioritize work. It never sends your API definition content or personal information. Opt out with `disable-telemetry="true"` on the `<redoc>` tag, `disableTelemetry: true` in options. See the [telemetry documentation](https://redocly.com/docs/redoc/v3.x/telemetry) for details.
 
 ## Development
+
 see [CONTRIBUTING.md](.github/CONTRIBUTING.md)

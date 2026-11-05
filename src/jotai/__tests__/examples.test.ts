@@ -83,23 +83,38 @@ function setupStore({
   activeDiscriminator,
   activeOneOf,
   onlyRequiredInSamples,
+  generatedSamplesMaxDepth,
+  specType = 'openapi',
+  specVersion,
+  convertedFrom,
 }: {
   schemaStore: Record<string, SchemaEntry>;
   itemId?: string;
   activeDiscriminator?: Record<string, number>;
   activeOneOf?: Record<string, number>;
   onlyRequiredInSamples?: boolean;
+  generatedSamplesMaxDepth?: number;
+  specType?: 'openapi' | 'asyncapi';
+  specVersion?: string;
+  convertedFrom?: string;
 }) {
   const jotaiStore = createStore();
   jotaiStore.set(globalStoreAtom, {
     items: [],
-    store: { schemaStore, exampleStore: {}, securitySchemeStore: {} },
+    store: {
+      schemaStore,
+      exampleStore: {},
+      securitySchemeStore: {},
+      specVersion,
+      convertedFrom,
+    },
     options: normalizeOptions({
-      specType: 'openapi',
+      specType,
       downloadUrls: [],
       metadata: {},
       basePath: '',
       onlyRequiredInSamples,
+      generatedSamplesMaxDepth,
     }),
   });
   if (itemId && (activeDiscriminator || activeOneOf)) {
@@ -146,6 +161,37 @@ describe('buildExampleAtomKey', () => {
 });
 
 describe('itemSpecForSamplerAtom', () => {
+  it('carries the document OpenAPI version', () => {
+    const store = setupStore({
+      schemaStore: makeNestedDiscriminatorStore(),
+      specVersion: '3.1.0',
+    });
+    expect(store.get(itemSpecForSamplerAtom('')).openapi).toBe('3.1.0');
+  });
+
+  it('keeps OpenAPI 3.0.0 for an AsyncAPI document', () => {
+    const store = setupStore({
+      schemaStore: makeNestedDiscriminatorStore(),
+      specType: 'asyncapi',
+      specVersion: '2.6.0',
+    });
+    expect(store.get(itemSpecForSamplerAtom('')).openapi).toBe('3.0.0');
+  });
+
+  it('keeps OpenAPI 3.0.0 for a document converted from Swagger 2.0', () => {
+    const store = setupStore({
+      schemaStore: makeNestedDiscriminatorStore(),
+      specVersion: '3.2.0',
+      convertedFrom: '2.0',
+    });
+    expect(store.get(itemSpecForSamplerAtom('')).openapi).toBe('3.0.0');
+  });
+
+  it('falls back to OpenAPI 3.0.0 when the store has no version', () => {
+    const store = setupStore({ schemaStore: makeNestedDiscriminatorStore() });
+    expect(store.get(itemSpecForSamplerAtom('')).openapi).toBe('3.0.0');
+  });
+
   it('returns the default-variant stub when itemId is empty', () => {
     const store = setupStore({ schemaStore: makeNestedDiscriminatorStore() });
     const spec = store.get(itemSpecForSamplerAtom('')) as {
@@ -535,5 +581,708 @@ describe('generatedExampleAtom discriminator host keywords', () => {
         'drink&d=0/style': 1,
       }),
     ).toEqual({ drink: { kind: 'coffee', style: 'espresso', shots: 0 } });
+  });
+
+  describe('a back-reference to a host that only declares the variants', () => {
+    const espressoWithRefill = schema('components/schemas/Espresso', {
+      type: 'object',
+      properties: {
+        kind: { type: 'string' },
+        style: { type: 'string' },
+        shots: { type: 'integer' },
+        refill: ref('Beverage'),
+      },
+    });
+
+    it('samples the back-reference inside a nested variant as an object', () => {
+      const store = { ...beverageStore, 'components/schemas/Espresso': espressoWithRefill };
+
+      expect(
+        sample(store, 'components/schemas/Beverage', { kind: 0, '&d=0/style': 1 }),
+      ).toMatchObject({
+        kind: 'coffee',
+        style: 'espresso',
+        refill: { kind: 'coffee', style: 'espresso', shots: 0 },
+      });
+    });
+
+    it('samples the back-reference of an untyped host as an object', () => {
+      const store = {
+        'components/schemas/Beverage': schema('components/schemas/Beverage', {
+          oneOf: [ref('Coffee'), ref('Tea')],
+          discriminator: { propertyName: 'kind', mapping: mapping('Coffee', 'Tea') },
+        }),
+        'components/schemas/Coffee': schema('components/schemas/Coffee', {
+          type: 'object',
+          properties: { kind: { type: 'string' }, refill: ref('Beverage') },
+        }),
+        'components/schemas/Tea': schema('components/schemas/Tea', {
+          type: 'object',
+          properties: { kind: { type: 'string' } },
+        }),
+      };
+
+      expect(sample(store, 'components/schemas/Beverage', { kind: 0 })).toMatchObject({
+        kind: 'coffee',
+        refill: { kind: 'coffee' },
+      });
+    });
+  });
+
+  describe('back-references to a host that has nothing to sample', () => {
+    const untypedStore = (beverage: Record<string, unknown> = {}) => ({
+      'components/schemas/Beverage': schema('components/schemas/Beverage', {
+        ...beverage,
+        oneOf: [ref('Coffee'), ref('Tea')],
+        discriminator: { propertyName: 'kind', mapping: mapping('Coffee', 'Tea') },
+      }),
+      'components/schemas/Coffee': schema('components/schemas/Coffee', {
+        type: 'object',
+        properties: { kind: { type: 'string' }, refill: ref('Beverage') },
+      }),
+      'components/schemas/Tea': schema('components/schemas/Tea', {
+        type: 'object',
+        properties: { kind: { type: 'string' } },
+      }),
+      'components/schemas/Order': schema('components/schemas/Order', {
+        type: 'array',
+        items: ref('Beverage'),
+      }),
+    });
+
+    it('samples the back-reference of a host that only adds required as an object', () => {
+      expect(
+        sample(untypedStore({ required: ['kind'] }), 'components/schemas/Beverage', { kind: 0 }),
+      ).toMatchObject({ kind: 'coffee', refill: { kind: 'coffee' } });
+    });
+
+    it('keeps the back-reference of a host reached through array items', () => {
+      expect(sample(untypedStore(), 'components/schemas/Order', { kind: 0 })).toEqual([
+        { kind: 'coffee', refill: {} },
+      ]);
+    });
+  });
+
+  describe('a discriminator without mapping', () => {
+    const paymentMethodStore = (card: Record<string, unknown>) => ({
+      'components/schemas/PaymentMethod': schema('components/schemas/PaymentMethod', {
+        oneOf: [ref('Card'), ref('BankTransfer')],
+        discriminator: { propertyName: 'type' },
+      }),
+      'components/schemas/Card': schema('components/schemas/Card', card),
+      'components/schemas/BankTransfer': schema('components/schemas/BankTransfer', {
+        type: 'object',
+        properties: { type: { type: 'string' }, iban: { type: 'string' } },
+      }),
+    });
+
+    it('stamps the schema name of the selected variant', () => {
+      const store = paymentMethodStore({
+        type: 'object',
+        properties: { type: { type: 'string' }, last4: { type: 'string' } },
+      });
+
+      expect(sample(store, 'components/schemas/PaymentMethod', { type: 1 })).toEqual({
+        type: 'BankTransfer',
+        iban: 'string',
+      });
+    });
+
+    it('keeps the value a variant pins with const', () => {
+      const store = paymentMethodStore({
+        type: 'object',
+        properties: { type: { const: 'card' }, last4: { type: 'string' } },
+      });
+
+      expect(sample(store, 'components/schemas/PaymentMethod', { type: 0 })).toEqual({
+        type: 'card',
+        last4: 'string',
+      });
+    });
+  });
+
+  describe('nested discriminators that share a property name', () => {
+    const animalStore = (animalMapping: Record<string, string>) => ({
+      'components/schemas/Animal': schema('components/schemas/Animal', {
+        oneOf: [ref('Dog'), ref('Cat')],
+        discriminator: { propertyName: 'type', mapping: animalMapping },
+      }),
+      'components/schemas/Dog': schema('components/schemas/Dog', {
+        oneOf: [ref('Lab'), ref('Poodle')],
+        discriminator: {
+          propertyName: 'type',
+          mapping: { lab: ref('Lab').$ref, poodle: ref('Poodle').$ref },
+        },
+      }),
+      'components/schemas/Lab': schema('components/schemas/Lab', {
+        type: 'object',
+        properties: { type: { type: 'string' }, retrieves: { type: 'boolean' } },
+      }),
+      'components/schemas/Poodle': schema('components/schemas/Poodle', {
+        type: 'object',
+        properties: { type: { type: 'string' }, curls: { type: 'integer' } },
+      }),
+      'components/schemas/Cat': schema('components/schemas/Cat', {
+        type: 'object',
+        properties: { type: { type: 'string' }, indoor: { type: 'boolean' } },
+      }),
+    });
+
+    it('never pairs one variant value with another variant fields', () => {
+      const store = animalStore({
+        lab: ref('Dog').$ref,
+        poodle: ref('Dog').$ref,
+        cat: ref('Cat').$ref,
+      });
+
+      expect(sample(store, 'components/schemas/Animal', { type: 0, '&d=0/type': 1 })).toEqual({
+        type: 'lab',
+        retrieves: true,
+      });
+    });
+
+    it('keeps the value an inner variant pins when no level has a mapping', () => {
+      const store = {
+        'components/schemas/Animal': schema('components/schemas/Animal', {
+          oneOf: [ref('Dog'), ref('Cat')],
+          discriminator: { propertyName: 'type' },
+        }),
+        'components/schemas/Dog': schema('components/schemas/Dog', {
+          oneOf: [ref('Lab'), ref('Poodle')],
+          discriminator: { propertyName: 'type' },
+        }),
+        'components/schemas/Lab': schema('components/schemas/Lab', {
+          type: 'object',
+          properties: { type: { const: 'lab' }, retrieves: { type: 'boolean' } },
+        }),
+        'components/schemas/Poodle': schema('components/schemas/Poodle', {
+          type: 'object',
+          properties: { type: { const: 'poodle' }, curls: { type: 'integer' } },
+        }),
+        'components/schemas/Cat': schema('components/schemas/Cat', {
+          type: 'object',
+          properties: { type: { const: 'cat' } },
+        }),
+      };
+
+      expect(sample(store, 'components/schemas/Animal', { type: 0, '&d=0/type': 1 })).toEqual({
+        type: 'poodle',
+        curls: 0,
+      });
+    });
+
+    it('stamps the inner value when the outer value names no inner variant', () => {
+      const store = animalStore({ dog: ref('Dog').$ref, cat: ref('Cat').$ref });
+
+      expect(sample(store, 'components/schemas/Animal', { type: 0, '&d=0/type': 1 })).toEqual({
+        type: 'poodle',
+        curls: 0,
+      });
+    });
+  });
+});
+
+describe('generatedExampleAtom keywords next to a $ref', () => {
+  const rangeId = 'components/schemas/Range';
+  const numberId = 'components/schemas/Number';
+
+  function makeRangeStore(): Record<string, SchemaEntry> {
+    return {
+      [rangeId]: {
+        id: rangeId,
+        kind: schemaKind.JSON_SCHEMA,
+        data: {
+          type: 'object',
+          properties: {
+            min: { $ref: `#/${numberId}`, minimum: 0, example: 10 },
+            max: { $ref: `#/${numberId}`, minimum: 51, examples: [55] },
+          },
+        },
+      },
+      [numberId]: { id: numberId, kind: schemaKind.JSON_SCHEMA, data: { type: 'number' } },
+    };
+  }
+
+  function sampleRange(specVersion: string, convertedFrom?: string): unknown {
+    const store = setupStore({ schemaStore: makeRangeStore(), specVersion, convertedFrom });
+    return store.get(generatedExampleAtom(buildExampleAtomKey(rangeId, 'response')));
+  }
+
+  it.each(['3.1.0', '3.2.0'])('applies them in OpenAPI %s', (version) => {
+    expect(sampleRange(version)).toEqual({ min: 10, max: 55 });
+  });
+
+  it('ignores them in OpenAPI 3.0', () => {
+    expect(sampleRange('3.0.3')).toEqual({ min: 0, max: 0 });
+  });
+
+  it('ignores them in a document converted from Swagger 2.0', () => {
+    expect(sampleRange('3.2.0', '2.0')).toEqual({ min: 0, max: 0 });
+  });
+});
+
+describe('generatedExampleAtom variant property referencing part of the host', () => {
+  const drinkId = 'components/schemas/Drink';
+  const coffeeId = 'components/schemas/Coffee';
+  const teaId = 'components/schemas/Tea';
+  const schema = (id: string, data: Record<string, unknown>): SchemaEntry => ({
+    id,
+    kind: schemaKind.JSON_SCHEMA,
+    data,
+  });
+
+  function makeDrinkStore(kindRef: string, extraKind: Record<string, unknown> = {}) {
+    return {
+      [drinkId]: schema(drinkId, {
+        type: 'object',
+        required: ['kind'],
+        properties: { kind: { type: 'string' }, leaf: { type: 'string' } },
+        discriminator: {
+          propertyName: 'kind',
+          mapping: { coffee: `#/${coffeeId}`, tea: `#/${teaId}` },
+        },
+        oneOf: [{ $ref: `#/${coffeeId}` }, { $ref: `#/${teaId}` }],
+      }),
+      [coffeeId]: schema(coffeeId, {
+        type: 'object',
+        required: ['kind', 'shots'],
+        properties: { kind: { $ref: kindRef, ...extraKind }, shots: { type: 'integer' } },
+      }),
+      [teaId]: schema(teaId, {
+        type: 'object',
+        required: ['kind', 'leaf'],
+        properties: { kind: { $ref: kindRef, ...extraKind }, leaf: { type: 'string' } },
+      }),
+    };
+  }
+
+  const sample = (
+    schemaStore: Record<string, SchemaEntry>,
+    activeDiscriminator: Record<string, number>,
+    specVersion = '3.1.0',
+  ) =>
+    setupStore({ schemaStore, itemId: ITEM_ID, activeDiscriminator, specVersion }).get(
+      generatedExampleAtom(buildExampleAtomKey(drinkId, 'request', 'application/json', ITEM_ID)),
+    );
+
+  it('samples both variants when kind refs the host property', () => {
+    const store = makeDrinkStore(`#/${drinkId}/properties/kind`);
+    expect(sample(store, { kind: 0 })).toEqual({ kind: 'coffee', shots: 0, leaf: 'string' });
+    expect(sample(store, { kind: 1 })).toEqual({ kind: 'tea', leaf: 'string' });
+  });
+
+  it.each([
+    ['3.1.0', 'oolong'],
+    ['3.0.3', 'string'],
+  ])('follows the sampler sibling rule for OpenAPI %s', (version, leaf) => {
+    const base = makeDrinkStore(`#/${drinkId}/properties/kind`);
+    const store = {
+      ...base,
+      [teaId]: schema(teaId, {
+        type: 'object',
+        required: ['kind', 'leaf'],
+        properties: {
+          kind: { $ref: `#/${drinkId}/properties/kind` },
+          leaf: { $ref: `#/${drinkId}/properties/leaf`, example: 'oolong' },
+        },
+      }),
+    };
+    expect(sample(store, { kind: 1 }, version)).toEqual({ kind: 'tea', leaf });
+  });
+
+  it('samples a recursive host property referenced from a variant', () => {
+    const base = makeDrinkStore(`#/${drinkId}/properties/kind`);
+    const tree = {
+      type: 'object',
+      required: ['name', 'child'],
+      properties: { name: { type: 'string' }, child: { $ref: `#/${drinkId}/properties/tree` } },
+    };
+    const drink = base[drinkId].data;
+    const store = {
+      ...base,
+      [drinkId]: schema(drinkId, {
+        ...drink,
+        properties: { ...(drink.properties as Record<string, unknown>), tree },
+      }),
+      [teaId]: schema(teaId, {
+        type: 'object',
+        required: ['kind', 'tree'],
+        properties: { kind: { type: 'string' }, tree: { $ref: `#/${drinkId}/properties/tree` } },
+      }),
+    };
+    expect(sample(store, { kind: 1 })).toEqual({
+      kind: 'tea',
+      leaf: 'string',
+      tree: { name: 'string', child: { name: 'string', child: {} } },
+    });
+  });
+
+  it('keeps the depth limit along a chain of hosts that refs point into', () => {
+    const store: Record<string, SchemaEntry> = {};
+    const hostCount = 18;
+    for (let i = 0; i < hostCount; i++) {
+      const id = `components/schemas/H${i}`;
+      const next = i + 1 < hostCount && { $ref: `#/components/schemas/H${i + 1}` };
+      store[id] = schema(id, {
+        type: 'object',
+        properties: { kind: { type: 'string' }, ...(next && { a: next, b: next }) },
+        discriminator: { propertyName: 'kind' },
+        oneOf: [{ $ref: `#/${id}X` }, { $ref: `#/${id}Y` }],
+      });
+      for (const v of ['X', 'Y']) {
+        store[`${id}${v}`] = schema(`${id}${v}`, {
+          type: 'object',
+          properties: { kind: { $ref: `#/${id}/properties/kind` } },
+        });
+      }
+    }
+    const example = setupStore({ schemaStore: store, specVersion: '3.1.0' }).get(
+      generatedExampleAtom(
+        buildExampleAtomKey('components/schemas/H0', 'request', 'application/json'),
+      ),
+    );
+
+    expect(JSON.stringify(example).length).toBeLessThan(20_000);
+  });
+
+  it('follows a pointer through the host allOf', () => {
+    const base = makeDrinkStore(`#/${drinkId}/allOf/0/properties/kind`);
+    const { properties: _p, ...drink } = base[drinkId].data;
+    const store = {
+      ...base,
+      [drinkId]: schema(drinkId, {
+        ...drink,
+        allOf: [{ properties: { kind: { type: 'string' } } }],
+      }),
+    };
+    expect(sample(store, { kind: 1 })).toEqual({ kind: 'tea', leaf: 'string' });
+  });
+
+  it('keeps a const two ref hops away over the mapping key', () => {
+    const store = {
+      ...makeDrinkStore('#/components/schemas/Kinds/properties/tea'),
+      'components/schemas/Kinds': schema('components/schemas/Kinds', {
+        properties: { tea: { $ref: '#/components/schemas/Green' } },
+      }),
+      'components/schemas/Green': schema('components/schemas/Green', { const: 'green' }),
+    };
+    expect(sample(store, { kind: 1 })).toEqual({ kind: 'green', leaf: 'string' });
+  });
+
+  it('leaves a ref with siblings into an inline anyOf host to the sampler', () => {
+    const baseId = 'components/schemas/Base';
+    const orderId = 'components/schemas/Order';
+    const store = {
+      [baseId]: schema(baseId, {
+        type: 'object',
+        properties: {
+          createdAt: { type: 'string', format: 'date-time' },
+          count: { type: 'integer', minimum: 60 },
+        },
+        anyOf: [{ required: ['createdAt'] }, { required: ['count'] }],
+      }),
+      [orderId]: schema(orderId, {
+        type: 'object',
+        required: ['createdAt', 'count'],
+        properties: {
+          createdAt: { $ref: `#/${baseId}/properties/createdAt`, description: 'Created' },
+          count: { $ref: `#/${baseId}/properties/count`, description: 'Count' },
+        },
+      }),
+    };
+    const example = setupStore({ schemaStore: store, specVersion: '3.1.0' }).get(
+      generatedExampleAtom(buildExampleAtomKey(orderId, 'request', 'application/json')),
+    );
+    expect(example).toEqual({ createdAt: expect.stringMatching(/^\d{4}-/), count: 60 });
+  });
+
+  it('samples a variant that inherits the host through allOf and refs a host property', () => {
+    const petId = 'components/schemas/Pet';
+    const catId = 'components/schemas/Cat';
+    const dogId = 'components/schemas/Dog';
+    const store = {
+      [petId]: schema(petId, {
+        type: 'object',
+        required: ['petType'],
+        properties: { petType: { type: 'string' }, name: { type: 'string' } },
+        discriminator: {
+          propertyName: 'petType',
+          mapping: { cat: `#/${catId}`, dog: `#/${dogId}` },
+        },
+      }),
+      [catId]: schema(catId, {
+        allOf: [
+          { $ref: `#/${petId}` },
+          {
+            type: 'object',
+            properties: {
+              petType: { $ref: `#/${petId}/properties/petType` },
+              meow: { type: 'boolean' },
+            },
+          },
+        ],
+      }),
+      [dogId]: schema(dogId, {
+        allOf: [
+          { $ref: `#/${petId}` },
+          { type: 'object', properties: { bark: { type: 'boolean' } } },
+        ],
+      }),
+    };
+    const sample = (activeDiscriminator: Record<string, number>) =>
+      setupStore({ schemaStore: store, itemId: ITEM_ID, activeDiscriminator }).get(
+        generatedExampleAtom(buildExampleAtomKey(petId, 'request', 'application/json', ITEM_ID)),
+      );
+    expect(sample({ petType: 0 })).toEqual({ petType: 'cat', name: 'string', meow: true });
+    expect(sample({ petType: 1 })).toEqual({ petType: 'dog', name: 'string', bark: true });
+  });
+});
+
+describe('generatedExampleAtom host keywords no pointer reaches into', () => {
+  const ids = {
+    drink: 'components/schemas/Drink',
+    tea: 'components/schemas/Tea',
+    coffee: 'components/schemas/Coffee',
+    base: 'components/schemas/Base',
+  };
+  const schema = (id: string, data: Record<string, unknown>): SchemaEntry => ({
+    id,
+    kind: schemaKind.JSON_SCHEMA,
+    data,
+  });
+  const drinkStore = (host: Record<string, unknown> = {}) => ({
+    [ids.drink]: schema(ids.drink, {
+      type: 'object',
+      properties: { kind: { type: 'string' } },
+      discriminator: {
+        propertyName: 'kind',
+        mapping: { coffee: `#/${ids.coffee}`, tea: `#/${ids.tea}` },
+      },
+      oneOf: [{ $ref: `#/${ids.coffee}` }, { $ref: `#/${ids.tea}` }],
+      ...host,
+    }),
+    [ids.coffee]: schema(ids.coffee, {
+      type: 'object',
+      properties: { shots: { type: 'integer' } },
+    }),
+    [ids.tea]: schema(ids.tea, { type: 'object', properties: { leaf: { type: 'string' } } }),
+    [ids.base]: schema(ids.base, { type: 'object', properties: { id: { type: 'string' } } }),
+  });
+  const sample = (
+    schemaStore: Record<string, SchemaEntry>,
+    schemaId: string,
+    options: { specVersion?: string; generatedSamplesMaxDepth?: number } = {},
+  ) =>
+    setupStore({ schemaStore, itemId: ITEM_ID, activeDiscriminator: { kind: 1 }, ...options }).get(
+      generatedExampleAtom(buildExampleAtomKey(schemaId, 'request', 'application/json', ITEM_ID)),
+    );
+
+  it('keeps the selected variant next to a host $ref in OpenAPI 3.0', () => {
+    const store = drinkStore({ $ref: `#/${ids.base}` });
+    expect(sample(store, ids.drink, { specVersion: '3.0.3' })).toEqual({
+      id: 'string',
+      kind: 'tea',
+      leaf: 'string',
+    });
+  });
+
+  it('keeps the selected variant over a host const', () => {
+    const store = drinkStore({ const: { kind: 'x' } });
+    expect(sample(store, ids.drink)).toEqual({ kind: 'tea', leaf: 'string' });
+  });
+
+  it('keeps the selected option over a primitive host enum', () => {
+    const store = {
+      'components/schemas/Code': schema('components/schemas/Code', {
+        type: 'string',
+        enum: ['A1', 'B2'],
+        anyOf: [{ $ref: '#/components/schemas/F1' }, { $ref: '#/components/schemas/F2' }],
+      }),
+      'components/schemas/F1': schema('components/schemas/F1', { type: 'string', example: 'Z9' }),
+      'components/schemas/F2': schema('components/schemas/F2', { type: 'string', example: 'QQ' }),
+    };
+    expect(sample(store, 'components/schemas/Code')).toBe('Z9');
+  });
+
+  it('stops host properties at the sample depth limit', () => {
+    const wrapId = 'components/schemas/Wrap';
+    const store = {
+      ...drinkStore({
+        properties: { kind: { type: 'string' }, deep: { $ref: '#/components/schemas/Deep' } },
+      }),
+      'components/schemas/Deep': schema('components/schemas/Deep', {
+        type: 'object',
+        properties: { name: { type: 'string' } },
+      }),
+      [wrapId]: schema(wrapId, {
+        type: 'object',
+        properties: {
+          d1: { type: 'object', properties: { d2: { $ref: `#/${ids.drink}` } } },
+        },
+      }),
+    };
+    expect(sample(store, wrapId, { generatedSamplesMaxDepth: 3 })).toEqual({ d1: { d2: {} } });
+  });
+});
+
+describe('generatedExampleAtom inline oneOf next to host keywords', () => {
+  const hostId = 'components/schemas/Shape';
+  const pointerId = 'components/schemas/ShapeKind';
+  const optionPointerId = 'components/schemas/ShapeB';
+
+  function makeShapeStore(): Record<string, SchemaEntry> {
+    return {
+      [hostId]: {
+        id: hostId,
+        kind: schemaKind.JSON_SCHEMA,
+        data: {
+          type: 'object',
+          required: ['kind'],
+          properties: { kind: { type: 'string', enum: ['a'] } },
+          oneOf: [
+            { required: ['a'], properties: { a: { type: 'string' } } },
+            { properties: { b: { type: 'string' } } },
+          ],
+        },
+      },
+      [pointerId]: {
+        id: pointerId,
+        kind: schemaKind.JSON_SCHEMA,
+        data: {
+          type: 'object',
+          properties: { kind: { $ref: `#/${hostId}/properties/kind` } },
+        },
+      },
+      [optionPointerId]: {
+        id: optionPointerId,
+        kind: schemaKind.JSON_SCHEMA,
+        data: {
+          type: 'object',
+          properties: { b: { $ref: `#/${hostId}/oneOf/1/properties/b` } },
+        },
+      },
+    };
+  }
+
+  const sample = (
+    schemaId: string,
+    activeOneOf?: Record<string, number>,
+    onlyRequiredInSamples?: boolean,
+  ) =>
+    setupStore({
+      schemaStore: makeShapeStore(),
+      itemId: ITEM_ID,
+      activeOneOf,
+      onlyRequiredInSamples,
+    }).get(
+      generatedExampleAtom(buildExampleAtomKey(schemaId, 'request', 'application/json', ITEM_ID)),
+    );
+
+  it('keeps the host properties next to the selected variant properties', () => {
+    expect(sample(hostId)).toEqual({ kind: 'a', a: 'string' });
+    expect(sample(hostId, { 'One of:': 1 })).toEqual({ kind: 'a', b: 'string' });
+  });
+
+  it('keeps the host required names next to the variant required names', () => {
+    expect(sample(hostId, undefined, true)).toEqual({ kind: 'a', a: 'string' });
+  });
+
+  it('resolves a pointer into a host property from another schema', () => {
+    expect(sample(pointerId)).toEqual({ kind: 'a' });
+  });
+
+  it('resolves a pointer into an option from another schema', () => {
+    expect(sample(optionPointerId)).toEqual({ b: 'string' });
+    expect(sample(optionPointerId, { 'One of:': 1 })).toEqual({ b: 'string' });
+  });
+});
+
+describe('generatedExampleAtom inline oneOf of refs next to host keywords', () => {
+  const bodyId = 'components/schemas/Adoption';
+  const ref = (name: string) => ({ $ref: `#/components/schemas/${name}` });
+  const schema = (id: string, data: Record<string, unknown>): SchemaEntry => ({
+    id,
+    kind: schemaKind.JSON_SCHEMA,
+    data,
+  });
+
+  function makePetStore(pet: Record<string, unknown> = {}): Record<string, SchemaEntry> {
+    return {
+      [bodyId]: schema(bodyId, {
+        type: 'object',
+        properties: {
+          pet: {
+            type: 'object',
+            properties: { id: { type: 'integer' } },
+            oneOf: [ref('Cat'), ref('Dog')],
+            ...pet,
+          },
+        },
+      }),
+      'components/schemas/Cat': schema('components/schemas/Cat', {
+        type: 'object',
+        properties: { meow: { type: 'string' } },
+      }),
+      'components/schemas/Dog': schema('components/schemas/Dog', {
+        type: 'object',
+        properties: { bark: { type: 'string' } },
+      }),
+    };
+  }
+
+  const sample = (
+    specVersion: string | undefined,
+    activeOneOf?: Record<string, number>,
+    pet?: Record<string, unknown>,
+  ) =>
+    setupStore({ schemaStore: makePetStore(pet), itemId: ITEM_ID, activeOneOf, specVersion }).get(
+      generatedExampleAtom(buildExampleAtomKey(bodyId, 'request', 'application/json', ITEM_ID)),
+    );
+
+  it('keeps the host properties next to the selected $ref in OpenAPI 3.0', () => {
+    expect(sample('3.0.3')).toEqual({ pet: { id: 0, meow: 'string' } });
+    expect(sample('3.0.3', { 'pet/One of:': 1 })).toEqual({ pet: { id: 0, bark: 'string' } });
+  });
+
+  it('keeps the host properties in a document sampled without an OpenAPI 3.1 version', () => {
+    expect(sample(undefined)).toEqual({ pet: { id: 0, meow: 'string' } });
+  });
+
+  it('keeps the OpenAPI 3.1 sample, where keywords next to $ref already apply', () => {
+    expect(JSON.stringify(sample('3.1.0'))).toBe('{"pet":{"meow":"string","id":0}}');
+  });
+
+  it("returns the host's own example in OpenAPI 3.0 as in 3.1", () => {
+    const pet = { example: { id: 7, meow: 'purr' } };
+    expect(sample('3.0.3', undefined, pet)).toEqual({ pet: { id: 7, meow: 'purr' } });
+    expect(sample('3.1.0', undefined, pet)).toEqual({ pet: { id: 7, meow: 'purr' } });
+  });
+
+  it('keeps the depth limit along a chain of such hosts in OpenAPI 3.0', () => {
+    const store: Record<string, SchemaEntry> = {
+      'components/schemas/Leaf': schema('components/schemas/Leaf', {
+        type: 'object',
+        properties: { leaf: { type: 'string' } },
+      }),
+    };
+    for (let i = 0; i < 30; i++) {
+      const option = {
+        type: 'object',
+        properties: { id: { type: 'integer' } },
+        oneOf: [ref(i + 1 < 30 ? `Host${i + 1}` : 'Leaf'), ref('Leaf')],
+      };
+      store[`components/schemas/Host${i}`] = schema(`components/schemas/Host${i}`, {
+        type: 'object',
+        properties: { a: option, b: option },
+      });
+    }
+    const leafless = { a: {}, b: {} };
+    const level = { id: 0, a: leafless, b: leafless };
+
+    expect(
+      setupStore({ schemaStore: store, specVersion: '3.0.3', generatedSamplesMaxDepth: 3 }).get(
+        generatedExampleAtom(buildExampleAtomKey('components/schemas/Host0', 'response')),
+      ),
+    ).toEqual({ a: level, b: level });
   });
 });

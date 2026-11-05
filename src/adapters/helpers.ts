@@ -1,17 +1,42 @@
 import type {
+  ApiItemContent,
   SchemaEntry,
   ExampleEntry,
   SecuritySchemeEntry,
   StoreContext,
 } from '../types/store.js';
-import type { OpenAPIRef, Referenced } from '../types/common.js';
+import type { ContentType, OpenAPIRef, Referenced } from '../types/common.js';
 import type { OpenAPIMediaType, OpenAPIExample } from '../types/openapi.js';
 
+import { contentType } from '../types/common.js';
 import { getDefinitionName } from './openapi/utils/helpers.js';
 import { readRbacScope, rbacProp } from './rbac.js';
 import { isRecord } from '../utils/is-record.js';
+import { reportError } from '../telemetry/reportError.js';
 
 export { isRecord };
+
+/** `build`, except that a throw is reported with the item label from `labelOf(...args)` and yields empty content of `type`. */
+export function withErrorHandling<Build extends (...args: never[]) => ApiItemContent>(
+  labelOf: (...args: Parameters<Build>) => string,
+  build: Build,
+  type: ContentType = contentType.ITEM,
+): (...args: Parameters<Build>) => ApiItemContent {
+  return (...args) => {
+    try {
+      return build(...args);
+    } catch (error) {
+      let label: string;
+      try {
+        label = labelOf(...args);
+      } catch {
+        label = 'item';
+      }
+      reportError('buildItem', error, `Could not build "${label}" from the API description`);
+      return { contentType: type, children: [] };
+    }
+  };
+}
 
 const storeCounters = new WeakMap<object, number>();
 
@@ -74,6 +99,14 @@ export function registerSchema(
     hashIndex[hash] = entry.id;
   }
   return entry.id;
+}
+
+/** Registers a boolean component schema under `entry.id` with `data: {}`. It never enters `hashIndex`, so no inline `{}` schema is deduplicated onto it. */
+export function registerBooleanSchema(
+  schemaStore: Record<string, SchemaEntry>,
+  entry: Omit<SchemaEntry, 'data' | 'booleanSchema'> & { booleanSchema: boolean },
+): void {
+  schemaStore[entry.id] ??= { ...entry, data: {} };
 }
 
 function hoistSchemaRbac<T extends { data: Record<string, unknown> }>(entry: T): T {

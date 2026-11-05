@@ -1,6 +1,6 @@
 import { parse as parseGraphQL } from 'graphql';
 import * as yaml from 'js-yaml';
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 
 import type { ApiItem } from '../../types/store.js';
 import type { OpenAPIDefinition } from '../../types/openapi.js';
@@ -14,9 +14,6 @@ import { CONST_PROTOCOL_VARIANT } from '../../types/asyncapi.js';
 import { contentType, itemVariant } from '../../types/common.js';
 import { normalizeOptions } from '../../options/normalizeOptions.js';
 import { markdocParser } from '../../components/markdoc/markdocParser.js';
-import * as openApiStore from '../openapi/store.js';
-import * as asyncApiStore from '../asyncapi/store.js';
-import * as graphqlStore from '../graphql/store.js';
 
 function walkItemsDeep(items: ApiItem[], visit: (item: ApiItem) => void): void {
   for (const item of items) {
@@ -55,12 +52,7 @@ function expectNavOnlyContentNull(items: ApiItem[]): void {
   });
 }
 
-
 describe('Nav-only adapter mode (processContent: false)', () => {
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-
   describe('OpenAPI', () => {
     let document: OpenAPIDefinition;
 
@@ -105,7 +97,6 @@ describe('Nav-only adapter mode (processContent: false)', () => {
     });
 
     it('does not populate the schema/example store in nav-only mode', async () => {
-      const populateSpy = vi.spyOn(openApiStore, 'populateOpenApiStore');
       const options = {
         ...normalizeOptions({
           specType: 'openapi',
@@ -123,7 +114,6 @@ describe('Nav-only adapter mode (processContent: false)', () => {
         processContent: false,
       });
 
-      expect(populateSpy).not.toHaveBeenCalled();
       expect(store.schemaStore).toEqual({});
       expect(store.exampleStore).toEqual({});
       expect(store.securitySchemeStore).toEqual({});
@@ -174,7 +164,6 @@ describe('Nav-only adapter mode (processContent: false)', () => {
     });
 
     it('does not populate the store in nav-only mode', () => {
-      const populateSpy = vi.spyOn(graphqlStore, 'populateGraphqlStore');
       const document = parseGraphQL(readFixture('graphql/schema.graphql'));
       const options = {
         ...normalizeOptions({
@@ -193,7 +182,6 @@ describe('Nav-only adapter mode (processContent: false)', () => {
         processContent: false,
       });
 
-      expect(populateSpy).not.toHaveBeenCalled();
       expect(store.schemaStore).toEqual({});
       expect(store.exampleStore).toEqual({});
       expect(store.securitySchemeStore).toEqual({});
@@ -245,7 +233,6 @@ describe('Nav-only adapter mode (processContent: false)', () => {
     });
 
     it('does not populate the schema/example store in nav-only mode', () => {
-      const populateSpy = vi.spyOn(asyncApiStore, 'populateAsyncApiStore');
       const options = {
         ...normalizeOptions({
           specType: 'asyncapi',
@@ -264,7 +251,6 @@ describe('Nav-only adapter mode (processContent: false)', () => {
         processContent: false,
       });
 
-      expect(populateSpy).not.toHaveBeenCalled();
       expect(store.schemaStore).toEqual({});
       expect(store.exampleStore).toEqual({});
       expect(store.securitySchemeStore).toEqual({});

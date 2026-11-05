@@ -1,4 +1,4 @@
-import type { Node } from '@markdoc/markdoc';
+import type { Node } from '@redocly/markdoc';
 import type { ContentNode, PanelNode, ApiItemContent } from '../../../../types/content.js';
 import type {
   AsyncApiChannel,
@@ -16,9 +16,11 @@ import {
   panelKind,
   schemaKind,
 } from '../../../../types/common.js';
-import { registerSchema } from '../../../helpers.js';
+import { registerSchema, withErrorHandling } from '../../../helpers.js';
 import { parseMarkdown } from '../../../utils/parseMarkdown.js';
 import { asString, safeSlugify } from '../../../../utils/string.js';
+import { normalizeBadges } from '../../../../utils/normalize-badges.js';
+import { objectBindings } from '../../build/utils.js';
 import { normalizePath, toRelativePath } from '../../../../utils/url.js';
 import { JsonPointer } from '../../../openapi/utils/JsonPointer.js';
 import { componentLabelsByProtocol } from '../../utils/get-protocol-labels.js';
@@ -27,7 +29,7 @@ import { buildSecurityRequirements } from '../../utils/security.js';
 import { resolveAsyncApiSchema } from '../../utils/resolve-schema.js';
 import { asyncApiContext } from '../../buildContext.js';
 
-export function buildOperationContent(
+function _buildOperationContent(
   operationId: string,
   operation: AsyncApiOperation,
   document: AsyncApiDefinition,
@@ -58,7 +60,7 @@ export function buildOperationContent(
     nodeType: nodeTypes.HEADER,
     level: 5,
     label: operationTitle,
-    badges: operation['x-badges'] || [],
+    badges: normalizeBadges(operation['x-badges']) ?? [],
     showPageActions: true,
     protocolTag: {
       label: actionTag,
@@ -150,7 +152,8 @@ export function buildOperationContent(
           }
         }
 
-        const label = resolved.title || resolved.name || messageKey || 'Message';
+        const label =
+          asString(resolved.title) ?? asString(resolved.name) ?? messageKey ?? 'Message';
 
         if (!messageKey) {
           const title = asString(resolved.title);
@@ -184,10 +187,10 @@ export function buildOperationContent(
         .map((message) => {
           const resolved = resolveInDoc<AsyncApiMessage>(document, message);
           return (
-            resolved?.title ||
-            resolved?.name ||
-            (message as AsyncApiMessage).title ||
-            (message as AsyncApiMessage).name ||
+            asString(resolved?.title) ??
+            asString(resolved?.name) ??
+            asString(message.title) ??
+            asString(message.name) ??
             'Message'
           );
         })
@@ -213,51 +216,49 @@ export function buildOperationContent(
 
   const operationPanels: PanelNode[] = [];
 
-  if (operation.bindings) {
-    const bindingEntries = Object.entries(operation.bindings);
-    if (bindingEntries.length > 0) {
-      const [bindingKey, bindingValue] = bindingEntries[0];
-      let groupIdSchemaId: string | undefined;
-      let clientIdSchemaId: string | undefined;
-      const storeCtx = asyncApiContext.get().storeCtx;
+  const [operationBinding] = objectBindings(operation.bindings, operationTitle, document);
+  if (operationBinding) {
+    const [bindingKey, bindingValue] = operationBinding;
+    let groupIdSchemaId: string | undefined;
+    let clientIdSchemaId: string | undefined;
+    const storeCtx = asyncApiContext.get().storeCtx;
 
-      if (storeCtx && bindingKey === 'kafka' && bindingValue && typeof bindingValue === 'object') {
-        const kafkaBinding = bindingValue as { groupId?: unknown; clientId?: unknown };
-        if (kafkaBinding.groupId && typeof kafkaBinding.groupId === 'object') {
-          const groupId = resolveAsyncApiSchema(kafkaBinding.groupId);
-          groupIdSchemaId = registerSchema(storeCtx.schemaStore, storeCtx.hashIndex, {
-            kind: schemaKind.JSON_SCHEMA,
-            data: {
-              type: 'object',
-              properties: { groupId },
-            },
-          });
-        }
-        if (kafkaBinding.clientId && typeof kafkaBinding.clientId === 'object') {
-          const clientId = resolveAsyncApiSchema(kafkaBinding.clientId);
-          clientIdSchemaId = registerSchema(storeCtx.schemaStore, storeCtx.hashIndex, {
-            kind: schemaKind.JSON_SCHEMA,
-            data: {
-              type: 'object',
-              properties: { clientId },
-            },
-          });
-        }
-      }
-
-      operationPanels.push({
-        title: 'Operation configuration',
-        children: [
-          {
-            kind: panelKind.OPERATION_BINDING,
-            bindingKey,
-            bindingValue: bindingValue as Record<string, unknown>,
-            groupIdSchemaId,
-            clientIdSchemaId,
+    if (storeCtx && bindingKey === 'kafka') {
+      const kafkaBinding = bindingValue as { groupId?: unknown; clientId?: unknown };
+      if (kafkaBinding.groupId && typeof kafkaBinding.groupId === 'object') {
+        const groupId = resolveAsyncApiSchema(kafkaBinding.groupId);
+        groupIdSchemaId = registerSchema(storeCtx.schemaStore, storeCtx.hashIndex, {
+          kind: schemaKind.JSON_SCHEMA,
+          data: {
+            type: 'object',
+            properties: { groupId },
           },
-        ],
-      });
+        });
+      }
+      if (kafkaBinding.clientId && typeof kafkaBinding.clientId === 'object') {
+        const clientId = resolveAsyncApiSchema(kafkaBinding.clientId);
+        clientIdSchemaId = registerSchema(storeCtx.schemaStore, storeCtx.hashIndex, {
+          kind: schemaKind.JSON_SCHEMA,
+          data: {
+            type: 'object',
+            properties: { clientId },
+          },
+        });
+      }
     }
+
+    operationPanels.push({
+      title: 'Operation configuration',
+      children: [
+        {
+          kind: panelKind.OPERATION_BINDING,
+          bindingKey,
+          bindingValue,
+          groupIdSchemaId,
+          clientIdSchemaId,
+        },
+      ],
+    });
   }
 
   const children: ContentNode[] = [
@@ -267,7 +268,6 @@ export function buildOperationContent(
       panels: operationPanels.length > 0 ? operationPanels : undefined,
     },
   ];
-
 
   return {
     contentType: contentType.ITEM,
@@ -287,3 +287,9 @@ export function buildOperationContent(
     showDivider,
   };
 }
+
+export const buildOperationContent = withErrorHandling(
+  (operationId, operation) =>
+    asString(operation.title) ?? asString(operation.summary) ?? operationId,
+  _buildOperationContent,
+);

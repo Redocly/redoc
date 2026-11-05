@@ -218,9 +218,8 @@ const HeadingContentWrapper = styled.div<{
   container-name: api-docs-heading;
   position: relative;
   display: flex;
-  align-items: flex-start;
+  align-items: baseline;
   gap: var(--spacing-base);
-  ${deepLinkHoverReveal}
   margin-bottom: var(--spacing-base);
   flex-wrap: nowrap;
   gap: var(--spacing-xs);
@@ -250,7 +249,8 @@ const HeadingContentWrapper = styled.div<{
     `}
 
   @media screen and (max-width: ${breakpoints.small}) {
-    gap: 0;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs) 0;
   }
 `;
 
@@ -265,6 +265,7 @@ const HeadingMainArea = styled.div<{ $badgeCount?: number }>`
   row-gap: var(--spacing-xs);
   flex: 1 1 auto;
   min-width: 0;
+  ${deepLinkHoverReveal}
   & > *:has(+ [data-response-codes-tablist]) {
     margin-right: var(--spacing-base);
   }
@@ -290,6 +291,11 @@ const ArgsCollapsedWrapper = styled(ArgsCollapsed)`
 const HeaderPageActionsSlot = styled.div`
   flex-shrink: 0;
   margin-left: auto;
+
+  @media screen and (max-width: ${breakpoints.small}) {
+    flex-basis: 100%;
+    --page-actions-padding-left: 0;
+  }
 `;
 
 const ProtocolTag = styled(TextBadge)`

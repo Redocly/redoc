@@ -1,4 +1,4 @@
-import type { Node } from '@markdoc/markdoc';
+import type { Node } from '@redocly/markdoc';
 import type { AsyncApiDefinition } from './asyncapi';
 import type { ObjectValues } from './common';
 import type { OpenAPIDefinition } from './openapi';
@@ -63,7 +63,8 @@ export type SchemaNode = {
 
   externalDocs?: { url?: string; description?: string };
 
-  'x-circular-ref'?: boolean;
+  // the ref of the open ancestor a cycle stub stands for, or true when that ref is unknown
+  'x-circular-ref'?: boolean | string;
   'x-allof-cycle'?: boolean;
   'x-complex'?: boolean;
   'x-nullable'?: boolean;
@@ -122,8 +123,8 @@ export type PropertyType = {
 
 export type BadgeType = {
   name: string;
-  position: 'before' | 'after';
-  color: string;
+  position?: 'before' | 'after';
+  color?: string;
 };
 
 export type ExampleType = {

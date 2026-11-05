@@ -19,6 +19,7 @@ import { OverviewPage } from '../pages/OverviewPage.js';
 import { ItemPage } from '../pages/ItemPage.js';
 import { GroupPage } from '../pages/GroupPage.js';
 import { HeaderItem } from './Header/HeaderItem.js';
+import { ErrorBoundary } from './ErrorBoundary.js';
 import { EmptyMessageItem } from './EmptyMessageItem.js';
 import { MarkdownItem } from './MarkdownItem.js';
 import { AdmonitionItem } from './AdmonitionItem.js';
@@ -141,12 +142,14 @@ export function ComponentMapper(
   }
 
   const { itemPath, sectionId: _s, ...nodeOnly } = rest as ContentNodeProps;
-
-  if (type === nodeTypes.ITEM) {
-    return <ItemContentRenderer node={nodeOnly.node as ItemContentNode} />;
-  }
-
-  const componentProps: ContentNodeProps = { ...nodeOnly, itemPath };
   const Component = Mapper[type] as FC<ContentNodeProps>;
-  return <Component {...componentProps} />;
+  return (
+    <ErrorBoundary scope="node">
+      {type === nodeTypes.ITEM ? (
+        <ItemContentRenderer node={nodeOnly.node as ItemContentNode} />
+      ) : (
+        <Component {...nodeOnly} itemPath={itemPath} />
+      )}
+    </ErrorBoundary>
+  );
 }

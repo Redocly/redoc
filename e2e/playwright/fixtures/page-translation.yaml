@@ -1,0 +1,105 @@
+openapi: 3.1.0
+info:
+  title: Pet API
+  version: 1.0.0
+tags:
+  - name: pets
+components:
+  schemas:
+    Cat:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The `cat` name, as shown on the **tag**.
+    Dog:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Dog name.
+paths:
+  /pets/{id}:
+    get:
+      operationId: getPet
+      summary: Get a pet
+      tags: [pets]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Returns the `Pet` object for the given `id`.
+          content:
+            application/json:
+              example:
+                id: p-1
+                name: Rex
+                tags: [good, loud]
+                owner:
+                  name: Anna
+                  address:
+                    city: Paris
+                    zip: '75001'
+        '404':
+          description: No pet matches this identifier.
+  /pets:
+    post:
+      operationId: createPet
+      summary: Create a pet
+      tags: [pets]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/Cat'
+                - $ref: '#/components/schemas/Dog'
+            examples:
+              cat:
+                summary: A cat
+                description: A `cat` with a **name**.
+                value: { name: Tom }
+              dog:
+                summary: A dog
+                description: Plain dog example.
+                value: { name: Rex }
+      callbacks:
+        onPetCreated:
+          '{$request.body#/callbackUrl}':
+            post:
+              summary: Pet created callback
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                    examples:
+                      first:
+                        summary: First event
+                        description: The `first` event for **new** pets.
+                        value: { event: first }
+                      second:
+                        summary: Second event
+                        description: Second event.
+                        value: { event: second }
+              responses:
+                '200':
+                  description: Received.
+      responses:
+        '200':
+          description: The created pet.
+          content:
+            application/json:
+              examples:
+                cat:
+                  summary: A cat
+                  description: Returns a `cat` for **cats**.
+                  value: { name: Tom }
+                dog:
+                  summary: A dog
+                  description: Returns a dog.
+                  value: { name: Rex }

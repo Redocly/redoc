@@ -311,7 +311,7 @@ describe('collectRoutesRecursively', () => {
 
   describe('with items built from openapi-3-1.yaml', () => {
     it('should produce routes for all navigable items', () => {
-      const { allRoutes, tagsWithItems } = runCollect(apiItems as ApiItem[]);
+      const { allRoutes, tagsWithItems } = runCollect(apiItems);
 
       expect(allRoutes.length).toBeGreaterThan(0);
       expect(tagsWithItems.length).toBeGreaterThan(0);
@@ -323,7 +323,7 @@ describe('collectRoutesRecursively', () => {
     });
 
     it('should produce the expected top-level tags from openapi-3-1.yaml', () => {
-      const { tagsWithItems } = runCollect(apiItems as ApiItem[]);
+      const { tagsWithItems } = runCollect(apiItems);
       const tagPaths = tagsWithItems.map((t) => t.tag.path);
 
       expect(tagPaths).toContain('/menu');
@@ -334,7 +334,7 @@ describe('collectRoutesRecursively', () => {
     });
 
     it('should not include section groups (null content) in tagsWithItems', () => {
-      const { tagsWithItems } = runCollect(apiItems as ApiItem[]);
+      const { tagsWithItems } = runCollect(apiItems);
       const tagPaths = tagsWithItems.map((t) => t.tag.path);
 
       // Section groups (null content) must be excluded; no tag path should be a section path.
@@ -342,7 +342,7 @@ describe('collectRoutesRecursively', () => {
     });
 
     it('should associate child items with their parent tag', () => {
-      const { tagsWithItems } = runCollect(apiItems as ApiItem[]);
+      const { tagsWithItems } = runCollect(apiItems);
       const menuTag = tagsWithItems.find((t) => t.tag.path === '/menu');
 
       expect(menuTag).toBeDefined();
@@ -523,7 +523,7 @@ describe('buildRouteIndex', () => {
       const allRoutes: RouteItem[] = [];
       const tagsWithItems: TagWithItems[] = [];
       collectRoutesRecursively({
-        apiItems: apiItems as ApiItem[],
+        apiItems,
         allRoutes,
         tagsWithItems,
         parentTag: null,

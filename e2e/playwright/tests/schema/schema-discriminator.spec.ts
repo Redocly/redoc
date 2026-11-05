@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, type Page } from '@playwright/test';
 
 import { ApiDocsPage } from '../../page-objects/ApiDocsPage';
 
@@ -179,5 +179,208 @@ test.describe('Discriminator sync (array-item body)', () => {
     await selectSchemaOption('DURATION');
     await expect(codeSampleDropdown).toContainText('DURATION');
     await expect(variantField('maxHours')).toBeVisible();
+  });
+});
+
+test.describe('Discriminator whose listed variants inherit it through allOf', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/menu/other/sendnotification?specFileName=discriminator-listed-variants.yaml');
+  });
+
+  test('lists every variant and shows the inherited and own fields of the selected one', async ({
+    page,
+  }) => {
+    const schemaSwitcherButton = page
+      .locator('[data-section-id="switcher"]')
+      .filter({ hasText: 'Discriminator' })
+      .first()
+      .getByRole('button');
+    const variantField = (name: string) =>
+      page.locator('span.schema-name', { hasText: new RegExp(`^${name}$`) });
+
+    await expect(schemaSwitcherButton).toHaveText('email');
+    await expect(variantField('type')).toBeVisible();
+    await expect(variantField('country')).toBeVisible();
+
+    await schemaSwitcherButton.click();
+    await expect(page.getByRole('menu').getByRole('menuitem').filter({ hasText: /\S/ })).toHaveText(
+      [
+        'email',
+        'sms',
+        'mms',
+        'push',
+        'voice',
+        'fax',
+        'webhook',
+        'pager',
+        'letter',
+        'kiosk',
+        'inbox',
+        'rss',
+        'chat',
+        'banner',
+        'radio',
+        'tv',
+        'feed',
+        'postcard',
+        'signage',
+      ],
+    );
+    await page.getByRole('menuitem', { name: 'chat', exact: true }).click();
+
+    await expect(schemaSwitcherButton).toHaveText('chat');
+    await expect(variantField('type')).toBeVisible();
+    await expect(variantField('replyAddress')).toBeVisible();
+    await expect(variantField('forwardAddress')).toBeVisible();
+    await expect(variantField('autoConfirmation')).toBeVisible();
+    await expect(variantField('country')).toHaveCount(0);
+  });
+});
+
+test.describe('Discriminator hosts that share graph-bearing properties', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto(
+      '/menu/accounts/upsertaccount?specFileName=discriminator-shared-host-properties.yaml',
+    );
+  });
+
+  test('renders the variants of a host whose sibling host redeclares the shared fields', async ({
+    page,
+  }) => {
+    const variantTabs = page
+      .getByRole('tablist')
+      .filter({ has: page.getByRole('tab', { name: 'business', exact: true }) });
+    const variantField = (name: string) =>
+      page.locator('span.schema-name', { hasText: new RegExp(`^${name}$`) });
+
+    // merging each shared field as a whole subtree walked the activity graph; the page never rendered
+    await expect(variantTabs.getByRole('tab', { selected: true })).toHaveText('person');
+    await expect(variantField('firstName')).toBeVisible();
+    await expect(variantField('activityLog')).toBeVisible();
+    await expect(variantTabs.getByRole('tab')).toHaveText(['person', 'business']);
+
+    await variantTabs.getByRole('tab', { name: 'business' }).click();
+
+    await expect(variantTabs.getByRole('tab', { selected: true })).toHaveText('business');
+    await expect(variantField('registrationNumber')).toBeVisible();
+    await expect(variantField('members')).toBeVisible();
+    await expect(variantField('firstName')).toHaveCount(0);
+  });
+});
+
+test.describe('Schema page of an object that its subtypes extend through allOf', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto(
+      '/menu/schemas/personaccount?schemaDefinitionsTagName=Schemas&specFileName=discriminator-inherited-base-page.yaml',
+    );
+  });
+
+  test('renders the subtype page whose fields reach a graph that refers back to it', async ({
+    page,
+  }) => {
+    const field = (name: string) =>
+      page.locator('span.schema-name', { hasText: new RegExp(`^${name}$`) });
+
+    // with the page's own schema as the allOf cycle target nothing was cached; the page never rendered
+    await expect(field('firstName')).toBeVisible();
+    await expect(field('history')).toBeVisible();
+    await expect(field('id')).toBeVisible();
+  });
+});
+
+test.describe('Discriminator sync (variant property references part of the host)', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/menu/drinks/createdrink?specFileName=discriminator-subschema-ref.yaml');
+  });
+
+  test('request sample renders and follows the schema switcher', async ({ page }) => {
+    const schemaTabs = page.getByRole('tablist').filter({ hasText: 'coffee' });
+    await expect(schemaTabs).toBeVisible();
+
+    const requestSample = page
+      .locator('.panel-request-samples [data-testid="source-code"]')
+      .filter({ hasText: 'kind' })
+      .first();
+    await expect(requestSample).toContainText('"kind": "coffee"');
+    await expect(requestSample).toContainText('"shots"');
+
+    await schemaTabs.getByRole('tab', { name: 'tea' }).click();
+
+    await expect(requestSample).toContainText('"kind": "tea"');
+    await expect(requestSample).toContainText('"leaf"');
+    await expect(requestSample).not.toContainText('"shots"');
+  });
+});
+
+test.describe('Discriminator samples next to refs into part of a schema', () => {
+  const fixture = 'specFileName=discriminator-subschema-regressions.yaml';
+  const samples = (page: Page, operationId: string) => {
+    const section = new ApiDocsPage(page).section(`/menu/samples/${operationId}`).getSection();
+    return {
+      section,
+      request: section.locator('.panel-request-samples [data-testid="source-code"]').first(),
+      response: section.locator('.panel-response-samples [data-testid="source-code"]').first(),
+    };
+  };
+
+  test('a variant that inherits the host and refs its property follows the switcher', async ({
+    page,
+  }) => {
+    await page.goto(`/menu/samples/createanimal?${fixture}`);
+    const { section, request, response } = samples(page, 'createanimal');
+    const schemaTabs = section.getByRole('tablist').filter({ hasText: 'bird' }).first();
+    await expect(schemaTabs).toBeVisible();
+
+    for (const sample of [request, response]) {
+      await expect(sample).toContainText('"kind": "bird"');
+      await expect(sample).toContainText('"wings"');
+    }
+
+    await schemaTabs.getByRole('tab', { name: 'fish' }).click();
+
+    for (const sample of [request, response]) {
+      await expect(sample).toContainText('"kind": "fish"');
+      await expect(sample).toContainText('"fins"');
+      await expect(sample).not.toContainText('"wings"');
+    }
+  });
+
+  test('a chain of hosts that refs point into keeps samples within the depth limit', async ({
+    page,
+  }) => {
+    await page.goto('/menu/samples/createchain?specFileName=discriminator-host-chain.yaml');
+    const { request, response } = samples(page, 'createchain');
+
+    await expect(response).toContainText('"kind": "H0X"');
+    await expect(request).toContainText('"kind": "H0X"');
+    expect((await request.innerText()).length).toBeLessThan(20_000);
+  });
+
+  test('a primitive host enum does not replace the selected option', async ({ page }) => {
+    await page.goto(`/menu/samples/createcode?${fixture}`);
+    const { request, response } = samples(page, 'createcode');
+
+    for (const sample of [request, response]) {
+      await expect(sample).toContainText('Z9');
+      await expect(sample).not.toContainText('A1');
+    }
+  });
+
+  test('an allOf part that refs a oneOf gives the same request and response sample', async ({
+    page,
+  }) => {
+    await page.goto(`/menu/samples/createshape?${fixture}`);
+    const { section, request, response } = samples(page, 'createshape');
+    await expect(request).toContainText('"id"');
+    await expect(response).toContainText('"id"');
+
+    const squareTab = section.getByRole('tab', { name: 'Square' }).first();
+    await squareTab.click();
+
+    await expect(response).toContainText('"id"');
+    const [requestText, responseText] = [await request.innerText(), await response.innerText()];
+    for (const field of ['"radius"', '"side"']) {
+      expect(requestText.includes(field), field).toBe(responseText.includes(field));
+    }
   });
 });

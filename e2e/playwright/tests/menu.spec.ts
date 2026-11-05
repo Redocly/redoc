@@ -1,7 +1,10 @@
 import { test, expect } from '@playwright/test';
 
+import { ApiDocsPage } from '../page-objects/ApiDocsPage';
+
 test.describe('Menu', () => {
   test('should render menu with auto generated tags', async ({ page }) => {
+    const apiDocs = new ApiDocsPage(page);
     await page.goto('/menu');
     await expect(page.locator('.menu-content')).toMatchAriaSnapshot(`
     - list:
@@ -28,7 +31,7 @@ test.describe('Menu', () => {
     - img
     - img
     `);
-    await page.getByRole('link', { name: 'cafe', exact: true }).click();
+    await apiDocs.clickThroughMenu('cafe');
     await expect(page).toHaveURL(/\/menu\/cafe$/);
     await expect(page.locator('.menu-content')).toMatchAriaSnapshot(`
     - list:
@@ -86,10 +89,13 @@ test.describe('Menu', () => {
     - img
     - img
     `);
-    await page.getByRole('link', { name: 'store', exact: true }).click();
+    await apiDocs.clickThroughMenu('store');
     await expect(page).toHaveURL(/\/menu\/store$/);
+    // Exact match: "cafe" collapses only after the route change renders, so until its rows
+    // are gone the rows below it can still slide away from the next click.
     await expect(page.locator('.menu-content')).toMatchAriaSnapshot(`
       - list:
+        - /children: deep-equal
         - listitem:
           - link "Menu API":
             - /url: /menu
@@ -129,7 +135,7 @@ test.describe('Menu', () => {
       - img
       - img
     `);
-    await page.getByRole('link', { name: 'user' }).first().click();
+    await apiDocs.clickThroughMenu('user');
     await expect(page).toHaveURL(/\/menu\/user$/);
 
     await expect(page.locator('.menu-content')).toMatchAriaSnapshot(`
@@ -458,6 +464,7 @@ test.describe('Menu', () => {
   });
 
   test('should render menu for graphql', async ({ page }) => {
+    const apiDocs = new ApiDocsPage(page);
     await page.goto('/');
     await expect(page.locator('.menu-content')).toMatchAriaSnapshot(`
       - list:
@@ -479,7 +486,7 @@ test.describe('Menu', () => {
       - img
       - img
     `);
-    await page.getByTestId('Menu/Menu').getByRole('link', { name: 'GraphQL custom group' }).click();
+    await apiDocs.clickThroughMenu('GraphQL custom group');
     await expect(page.locator('.menu-content')).toMatchAriaSnapshot(`
       - list:
         - listitem:
@@ -507,9 +514,12 @@ test.describe('Menu', () => {
       - img
       - img
       `);
-    await page.getByRole('link', { name: 'Other', exact: true }).click();
+    await apiDocs.clickThroughMenu('Other');
+    // Exact match: "GraphQL custom group" collapses only after the route change renders, so
+    // until its rows are gone the rows below it can still slide away from the next click.
     await expect(page.locator('.menu-content')).toMatchAriaSnapshot(`
       - list:
+        - /children: deep-equal
         - listitem:
           - link "Overview":
             - /url: /
@@ -574,7 +584,7 @@ test.describe('Menu', () => {
       - img
       - img
       `);
-    await page.getByRole('link', { name: 'Queries', exact: true }).first().click();
+    await apiDocs.clickThroughMenu('Queries');
     await expect(page.locator('.menu-content')).toMatchAriaSnapshot(`
       - list:
         - listitem:

@@ -130,4 +130,32 @@ describe('schemaProcessor structured example values', () => {
     );
     expect((result.properties ?? {})['payload']?.example).toEqual({ id: 'x' });
   });
+
+  it('shows the first value of a JSON Schema examples list', () => {
+    const result = schemaProcessor({ type: 'number', examples: [55, 60] }, emptyDoc);
+    expect(result.example).toBe('55');
+    expect(result.examples).toBeUndefined();
+  });
+
+  it('keeps a null example', () => {
+    const result = schemaProcessor({ type: 'string', example: null, examples: ['x'] }, emptyDoc);
+    expect(result.example).toBe('null');
+  });
+
+  it('prefers example over an examples list', () => {
+    const result = schemaProcessor({ type: 'number', example: 10, examples: [55] }, emptyDoc);
+    expect(result.example).toBe('10');
+  });
+
+  it('shows an examples list placed next to a $ref', () => {
+    const doc = makeDocument({ Num: { type: 'number' } });
+    const result = schemaProcessor(
+      {
+        type: 'object',
+        properties: { max: { $ref: '#/components/schemas/Num', minimum: 51, examples: [55] } },
+      },
+      doc,
+    );
+    expect((result.properties ?? {})['max']?.example).toBe('55');
+  });
 });

@@ -2,7 +2,7 @@ import { styled } from 'styled-components';
 import { Fragment } from 'react/jsx-runtime';
 
 import type { BrokerData, AsyncApiTag } from '../../../../types/asyncapi.js';
-import type { Node } from '@markdoc/markdoc';
+import type { Node } from '@redocly/markdoc';
 
 import { Tag } from '@redocly/theme/components/Tag/Tag';
 

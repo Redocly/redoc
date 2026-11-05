@@ -36,12 +36,8 @@ vi.mock('../../../../utils/graphql-type-expansion.js', () => ({
 }));
 
 const useExpandableSection = vi.fn();
-const useCollapsibleEntryKey = vi.fn();
-const useRegisterCollapsibleEntry = vi.fn();
 vi.mock('../../../../hooks/useExpandableSection.js', () => ({
   useExpandableSection: (...args: unknown[]) => useExpandableSection(...args),
-  useCollapsibleEntryKey: (...args: unknown[]) => useCollapsibleEntryKey(...args),
-  useRegisterCollapsibleEntry: (...args: unknown[]) => useRegisterCollapsibleEntry(...args),
 }));
 
 vi.mock('../../GraphQLReturnTypeDetails.js', () => ({
@@ -51,8 +47,8 @@ vi.mock('../../ArrowIcon.js', () => ({
   ArrowIcon: () => <span data-testid="arrow" />,
 }));
 vi.mock('../../GraphQLTypeView.js', () => ({
-  GraphQLTypeViewByName: ({ expanded }: { expanded?: boolean }) => (
-    <div data-testid="type-view" data-override={String(expanded)} />
+  GraphQLTypeViewByName: ({ sectionKey }: { sectionKey?: string }) => (
+    <div data-testid="type-view" data-section-key={sectionKey ?? ''} />
   ),
 }));
 
@@ -78,8 +74,6 @@ beforeEach(() => {
   getOperation.mockReset();
   graphqlTypeHasExpandableFields.mockReset().mockReturnValue(true);
   useExpandableSection.mockReset().mockReturnValue(undefined);
-  useCollapsibleEntryKey.mockReset().mockImplementation((sectionKey?: string) => sectionKey);
-  useRegisterCollapsibleEntry.mockReset();
 });
 
 afterEach(() => {
@@ -105,33 +99,27 @@ describe('ReturnTypeSection', () => {
     expect(screen.getByTestId('type-view')).toBeInTheDocument();
   });
 
-  it('forwards the expand-all override to the inline type view', () => {
+  it('passes its section key to the inline type view, so field toggles reach the section button', () => {
     getOperation.mockReturnValue({ type: {} });
-    useExpandableSection.mockReturnValue(true);
     renderInRouter(<ReturnTypeSection node={baseNode} />);
-    expect(screen.getByTestId('type-view')).toHaveAttribute('data-override', 'true');
+    expect(screen.getByTestId('type-view')).toHaveAttribute('data-section-key', 'return-type');
   });
 
-  it('registers the section for expand-all when the type has expandable fields', () => {
+  it('registers as expandable only when the type has expandable fields', () => {
     getOperation.mockReturnValue({ type: {} });
+
+    graphqlTypeHasExpandableFields.mockReturnValue(false);
+    const { unmount } = renderInRouter(<ReturnTypeSection node={baseNode} />);
+    expect(useExpandableSection).toHaveBeenLastCalledWith('return-type', false);
+    unmount();
+
     graphqlTypeHasExpandableFields.mockReturnValue(true);
     renderInRouter(<ReturnTypeSection node={baseNode} />);
-    expect(useExpandableSection).toHaveBeenCalledWith('return-type', true);
-    expect(useCollapsibleEntryKey).toHaveBeenCalledWith('return-type');
-    expect(useRegisterCollapsibleEntry).toHaveBeenCalledWith('return-type', false);
-  });
-
-  it('does not register a rendered collapsible when the type has no expandable fields', () => {
-    getOperation.mockReturnValue({ type: {} });
-    graphqlTypeHasExpandableFields.mockReturnValue(false);
-    renderInRouter(<ReturnTypeSection node={baseNode} />);
-    expect(useCollapsibleEntryKey).toHaveBeenCalledWith(undefined);
-    expect(useRegisterCollapsibleEntry).toHaveBeenCalledWith(undefined, false);
+    expect(useExpandableSection).toHaveBeenLastCalledWith('return-type', true);
   });
 
   it('falls back to a bare type view (no arrow) when the operation cannot be resolved', () => {
     getOperation.mockReturnValue(undefined);
-    useExpandableSection.mockReturnValue(true);
     renderInRouter(
       <ReturnTypeSection
         node={
@@ -146,6 +134,6 @@ describe('ReturnTypeSection', () => {
     expect(screen.queryByTestId('arrow')).not.toBeInTheDocument();
     const view = screen.getByTestId('type-view');
     expect(view).toBeInTheDocument();
-    expect(view).toHaveAttribute('data-override', 'true');
+    expect(view).toHaveAttribute('data-section-key', 'return-type');
   });
 });

@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import * as Sampler from 'openapi-sampler';
 
-import type { Node } from '@markdoc/markdoc';
+import type { Node } from '@redocly/markdoc';
 import type { McpExampleNode } from '../../types/content.js';
 import type { McpPromptArgument, McpResource, OpenAPISchema } from '../../types/openapi.js';
 

@@ -12,13 +12,14 @@ import type { SchemaTreeContext } from '../propertyTreeBuilder.js';
 import { schemaKind } from '../../../types/common.js';
 import { isSchemaNode } from '../../../types/schema.js';
 import { encodeJsonPointerSegment } from '../../../utils/refPointer.js';
+import { reportError } from '../../../telemetry/reportError.js';
 import { buildPropertyTree } from '../propertyTreeBuilder.js';
 
 function decodeJsonPointerToken(segment: string): string {
   return segment.replace(/~1/g, '/').replace(/~0/g, '~');
 }
 
-function resolveJsonPointerInDocument(doc: Document, ref: string): SchemaNode | undefined {
+function jsonPointerTarget(doc: Document, ref: string): unknown {
   if (!ref.startsWith('#/')) return undefined;
   const parts = ref.slice(2).split('/').map(decodeJsonPointerToken);
   let current: unknown = doc;
@@ -26,105 +27,142 @@ function resolveJsonPointerInDocument(doc: Document, ref: string): SchemaNode | 
     if (!isSchemaNode(current)) return undefined;
     current = current[part];
   }
-  return isSchemaNode(current) ? current : undefined;
+  return current;
 }
 
-function resolveAllRefsInDocument(
-  node: unknown,
-  doc: Document,
-  resolving?: Set<string>,
-  resolvedCache?: Map<string, unknown>,
-  uncacheableRefs?: Set<string>,
-  isAllOfPart = false,
-): unknown {
-  if (!node || typeof node !== 'object') return node;
-  if (Array.isArray(node)) {
-    const visited = resolving ?? new Set<string>();
-    return node.map((item) =>
-      resolveAllRefsInDocument(item, doc, visited, resolvedCache, uncacheableRefs, isAllOfPart),
+function resolveJsonPointerInDocument(doc: Document, ref: string): SchemaNode | undefined {
+  const target = jsonPointerTarget(doc, ref);
+  return isSchemaNode(target) ? target : undefined;
+}
+
+type ResolveState = {
+  doc: Document;
+  // refs being resolved, outermost first; a ref's index is the depth of its frame
+  openRefs: string[];
+  // results that hold no stub of an open allOf-cycle target, reused by every later resolution
+  resolvedCache: Map<string, unknown>;
+  // open ref -> depth of the deepest open allOf-cycle target its result depends on
+  dependsOnCycleTarget: Map<string, number>;
+  // open allOf-cycle target -> results that embed its stub, valid only while it is open
+  scopedResults: Map<string, Map<string, unknown>>;
+};
+
+function markDependsOnCycleTarget(state: ResolveState, targetDepth: number): void {
+  for (let depth = targetDepth + 1; depth < state.openRefs.length; depth++) {
+    const ref = state.openRefs[depth];
+    state.dependsOnCycleTarget.set(
+      ref,
+      Math.max(state.dependsOnCycleTarget.get(ref) ?? -1, targetDepth),
     );
   }
-  if (!isSchemaNode(node)) return node;
+}
 
-  const visited = resolving ?? new Set<string>();
+function findScopedResult(state: ResolveState, ref: string): unknown {
+  for (let depth = 0; depth < state.openRefs.length; depth++) {
+    const result = state.scopedResults.get(state.openRefs[depth])?.get(ref);
+    if (result !== undefined) {
+      // the result embeds a stub of this target, so whatever reuses it depends on the target too
+      markDependsOnCycleTarget(state, depth);
+      return result;
+    }
+  }
+  return undefined;
+}
+
+function rememberResult(
+  state: ResolveState,
+  ref: string,
+  result: SchemaNode,
+  cycleTargetDepth: number | undefined,
+): void {
+  // a result that is itself a cycle stub (a bare alias of an open ref) is right only here
+  if (result['x-circular-ref'] !== undefined) return;
+  if (cycleTargetDepth === undefined) {
+    state.resolvedCache.set(ref, result);
+    return;
+  }
+  const cycleTarget = state.openRefs[cycleTargetDepth];
+  const results = state.scopedResults.get(cycleTarget) ?? new Map<string, unknown>();
+  results.set(ref, result);
+  state.scopedResults.set(cycleTarget, results);
+}
+
+function resolveRefSiblings(node: SchemaNode, state: ResolveState): SchemaNode {
+  const siblings: SchemaNode = {};
+  for (const [key, value] of Object.entries(node)) {
+    if (key !== '$ref') siblings[key] = resolveRefs(value, state);
+  }
+  return siblings;
+}
+
+function resolveRefs(node: unknown, state: ResolveState, isAllOfPart = false): unknown {
+  if (!node || typeof node !== 'object') return node;
+  if (Array.isArray(node)) return node.map((item) => resolveRefs(item, state, isAllOfPart));
+  if (!isSchemaNode(node)) return node;
 
   if (node.$ref !== undefined) {
     const ref = node.$ref;
     if (typeof ref !== 'string') return node;
-    if (visited.has(ref)) {
-      // an allOf cycle stub is lossy, so the target and the refs opened after it are
-      // right only on this path; a cycle through a property stays cacheable
-      if (isAllOfPart) {
-        let reachedTarget = false;
-        for (const open of visited) {
-          if (open === ref) reachedTarget = true;
-          if (reachedTarget) uncacheableRefs?.add(open);
-        }
-      }
-      const target = resolveJsonPointerInDocument(doc, ref);
+    const openRefDepth = state.openRefs.indexOf(ref);
+    if (openRefDepth !== -1) {
+      // an allOf cycle stub is right only while its target is open; a property cycle stays cacheable
+      if (isAllOfPart) markDependsOnCycleTarget(state, openRefDepth);
+      const target = resolveJsonPointerInDocument(state.doc, ref);
       if (!isSchemaNode(target)) return { 'x-circular-ref': true };
       // a cycle closing on an allOf part contributes nothing to the merge —
       // the still-open instance higher up already carries the content
       if (isAllOfPart && target.allOf !== undefined) return {};
       const { allOf: _allOf, oneOf: _oneOf, anyOf: _anyOf, ...rest } = target;
-      return { ...rest, 'x-circular-ref': true, 'x-original-ref': ref };
+      // an allOf stub is merged into the child, so the result stands for no ancestor on its own
+      if (isAllOfPart) return { ...rest, 'x-circular-ref': true, 'x-original-ref': ref };
+      return {
+        ...rest,
+        ...resolveRefSiblings(node, state),
+        'x-circular-ref': ref,
+        'x-original-ref': ref,
+      };
     }
 
-    const cached = resolvedCache?.get(ref);
-    if (cached && isSchemaNode(cached)) {
-      const siblings: SchemaNode = {};
-      for (const [k, v] of Object.entries(node)) {
-        if (k !== '$ref') {
-          siblings[k] = resolveAllRefsInDocument(v, doc, visited, resolvedCache, uncacheableRefs);
-        }
-      }
-      return stampParentRefs({ ...cached, ...siblings, 'x-original-ref': ref }, doc);
+    const cachedResult = state.resolvedCache.get(ref);
+    const scopedResult = cachedResult === undefined ? findScopedResult(state, ref) : undefined;
+    const reusedResult = cachedResult ?? scopedResult;
+    if (isSchemaNode(reusedResult)) {
+      const reusedNode: SchemaNode = {
+        ...reusedResult,
+        ...resolveRefSiblings(node, state),
+        'x-original-ref': ref,
+      };
+      if (scopedResult !== undefined) reusedNode['x-allof-cycle'] = true;
+      return stampParentRefs(reusedNode, state.doc);
     }
 
-    const resolved = resolveJsonPointerInDocument(doc, ref);
-    if (!resolved) return node;
+    const target = jsonPointerTarget(state.doc, ref);
+    // A `$ref` to the `false` schema allows no value whatever its siblings say; to `true`, only the siblings constrain.
+    if (typeof target === 'boolean') return target ? resolveRefSiblings(node, state) : false;
+    if (!isSchemaNode(target)) return node;
 
-    visited.add(ref);
-    const result = resolveAllRefsInDocument(
-      resolved,
-      doc,
-      visited,
-      resolvedCache,
-      uncacheableRefs,
-      isAllOfPart,
-    );
-    visited.delete(ref);
-
-    const siblings: SchemaNode = {};
-    for (const [k, v] of Object.entries(node)) {
-      if (k !== '$ref') {
-        siblings[k] = resolveAllRefsInDocument(v, doc, visited, resolvedCache, uncacheableRefs);
-      }
-    }
+    state.openRefs.push(ref);
+    const result = resolveRefs(target, state, isAllOfPart);
+    state.openRefs.pop();
+    state.scopedResults.delete(ref);
+    // read before the siblings: a sibling can open this ref again and take the entry
+    const cycleTargetDepth = state.dependsOnCycleTarget.get(ref);
+    state.dependsOnCycleTarget.delete(ref);
+    const siblings = resolveRefSiblings(node, state);
 
     if (isSchemaNode(result)) {
-      const closedAllOfCycle = uncacheableRefs?.has(ref) === true;
-      // a result that is itself a cycle stub (a bare alias of an open ref) is right only here
-      const cacheable = !closedAllOfCycle && result['x-circular-ref'] === undefined;
-      if (cacheable) resolvedCache?.set(ref, result);
-      const node: SchemaNode = { ...result, ...siblings, 'x-original-ref': ref };
-      if (closedAllOfCycle) node['x-allof-cycle'] = true;
-      return stampParentRefs(node, doc);
+      rememberResult(state, ref, result, cycleTargetDepth);
+      const resolvedNode: SchemaNode = { ...result, ...siblings, 'x-original-ref': ref };
+      if (cycleTargetDepth !== undefined) resolvedNode['x-allof-cycle'] = true;
+      return stampParentRefs(resolvedNode, state.doc);
     }
     return result;
   }
 
   return Object.fromEntries(
-    Object.entries(node).map(([k, v]) => [
-      k,
-      resolveAllRefsInDocument(
-        v,
-        doc,
-        visited,
-        resolvedCache,
-        uncacheableRefs,
-        k === 'allOf' && Array.isArray(v),
-      ),
+    Object.entries(node).map(([key, value]) => [
+      key,
+      resolveRefs(value, state, key === 'allOf' && Array.isArray(value)),
     ]),
   );
 }
@@ -133,26 +171,38 @@ function prepareSchemaNode(
   node: SchemaNode,
   document: Document,
   resolvedCache: Map<string, unknown>,
-  initialVisited?: Set<string>,
+  openRefs: string[] = [],
 ): SchemaNode {
   const v = 'openapi' in document ? document.openapi : undefined;
   const mergeRulesVersion = typeof v === 'string' && v.startsWith('3.0') ? '3.0.x' : '3.1.x';
-  const uncacheableRefs = new Set<string>();
-  const rawResolved = resolveAllRefsInDocument(
-    node,
-    document,
-    initialVisited,
+  const rawResolved = resolveRefs(node, {
+    doc: document,
+    openRefs,
     resolvedCache,
-    uncacheableRefs,
-  );
-  const resolved = isSchemaNode(rawResolved) ? stampParentRefs(rawResolved, document) : node;
-  const merged = merge(resolved, {
-    mergeCombinarySibling: true,
-    applyAdditionalPropertiesToSiblings: false,
-    rules: openApiJsonSchemaMergeRules(mergeRulesVersion),
+    dependsOnCycleTarget: new Map(),
+    scopedResults: new Map(),
   });
+  // The tree builder renders a `false` node, like a `false` property, as allowing no value.
+  if (rawResolved === false) return rawResolved as unknown as SchemaNode;
+  const resolved = isSchemaNode(rawResolved) ? stampParentRefs(rawResolved, document) : node;
+  return mergeOrUnmerged(resolved, mergeRulesVersion);
+}
 
-  return isSchemaNode(merged) ? merged : resolved;
+// A schema the merge cannot handle renders unmerged.
+function mergeOrUnmerged(resolved: SchemaNode, mergeRulesVersion: '3.0.x' | '3.1.x'): SchemaNode {
+  try {
+    const merged = merge(resolved, {
+      mergeCombinarySibling: true,
+      applyAdditionalPropertiesToSiblings: false,
+      rules: openApiJsonSchemaMergeRules(mergeRulesVersion),
+    });
+    // An allOf with a `false` part merges to `false`, which renders as allowing no value.
+    if (merged === false) return merged as unknown as SchemaNode;
+    return isSchemaNode(merged) ? merged : resolved;
+  } catch (error) {
+    reportError('allOfMerge', error, 'Could not merge allOf; rendering the schema unmerged');
+    return resolved;
+  }
 }
 
 // True when the raw allOf $ref chain from `startRef` leads back to `startRef` (mutual cycle).
@@ -362,15 +412,21 @@ export const jsonSchemaDialect: SchemaProcessorDialect = {
   process(schema, document, options?: SchemaProcessorOptions): PropertyType {
     const resolvedCache = new Map<string, unknown>();
     const rootJsonPointer = options?.rootJsonPointer ?? '#';
-    const initialVisited =
-      rootJsonPointer.startsWith('#/') && schema.$ref !== rootJsonPointer
-        ? new Set([rootJsonPointer])
-        : undefined;
-    const merged = prepareSchemaNode(schema, document, resolvedCache, initialVisited);
+    const openRefs =
+      rootJsonPointer.startsWith('#/') && schema.$ref !== rootJsonPointer ? [rootJsonPointer] : [];
+    const merged = prepareSchemaNode(schema, document, resolvedCache, openRefs);
     const ctx: SchemaTreeContext = {
       prepareVariant: (node) => prepareSchemaNode(node, document, resolvedCache),
+      prepareRefOnItsOwn: (ref) => {
+        const target = resolveJsonPointerInDocument(document, ref);
+        return isSchemaNode(target)
+          ? prepareSchemaNode(target, document, resolvedCache, [ref])
+          : undefined;
+      },
+      definitionOf: (ref) => resolveJsonPointerInDocument(document, ref),
       propertyRefCache: new Map(),
       variantResolutionCache: new Map(),
+      propertyTargetCache: new Map(),
       implicitDiscriminatorChildren: getImplicitDiscriminatorChildren(document),
       exampleSerializer: options?.exampleSerializer,
       sortRequiredPropsFirst: options?.sortRequiredPropsFirst,

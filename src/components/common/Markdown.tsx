@@ -11,10 +11,22 @@ export type MarkdownProps = {
   source: unknown;
 };
 
+const UNRENDERABLE = Symbol('unrenderable');
+
 function MarkdownComponent({ source }: MarkdownProps): ReactElement {
   const adapter = useMarkdownAdapter();
-  const parsed = useMemo(() => adapter.parse(source), [adapter, source]);
-  return <>{adapter.render(parsed)}</>;
+  const parsed = useMemo(() => {
+    const markdown = toMarkdownSource(source);
+    return markdown === UNRENDERABLE ? UNRENDERABLE : adapter.parse(markdown);
+  }, [adapter, source]);
+  return <>{parsed === UNRENDERABLE ? null : adapter.render(parsed)}</>;
+}
+
+// A number or boolean renders as text; an object that is not a Markdoc tree renders nothing.
+function toMarkdownSource(source: unknown): unknown {
+  if (typeof source === 'number' || typeof source === 'boolean') return String(source);
+  if (typeof source !== 'object' || source === null || Array.isArray(source)) return source;
+  return '$$mdtype' in source ? source : UNRENDERABLE;
 }
 
 export const Markdown = memo(MarkdownComponent);

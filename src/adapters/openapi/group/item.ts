@@ -15,6 +15,8 @@ import { addOperationItems } from '../items/operation/item.js';
 import { addSchemaDefinitionItems } from '../items/schema/item.js';
 import { addMcpItems, type McpGroupItems } from '../items/mcp/item.js';
 import { openApiContext } from '../buildContext.js';
+import { documentTags } from '../build/context.js';
+import { isRecord } from '../../../utils/is-record.js';
 
 export function addTagItems(document: OpenAPIDefinition, result: ApiItem[]): void {
   const context = openApiContext.get();
@@ -40,6 +42,7 @@ export function processTagGroups(
   const context = openApiContext.get();
 
   for (const group of xTagGroups) {
+    if (!isRecord(group)) continue;
     result.push({
       type: 'separator',
       label: group.name,
@@ -47,7 +50,7 @@ export function processTagGroups(
       content: null,
     });
 
-    for (const tagName of group.tags || []) {
+    for (const tagName of Array.isArray(group.tags) ? group.tags : []) {
       const tagData = context.tagsMap.get(tagName);
       if (tagData) {
         addSingleTagItem(tagName, tagData, result, [], undefined, readRbacScope(group));
@@ -95,7 +98,7 @@ function getChildTagNames(tagsMap: Map<string, TagData>): Set<string> {
 
 function getTagOrder(document: OpenAPIDefinition): string[] {
   const context = openApiContext.get();
-  const result = (document.tags || []).map((t) => t.name);
+  const result = documentTags(document).map((t) => t.name);
 
   if (!result.includes(DEFAULT_WEBHOOKS_TAG_NAME)) {
     result.push(DEFAULT_WEBHOOKS_TAG_NAME);

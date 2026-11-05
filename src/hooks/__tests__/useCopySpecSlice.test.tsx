@@ -26,7 +26,7 @@ function makeRoute(path: string, content: Partial<ApiItemContent>): RouteItem {
   return {
     path,
     label: path,
-    content: { contentType: contentType.ITEM, children: [], ...content } as ApiItemContent,
+    content: { contentType: contentType.ITEM, children: [], ...content },
   };
 }
 
@@ -71,7 +71,7 @@ function renderCopySpecSlice({
     options: normalizeOptions({ specType, downloadUrls, metadata: {}, basePath: '' }),
     definition,
     definitionUrl: definitionUrl ?? undefined,
-  } as GlobalStoreAtom);
+  });
   store.set(routeIndexAtom, makeRouteIndex(routes, groups, rootPage));
 
   const wrapper = ({ children }: PropsWithChildren): ReactElement => (

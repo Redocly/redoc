@@ -1,4 +1,4 @@
-import type { Node } from '@markdoc/markdoc';
+import type { Node } from '@redocly/markdoc';
 import type {
   OpenAPIRef,
   RawLogo,
@@ -46,7 +46,6 @@ export type OpenAPIInfo = {
 };
 
 export type XLogo = RawLogo;
-
 
 export type OpenAPIServer = {
   url: string;
@@ -440,7 +439,6 @@ export type McpPromptArgument = {
   required: boolean;
   example?: string;
 };
-
 
 export type OpenAPITagExtended = OpenAPITag & {
   'x-traitTag'?: boolean;

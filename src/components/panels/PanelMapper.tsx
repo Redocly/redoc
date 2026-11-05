@@ -5,6 +5,7 @@ import type { PanelNode, PanelItem } from '../../types/content.js';
 import type { PanelNodeProps } from './PanelNodeProps.js';
 
 import { panelKind } from '../../types/common.js';
+import { ErrorBoundary } from '../ErrorBoundary.js';
 import { DownloadPanelItem } from './DownloadPanelItem.js';
 import { OverviewPanelItem } from './OverviewPanelItem.js';
 import { ServerPanelItem } from './ServerItem/ServerPanelItem.js';
@@ -122,12 +123,7 @@ function resolvePanelComponent(node: PanelNode): ReactElement | null {
     return <OverviewPanelItem node={node} />;
   }
 
-  if (
-    itemKinds.length > 0 &&
-    itemKinds.every((kind) =>
-      EXAMPLE_ITEM_KINDS.includes(kind as (typeof EXAMPLE_ITEM_KINDS)[number]),
-    )
-  ) {
+  if (itemKinds.length > 0 && itemKinds.every((kind) => EXAMPLE_ITEM_KINDS.includes(kind))) {
     return <ExamplesPanelItem node={node} />;
   }
 
@@ -180,8 +176,17 @@ function resolvePanelComponent(node: PanelNode): ReactElement | null {
   return null;
 }
 
-function PanelMapperComponent({ node }: PanelNodeProps): ReactElement | null {
+// `renderKind` calls panels as functions; this child keeps them inside the boundary.
+function ResolvedPanel({ node }: PanelNodeProps): ReactElement | null {
   return resolvePanelComponent(node);
+}
+
+function PanelMapperComponent({ node }: PanelNodeProps): ReactElement {
+  return (
+    <ErrorBoundary scope="node">
+      <ResolvedPanel node={node} />
+    </ErrorBoundary>
+  );
 }
 
 export const PanelMapper = memo(PanelMapperComponent);

@@ -8,6 +8,7 @@ import type {
 } from '../../types/schema.js';
 
 import { isSchemaNode, isStructuredExample } from '../../types/schema.js';
+import { normalizeBadges } from '../../utils/normalize-badges.js';
 
 const INTERNAL_EXTENSIONS = new Set([
   'x-circular-ref',
@@ -49,11 +50,17 @@ const KEYWORD_TYPE_MAP: Record<string, string> = {
 const KEYWORD_TYPE_ENTRIES = Object.entries(KEYWORD_TYPE_MAP);
 
 export function detectJsonSchemaType(schema: SchemaNode): string {
-  if (schema.type !== undefined && !Array.isArray(schema.type)) return schema.type;
+  if (typeof schema.type === 'string') return schema.type;
   for (const [keyword, type] of KEYWORD_TYPE_ENTRIES) {
     if (schema[keyword] !== undefined) return type;
   }
-  return 'any';
+  // A bare YAML `type: null` is the `null` type written without quotes.
+  return schema.type === null ? 'null' : 'any';
+}
+
+/** `type` when it is a string or array (a malformed `type` counts as absent), else the detected type. */
+export function schemaType(schema: SchemaNode): string | string[] {
+  return Array.isArray(schema.type) ? schema.type : detectJsonSchemaType(schema);
 }
 
 export function schemaHasType(type: string | string[], target: string): boolean {
@@ -61,7 +68,7 @@ export function schemaHasType(type: string | string[], target: string): boolean 
 }
 
 function isArrayTypedSchema(schema: SchemaNode): boolean {
-  return schemaHasType(schema.type || detectJsonSchemaType(schema), 'array');
+  return schemaHasType(schemaType(schema), 'array');
 }
 
 export function isStructuredArrayItems(items: SchemaNode): boolean {
@@ -97,10 +104,7 @@ export function isPrimitiveLikeSchema(schema: SchemaNode, type: string | string[
   ) {
     if (!Array.isArray(schema.items)) {
       if (isStructuredArrayItems(schema.items)) return false;
-      const itemsPrimitive = isPrimitiveLikeSchema(
-        schema.items,
-        schema.items.type || detectJsonSchemaType(schema.items),
-      );
+      const itemsPrimitive = isPrimitiveLikeSchema(schema.items, schemaType(schema.items));
       // primitive items with their own documentation render as a nested items row
       if (itemsPrimitive && primitiveArrayItemsHaveOwnInfo(schema.items)) return false;
       return itemsPrimitive;
@@ -198,10 +202,11 @@ function getCompositionVariants(schema: SchemaNode): SchemaNode[] | undefined {
 }
 
 function composeVariantsDisplayType(variants: SchemaNode[]): string {
+  const matchable = variants.filter((variant) => (variant as unknown) !== false);
   return [
     ...new Set(
-      variants.map((variant) => {
-        const variantType = variant.type || detectJsonSchemaType(variant);
+      (matchable.length ? matchable : variants).map((variant) => {
+        const variantType = schemaType(variant);
         const { typePrefix, displayType } = buildDisplayType(variant, variantType);
         const refBasename = variant['x-original-ref']?.split('/').pop();
         const variantName = variant.title || refBasename;
@@ -219,6 +224,10 @@ export function buildDisplayType(
   schema: SchemaNode,
   type: string | string[],
 ): { typePrefix: string; displayType: string; displayFormat: string } {
+  // The `false` schema reaches here from properties, tuple items and variants.
+  if ((schema as unknown) === false) {
+    return { typePrefix: '', displayType: 'no value allowed', displayFormat: '' };
+  }
   const variants = getCompositionVariants(schema);
   if (variants) {
     return {
@@ -245,7 +254,7 @@ export function buildDisplayType(
       if (isStructuredArrayItems(items)) {
         displayType = 'items';
       } else {
-        const itemType = items.type || detectJsonSchemaType(items);
+        const itemType = schemaType(items);
         displayType = pluralizeType(Array.isArray(itemType) ? itemType.join(' or ') : itemType);
         // documented primitive items show their format on the nested items row
         displayFormat = getDocumentedPrimitiveArrayItems(schema, type) ? '' : items.format || '';
@@ -288,9 +297,7 @@ function getPrimitiveArrayItemsSchema(
   if (!isSchemaNode(items)) return undefined;
   if (items['x-circular-ref'] || items['x-complex']) return undefined;
   if (isStructuredArrayItems(items)) return undefined;
-  return isPrimitiveLikeSchema(items, items.type || detectJsonSchemaType(items))
-    ? items
-    : undefined;
+  return isPrimitiveLikeSchema(items, schemaType(items)) ? items : undefined;
 }
 
 export function getDocumentedPrimitiveArrayItems(
@@ -411,7 +418,7 @@ export function buildPropertyShell(
     isPatternProperty = false,
     exampleSerializer,
   } = options;
-  const type = schema.type || detectJsonSchemaType(schema);
+  const type = schemaType(schema);
 
   const property: PropertyType = {
     type: buildTypeString(schema, type),
@@ -437,16 +444,18 @@ export function buildPropertyShell(
 
   if (schema.description) property.description = schema.description;
   if (schema.pattern) property.pattern = schema.pattern;
-  if (schema.example !== undefined) {
-    property.example = toPropertyExample(schema.example, exampleSerializer);
+  const listExample = Array.isArray(schema.examples) ? schema.examples[0] : undefined;
+  const example = schema.example !== undefined ? schema.example : listExample;
+  if (example !== undefined) {
+    property.example = toPropertyExample(example, exampleSerializer);
   }
   if (schema.default !== undefined) property.default = JSON.stringify(schema.default);
 
   const namedExamples = extractNamedExamples(schema, exampleSerializer);
   if (namedExamples) property.examples = namedExamples;
 
-  const badges = schema['x-badges'];
-  if (badges?.length) property.badges = badges;
+  const badges = normalizeBadges(schema['x-badges']);
+  if (badges) property.badges = badges;
 
   const accessMode = getAccessMode(schema);
   if (accessMode) property.accessMode = accessMode;

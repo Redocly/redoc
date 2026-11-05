@@ -10,7 +10,7 @@
     "@angular/compiler": "^22.1.0",
     "@angular/core": "^22.1.0",
     "@angular/platform-browser": "^22.1.0",
-    "redoc": "^3.0.0-rc.1",
+    "redoc": "^3.0.0",
     "rxjs": "^7.8.2",
     "tslib": "^2.8.0"
   },

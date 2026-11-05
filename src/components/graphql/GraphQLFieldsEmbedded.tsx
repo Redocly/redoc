@@ -8,7 +8,7 @@ interface Props {
   name: string;
   contrast?: boolean;
   fieldExpandLevel: number;
-  expanded?: boolean;
+  sectionKey?: string;
   parentPath?: string;
 }
 
@@ -16,7 +16,7 @@ function GraphQLFieldsEmbeddedComponent({
   name,
   contrast,
   fieldExpandLevel,
-  expanded,
+  sectionKey,
   parentPath,
 }: Props) {
   const typeData = useAtomValue(graphqlTypeDataAtom(name));
@@ -34,7 +34,7 @@ function GraphQLFieldsEmbeddedComponent({
           fieldExpandLevel={fieldExpandLevel}
           parentTypeName={parentPath ?? name}
           parentRequiresScopes={typeData?.requiresScopes ?? null}
-          expanded={expanded}
+          sectionKey={sectionKey}
         />
       ))}
     </>

@@ -13,6 +13,7 @@ import { Button } from '@redocly/theme/components/Button/Button';
 import { SearchIcon } from '@redocly/theme/icons/SearchIcon/SearchIcon';
 
 import { useSpecTranslate } from '../../../hooks/useTranslate.js';
+import { NestedPortalScope } from '../../common/BodyPortal.js';
 
 type VariantDropdownProps<T> = {
   value: T;
@@ -141,7 +142,9 @@ function VariantDropdownComponent<T>({
       withArrow
       onClose={() => setSearchValue('')}
     >
-      <StyledDropdownMenu $fullWidth={fullWidth}>{renderDropdownContent()}</StyledDropdownMenu>
+      <NestedPortalScope>
+        <StyledDropdownMenu $fullWidth={fullWidth}>{renderDropdownContent()}</StyledDropdownMenu>
+      </NestedPortalScope>
     </StyledDropdown>
   );
 }

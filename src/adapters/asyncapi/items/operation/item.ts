@@ -9,6 +9,7 @@ import type { ApiDocsOptions } from '../../../../types/options.js';
 import { combineUrls } from '@redocly/theme/core/openapi';
 
 import { asString } from '../../../../utils/string.js';
+import { normalizeBadges } from '../../../../utils/normalize-badges.js';
 import { itemLabelsByProtocol } from '../../utils/get-protocol-labels.js';
 import { readRbacScope, rbacProp } from '../../../rbac.js';
 import { buildOperationContent } from './content.js';
@@ -51,7 +52,7 @@ export function buildOperationItem({
     link: operationLink,
     routeSlug: operationLink,
     httpVerb: labels[operation.action] || '',
-    badges: operation?.['x-badges'] || [],
+    badges: normalizeBadges(operation?.['x-badges']) ?? [],
     ...rbacProp(readRbacScope(operation)),
     content: processContent
       ? buildOperationContent(

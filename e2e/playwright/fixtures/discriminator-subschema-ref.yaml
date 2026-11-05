@@ -1,0 +1,60 @@
+openapi: 3.1.0
+info:
+  title: Discriminator variants that reference part of the host
+  version: '2024-01-01'
+  description: >
+    `Coffee` and `Tea` reuse the host's `kind` definition through a `$ref` into
+    `Drink/properties/kind` instead of a whole-schema ref.
+paths:
+  /drinks:
+    post:
+      tags:
+        - drinks
+      summary: Create a drink
+      operationId: createDrink
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Drink'
+      responses:
+        '201':
+          description: Created
+components:
+  schemas:
+    Drink:
+      type: object
+      required:
+        - kind
+      properties:
+        kind:
+          type: string
+      discriminator:
+        propertyName: kind
+        mapping:
+          coffee: '#/components/schemas/Coffee'
+          tea: '#/components/schemas/Tea'
+      oneOf:
+        - $ref: '#/components/schemas/Coffee'
+        - $ref: '#/components/schemas/Tea'
+    Coffee:
+      type: object
+      required:
+        - kind
+        - shots
+      properties:
+        kind:
+          $ref: '#/components/schemas/Drink/properties/kind'
+        shots:
+          type: integer
+    Tea:
+      type: object
+      required:
+        - kind
+        - leaf
+      properties:
+        kind:
+          $ref: '#/components/schemas/Drink/properties/kind'
+        leaf:
+          type: string

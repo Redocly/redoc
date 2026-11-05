@@ -1,5 +1,5 @@
 import type { OperationParameter } from '@redocly/theme/core/openapi';
-import type { Node } from '@markdoc/markdoc';
+import type { Node } from '@redocly/markdoc';
 import type { ItemContentNode } from '../../../../types/content.js';
 import type { ExampleEntry, SchemaEntry } from '../../../../types/store.js';
 import type { GraphqlStoreMeta } from '../../../../types/graphql-store.js';

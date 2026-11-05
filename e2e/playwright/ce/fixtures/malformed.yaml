@@ -1,0 +1,71 @@
+openapi: 3.1.0
+info:
+  title: Malformed OpenAPI
+  version: 1.0
+servers:
+  - description: Production
+  - url: ''
+  - url: https://{env}.example.com
+    variables:
+      env:
+tags:
+  -
+  - name: pets
+paths:
+  /pets:
+    get:
+      tags: [pets]
+      operationId: 12345
+      summary: Numeric operationId
+      x-codeSamples: 42
+      x-badges: { name: Beta, position: before }
+      responses:
+        '200':
+          description: true
+          content:
+            application/json:
+              schema:
+                discriminator:
+                allOf:
+                  - type: object
+                    required: [id]
+                    properties:
+                      id:
+                        type: integer
+                        x-badges: { name: Stable }
+                  - type: object
+                    required:
+                    properties:
+                      name:
+                        type: string
+                      kind:
+                        type: string
+                        enum:
+  /pets/{id}:
+    get:
+      tags: [pets]
+      operationId: getPet
+      summary: Broken code samples
+      parameters: str
+      x-codeSamples:
+        -
+      responses:
+        '200':
+          description: ok
+    put:
+      tags: [pets]
+      operationId: updatePet
+      summary: Schema types
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: {}
+        - name: q
+          in: query
+          x-badges: { name: Legacy }
+          schema: true
+      responses:
+        '200':
+          description: ok

@@ -4,7 +4,12 @@ const STRIPPED_KEYS: ReadonlySet<string> = new Set([
   'x-circular-ref',
   'x-allof-cycle',
   'x-original-ref',
+  'x-serverValues',
 ]);
+
+function isStrippedKey(key: string): boolean {
+  return STRIPPED_KEYS.has(key) || key.startsWith('x-default');
+}
 
 export function cloneStrip(value: unknown, inlineTargets: ReadonlyMap<string, unknown>): unknown {
   const ancestors = new WeakSet<object>();
@@ -36,7 +41,7 @@ export function cloneStrip(value: unknown, inlineTargets: ReadonlyMap<string, un
       inlineStack.delete(ref);
       const siblings: Record<string, unknown> = {};
       for (const [key, entryValue] of Object.entries(node)) {
-        if (key === '$ref' || STRIPPED_KEYS.has(key) || entryValue === undefined) continue;
+        if (key === '$ref' || isStrippedKey(key) || entryValue === undefined) continue;
         siblings[key] = visit(entryValue);
       }
       ancestors.delete(node);
@@ -46,7 +51,7 @@ export function cloneStrip(value: unknown, inlineTargets: ReadonlyMap<string, un
     ancestors.add(node);
     const result: Record<string, unknown> = {};
     for (const [key, entryValue] of Object.entries(node)) {
-      if (STRIPPED_KEYS.has(key) || entryValue === undefined) continue;
+      if (isStrippedKey(key) || entryValue === undefined) continue;
       result[key] = visit(entryValue);
     }
     ancestors.delete(node);

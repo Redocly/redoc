@@ -512,7 +512,6 @@ describe('examplesExtractor', () => {
     ]);
   });
 
-
   it('emits nothing without an example store', () => {
     const ctx = makeContext();
     examplesExtractor.extract(makeNode({ variant: 'body', exampleIds: ['ex_card'] }), ctx);

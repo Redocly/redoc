@@ -35,7 +35,7 @@ describe('buildGroupContent', () => {
       operations: [petsOperation],
       tagSlug: `${SPEC_BASE_PATH}/pets`,
       basePath: SPEC_BASE_PATH,
-      markdownSanitize: { sanitize: false, unstable_hooks: {} },
+      markdownSanitize: { sanitize: false },
     });
 
     const container = result.children[0] as ContainerNode;
@@ -57,7 +57,7 @@ describe('buildGroupContent', () => {
       operations: [],
       tagSlug: `${SPEC_BASE_PATH}/menu-model`,
       basePath: SPEC_BASE_PATH,
-      markdownSanitize: { sanitize: false, unstable_hooks: {} },
+      markdownSanitize: { sanitize: false },
     });
 
     const container = result.children[0] as ContainerNode;
@@ -88,7 +88,7 @@ describe('buildGroupContent', () => {
       tagSlug: `${SPEC_BASE_PATH}/pets`,
       basePath: SPEC_BASE_PATH,
       description: markdocParser('Pets description', { sanitize: false }),
-      markdownSanitize: { sanitize: false, unstable_hooks: {} },
+      markdownSanitize: { sanitize: false },
     });
 
     const container = result.children[0] as ContainerNode;
@@ -109,7 +109,7 @@ describe('buildGroupContent', () => {
       tagSlug: `${SPEC_BASE_PATH}/pets`,
       basePath: SPEC_BASE_PATH,
       description: markdocParser('Pets description', { sanitize: false }),
-      markdownSanitize: { sanitize: false, unstable_hooks: {} },
+      markdownSanitize: { sanitize: false },
     });
 
     const container = result.children[0] as ContainerNode;
@@ -143,7 +143,7 @@ describe('buildGroupContent', () => {
       tagSlug: `${SPEC_BASE_PATH}/pets`,
       basePath: SPEC_BASE_PATH,
       description: markdocParser('Pets description', { sanitize: false }),
-      markdownSanitize: { sanitize: false, unstable_hooks: {} },
+      markdownSanitize: { sanitize: false },
     });
 
     const container = result.children[0] as ContainerNode;
@@ -164,7 +164,7 @@ describe('buildGroupContent', () => {
       operations: [],
       tagSlug: `${SPEC_BASE_PATH}/menu-model`,
       basePath: SPEC_BASE_PATH,
-      markdownSanitize: { sanitize: false, unstable_hooks: {} },
+      markdownSanitize: { sanitize: false },
     });
 
     const container = result.children[0] as ContainerNode;
@@ -189,7 +189,7 @@ describe('buildGroupContent', () => {
       operations: [],
       tagSlug: `${SPEC_BASE_PATH}/mixed-tag`,
       basePath: SPEC_BASE_PATH,
-      markdownSanitize: { sanitize: false, unstable_hooks: {} },
+      markdownSanitize: { sanitize: false },
     });
 
     const container = result.children[0] as ContainerNode;
@@ -218,7 +218,7 @@ describe('buildGroupContent', () => {
       operations: [],
       tagSlug: `${SPEC_BASE_PATH}/multi-schema-tag`,
       basePath: SPEC_BASE_PATH,
-      markdownSanitize: { sanitize: false, unstable_hooks: {} },
+      markdownSanitize: { sanitize: false },
     });
 
     const container = result.children[0] as ContainerNode;

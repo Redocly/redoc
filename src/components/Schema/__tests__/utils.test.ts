@@ -22,14 +22,14 @@ describe('getSchemaEnumRowLabel', () => {
 describe('getDiscriminatorEnumRender', () => {
   it('prefers schema enum array over mapping keys', () => {
     const prop = { type: 'string', enum: ['x', 'y'] } as PropertyType;
-    const r = getDiscriminatorEnumRender(prop, ['a', 'b']);
+    const r = getDiscriminatorEnumRender(prop);
     expect(r.isDescriptionEnum).toBe(false);
     expect(r.enumValues).toEqual(['x', 'y']);
   });
 
-  it('falls back to mapping keys when enum is absent', () => {
+  it('lists no values when the property has no enum', () => {
     const prop = { type: 'string' } as PropertyType;
-    const r = getDiscriminatorEnumRender(prop, ['list', 'one-column']);
-    expect(r.enumValues).toEqual(['list', 'one-column']);
+    const r = getDiscriminatorEnumRender(prop);
+    expect(r.enumValues).toEqual([]);
   });
 });

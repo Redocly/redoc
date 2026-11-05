@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
-import markdoc from '@markdoc/markdoc';
+import markdoc from '@redocly/markdoc';
 import { styled } from 'styled-components';
 
-import type { Node, Tag } from '@markdoc/markdoc';
+import type { Node, Tag } from '@redocly/markdoc';
 
 import { Markdown as MarkdownWrapper } from '@redocly/theme/components/Markdown/Markdown';
 

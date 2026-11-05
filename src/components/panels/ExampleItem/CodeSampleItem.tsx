@@ -34,7 +34,9 @@ import { createLanguageSwitchEvent } from '../../../events/languageSwitch.js';
 import { createCodeSampleCopyEvent } from '../../../events/codeSampleCopy.js';
 import { useCodeSampleLanguages, WEBHOOK_LANGUAGE_SAMPLES } from './useCodeSampleLanguages.js';
 
-export function CodeSampleItem({ node }: { node: CodeSamplePanelItem }): ReactElement {
+export function CodeSampleItem({ node: specNode }: { node: CodeSamplePanelItem }): ReactElement {
+  // oxlint-disable-next-line prefer-const -- CE strips the reassignment below.
+  let node = specNode;
   const options = useAtomValue(globalOptionsAtom);
   const translate = useSpecTranslate();
   const source = node.source;
@@ -69,7 +71,6 @@ export function CodeSampleItem({ node }: { node: CodeSamplePanelItem }): ReactEl
   const setItemState = useSetAtom(itemStoreAtom(itemId));
   const activeExampleKey = useAtomValue(itemStoreFieldAtom({ itemId, key: 'activeExampleKey' }));
   useExampleKeyFromHash(itemId, effectiveExampleIds);
-
 
   const contentKey = `${activeMediaType}|${effectiveExampleIds?.join(',')}`;
   const keyedId = findExampleIdByKey(
@@ -109,7 +110,6 @@ export function CodeSampleItem({ node }: { node: CodeSamplePanelItem }): ReactEl
   const activeExampleName = selectedExampleId
     ? (exampleStore[selectedExampleId]?.key ?? selectedExampleId)
     : undefined;
-
 
   const payloadForDisplay = useMemo(() => {
     return payload;
@@ -238,7 +238,10 @@ export function CodeSampleItem({ node }: { node: CodeSamplePanelItem }): ReactEl
           selectedIdx={selectedExampleIdx}
           onSelect={onExampleSelect}
         />
-        <ExampleDescription description={exampleStore[selectedExampleId ?? '']?.description} />
+        <ExampleDescription
+          key={selectedExampleId}
+          description={exampleStore[selectedExampleId ?? '']?.description}
+        />
         {isPayloadView ? (
           <PayloadDisplay
             payload={payloadForDisplay}

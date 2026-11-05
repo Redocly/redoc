@@ -43,18 +43,6 @@ import { DiscriminatorPropertyRow } from './DiscriminatorPropertyRow.js';
 import { SchemaVariantSelector } from './SchemaVariantSelector.js';
 import { CollapsibleNestedFields } from './CollapsibleNestedFields.js';
 
-// Host properties apply to every variant; on a name collision the variant's
-// definition and position win.
-function mergeHostProperties(
-  baseProps: Record<string, PropertyType>,
-  activeOptionProps: Record<string, PropertyType>,
-): Record<string, PropertyType> {
-  const hostOnlyProps = Object.fromEntries(
-    Object.entries(baseProps).filter(([name]) => !(name in activeOptionProps)),
-  );
-  return { ...hostOnlyProps, ...activeOptionProps };
-}
-
 function sharedHostProperties(
   hostProps: Record<string, PropertyType>,
   { sharesOnlyDiscriminator, propertyName }: SwitcherType,
@@ -64,6 +52,16 @@ function sharedHostProperties(
   return propertyName && discriminatorProp ? { [propertyName]: discriminatorProp } : {};
 }
 
+type DiscriminatorRow = {
+  propertyName: string;
+  optionEntries: [string, SwitcherOptionType][];
+  activeIdx: number;
+  onSelect: (idx: number) => void;
+  fieldParentsName: string[];
+};
+
+type OuterProperties = Record<string, { prop: PropertyType; fieldParentsName: string[] }>;
+
 type SwitcherRendererProps = {
   property: PropertyType;
   level: number;
@@ -72,6 +70,8 @@ type SwitcherRendererProps = {
   skipReadOnly?: boolean;
   skipWriteOnly?: boolean;
   onOneOfChange?: (params: OneOfChangeParams) => void;
+  outerDiscriminators?: DiscriminatorRow[];
+  outerProperties?: OuterProperties;
 };
 
 export function SwitcherRenderer({
@@ -82,6 +82,8 @@ export function SwitcherRenderer({
   skipReadOnly,
   skipWriteOnly,
   onOneOfChange,
+  outerDiscriminators,
+  outerProperties,
 }: SwitcherRendererProps): ReactElement {
   const switcher = property.switcher;
   if (!switcher) {
@@ -113,6 +115,8 @@ export function SwitcherRenderer({
       skipReadOnly={skipReadOnly}
       skipWriteOnly={skipWriteOnly}
       onOneOfChange={onOneOfChange}
+      outerDiscriminators={outerDiscriminators}
+      outerProperties={outerProperties}
     />
   );
 }
@@ -263,6 +267,8 @@ function DiscriminatorSwitcher({
   skipReadOnly,
   skipWriteOnly,
   onOneOfChange,
+  outerDiscriminators = [],
+  outerProperties = {},
 }: {
   property: PropertyType;
   switcher: SwitcherType;
@@ -272,6 +278,8 @@ function DiscriminatorSwitcher({
   skipReadOnly?: boolean;
   skipWriteOnly?: boolean;
   onOneOfChange?: (params: OneOfChangeParams) => void;
+  outerDiscriminators?: DiscriminatorRow[];
+  outerProperties?: OuterProperties;
 }): ReactElement {
   const itemId = useContext(ItemIdContext);
   const variantStoreId = buildVariantStoreId(itemId ?? '', useContext(DeepLinkSectionContext));
@@ -290,7 +298,25 @@ function DiscriminatorSwitcher({
   const reassert = useUrlHashReassert();
   const hashIdx = useVariantIndexFromHash('d', optionEntries.length, fieldParentsName);
   const stateIdx = discState[schemaKey];
-  const activeIdx = stateIdx !== undefined ? stateIdx : hashIdx !== -1 ? hashIdx : 0;
+  const sameProperty = outerDiscriminators
+    .filter((outer) => outer.propertyName === switcher.propertyName)
+    .at(-1);
+  const outerOption = sameProperty?.optionEntries[sameProperty.activeIdx];
+  const matchedIdx = outerOption ? optionEntries.findIndex(([key]) => key === outerOption[0]) : -1;
+  const impliedIdx =
+    !outerOption || outerOption[1].isDefaultMapping
+      ? -1
+      : matchedIdx !== -1
+        ? matchedIdx
+        : optionEntries.findIndex(([, option]) => option.isDefaultMapping);
+  const activeIdx =
+    impliedIdx !== -1
+      ? impliedIdx
+      : stateIdx !== undefined
+        ? stateIdx
+        : hashIdx !== -1
+          ? hashIdx
+          : 0;
 
   useEffect(() => {
     if (itemId && hashIdx !== -1) {
@@ -319,10 +345,13 @@ function DiscriminatorSwitcher({
 
   const activeOption = optionEntries[activeIdx] ?? optionEntries[0];
   const activeOptionProps = activeOption?.[1]?.properties ?? {};
-  const allProperties = mergeHostProperties(
-    sharedHostProperties(property.properties ?? {}, switcher),
-    activeOptionProps,
+  const hostProperties = sharedHostProperties(property.properties ?? {}, switcher);
+  const optionOrderWins = optionEntries.every(([, option]) =>
+    Object.keys(hostProperties).every((name) => name in (option.properties ?? {})),
   );
+  const allProperties = optionOrderWins
+    ? activeOptionProps
+    : { ...hostProperties, ...activeOptionProps };
 
   const { schemasExpansionLevel } = useAtomValue(globalOptionsAtom);
   const expand = expandByDefault ?? isWithinExpansionLevel(level, schemasExpansionLevel, 1);
@@ -332,30 +361,80 @@ function DiscriminatorSwitcher({
     [fieldParentsName, activeIdx],
   );
 
-  const entries = Object.entries(allProperties).filter(([, prop]) => {
-    if (skipReadOnly && prop.accessMode === 'read-only') return false;
-    if (skipWriteOnly && prop.accessMode === 'write-only') return false;
-    return true;
-  });
+  const ownRow: DiscriminatorRow | undefined = switcher.propertyName
+    ? {
+        propertyName: switcher.propertyName,
+        optionEntries,
+        activeIdx,
+        onSelect: handleSelect,
+        fieldParentsName,
+      }
+    : undefined;
+  const discriminatorRows =
+    ownRow && impliedIdx === -1 ? [...outerDiscriminators, ownRow] : outerDiscriminators;
+  const nestedSwitcher = activeOption?.[1]?.switcher;
+  const rowParentsName = level > 1 ? variantParentsName : variantMarkersOnly(variantParentsName);
+
+  if (nestedSwitcher?.type === 'discriminator') {
+    const levelProperties: OuterProperties = Object.fromEntries(
+      Object.entries(allProperties).map(([name, prop]) => [
+        name,
+        { prop, fieldParentsName: rowParentsName },
+      ]),
+    );
+    return (
+      <SwitcherRenderer
+        property={{ ...property, properties: allProperties, switcher: nestedSwitcher }}
+        level={level}
+        expandByDefault={expandByDefault}
+        fieldParentsName={variantParentsName}
+        skipReadOnly={skipReadOnly}
+        skipWriteOnly={skipWriteOnly}
+        onOneOfChange={onOneOfChange}
+        outerDiscriminators={discriminatorRows}
+        outerProperties={{ ...levelProperties, ...outerProperties }}
+      />
+    );
+  }
+
+  const isOuterRow = (name: string) => outerDiscriminators.some((row) => row.propertyName === name);
+  const names = [
+    ...new Set([
+      ...discriminatorRows
+        .map((row) => row.propertyName)
+        .filter((name) => outerDiscriminators.length > 0 || !Object.hasOwn(allProperties, name)),
+      ...Object.keys(allProperties),
+    ]),
+  ];
+  const entries = names
+    .map((name): [string, PropertyType] => [
+      name,
+      (isOuterRow(name) ? outerProperties[name]?.prop : undefined) ??
+        allProperties[name] ?? { type: 'string' },
+    ])
+    .filter(([, prop]) => {
+      if (skipReadOnly && prop.accessMode === 'read-only') return false;
+      if (skipWriteOnly && prop.accessMode === 'write-only') return false;
+      return true;
+    });
 
   return (
     <PropertyList>
-      {entries.map(([name, prop], index) => {
-        if (name === switcher.propertyName) {
-          const mappingKeys = optionEntries.map(([k]) => k);
-          return (
+      {entries.flatMap(([name, prop], index) => {
+        const rows = discriminatorRows.filter((row) => row.propertyName === name);
+        if (rows.length > 0) {
+          return rows.map((row, rowIdx) => (
             <DiscriminatorPropertyRow
-              key={name}
+              key={rowIdx === 0 ? name : `${name}:${rowIdx}`}
               fieldName={name}
-              fieldParentsName={fieldParentsName}
+              fieldParentsName={row.fieldParentsName}
               property={prop}
-              isFirst={index === 0}
-              mappingKeys={mappingKeys}
-              optionEntries={optionEntries}
-              activeIdx={activeIdx}
-              onSelect={handleSelect}
+              isFirst={index === 0 && rowIdx === 0}
+              optionEntries={row.optionEntries}
+              activeIdx={row.activeIdx}
+              onSelect={row.onSelect}
             />
-          );
+          ));
         }
 
         return (
@@ -367,7 +446,9 @@ function DiscriminatorSwitcher({
             expandByDefault={expand}
             isFirst={index === 0}
             fieldParentsName={
-              level > 1 ? variantParentsName : variantMarkersOnly(variantParentsName)
+              Object.hasOwn(activeOptionProps, name)
+                ? rowParentsName
+                : (outerProperties[name]?.fieldParentsName ?? rowParentsName)
             }
             skipReadOnly={skipReadOnly}
             skipWriteOnly={skipWriteOnly}

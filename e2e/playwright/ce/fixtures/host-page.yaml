@@ -1,0 +1,23 @@
+openapi: 3.1.0
+info:
+  title: Host page API
+  version: 1.0.0
+  description: |
+    ## Description heading
+
+    - First item
+    - Second item
+
+    A [link](https://example.com) and `inline code`.
+paths:
+  /orders:
+    get:
+      summary: List orders
+      responses:
+        '200':
+          description: OK
+    post:
+      summary: Create an order
+      responses:
+        '201':
+          description: Created

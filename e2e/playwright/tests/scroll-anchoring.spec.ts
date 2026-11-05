@@ -1,11 +1,14 @@
 import { test, expect } from '@playwright/test';
 
+import type { Page } from '@playwright/test';
+
 import { ApiDocsPage } from '../page-objects/ApiDocsPage';
 
 const SCHEMAS = '/menu/schemas';
 const OPTS = '?schemaDefinitionsTagName=Schemas';
 
 const NEAR_TOP_PX = 200;
+const CONTENT_ABOVE_PX = 120;
 
 async function expectSectionPinnedToTop(apiDocs: ApiDocsPage, routeSlug: string): Promise<void> {
   await apiDocs.waitForScrollIdle();
@@ -16,6 +19,32 @@ async function expectSectionPinnedToTop(apiDocs: ApiDocsPage, routeSlug: string)
   expect(box.y).toBeGreaterThanOrEqual(0);
   expect(box.y).toBeLessThan(NEAR_TOP_PX);
 }
+
+/** Puts content above the API docs from the first paint, as a host page's breadcrumbs would. */
+async function addContentAboveApiDocs(page: Page): Promise<void> {
+  // Init scripts run before the document element exists, so the rule cannot go in a <style>.
+  await page.addInitScript((paddingPx) => {
+    const sheet = new CSSStyleSheet();
+    sheet.replaceSync(`body { padding-top: ${paddingPx}px; }`);
+    document.adoptedStyleSheets = [...document.adoptedStyleSheets, sheet];
+  }, CONTENT_ABOVE_PX);
+}
+
+test.describe('Landing on the first section with content above the API docs', () => {
+  test('keeps the page at the top, so the content above stays in view', async ({ page }) => {
+    const apiDocs = new ApiDocsPage(page);
+    await addContentAboveApiDocs(page);
+
+    await apiDocs.open(`/menu${OPTS}`);
+    await apiDocs.waitForScrollIdle();
+
+    expect(await page.evaluate(() => window.scrollY)).toBe(0);
+    // The overview's description block carries the same section id.
+    const box = await apiDocs.sectionById('/menu').first().boundingBox();
+    if (!box) throw new Error('Section /menu has no bounding box');
+    expect(box.y).toBeGreaterThanOrEqual(CONTENT_ABOVE_PX);
+  });
+});
 
 test.describe('Scroll anchoring — a navigated section lands at the top', () => {
   let apiDocs: ApiDocsPage;

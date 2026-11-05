@@ -1,17 +1,12 @@
 import { describe, it, expect, vi } from 'vitest';
 
-import type { Node } from '@markdoc/markdoc';
+import type { Node } from '@redocly/markdoc';
 import type { MarkdownParser } from '../parseMarkdown.js';
 
-import { simplifyAstStructure } from '../simplifyAstStructure.js';
 import { parseMarkdown } from '../parseMarkdown.js';
 import { markdocParser } from '../../../components/markdoc/markdocParser.js';
 
 const documentNode = { type: 'document', children: [] } as unknown as Node;
-
-vi.mock('../simplifyAstStructure.js', () => ({
-  simplifyAstStructure: vi.fn((ast) => ast),
-}));
 
 describe('parseMarkdown', () => {
   it('delegates string parsing to the provided markdownParser', () => {
@@ -50,9 +45,14 @@ describe('parseMarkdown', () => {
 });
 
 describe('markdocParser', () => {
-  it('calls simplifyAstStructure when given a string', () => {
-    markdocParser('# Hello');
+  it('returns the top-level blocks without source locations or inline wrappers', () => {
+    const blocks = markdocParser('# Hello\n\nSome **bold** text');
 
-    expect(simplifyAstStructure).toHaveBeenCalledTimes(1);
+    expect(blocks).toMatchObject([
+      { type: 'heading', children: [{ type: 'text', attributes: { content: 'Hello' } }] },
+      { type: 'paragraph', children: [{ type: 'text' }, { type: 'strong' }, { type: 'text' }] },
+    ]);
+    expect(JSON.stringify(blocks)).not.toMatch(/"location"|"type":"inline"/);
+    expect(markdocParser('Some **bold** text')).toMatchObject([{ type: 'paragraph' }]);
   });
 });

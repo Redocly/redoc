@@ -1,12 +1,12 @@
 import { test, expect } from '@playwright/test';
 
-import type { Page } from '@playwright/test';
+import type { Locator, Page } from '@playwright/test';
 
-import { ApiDocsPage } from '../../page-objects/ApiDocsPage';
+import { goto } from '../../helpers/commands';
 
 /** The discriminator lives in the payload sample, and the default tab differs by edition. */
-async function selectPayloadSample(page: Page): Promise<void> {
-  const languageSwitcher = page
+async function selectPayloadSample(page: Page, operationSection: Locator): Promise<void> {
+  const languageSwitcher = operationSection
     .locator('div.panel-request-samples [data-component-name="Panel/PanelHeader"]')
     .first()
     .locator('[data-testid="dropdown"]')
@@ -21,18 +21,15 @@ async function selectPayloadSample(page: Page): Promise<void> {
 }
 
 test.describe('MediaTypeSamples', () => {
-  let apiDocs: ApiDocsPage;
   test.beforeEach(async ({ page }) => {
-    apiDocs = new ApiDocsPage(page);
-    await page.goto('/cafe');
+    await goto(page, '/cafe/menu/updatemenuitem');
   });
 
   test('should sync response with request on init', async ({ page }) => {
-    await apiDocs.clickThroughMenu('menu', 'Update an existing menu item');
-    const operationSection = page.locator('[data-section-id="/cafe/menu/updatemenuitem"]').first();
+    const operationSection = page.locator('[data-section-id="/cafe/menu/updatemenuitem"]');
     await expect(operationSection).toBeVisible();
 
-    await selectPayloadSample(page);
+    await selectPayloadSample(page, operationSection);
 
     const schemaDiscriminatorTabs = operationSection.locator('[data-section-id="switcher"]');
     await expect(schemaDiscriminatorTabs.getByRole('tab', { name: 'coffee' })).toBeVisible();
@@ -46,11 +43,10 @@ test.describe('MediaTypeSamples', () => {
   });
 
   test('should activate tab where example present', async ({ page }) => {
-    await apiDocs.clickThroughMenu('menu', 'Update an existing menu item');
-    const operationSection = page.locator('[data-section-id="/cafe/menu/updatemenuitem"]').first();
+    const operationSection = page.locator('[data-section-id="/cafe/menu/updatemenuitem"]');
     await expect(operationSection).toBeVisible();
-    await selectPayloadSample(page);
-    const rightPanel = page
+    await selectPayloadSample(page, operationSection);
+    const rightPanel = operationSection
       .locator('[data-component-name="Panel/PanelBody"]')
       .filter({ has: page.locator('button[aria-label="Discriminator"]') })
       .first();

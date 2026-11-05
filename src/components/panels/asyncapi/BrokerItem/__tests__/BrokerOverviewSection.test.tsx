@@ -1,7 +1,7 @@
 import { it, expect, vi, afterEach } from 'vitest';
 import { cleanup, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/vitest';
-import Markdoc from '@markdoc/markdoc';
+import Markdoc from '@redocly/markdoc';
 
 import { BrokerOverviewSection } from '../BrokerOverviewSection.js';
 

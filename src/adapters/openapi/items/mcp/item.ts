@@ -1,52 +1,17 @@
 import type { ApiItem, GroupItem } from '../../../../types/store.js';
-import type { OpenAPIDefinition } from '../../../../types/openapi.js';
 
 import { encodeBackSlashes, safeSlugify } from '../../../../utils/string.js';
-import { SUPPORTED_MCP_TYPES, type McpCollectionType } from '../../constants.js';
-import { titleize } from '../../utils/helpers.js';
+import { type McpCollectionType } from '../../constants.js';
+import { mcpEntities } from '../../utils/mcp.js';
 import { joinWithSeparator, normalizePath, toRelativePath } from '../../../../utils/url.js';
 import { buildMcpItemContent } from './content.js';
 import { openApiContext } from '../../buildContext.js';
-
-type McpEntity = {
-  name: string;
-  title?: string;
-  description?: string;
-  tags?: string[];
-};
 
 const MCP_ITEM_TYPE: Record<McpCollectionType, 'tool' | 'rsrc' | 'prompt'> = {
   tools: 'tool',
   resources: 'rsrc',
   prompts: 'prompt',
 };
-
-function getMcpEntitiesForTag(
-  tagName: string,
-  document: OpenAPIDefinition,
-): Array<{ entity: McpEntity; collectionType: McpCollectionType }> {
-  const mcp = document['x-mcp'];
-
-  if (!mcp) return [];
-
-  const result: Array<{ entity: McpEntity; collectionType: McpCollectionType }> = [];
-
-  for (const collectionType of SUPPORTED_MCP_TYPES) {
-    const entities = mcp[collectionType] as McpEntity[] | undefined;
-
-    if (!entities) continue;
-
-    const defaultTag = titleize(collectionType);
-    for (const entity of entities) {
-      const entityTags = entity.tags?.length ? entity.tags : [defaultTag];
-      if (entityTags.includes(tagName)) {
-        result.push({ entity, collectionType });
-      }
-    }
-  }
-
-  return result;
-}
 
 export function addMcpItems({
   tagName,
@@ -60,10 +25,10 @@ export function addMcpItems({
   groupItems?: McpGroupItems;
 }): void {
   const { document, options, processContent, basePath } = openApiContext.get();
-  const mcpEntities = getMcpEntitiesForTag(tagName, document);
+  const entities = mcpEntities(document).filter((entity) => entity.tags.includes(tagName));
 
-  for (const { entity, collectionType } of mcpEntities) {
-    const mcpType = MCP_ITEM_TYPE[collectionType];
+  for (const entity of entities) {
+    const mcpType = MCP_ITEM_TYPE[entity.collectionType];
     const displayName = entity.title || entity.name;
     const segment = encodeBackSlashes(
       safeSlugify(entity.name).toLowerCase() || entity.name.toLowerCase(),
@@ -90,7 +55,7 @@ export function addMcpItems({
       deprecated: false,
     };
 
-    groupItems?.[collectionType]?.push(groupItem);
+    groupItems?.[entity.collectionType]?.push(groupItem);
   }
 }
 

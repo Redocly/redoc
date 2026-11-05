@@ -9,6 +9,7 @@ export type { Oauth2Flow } from './security.js';
 export { getPageUri } from './page.js';
 export { sanitizeErrorDetails } from './sanitizeError.js';
 export { reportDefinitionLoadFailed } from './reportDefinitionLoadFailed.js';
+export { reportError, sendBuildErrors, sendErrorTelemetry, setErrorSender } from './reportError.js';
 export { useSchemaFieldTelemetry } from './useSchemaFieldTelemetry.js';
 export { useSidebarItemTelemetry } from './useSidebarItemTelemetry.js';
 export { nonDefaultOptions } from './initialPayload.js';

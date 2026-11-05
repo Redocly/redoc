@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import markdoc from '@markdoc/markdoc';
+import markdoc from '@redocly/markdoc';
 
 import type { ApiItem, ApiItemContent } from '../../../types/store.js';
 

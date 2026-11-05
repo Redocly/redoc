@@ -424,7 +424,7 @@ describe('buildSpecSlice — OpenAPI', () => {
     expectNoDanglingRefs(doc);
   });
 
-  it('document scope keeps everything but strips platform marker keys at all depths', async () => {
+  it('document scope keeps everything but strips internal marker keys at all depths', async () => {
     const doc = expectDefined(await extractOpenApi({ kind: 'document' }));
     const schemas = (doc.components as Record<string, Record<string, unknown>>).schemas;
     expect(schemas.Orphan).toBeDefined();

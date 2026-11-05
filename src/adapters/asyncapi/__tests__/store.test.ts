@@ -5,6 +5,7 @@ import type { ApiDocsOptions } from '../../../types/options.js';
 
 import { createStoreContext } from '../../helpers.js';
 import { populateAsyncApiStore } from '../store.js';
+import { processAsyncApiDocument } from '../index.js';
 import { markdocParser } from '../../../components/markdoc/markdocParser.js';
 
 function run(document: Record<string, unknown>) {
@@ -13,7 +14,6 @@ function run(document: Record<string, unknown>) {
     markdownParser: markdocParser,
   } as ApiDocsOptions);
 }
-
 
 describe('populateAsyncApiStore — security schemes', () => {
   it('registers each components.securitySchemes entry by its name', () => {
@@ -95,4 +95,17 @@ describe('populateAsyncApiStore — security schemes', () => {
     expect(store.securitySchemeStore.oauth.flows).toEqual({});
   });
 
+});
+
+describe('processAsyncApiDocument specVersion', () => {
+  it('exposes the document AsyncAPI version on store.specVersion', () => {
+    const { store } = processAsyncApiDocument({
+      type: 'asyncapi',
+      document: { asyncapi: '3.0.0', info: { title: 't', version: '1' } },
+      options: { markdownParser: markdocParser } as ApiDocsOptions,
+      basePath: '/',
+      processContent: false,
+    });
+    expect(store.specVersion).toBe('3.0.0');
+  });
 });

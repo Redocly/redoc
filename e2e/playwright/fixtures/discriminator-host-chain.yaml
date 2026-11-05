@@ -1,0 +1,292 @@
+openapi: 3.0.3
+info:
+  title: A chain of discriminator hosts that refs point into
+  version: '2024-01-01'
+  description: >
+    Each host refs the next one twice, and each option refs a property of its host. The samples
+    must stay within the depth limit instead of doubling per host.
+paths:
+  /chains:
+    post:
+      tags: [samples]
+      summary: Create a chain
+      operationId: createChain
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/H0'
+      responses:
+        '200':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/H0'
+components:
+  schemas:
+    # A chain of hosts whose variants ref a host property; each host refs the next one twice.
+    H0:
+      {
+        type: object,
+        properties:
+          {
+            kind: { type: string },
+            a: { $ref: '#/components/schemas/H1' },
+            b: { $ref: '#/components/schemas/H1' },
+          },
+        discriminator: { propertyName: kind },
+        oneOf: [{ $ref: '#/components/schemas/H0X' }, { $ref: '#/components/schemas/H0Y' }],
+      }
+    H0X: { type: object, properties: { kind: { $ref: '#/components/schemas/H0/properties/kind' } } }
+    H0Y: { type: object, properties: { kind: { $ref: '#/components/schemas/H0/properties/kind' } } }
+    H1:
+      {
+        type: object,
+        properties:
+          {
+            kind: { type: string },
+            a: { $ref: '#/components/schemas/H2' },
+            b: { $ref: '#/components/schemas/H2' },
+          },
+        discriminator: { propertyName: kind },
+        oneOf: [{ $ref: '#/components/schemas/H1X' }, { $ref: '#/components/schemas/H1Y' }],
+      }
+    H1X: { type: object, properties: { kind: { $ref: '#/components/schemas/H1/properties/kind' } } }
+    H1Y: { type: object, properties: { kind: { $ref: '#/components/schemas/H1/properties/kind' } } }
+    H2:
+      {
+        type: object,
+        properties:
+          {
+            kind: { type: string },
+            a: { $ref: '#/components/schemas/H3' },
+            b: { $ref: '#/components/schemas/H3' },
+          },
+        discriminator: { propertyName: kind },
+        oneOf: [{ $ref: '#/components/schemas/H2X' }, { $ref: '#/components/schemas/H2Y' }],
+      }
+    H2X: { type: object, properties: { kind: { $ref: '#/components/schemas/H2/properties/kind' } } }
+    H2Y: { type: object, properties: { kind: { $ref: '#/components/schemas/H2/properties/kind' } } }
+    H3:
+      {
+        type: object,
+        properties:
+          {
+            kind: { type: string },
+            a: { $ref: '#/components/schemas/H4' },
+            b: { $ref: '#/components/schemas/H4' },
+          },
+        discriminator: { propertyName: kind },
+        oneOf: [{ $ref: '#/components/schemas/H3X' }, { $ref: '#/components/schemas/H3Y' }],
+      }
+    H3X: { type: object, properties: { kind: { $ref: '#/components/schemas/H3/properties/kind' } } }
+    H3Y: { type: object, properties: { kind: { $ref: '#/components/schemas/H3/properties/kind' } } }
+    H4:
+      {
+        type: object,
+        properties:
+          {
+            kind: { type: string },
+            a: { $ref: '#/components/schemas/H5' },
+            b: { $ref: '#/components/schemas/H5' },
+          },
+        discriminator: { propertyName: kind },
+        oneOf: [{ $ref: '#/components/schemas/H4X' }, { $ref: '#/components/schemas/H4Y' }],
+      }
+    H4X: { type: object, properties: { kind: { $ref: '#/components/schemas/H4/properties/kind' } } }
+    H4Y: { type: object, properties: { kind: { $ref: '#/components/schemas/H4/properties/kind' } } }
+    H5:
+      {
+        type: object,
+        properties:
+          {
+            kind: { type: string },
+            a: { $ref: '#/components/schemas/H6' },
+            b: { $ref: '#/components/schemas/H6' },
+          },
+        discriminator: { propertyName: kind },
+        oneOf: [{ $ref: '#/components/schemas/H5X' }, { $ref: '#/components/schemas/H5Y' }],
+      }
+    H5X: { type: object, properties: { kind: { $ref: '#/components/schemas/H5/properties/kind' } } }
+    H5Y: { type: object, properties: { kind: { $ref: '#/components/schemas/H5/properties/kind' } } }
+    H6:
+      {
+        type: object,
+        properties:
+          {
+            kind: { type: string },
+            a: { $ref: '#/components/schemas/H7' },
+            b: { $ref: '#/components/schemas/H7' },
+          },
+        discriminator: { propertyName: kind },
+        oneOf: [{ $ref: '#/components/schemas/H6X' }, { $ref: '#/components/schemas/H6Y' }],
+      }
+    H6X: { type: object, properties: { kind: { $ref: '#/components/schemas/H6/properties/kind' } } }
+    H6Y: { type: object, properties: { kind: { $ref: '#/components/schemas/H6/properties/kind' } } }
+    H7:
+      {
+        type: object,
+        properties:
+          {
+            kind: { type: string },
+            a: { $ref: '#/components/schemas/H8' },
+            b: { $ref: '#/components/schemas/H8' },
+          },
+        discriminator: { propertyName: kind },
+        oneOf: [{ $ref: '#/components/schemas/H7X' }, { $ref: '#/components/schemas/H7Y' }],
+      }
+    H7X: { type: object, properties: { kind: { $ref: '#/components/schemas/H7/properties/kind' } } }
+    H7Y: { type: object, properties: { kind: { $ref: '#/components/schemas/H7/properties/kind' } } }
+    H8:
+      {
+        type: object,
+        properties:
+          {
+            kind: { type: string },
+            a: { $ref: '#/components/schemas/H9' },
+            b: { $ref: '#/components/schemas/H9' },
+          },
+        discriminator: { propertyName: kind },
+        oneOf: [{ $ref: '#/components/schemas/H8X' }, { $ref: '#/components/schemas/H8Y' }],
+      }
+    H8X: { type: object, properties: { kind: { $ref: '#/components/schemas/H8/properties/kind' } } }
+    H8Y: { type: object, properties: { kind: { $ref: '#/components/schemas/H8/properties/kind' } } }
+    H9:
+      {
+        type: object,
+        properties:
+          {
+            kind: { type: string },
+            a: { $ref: '#/components/schemas/H10' },
+            b: { $ref: '#/components/schemas/H10' },
+          },
+        discriminator: { propertyName: kind },
+        oneOf: [{ $ref: '#/components/schemas/H9X' }, { $ref: '#/components/schemas/H9Y' }],
+      }
+    H9X: { type: object, properties: { kind: { $ref: '#/components/schemas/H9/properties/kind' } } }
+    H9Y: { type: object, properties: { kind: { $ref: '#/components/schemas/H9/properties/kind' } } }
+    H10:
+      {
+        type: object,
+        properties:
+          {
+            kind: { type: string },
+            a: { $ref: '#/components/schemas/H11' },
+            b: { $ref: '#/components/schemas/H11' },
+          },
+        discriminator: { propertyName: kind },
+        oneOf: [{ $ref: '#/components/schemas/H10X' }, { $ref: '#/components/schemas/H10Y' }],
+      }
+    H10X:
+      { type: object, properties: { kind: { $ref: '#/components/schemas/H10/properties/kind' } } }
+    H10Y:
+      { type: object, properties: { kind: { $ref: '#/components/schemas/H10/properties/kind' } } }
+    H11:
+      {
+        type: object,
+        properties:
+          {
+            kind: { type: string },
+            a: { $ref: '#/components/schemas/H12' },
+            b: { $ref: '#/components/schemas/H12' },
+          },
+        discriminator: { propertyName: kind },
+        oneOf: [{ $ref: '#/components/schemas/H11X' }, { $ref: '#/components/schemas/H11Y' }],
+      }
+    H11X:
+      { type: object, properties: { kind: { $ref: '#/components/schemas/H11/properties/kind' } } }
+    H11Y:
+      { type: object, properties: { kind: { $ref: '#/components/schemas/H11/properties/kind' } } }
+    H12:
+      {
+        type: object,
+        properties:
+          {
+            kind: { type: string },
+            a: { $ref: '#/components/schemas/H13' },
+            b: { $ref: '#/components/schemas/H13' },
+          },
+        discriminator: { propertyName: kind },
+        oneOf: [{ $ref: '#/components/schemas/H12X' }, { $ref: '#/components/schemas/H12Y' }],
+      }
+    H12X:
+      { type: object, properties: { kind: { $ref: '#/components/schemas/H12/properties/kind' } } }
+    H12Y:
+      { type: object, properties: { kind: { $ref: '#/components/schemas/H12/properties/kind' } } }
+    H13:
+      {
+        type: object,
+        properties:
+          {
+            kind: { type: string },
+            a: { $ref: '#/components/schemas/H14' },
+            b: { $ref: '#/components/schemas/H14' },
+          },
+        discriminator: { propertyName: kind },
+        oneOf: [{ $ref: '#/components/schemas/H13X' }, { $ref: '#/components/schemas/H13Y' }],
+      }
+    H13X:
+      { type: object, properties: { kind: { $ref: '#/components/schemas/H13/properties/kind' } } }
+    H13Y:
+      { type: object, properties: { kind: { $ref: '#/components/schemas/H13/properties/kind' } } }
+    H14:
+      {
+        type: object,
+        properties:
+          {
+            kind: { type: string },
+            a: { $ref: '#/components/schemas/H15' },
+            b: { $ref: '#/components/schemas/H15' },
+          },
+        discriminator: { propertyName: kind },
+        oneOf: [{ $ref: '#/components/schemas/H14X' }, { $ref: '#/components/schemas/H14Y' }],
+      }
+    H14X:
+      { type: object, properties: { kind: { $ref: '#/components/schemas/H14/properties/kind' } } }
+    H14Y:
+      { type: object, properties: { kind: { $ref: '#/components/schemas/H14/properties/kind' } } }
+    H15:
+      {
+        type: object,
+        properties:
+          {
+            kind: { type: string },
+            a: { $ref: '#/components/schemas/H16' },
+            b: { $ref: '#/components/schemas/H16' },
+          },
+        discriminator: { propertyName: kind },
+        oneOf: [{ $ref: '#/components/schemas/H15X' }, { $ref: '#/components/schemas/H15Y' }],
+      }
+    H15X:
+      { type: object, properties: { kind: { $ref: '#/components/schemas/H15/properties/kind' } } }
+    H15Y:
+      { type: object, properties: { kind: { $ref: '#/components/schemas/H15/properties/kind' } } }
+    H16:
+      {
+        type: object,
+        properties:
+          {
+            kind: { type: string },
+            a: { $ref: '#/components/schemas/H17' },
+            b: { $ref: '#/components/schemas/H17' },
+          },
+        discriminator: { propertyName: kind },
+        oneOf: [{ $ref: '#/components/schemas/H16X' }, { $ref: '#/components/schemas/H16Y' }],
+      }
+    H16X:
+      { type: object, properties: { kind: { $ref: '#/components/schemas/H16/properties/kind' } } }
+    H16Y:
+      { type: object, properties: { kind: { $ref: '#/components/schemas/H16/properties/kind' } } }
+    H17:
+      {
+        type: object,
+        properties: { kind: { type: string } },
+        discriminator: { propertyName: kind },
+        oneOf: [{ $ref: '#/components/schemas/H17X' }, { $ref: '#/components/schemas/H17Y' }],
+      }
+    H17X:
+      { type: object, properties: { kind: { $ref: '#/components/schemas/H17/properties/kind' } } }
+    H17Y:
+      { type: object, properties: { kind: { $ref: '#/components/schemas/H17/properties/kind' } } }

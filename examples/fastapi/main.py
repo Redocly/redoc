@@ -3,6 +3,7 @@
 import os
 
 from fastapi import FastAPI
+from fastapi.openapi.docs import get_redoc_html
 from fastapi.responses import HTMLResponse
 
 REDOC_URL = os.environ.get("REDOC_URL") or (
@@ -15,19 +16,12 @@ app = FastAPI(title="Cafe", redoc_url=None, docs_url=None)
 
 @app.get("/", include_in_schema=False)
 def docs() -> HTMLResponse:
-    return HTMLResponse(
-        f"""<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Cafe API - Redoc</title>
-    <style>body {{ margin: 0; }}</style>
-  </head>
-  <body>
-    <redoc spec-url="{CAFE}"></redoc>
-    <script type="module" src="{REDOC_URL}"></script>
-  </body>
-</html>
-"""
+    page = get_redoc_html(
+        openapi_url=CAFE,
+        title="Cafe API - Redoc",
+        redoc_js_url=REDOC_URL,
+        with_google_fonts=False,
     )
+    # get_redoc_html() writes a classic <script> tag; the Redoc 3 bundle loads only as a module.
+    html = page.body.decode("utf-8").replace("<script src=", '<script type="module" src=', 1)
+    return HTMLResponse(html)

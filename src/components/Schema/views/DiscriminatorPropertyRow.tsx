@@ -41,7 +41,6 @@ export type DiscriminatorPropertyRowProps = {
   fieldName: string;
   property: PropertyType;
   isFirst: boolean;
-  mappingKeys: string[];
   optionEntries: [string, SwitcherOptionType][];
   fieldParentsName: string[];
   activeIdx: number;
@@ -52,7 +51,6 @@ export function DiscriminatorPropertyRow({
   fieldName,
   property: prop,
   isFirst,
-  mappingKeys,
   optionEntries,
   activeIdx,
   fieldParentsName = [],
@@ -60,7 +58,7 @@ export function DiscriminatorPropertyRow({
 }: DiscriminatorPropertyRowProps): ReactElement {
   const { hidePropertiesPrefix, jsonSamplesExpandLevel } = useAtomValue(globalOptionsAtom);
   const translate = useSpecTranslate();
-  const { enumDescriptions, enumValues } = getDiscriminatorEnumRender(prop, mappingKeys);
+  const { enumDescriptions, enumValues } = getDiscriminatorEnumRender(prop);
   const enumLabel = getSchemaEnumRowLabel(prop.type, enumValues.length);
   const showConstValue = prop.const !== undefined && prop.const !== '';
   const fieldPath = [...fieldParentsName, fieldName].join('/');

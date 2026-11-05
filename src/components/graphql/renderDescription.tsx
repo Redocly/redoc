@@ -1,4 +1,4 @@
-import type { Node } from '@markdoc/markdoc';
+import type { Node } from '@redocly/markdoc';
 import type { ReactElement } from 'react';
 
 import { Markdown } from '../common/Markdown.js';

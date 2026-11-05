@@ -4,6 +4,7 @@ import type { ApiDocsOptions } from '../../../../types/options.js';
 import { contentType, nodeTypes } from '../../../../types/common.js';
 import { parseMarkdown } from '../../../utils/parseMarkdown.js';
 import { escapeHTMLAttrChars } from '../../utils/helpers.js';
+import { withErrorHandling } from '../../../helpers.js';
 
 type McpItemType = 'tool' | 'rsrc' | 'prompt';
 
@@ -13,7 +14,7 @@ const MARKDOC_TAG_BY_TYPE: Record<McpItemType, string> = {
   prompt: 'mcpPrompt',
 };
 
-export function buildMcpItemContent(
+function _buildMcpItemContent(
   mcpType: McpItemType,
   name: string,
   id: string,
@@ -51,3 +52,8 @@ export function buildMcpItemContent(
     ],
   };
 }
+
+export const buildMcpItemContent = withErrorHandling(
+  (_mcpType, _name, _id, title) => title,
+  _buildMcpItemContent,
+);

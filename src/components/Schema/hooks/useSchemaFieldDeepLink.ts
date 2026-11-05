@@ -1,15 +1,9 @@
 import { useContext, useMemo } from 'react';
-import { useAtomValue } from 'jotai';
 
 import type { DeepLinkSectionValue } from '../../../hooks/useDeepLinkSection.js';
 
 import { buildAsyncApiSuffix, buildOpenApiFieldSuffix } from '../../../utils/deep-link.js';
-import {
-  DeepLinkSectionContext,
-  ItemIdContext,
-  useFieldDeepLinkUrl,
-} from '../../../hooks/useDeepLinkSection.js';
-import { expandableSectionAtom } from '../../../jotai/itemStore.js';
+import { DeepLinkSectionContext, useFieldDeepLinkUrl } from '../../../hooks/useDeepLinkSection.js';
 
 export function buildSchemaFieldSuffix(
   sectionCtx: DeepLinkSectionValue | null,
@@ -53,10 +47,4 @@ export function useSchemaFieldDeepLink(fieldPath: string): string {
 export function useSectionBaselineKey(): string {
   const sectionCtx = useContext(DeepLinkSectionContext);
   return useMemo(() => buildSchemaFieldSuffix(sectionCtx, ''), [sectionCtx]);
-}
-
-export function useSectionExpandBaseline(): boolean | undefined {
-  const itemId = useContext(ItemIdContext) ?? '';
-  const baselineKey = useSectionBaselineKey();
-  return useAtomValue(expandableSectionAtom(itemId, baselineKey));
 }

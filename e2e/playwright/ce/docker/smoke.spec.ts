@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from '../test.js';
 
 import { StandalonePage } from '../page-objects/StandalonePage.js';
 import { HEADING, IMAGE, MENU_PATH, docker, loadVariants } from './variants.js';

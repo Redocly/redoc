@@ -196,7 +196,7 @@ export function ResponseExampleItem({ node }: { node: ResponseExamplesPanelItem 
   );
 
   const payload = resolved[selectedExampleIdx] ?? resolved[0];
-  const activeExampleDescription = exampleEntries[selectedExampleIdx]?.description;
+  const activeExampleEntry = exampleEntries[selectedExampleIdx];
 
   const renderHeader = useCallback(() => {
     if (node.hideHeaderTitle && !responseCodes?.length) return;
@@ -248,7 +248,10 @@ export function ResponseExampleItem({ node }: { node: ResponseExamplesPanelItem 
         selectedIdx={selectedExampleIdx}
         onSelect={onExampleSelect}
       />
-      <ExampleDescription description={activeExampleDescription} />
+      <ExampleDescription
+        key={activeExampleEntry?.id}
+        description={activeExampleEntry?.description}
+      />
       <PayloadDisplay
         payload={payload}
         emptyMessage={

@@ -15,7 +15,9 @@ function ContainerItemComponent({
   itemPath?: string;
   sectionId?: string;
 }): ReactElement {
-  const { children, panels } = node;
+  const { panels } = node;
+  // oxlint-disable-next-line prefer-const -- CE strips the reassignment below.
+  let children = node.children;
 
   return (
     <ContentWrapper panels={panels} sectionId={sectionId}>

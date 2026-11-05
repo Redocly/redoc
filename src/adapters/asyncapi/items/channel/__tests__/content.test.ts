@@ -213,7 +213,6 @@ function withBuildContext<T>(
   return asyncApiContext.run(ctx, fn);
 }
 
-
 describe('buildChannelContent — parameter location', () => {
   it('renders the parameter location expression as the schema type, falling back to "string"', () => {
     const channel = {
@@ -251,7 +250,6 @@ describe('buildChannelContent — parameter location', () => {
   });
 });
 
-
 function findPanelChild<T>(
   content: ReturnType<typeof buildChannelContent>,
   kind: string,
@@ -267,11 +265,9 @@ function findPanelChild<T>(
   return undefined;
 }
 
-
 type MessageBindingPanel = {
   bindingsByMessageKey?: Record<string, { keySchemaId?: string }>;
 };
-
 
 describe('buildChannelContent — Kafka message-binding schema resolution', () => {
   it('converts message-binding key schema to JSON Schema', () => {

@@ -3,7 +3,7 @@ import { styled } from 'styled-components';
 import { useAtomValue, useSetAtom } from 'jotai';
 
 import type { BaseSyntheticEvent, ReactElement } from 'react';
-import type { Node } from '@markdoc/markdoc';
+import type { Node } from '@redocly/markdoc';
 import type { ItemContentNode, ContentNode } from '../../../types/content.js';
 
 import { Panel } from '@redocly/theme/components/Panel/Panel';

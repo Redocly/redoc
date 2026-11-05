@@ -82,11 +82,9 @@ export function useApiDocsScroll({
     if (!elementId && navigationType === 'PUSH' && location.state?.expandInPlace) return;
 
     // The first section on the page is the top of the page: land there so whatever sits
-    // above it (breadcrumbs, a custom sub-navigation) stays in view.
-    if (
-      !elementId &&
-      findSectionTarget(activeSlug) === document.querySelector(`[${SECTION_ATTR}]`)
-    ) {
+    // above it (breadcrumbs, a custom sub-navigation) stays in view. Read from the routes:
+    // before hydration the DOM starts at the active entry.
+    if (!elementId && activeSlug === routeIndex.rootPage?.path) {
       window.scrollTo(0, 0);
       return;
     }

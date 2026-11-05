@@ -5,6 +5,8 @@ import type { SchemaNode } from '../../types/schema.js';
 import { buildVariantStateKey } from '../../jotai/itemStore.js';
 import { appendVariantSuffix } from '../../utils/deep-link.js';
 import { deriveVariantLabel } from '../schema/variant-label.js';
+import { resolveStorePointer } from '../../utils/refPointer.js';
+import { openapiAppliesRefSiblings } from '../../utils/openapi-version.js';
 
 function getDiscriminator(data: Record<string, unknown>): OpenAPIDiscriminator | undefined {
   return data.discriminator as OpenAPIDiscriminator | undefined;
@@ -66,13 +68,42 @@ export function findEffectiveDiscriminator(
   return undefined;
 }
 
-
 function isNonEmptyObject(value: unknown): value is Record<string, unknown> {
   return (
     !!value && typeof value === 'object' && !Array.isArray(value) && Object.keys(value).length > 0
   );
 }
 
+function derefSchemaFromStore(
+  value: unknown,
+  schemaStore: Record<string, SchemaEntry>,
+): Record<string, unknown> | undefined {
+  if (!value || typeof value !== 'object') return undefined;
+  const record = value as Record<string, unknown>;
+  if (typeof record.$ref !== 'string') return record;
+  const id = stripRefPrefix(record.$ref);
+  return schemaStore[id]?.data;
+}
+
+/** `derefSchemaFromStore`, plus a ref into part of a stored schema and the bare refs behind it. */
+function derefPointerFromStore(
+  value: unknown,
+  schemaStore: Record<string, SchemaEntry>,
+  seen = new Set<object>(),
+): Record<string, unknown> | undefined {
+  const data = derefSchemaFromStore(value, schemaStore);
+  if (data || !value || typeof value !== 'object') return data;
+  const record = value as Record<string, unknown>;
+  if (seen.has(record)) return undefined;
+  seen.add(record);
+  const target = resolveStorePointer(record.$ref as string, (key) => schemaStore[key]?.data);
+  // Only an alias is followed further; keywords next to a target's `$ref` make it a schema itself.
+  return target && isBareRef(target) ? derefPointerFromStore(target, schemaStore, seen) : target;
+}
+
+function isBareRef(node: Record<string, unknown>): boolean {
+  return Object.keys(node).every((key) => key === '$ref' || ANNOTATION_ONLY_HOST_KEYS.has(key));
+}
 
 function resolveStoreIdFromRef(
   value: unknown,
@@ -92,7 +123,6 @@ type SchemaVariantOption = {
   isDefaultMapping?: boolean;
   isDeprecated?: boolean;
 };
-
 
 export type SchemaVariantAxis = {
   kind: 'discriminator' | 'oneOf' | 'anyOf';
@@ -225,6 +255,60 @@ function buildOneOfAxis(
   };
 }
 
+const RESTRICTING_KEYS = ['const', 'enum'];
+const SAMPLED_VALUE_KEYS = [...RESTRICTING_KEYS, 'example', 'examples', 'default'];
+
+function pinsValue(
+  schema: unknown,
+  propertyName: string | undefined,
+  schemaStore: Record<string, SchemaEntry>,
+  keys: string[] = SAMPLED_VALUE_KEYS,
+  seen: Set<object> = new Set(),
+  mappingKey?: string,
+): boolean {
+  const data = derefPointerFromStore(schema, schemaStore);
+  if (!data) return isNonEmptyObject(schema) && typeof schema.$ref === 'string';
+  if (seen.has(data)) return false;
+  seen.add(data);
+  const allowsKey =
+    mappingKey !== undefined && Array.isArray(data.enum) && data.enum.includes(mappingKey);
+  const pins = (node: unknown, name: string | undefined) =>
+    pinsValue(node, name, schemaStore, keys, seen, mappingKey);
+  const pinned =
+    propertyName === undefined
+      ? keys.some((key) => data[key] !== undefined && !(key === 'enum' && allowsKey)) ||
+        [data.oneOf, data.anyOf].some(
+          (members) =>
+            Array.isArray(members) &&
+            members.length > 0 &&
+            members.every((member) => pins(member, undefined)),
+        )
+      : isNonEmptyObject(data.properties) && pins(data.properties[propertyName], undefined);
+  return (
+    pinned || (Array.isArray(data.allOf) && data.allOf.some((part) => pins(part, propertyName)))
+  );
+}
+
+function stampKey(
+  option: { schemaId: string; mappingKey?: string },
+  propertyName: string,
+  hostData: Record<string, unknown>,
+  schemaStore: Record<string, SchemaEntry>,
+): string | undefined {
+  const variantData = schemaStore[option.schemaId]?.data;
+  const seen = new Set([hostData]);
+  return pinsValue(
+    variantData,
+    propertyName,
+    schemaStore,
+    RESTRICTING_KEYS,
+    seen,
+    option.mappingKey,
+  )
+    ? undefined
+    : option.mappingKey;
+}
+
 function rootAxisForSchemaData(
   schemaData: Record<string, unknown>,
   schemaStore: Record<string, SchemaEntry>,
@@ -242,6 +326,21 @@ function rootAxisForSchemaData(
       if (!Array.isArray(list) || list.length === 0) continue;
       const listAxis = buildOneOfAxis(list, variantsNode, schemaStore, parentPath, kind);
       if (listAxis && listAxis.options.length > 0) {
+        if (Object.keys(discriminator.mapping).length === 0) {
+          const property = discriminator.propertyName;
+          for (const option of listAxis.options) {
+            if (!option.schemaId.startsWith('components/schemas/')) continue;
+            const key = option.schemaId.slice('components/schemas/'.length);
+            const optionData = schemaStore[option.schemaId]?.data;
+            const seen = new Set([variantsNode]);
+            if (
+              !pinsValue(schemaData, property, schemaStore, RESTRICTING_KEYS, undefined, key) &&
+              !pinsValue(optionData, property, schemaStore, SAMPLED_VALUE_KEYS, seen, key)
+            ) {
+              option.mappingKey = key;
+            }
+          }
+        }
         return {
           ...listAxis,
           kind: 'discriminator',
@@ -341,12 +440,21 @@ export function findSchemaVariantAxis(
 
   if (!includeNested) return undefined;
 
-  const nested = collectNestedVariantAxes(entry.data, schemaStore);
-  if (nested.size === 1) {
-    return nested.values().next().value;
-  }
-
-  return undefined;
+  const [first, ...rest] = collectNestedVariantAxes(entry.data, schemaStore).values();
+  if (!first || rest.length === 0) return first;
+  const reached = new Set(
+    collectVariantLeaves(first, schemaStore).flatMap(({ picks }) =>
+      picks.slice(1).flatMap(({ axis }) => axis.options.map((option) => option.schemaId)),
+    ),
+  );
+  const path = first.parentPath.join('/');
+  return rest.every(
+    (axis) =>
+      axis.parentPath.join('/') === path &&
+      axis.options.every((option) => reached.has(option.schemaId)),
+  )
+    ? first
+    : undefined;
 }
 
 export function resolveActiveVariantIndex(
@@ -380,7 +488,7 @@ export function resolveActiveVariantIndex(
   return 0;
 }
 
-export type SchemaVariantPick = { axis: SchemaVariantAxis; idx: number };
+export type SchemaVariantPick = { axis: SchemaVariantAxis; idx: number; implied?: boolean };
 
 export type SchemaVariantLeaf = SchemaVariantOption & {
   key: string;
@@ -431,13 +539,16 @@ function optionLeaf(
   return { ...option, key: option.schemaId || option.label, picks: [{ axis, idx }] };
 }
 
-function nestLeaf(parent: SchemaVariantLeaf, child: SchemaVariantLeaf): SchemaVariantLeaf {
+function addOuterOption(outer: SchemaVariantLeaf, inner: SchemaVariantLeaf): SchemaVariantLeaf {
+  const [first] = inner.picks;
   return {
-    ...child,
-    label: `${parent.label}${LEAF_LABEL_SEPARATOR}${child.label}`,
-    key: `${parent.key}${LEAF_LABEL_SEPARATOR}${child.key}`,
-    isDeprecated: parent.isDeprecated || child.isDeprecated,
-    picks: [...parent.picks, ...child.picks],
+    ...inner,
+    label: first.implied
+      ? `${outer.label}${inner.label.slice(first.axis.options[first.idx].label.length)}`
+      : `${outer.label}${LEAF_LABEL_SEPARATOR}${inner.label}`,
+    key: `${outer.key}${LEAF_LABEL_SEPARATOR}${inner.key}`,
+    isDeprecated: outer.isDeprecated || inner.isDeprecated,
+    picks: [...outer.picks, ...inner.picks],
   };
 }
 
@@ -470,9 +581,27 @@ function collectVariantLeaves(
     const nested = nestedAxisOf(axis, option, idx, schemaStore, visited);
     if (!nested) return [leaf];
 
-    const childVisited = new Set([...visited, option.schemaId]);
-    return collectVariantLeaves(nested, schemaStore, childVisited).map((child) =>
-      nestLeaf(leaf, child),
+    const children = collectVariantLeaves(
+      nested,
+      schemaStore,
+      new Set([...visited, option.schemaId]),
+    );
+    const sharesValue =
+      axis.kind === 'discriminator' &&
+      nested.kind === 'discriminator' &&
+      nested.localPart === axis.localPart &&
+      option.mappingKey;
+    const childrenWhere = (match: (child: SchemaVariantOption) => boolean) =>
+      children.filter(({ picks: [first] }) => match(first.axis.options[first.idx]));
+    const matching = childrenWhere((child) => child.mappingKey === option.mappingKey);
+    const reachable = !sharesValue
+      ? []
+      : matching.length > 0
+        ? matching
+        : childrenWhere((child) => !!child.isDefaultMapping);
+    for (const child of reachable) child.picks[0] = { ...child.picks[0], implied: true };
+    return (reachable.length > 0 ? reachable : children).map((child) =>
+      addOuterOption(leaf, child),
     );
   });
 }
@@ -497,6 +626,7 @@ function mergeNestedVariantWithHosts(
   schemaStore: Record<string, SchemaEntry>,
 ): Record<string, unknown> | undefined {
   let schema = schemaStore[nested.schemaId]?.data;
+  const stamped = new Set<string>();
   for (let level = nested.picks.length - 1; schema && level >= 0; level--) {
     const { axis, idx } = nested.picks[level];
     const outer = nested.picks[level - 1];
@@ -504,10 +634,18 @@ function mergeNestedVariantWithHosts(
     const levelHost = schemaStore[levelHostId]?.data;
     if (!levelHost) return undefined;
     const merged = mergeHostSiblings(schema, levelHostId, levelHost);
-    schema =
-      axis.kind === 'discriminator'
-        ? injectDiscriminatorEnum(merged, axis.localPart, axis.options[idx].mappingKey)
-        : merged;
+    const option = axis.options[idx];
+    const mappingKey =
+      axis.kind === 'discriminator' && !stamped.has(axis.localPart)
+        ? stampKey(option, axis.localPart, levelHost, schemaStore)
+        : undefined;
+    schema = injectDiscriminatorEnum(merged, axis.localPart, mappingKey);
+    if (
+      axis.kind === 'discriminator' &&
+      (mappingKey || pinsValue(schemaStore[option.schemaId]?.data, axis.localPart, schemaStore))
+    ) {
+      stamped.add(axis.localPart);
+    }
   }
   return schema;
 }
@@ -531,8 +669,10 @@ function withoutVariantScopedKeys(
   return record && Object.fromEntries(Object.entries(record).filter(([key]) => key[0] !== '&'));
 }
 
-function isPickActive({ axis, idx }: SchemaVariantPick, state: VariantState): boolean {
-  return resolveActiveVariantIndex(axis, state.activeDiscriminator, state.activeOneOf) === idx;
+function isPickActive({ axis, idx, implied }: SchemaVariantPick, state: VariantState): boolean {
+  return (
+    implied || resolveActiveVariantIndex(axis, state.activeDiscriminator, state.activeOneOf) === idx
+  );
 }
 
 export function resolveActiveVariantLeafIndex(
@@ -566,11 +706,42 @@ function resolveActiveVariantOption(
   return active;
 }
 
-
 // Array items are keyed with a `[]` suffix on the parent segment, same as ArrayRenderer.
 function itemsPath(path: string[]): string[] {
   if (path.length === 0) return path;
   return [...path.slice(0, -1), `${path[path.length - 1]}[]`];
+}
+
+/**
+ * The variant spread over the host; keywords both declare apply together, not variant-only.
+ * A `$ref` variant whose host has keywords the sampler reads becomes an `allOf` member where
+ * keywords next to a `$ref` do not apply (Swagger 2.0, OpenAPI 3.0). The host's type and sample
+ * value stay at the root, where the sampler reads them first.
+ */
+function mergeVariantIntoHost(
+  host: Record<string, unknown>,
+  variant: Record<string, unknown>,
+  refSiblingsApply: boolean,
+): Record<string, unknown> {
+  if (
+    !refSiblingsApply &&
+    typeof variant.$ref === 'string' &&
+    [...SAMPLED_HOST_KEYS, ...SAMPLED_VALUE_KEYS].some((key) => host[key] !== undefined)
+  ) {
+    const root = ['type', ...SAMPLED_VALUE_KEYS].filter((key) => host[key] !== undefined);
+    return { ...Object.fromEntries(root.map((key) => [key, host[key]])), allOf: [host, variant] };
+  }
+  const merged = { ...host, ...variant };
+  if (isNonEmptyObject(host.properties) && isNonEmptyObject(variant.properties)) {
+    merged.properties = { ...host.properties, ...variant.properties };
+  }
+  if (Array.isArray(host.required) && Array.isArray(variant.required)) {
+    merged.required = [...new Set([...host.required, ...variant.required])];
+  }
+  if (Array.isArray(host.allOf) && Array.isArray(variant.allOf)) {
+    merged.allOf = [...host.allOf, ...variant.allOf];
+  }
+  return merged;
 }
 
 function collapseDiscriminatorHost(
@@ -593,7 +764,11 @@ function collapseDiscriminatorHost(
   const variant = { allOf: [{ $ref: `${REF_PREFIX}${active.schemaId}` }] };
   return {
     ...siblings,
-    ...injectDiscriminatorEnum(variant, discriminator.propertyName, active.mappingKey),
+    ...injectDiscriminatorEnum(
+      variant,
+      discriminator.propertyName,
+      stampKey(active, discriminator.propertyName, node, schemaStore),
+    ),
   };
 }
 
@@ -605,13 +780,20 @@ function collapseDiscriminatorHost(
  * discriminator hosts collapse to the active variant with its mapping key
  * stamped. Returns a structural clone.
  */
-export function applyActiveVariantsToSchema(
-  data: Record<string, unknown>,
-  schemaStore: Record<string, SchemaEntry>,
-  activeDiscriminator?: Record<string, number>,
-  activeOneOf?: Record<string, number>,
-  parentPath: string[] = [],
-): Record<string, unknown> {
+export function applyActiveVariantsToSchema({
+  schema,
+  schemaStore,
+  activeDiscriminator,
+  activeOneOf,
+  openapiVersion,
+}: {
+  schema: Record<string, unknown>;
+  schemaStore: Record<string, SchemaEntry>;
+  activeDiscriminator?: Record<string, number>;
+  activeOneOf?: Record<string, number>;
+  openapiVersion?: string;
+}): Record<string, unknown> {
+  const refSiblingsApply = openapiAppliesRefSiblings(openapiVersion);
   const collapse = (value: unknown, path: string[], isEntryRoot = false): unknown => {
     if (!value || typeof value !== 'object') return value;
     if (Array.isArray(value)) return value.map((item) => collapse(item, path));
@@ -643,7 +825,7 @@ export function applyActiveVariantsToSchema(
 
         // Spread, not allOf-wrap: allOf-merging a null variant brings the `{}` bug back.
         const { oneOf: _o, anyOf: _a, ...siblings } = node;
-        return collapse({ ...siblings, ...variant }, path);
+        return collapse(mergeVariantIntoHost(siblings, variant, refSiblingsApply), path);
       }
     }
 
@@ -667,7 +849,7 @@ export function applyActiveVariantsToSchema(
     return next;
   };
 
-  return collapse(data, parentPath, true) as Record<string, unknown>;
+  return collapse(schema, [], true) as Record<string, unknown>;
 }
 
 /**
@@ -676,23 +858,32 @@ export function applyActiveVariantsToSchema(
  * Variant rewrites replace an object host (`type: 'object'`) with an allOf-rooted
  * variant that carries no top-level `type`, so a back-reference into the host would
  * sample as `null` where sampling the raw spec gives `{}`. Keep the host's
- * declared type on the rewritten entry: discriminator variants allOf-inherit the
- * host, and a `type` sibling of oneOf/anyOf constrains every variant, so the
- * effective type is unchanged either way.
+ * declared type on the rewritten entry, or the selected variant's when the host
+ * declares none: discriminator variants allOf-inherit the host, and a `type`
+ * sibling of oneOf/anyOf constrains every variant, so the effective type is
+ * unchanged either way.
  */
 function preserveHostType(
   rewritten: Record<string, unknown>,
   hostData: Record<string, unknown>,
+  variantData: Record<string, unknown> | undefined,
 ): Record<string, unknown> {
-  if (rewritten.type !== undefined || hostData.type === undefined) return rewritten;
-  return { ...rewritten, type: hostData.type };
+  const type = hostData.type ?? variantData?.type;
+  if (rewritten.type !== undefined || type === undefined) return rewritten;
+  return { ...rewritten, type };
 }
 
-export function applyActiveVariantsToStore(
-  schemaStore: Record<string, SchemaEntry>,
-  activeDiscriminator?: Record<string, number>,
-  activeOneOf?: Record<string, number>,
-): Record<string, Record<string, unknown>> {
+export function applyActiveVariantsToStore({
+  schemaStore,
+  activeDiscriminator,
+  activeOneOf,
+  openapiVersion,
+}: {
+  schemaStore: Record<string, SchemaEntry>;
+  activeDiscriminator?: Record<string, number>;
+  activeOneOf?: Record<string, number>;
+  openapiVersion?: string;
+}): Record<string, Record<string, unknown>> {
   const resolved: Record<string, Record<string, unknown>> = {};
 
   for (const [id, entry] of Object.entries(schemaStore)) {
@@ -706,7 +897,7 @@ export function applyActiveVariantsToStore(
     const nestedLeaf =
       leaf && leaf.picks.length > 1 && mergeNestedVariantWithHosts(id, leaf, schemaStore);
     if (nestedLeaf) {
-      resolved[id] = preserveHostType(nestedLeaf, entry.data);
+      resolved[id] = preserveHostType(nestedLeaf, entry.data, schemaStore[leaf.schemaId]?.data);
       continue;
     }
     const discriminator = getDiscriminator(entry.data);
@@ -720,8 +911,13 @@ export function applyActiveVariantsToStore(
       if (variantData) {
         const merged = mergeHostSiblings(variantData, id, entry.data);
         resolved[id] = preserveHostType(
-          injectDiscriminatorEnum(merged, discriminator.propertyName, active?.mappingKey),
+          injectDiscriminatorEnum(
+            merged,
+            discriminator.propertyName,
+            active && stampKey(active, discriminator.propertyName, entry.data, schemaStore),
+          ),
           entry.data,
+          variantData,
         );
       } else {
         resolved[id] = entry.data;
@@ -745,7 +941,11 @@ export function applyActiveVariantsToStore(
       if (!activeOption?.schemaId || !schemaStore[activeOption.schemaId]) continue;
 
       const variantData = schemaStore[activeOption.schemaId].data;
-      resolved[id] = preserveHostType(mergeHostSiblings(variantData, id, entry.data), entry.data);
+      resolved[id] = preserveHostType(
+        mergeHostSiblings(variantData, id, entry.data),
+        entry.data,
+        variantData,
+      );
       rewritten = true;
       break;
     }
@@ -754,11 +954,21 @@ export function applyActiveVariantsToStore(
     resolved[id] = entry.data;
   }
 
+  const rewritten = new Set(
+    Object.keys(resolved).filter((id) => resolved[id] !== schemaStore[id].data),
+  );
   // The loop above only rewrites entry roots; nested inline oneOf/anyOf and
   // discriminator hosts must collapse too, or samples are stuck on branch 0.
   for (const [id, data] of Object.entries(resolved)) {
-    resolved[id] = applyActiveVariantsToSchema(data, schemaStore, activeDiscriminator, activeOneOf);
+    resolved[id] = applyActiveVariantsToSchema({
+      schema: data,
+      schemaStore,
+      activeDiscriminator,
+      activeOneOf,
+      openapiVersion,
+    });
   }
+  addOriginalHosts(resolved, schemaStore, rewritten);
 
   return resolved;
 }
@@ -771,8 +981,8 @@ const REF_PREFIX = '#/';
  * discriminator references too (sampler resolves them via the rewritten spec
  * stub), so callers don't need a recursive post-walk to stamp nested values.
  *
- * Options without a mapping key — the 'Default mapping' selection, oneOf
- * variants without mapping — have no canonical outgoing value and stay unstamped.
+ * Options without a mapping key — the 'Default mapping' selection, and variants
+ * that pin the property themselves — stay unstamped.
  */
 function injectDiscriminatorEnum(
   schema: Record<string, unknown>,
@@ -814,6 +1024,16 @@ function hostKeywordsForVariants(hostData: Record<string, unknown>): Record<stri
 }
 
 const ANNOTATION_ONLY_HOST_KEYS = new Set(['type', 'title', 'description']);
+const SAMPLED_HOST_KEYS = [
+  'properties',
+  'additionalProperties',
+  'patternProperties',
+  'items',
+  'prefixItems',
+  'allOf',
+  'enum',
+  'const',
+];
 
 /** The sampler names the XML root element from the top-level `xml`, which an allOf wrapper hides. */
 function withRootXml(
@@ -831,13 +1051,120 @@ function mergeHostSiblings(
 ): Record<string, unknown> {
   const refs = hostRefCandidates(hostId);
   const host = hostKeywordsForVariants(hostData);
-  const variant = containsRef(variantData, refs)
-    ? (replaceRefsDeep(variantData, refs, host) as Record<string, unknown>)
-    : variantData;
   const hasSiblings = Object.keys(host).some((key) => !ANNOTATION_ONLY_HOST_KEYS.has(key));
+  let variant = variantData;
+  if (containsRef(variantData, refs)) {
+    const sampled = SAMPLED_HOST_KEYS.some((key) => host[key] !== undefined);
+    const type = hostData.type ?? variantData.type;
+    variant = replaceRefsDeep(variantData, refs, (ref) =>
+      sampled ? { ...host } : { ...ref, ...(type !== undefined && { type }) },
+    ) as Record<string, unknown>;
+    if (!sampled && Array.isArray(variant.allOf)) {
+      variant.allOf = variant.allOf.map((part) =>
+        isNonEmptyObject(part) && refs.includes(part.$ref as string) ? host : part,
+      );
+    }
+  }
   return inheritsHost(variantData, hostId) || !hasSiblings
     ? variant
     : withRootXml({ allOf: [host, variant] }, variant);
+}
+
+const ORIGINAL_HOST_PREFIX = 'components/schemas/__original__';
+const subPathRefCache = new WeakMap<Record<string, SchemaEntry>, Map<string, string>>();
+
+/** Each `$ref` in the store that points inside a stored schema, mapped to that schema's id. */
+function subPathRefHosts(schemaStore: Record<string, SchemaEntry>): Map<string, string> {
+  const cached = subPathRefCache.get(schemaStore);
+  if (cached) return cached;
+  const hosts = new Map<string, string>();
+  const visit = (node: unknown): void => {
+    if (!node || typeof node !== 'object') return;
+    if (Array.isArray(node)) {
+      node.forEach(visit);
+      return;
+    }
+    const ref = (node as Record<string, unknown>).$ref;
+    if (typeof ref === 'string' && !hosts.has(ref) && !schemaStore[stripRefPrefix(ref)]) {
+      const segments = stripRefPrefix(ref).split('/');
+      for (let split = segments.length - 1; split > 0; split--) {
+        const id = segments.slice(0, split).join('/');
+        if (schemaStore[id]) {
+          if (id.startsWith('components/schemas/')) hosts.set(ref, id);
+          break;
+        }
+      }
+    }
+    Object.values(node).forEach(visit);
+  };
+  Object.values(schemaStore).forEach((entry) => visit(entry.data));
+  subPathRefCache.set(schemaStore, hosts);
+  return hosts;
+}
+
+function originalHostId(hostId: string): string {
+  return ORIGINAL_HOST_PREFIX + hostId.slice('components/schemas/'.length);
+}
+
+const retargetsByResolved = new WeakMap<Record<string, unknown>, Map<string, string>>();
+
+/**
+ * Adds an untouched copy of every host a `$ref` points inside of that the rewrite changed, and
+ * points the ref at it: the pointer resolves as written while the host samples the selected
+ * variant. A host only the deep collapse changed keeps every ref that still resolves in it.
+ */
+function addOriginalHosts(
+  resolved: Record<string, Record<string, unknown>>,
+  schemaStore: Record<string, SchemaEntry>,
+  rewritten: Set<string>,
+): void {
+  const retargets = new Map<string, string>();
+  for (const [ref, host] of subPathRefHosts(schemaStore)) {
+    if (
+      !rewritten.has(host) &&
+      (resolveStorePointer(ref, (id) => resolved[id]) ||
+        !resolveStorePointer(ref, (id) => schemaStore[id]?.data))
+    ) {
+      continue;
+    }
+    resolved[originalHostId(host)] = schemaStore[host].data;
+    retargets.set(
+      ref,
+      `${REF_PREFIX}${originalHostId(host)}${stripRefPrefix(ref).slice(host.length)}`,
+    );
+  }
+  if (retargets.size === 0) return;
+  retargetsByResolved.set(resolved, retargets);
+  for (const [id, data] of Object.entries(resolved)) {
+    resolved[id] = retargetHostPointers(data, resolved) as Record<string, unknown>;
+  }
+}
+
+/** `node` with refs into a rewritten host pointed at the copy `applyActiveVariantsToStore` added to `resolved`. */
+export function retargetHostPointers(node: unknown, resolved: Record<string, unknown>): unknown {
+  const retargets = retargetsByResolved.get(resolved);
+  if (!retargets) return node;
+  const walk = (value: unknown): unknown => {
+    if (!value || typeof value !== 'object') return value;
+    if (Array.isArray(value)) {
+      const items = value.map(walk);
+      return items.some((item, i) => item !== value[i]) ? items : value;
+    }
+    const record = value as Record<string, unknown>;
+    const next: Record<string, unknown> = {};
+    let changed = false;
+    for (const [key, child] of Object.entries(record)) {
+      next[key] = walk(child);
+      changed ||= next[key] !== child;
+    }
+    const target = typeof record.$ref === 'string' ? retargets.get(record.$ref) : undefined;
+    if (target) {
+      next.$ref = target;
+      changed = true;
+    }
+    return changed ? next : record;
+  };
+  return walk(node);
 }
 
 function inheritsHost(variantData: Record<string, unknown>, hostId: string): boolean {
@@ -864,19 +1191,19 @@ function containsRef(node: unknown, refs: string[]): boolean {
 function replaceRefsDeep(
   node: unknown,
   refs: string[],
-  replacement: Record<string, unknown>,
+  replace: (ref: Record<string, unknown>) => Record<string, unknown>,
 ): unknown {
   if (!node || typeof node !== 'object') return node;
-  if (Array.isArray(node)) return node.map((item) => replaceRefsDeep(item, refs, replacement));
+  if (Array.isArray(node)) return node.map((item) => replaceRefsDeep(item, refs, replace));
 
   const record = node as Record<string, unknown>;
   if (typeof record.$ref === 'string' && refs.includes(record.$ref)) {
-    return { ...replacement };
+    return replace(record);
   }
 
   const next: Record<string, unknown> = {};
   for (const [key, value] of Object.entries(record)) {
-    next[key] = replaceRefsDeep(value, refs, replacement);
+    next[key] = replaceRefsDeep(value, refs, replace);
   }
   return next;
 }

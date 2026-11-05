@@ -8,7 +8,7 @@ type SecuritySchemeData = Partial<OpenAPISecurityScheme> & { type: OpenAPISecuri
 import { populateOpenApiStore } from '../store.js';
 import { normalizeOptions } from '../../../options/normalizeOptions.js';
 import { markdocParser } from '../../../components/markdoc/markdocParser.js';
-import { createStoreContext, toRecord } from '../../helpers.js';
+import { createStoreContext, registerSchema, toRecord } from '../../helpers.js';
 
 const defaultOptions = {
   ...normalizeOptions({
@@ -111,6 +111,29 @@ describe('populateOpenApiStore', () => {
 
     expect(pet).toBeDefined();
     expect(pet.title).toBe('Resolved Pet');
+  });
+
+  it('registers boolean component schemas without letting an empty schema share their entry', () => {
+    const doc = makeDoc({
+      components: {
+        schemas: { NoValue: false, AnyValue: true } as unknown as Record<string, { type: string }>,
+      },
+    });
+    const storeCtx = createStoreContext(toRecord(doc));
+    const result = populateOpenApiStore(doc, storeCtx, defaultOptions);
+
+    expect(result.schemaStore['components/schemas/NoValue']).toMatchObject({
+      title: 'NoValue',
+      data: {},
+      booleanSchema: false,
+    });
+    expect(result.schemaStore['components/schemas/AnyValue'].booleanSchema).toBe(true);
+    expect(
+      registerSchema(storeCtx.schemaStore, storeCtx.hashIndex, {
+        kind: schemaKind.JSON_SCHEMA,
+        data: {},
+      }),
+    ).not.toMatch(/^components\/schemas\//);
   });
 
   it('registers examples with value, summary, description, and externalValue', () => {
@@ -342,7 +365,6 @@ describe('populateOpenApiStore', () => {
       'https://auth.example.com/.well-known/openid-configuration',
     );
   });
-
 
   it('parses markdown description for security schemes', () => {
     const doc = makeDoc({
@@ -589,6 +611,314 @@ describe('implicit discriminator normalization', () => {
 
     expect(result.schemaStore['components/schemas/Pet'].data.discriminator).toEqual({
       propertyName: 'petType',
+    });
+  });
+});
+
+describe('bare discriminator mapping names', () => {
+  const drinks = {
+    Coffee: { type: 'object', properties: { kind: { type: 'string' } } },
+    Tea: { type: 'object', properties: { kind: { type: 'string' } } },
+  };
+  const drinkRefs = [{ $ref: '#/components/schemas/Coffee' }, { $ref: '#/components/schemas/Tea' }];
+
+  it('qualifies a mapping value that names a component schema', () => {
+    const result = populate(
+      makeDoc({
+        components: {
+          schemas: {
+            ...drinks,
+            Drink: {
+              oneOf: drinkRefs,
+              discriminator: { propertyName: 'kind', mapping: { coffee: 'Coffee', tea: 'Tea' } },
+            },
+          },
+        },
+      }),
+    );
+
+    expect(result.schemaStore['components/schemas/Drink'].data.discriminator).toEqual({
+      propertyName: 'kind',
+      mapping: { coffee: '#/components/schemas/Coffee', tea: '#/components/schemas/Tea' },
+    });
+  });
+
+  it('qualifies bare names in a discriminator outside the component schemas', () => {
+    const bodySchema = {
+      oneOf: drinkRefs,
+      discriminator: { propertyName: 'kind', mapping: { coffee: 'Coffee' } },
+    };
+    const doc = makeDoc({
+      components: { schemas: { ...drinks } },
+      paths: {
+        '/drinks': {
+          post: { requestBody: { content: { 'application/json': { schema: bodySchema } } } },
+        },
+      },
+    } as unknown as Partial<OpenAPIDefinition>);
+
+    populate(doc);
+
+    expect(bodySchema.discriminator.mapping).toEqual({ coffee: '#/components/schemas/Coffee' });
+  });
+
+  it('qualifies bare names under any member named like a keyword', () => {
+    const drink = () => ({
+      oneOf: drinkRefs,
+      discriminator: { propertyName: 'kind', mapping: { coffee: 'Coffee' } },
+    });
+    const errorSchema = drink();
+    const named = { parameter: drink(), header: drink(), pathItem: drink(), callback: drink() };
+    const dependent = drink();
+    const settings = {
+      type: 'object',
+      properties: { default: drink(), example: drink() },
+      dependentSchemas: { enum: dependent },
+    };
+    const namedDefault = drink();
+    const requestBody = drink();
+    const webhookBody = drink();
+
+    const doc = makeDoc({
+      components: {
+        schemas: { ...drinks, Settings: settings, default: namedDefault },
+        requestBodies: { default: { content: { 'application/json': { schema: requestBody } } } },
+        parameters: { default: { name: 'drink', in: 'query', schema: named.parameter } },
+        headers: { example: { schema: named.header } },
+        pathItems: {
+          default: {
+            post: {
+              requestBody: { content: { 'application/json': { schema: named.pathItem } } },
+              responses: {},
+            },
+          },
+        },
+        callbacks: {
+          default: {
+            '{$request.body#/url}': {
+              post: {
+                requestBody: { content: { 'application/json': { schema: named.callback } } },
+                responses: {},
+              },
+            },
+          },
+        },
+      },
+      webhooks: {
+        example: {
+          post: {
+            requestBody: { content: { 'application/json': { schema: webhookBody } } },
+            responses: {},
+          },
+        },
+      },
+      paths: {
+        '/drinks': {
+          post: {
+            responses: {
+              default: {
+                description: 'Error',
+                content: { 'application/json': { schema: errorSchema } },
+              },
+            },
+          },
+        },
+      },
+    } as unknown as Partial<OpenAPIDefinition>);
+
+    populate(doc);
+
+    const qualified = { coffee: '#/components/schemas/Coffee' };
+    expect(errorSchema.discriminator.mapping).toEqual(qualified);
+    expect(settings.properties.default.discriminator.mapping).toEqual(qualified);
+    expect(settings.properties.example.discriminator.mapping).toEqual(qualified);
+    expect(namedDefault.discriminator.mapping).toEqual(qualified);
+    expect(requestBody.discriminator.mapping).toEqual(qualified);
+    expect(webhookBody.discriminator.mapping).toEqual(qualified);
+    for (const schema of [...Object.values(named), dependent]) {
+      expect(schema.discriminator.mapping).toEqual(qualified);
+    }
+  });
+
+  it('leaves x-examples payloads untouched', () => {
+    const payload = { discriminator: { propertyName: 'kind', mapping: { coffee: 'Coffee' } } };
+    const doc = makeDoc({
+      components: { schemas: { ...drinks } },
+      paths: {
+        '/drinks': {
+          post: {
+            requestBody: {
+              content: { 'application/json': { schema: { type: 'object' } } },
+              'x-examples': { order: payload },
+            },
+            responses: {},
+          },
+        },
+      },
+    } as unknown as Partial<OpenAPIDefinition>);
+
+    populate(doc);
+
+    expect(payload.discriminator.mapping).toEqual({ coffee: 'Coffee' });
+  });
+
+  it('leaves references and names that are not component schemas untouched', () => {
+    const mapping = {
+      coffee: '#/components/schemas/Coffee',
+      tea: 'Unknown',
+      latte: './latte.yaml',
+    };
+    populate(
+      makeDoc({
+        components: {
+          schemas: {
+            ...drinks,
+            Drink: { oneOf: drinkRefs, discriminator: { propertyName: 'kind', mapping } },
+          },
+        },
+      }),
+    );
+
+    expect(mapping).toEqual({
+      coffee: '#/components/schemas/Coffee',
+      tea: 'Unknown',
+      latte: './latte.yaml',
+    });
+  });
+  it('qualifies a bare default mapping', () => {
+    const discriminator = {
+      propertyName: 'kind',
+      mapping: { coffee: 'Coffee' },
+      defaultMapping: 'Tea',
+    };
+    populate(
+      makeDoc({
+        components: { schemas: { ...drinks, Drink: { oneOf: drinkRefs, discriminator } } },
+      }),
+    );
+
+    expect(discriminator.defaultMapping).toBe('#/components/schemas/Tea');
+  });
+
+  it('leaves example values that look like a discriminator untouched', () => {
+    const example = { discriminator: { propertyName: 'kind', mapping: { coffee: 'Coffee' } } };
+    populate(
+      makeDoc({
+        components: {
+          schemas: { ...drinks, Recipe: { type: 'object', example } },
+          examples: { recipe: { value: example } },
+        },
+      }),
+    );
+
+    expect(example.discriminator.mapping).toEqual({ coffee: 'Coffee' });
+  });
+
+  it('leaves x-example, default, const and enum values that look like a discriminator untouched', () => {
+    const payload = () => ({
+      discriminator: { propertyName: 'kind', mapping: { coffee: 'Coffee' } },
+    });
+    const xExample = payload();
+    const defaultValue = payload();
+    const constValue = payload();
+    const enumValue = payload();
+    const recipe: Record<string, unknown> = {
+      type: 'object',
+      'x-example': xExample,
+      default: defaultValue,
+      const: constValue,
+      enum: [enumValue],
+    };
+    populate(makeDoc({ components: { schemas: { ...drinks, Recipe: recipe } } }));
+
+    expect([xExample, defaultValue, constValue, enumValue]).toEqual([
+      payload(),
+      payload(),
+      payload(),
+      payload(),
+    ]);
+  });
+
+  it('qualifies bare names under patternProperties, $defs and definitions members named like a keyword', () => {
+    const drink = () => ({
+      oneOf: drinkRefs,
+      discriminator: { propertyName: 'kind', mapping: { coffee: 'Coffee' } },
+    });
+    const pattern = drink();
+    const def = drink();
+    const definition = drink();
+    const settings = {
+      type: 'object',
+      patternProperties: { default: pattern },
+      $defs: { const: def },
+      definitions: { enum: definition },
+    };
+    populate(makeDoc({ components: { schemas: { ...drinks, Settings: settings } } }));
+
+    const qualified = { coffee: '#/components/schemas/Coffee' };
+    expect([pattern, def, definition].map((schema) => schema.discriminator.mapping)).toEqual([
+      qualified,
+      qualified,
+      qualified,
+    ]);
+  });
+
+  it('qualifies bare names in a member whose name is a name-map keyword', () => {
+    const headers = {
+      oneOf: drinkRefs,
+      discriminator: { propertyName: 'kind', mapping: { coffee: 'Coffee' } },
+    };
+    populate(
+      makeDoc({
+        components: {
+          schemas: { ...drinks, Envelope: { type: 'object', properties: { headers } } },
+        },
+      }),
+    );
+
+    expect(headers.discriminator.mapping).toEqual({ coffee: '#/components/schemas/Coffee' });
+  });
+
+  it('leaves a name-map member named discriminator untouched', () => {
+    const discriminator = { type: 'object', propertyName: 'kind', mapping: { coffee: 'Coffee' } };
+    populate(
+      makeDoc({
+        components: {
+          schemas: {
+            ...drinks,
+            Config: { type: 'object', properties: { discriminator } },
+          },
+        },
+      }),
+    );
+
+    expect(discriminator).toEqual({
+      type: 'object',
+      propertyName: 'kind',
+      mapping: { coffee: 'Coffee' },
+    });
+  });
+
+  it('qualifies bare names in a document with object cycles', () => {
+    const bodySchema: Record<string, unknown> = {
+      oneOf: drinkRefs,
+      discriminator: { propertyName: 'kind', mapping: { coffee: 'Coffee' } },
+    };
+    bodySchema.properties = { next: bodySchema };
+    const doc = makeDoc({
+      components: { schemas: { ...drinks } },
+      paths: {
+        '/drinks': {
+          post: { requestBody: { content: { 'application/json': { schema: bodySchema } } } },
+        },
+      },
+    } as unknown as Partial<OpenAPIDefinition>);
+
+    populate(doc);
+
+    expect(bodySchema.discriminator).toEqual({
+      propertyName: 'kind',
+      mapping: { coffee: '#/components/schemas/Coffee' },
     });
   });
 });

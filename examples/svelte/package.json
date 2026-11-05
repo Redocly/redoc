@@ -8,7 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "redoc": "^3.0.0-rc.1"
+    "redoc": "^3.0.0"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^7.3.0",

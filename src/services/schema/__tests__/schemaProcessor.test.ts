@@ -52,6 +52,164 @@ function makeDocument(components: Record<string, unknown>, openapi = '3.1.0'): D
 
 const emptyDoc = makeDocument({});
 
+describe('schemaProcessor discriminator options that are discriminator hosts', () => {
+  it('keeps the discriminator a variant declares for its own variants', () => {
+    const ref = (name: string) => ({ $ref: `#/components/schemas/${name}` });
+    const doc = makeDocument({
+      Drink: {
+        oneOf: [ref('Brew'), ref('Juice')],
+        discriminator: {
+          propertyName: 'kind',
+          mapping: { brew: '#/components/schemas/Brew', juice: '#/components/schemas/Juice' },
+        },
+      },
+      Brew: {
+        oneOf: [ref('Espresso'), ref('Latte')],
+        discriminator: {
+          propertyName: 'style',
+          mapping: {
+            espresso: '#/components/schemas/Espresso',
+            latte: '#/components/schemas/Latte',
+          },
+        },
+      },
+      Espresso: {
+        type: 'object',
+        properties: { style: { type: 'string' }, shots: { type: 'integer' } },
+      },
+      Latte: {
+        type: 'object',
+        properties: { style: { type: 'string' }, milk: { type: 'string' } },
+      },
+      Juice: { type: 'object', properties: { kind: { type: 'string' } } },
+    });
+
+    const brew = requireSw(schemaProcessor(pageSchema(doc, 'Drink'), doc)).options.brew;
+    const nested = requireSw(brew);
+
+    expect(nested.type).toBe('discriminator');
+    expect(nested.propertyName).toBe('style');
+    expect(Object.keys(nested.options)).toEqual(['espresso', 'latte']);
+  });
+
+  it('does not nest the option that maps back to the host itself', () => {
+    const ref = (name: string) => ({ $ref: `#/components/schemas/${name}` });
+    const doc = makeDocument({
+      Pet: {
+        oneOf: [ref('Cat'), ref('Dog')],
+        discriminator: {
+          propertyName: 'petType',
+          mapping: {
+            pet: '#/components/schemas/Pet',
+            cat: '#/components/schemas/Cat',
+            dog: '#/components/schemas/Dog',
+          },
+        },
+      },
+      Cat: { type: 'object', properties: { petType: { type: 'string' } } },
+      Dog: { type: 'object', properties: { petType: { type: 'string' } } },
+    });
+
+    const result = schemaProcessor(pageSchema(doc, 'Pet'), doc, {
+      rootJsonPointer: '#/components/schemas/Pet',
+    });
+
+    expect(requireSw(requireSw(result).options.pet).type).toBe('oneOf');
+  });
+
+  it('keeps a discriminator an option also inherits from an allOf parent out of the option', () => {
+    const ref = (name: string) => ({ $ref: `#/components/schemas/${name}` });
+    const doc = makeDocument({
+      Order: {
+        type: 'object',
+        properties: { kind: { type: 'string' } },
+        discriminator: {
+          propertyName: 'kind',
+          mapping: { food: '#/components/schemas/FoodOrder', gift: '#/components/schemas/Gift' },
+        },
+      },
+      FoodOrder: {
+        allOf: [ref('Order')],
+        oneOf: [ref('Pizza'), ref('Salad')],
+        discriminator: { propertyName: 'dish' },
+      },
+      Pizza: { type: 'object', properties: { dish: { type: 'string' } } },
+      Salad: { type: 'object', properties: { dish: { type: 'string' } } },
+      Gift: { allOf: [ref('Order')] },
+    });
+
+    const food = requireSw(schemaProcessor(pageSchema(doc, 'Order'), doc)).options.food;
+
+    expect(food.switcher?.type).not.toBe('discriminator');
+  });
+
+  it('does not nest a discriminator an inline option declares without variants', () => {
+    const doc = makeDocument({
+      Shipment: {
+        oneOf: [
+          {
+            title: 'Parcel',
+            type: 'object',
+            properties: { method: { type: 'string' }, size: { type: 'string' } },
+            discriminator: {
+              propertyName: 'size',
+              mapping: { small: '#/components/schemas/Small' },
+            },
+          },
+        ],
+        discriminator: { propertyName: 'method' },
+      },
+      Small: { type: 'object', properties: { size: { type: 'string' } } },
+    });
+
+    const parcel = requireSw(schemaProcessor(pageSchema(doc, 'Shipment'), doc)).options.Parcel;
+
+    expect(parcel).toEqual({
+      isDeprecated: false,
+      isDefaultMapping: false,
+      properties: {
+        method: { type: 'string', isExpandable: false },
+        size: { type: 'string', isExpandable: false },
+      },
+    });
+  });
+
+  it('does not nest a discriminator the array items of an array option declare without variants', () => {
+    const ref = (name: string) => ({ $ref: `#/components/schemas/${name}` });
+    const doc = makeDocument({
+      Order: {
+        oneOf: [ref('Bundle')],
+        discriminator: {
+          propertyName: 'kind',
+          mapping: { bundle: '#/components/schemas/Bundle' },
+        },
+      },
+      Bundle: { type: 'array', items: ref('Item') },
+      Item: {
+        type: 'object',
+        properties: { size: { type: 'string' } },
+        discriminator: {
+          propertyName: 'size',
+          mapping: { small: '#/components/schemas/Small' },
+        },
+      },
+      Small: { type: 'object', properties: { size: { type: 'string' } } },
+    });
+
+    const bundle = requireSw(schemaProcessor(pageSchema(doc, 'Order'), doc)).options.bundle;
+
+    expect(requireItems(bundle)).toEqual([
+      {
+        type: 'object',
+        title: 'Item',
+        schemaName: 'Item',
+        properties: { size: { type: 'string', isExpandable: false } },
+        isExpandable: false,
+      },
+    ]);
+  });
+});
+
 describe('schemaProcessor metadata extraction', () => {
   it('should extract description', () => {
     const result = schemaProcessor({ type: 'string', description: 'A user name' }, emptyDoc);
@@ -430,9 +588,9 @@ describe('schemaProcessor object properties', () => {
     );
 
     expect(result.properties).toBeDefined();
-    expect(requireProps(result)['property name*']).toBeDefined();
-    expect(requireProps(result)['property name*'].type).toBe('string');
-    expect(requireProps(result)['property name*'].isAdditionalProperty).toBe(true);
+    expect(requireProps(result)['<property name>']).toBeDefined();
+    expect(requireProps(result)['<property name>'].type).toBe('string');
+    expect(requireProps(result)['<property name>'].isAdditionalProperty).toBe(true);
   });
 
   it('should use x-additionalPropertiesName for the label', () => {
@@ -444,8 +602,8 @@ describe('schemaProcessor object properties', () => {
       emptyDoc,
     );
 
-    expect(requireProps(result)['header name*']).toBeDefined();
-    expect(requireProps(result)['header name*'].isAdditionalProperty).toBe(true);
+    expect(requireProps(result)['<header name>']).toBeDefined();
+    expect(requireProps(result)['<header name>'].isAdditionalProperty).toBe(true);
   });
 
   it('should handle additionalProperties: true', () => {
@@ -457,8 +615,8 @@ describe('schemaProcessor object properties', () => {
       emptyDoc,
     );
 
-    expect(requireProps(result)['property name*']).toBeDefined();
-    expect(requireProps(result)['property name*'].isAdditionalProperty).toBe(true);
+    expect(requireProps(result)['<property name>']).toBeDefined();
+    expect(requireProps(result)['<property name>'].isAdditionalProperty).toBe(true);
   });
 
   it('should handle patternProperties', () => {
@@ -1924,6 +2082,332 @@ describe('schemaProcessor discriminator', () => {
       ]);
     },
   );
+
+  describe('a field both the host and a variant declare', () => {
+    // Payment lists Card, which does not inherit it; both declare `payer` and `tags`.
+    const doc = makeDocument({
+      Payment: {
+        type: 'object',
+        discriminator: { propertyName: 'method', mapping: { card: '#/components/schemas/Card' } },
+        oneOf: [{ $ref: '#/components/schemas/Card' }],
+        properties: {
+          method: { type: 'string' },
+          payer: {
+            type: 'object',
+            description: 'Who pays',
+            required: ['id'],
+            properties: {
+              id: { type: 'string', description: 'Payer id', maxLength: 10 },
+              name: { type: 'string' },
+              status: { type: 'string', enum: ['pending', 'active'] },
+              address: {
+                type: 'object',
+                properties: {
+                  street: { type: 'string' },
+                  geo: { properties: { point: { properties: { lat: { type: 'number' } } } } },
+                },
+              },
+              contact: { $ref: '#/components/schemas/PayerContact' },
+              parent: { $ref: '#/components/schemas/Payment' },
+              state: {
+                type: 'string',
+                enum: ['a', 'b'],
+                'x-enumDescriptions': { a: 'Alpha', b: 'Beta' },
+                'x-nullable': true,
+                'x-custom': 1,
+              },
+              pet: { type: 'object', description: 'Pet of the payer' },
+            },
+          },
+          tags: { type: 'array', items: { type: 'string', enum: ['online', 'retail'] } },
+        },
+      },
+      Card: {
+        type: 'object',
+        properties: {
+          method: { const: 'card' },
+          payer: {
+            type: 'object',
+            required: ['email'],
+            properties: {
+              email: { type: 'string' },
+              id: { type: 'string', maxLength: 20 },
+              status: { type: 'string', enum: ['pending', 'active'] },
+              address: {
+                type: 'object',
+                properties: {
+                  city: { type: 'string' },
+                  geo: { properties: { point: { properties: { lng: { type: 'number' } } } } },
+                },
+              },
+              contact: { $ref: '#/components/schemas/CardContact' },
+              parent: { type: 'object', properties: { note: { type: 'string' } } },
+              state: { description: 'Payment state' },
+              pet: { $ref: '#/components/schemas/Pet' },
+            },
+          },
+          tags: { type: 'array', items: { type: 'string', maxLength: 10 } },
+        },
+      },
+      PayerContact: { type: 'object', properties: { phone: { type: 'string' } } },
+      CardContact: { type: 'object', properties: { phone: { type: 'string' } } },
+      Pet: {
+        type: 'object',
+        discriminator: { propertyName: 'petType' },
+        oneOf: [{ $ref: '#/components/schemas/Cat' }, { $ref: '#/components/schemas/Dog' }],
+        properties: { petType: { type: 'string' }, name: { type: 'string' } },
+      },
+      Cat: {
+        type: 'object',
+        properties: { petType: { type: 'string' }, meow: { type: 'string' } },
+      },
+      Dog: {
+        type: 'object',
+        properties: { petType: { type: 'string' }, bark: { type: 'string' } },
+      },
+    });
+    const cardFields = () =>
+      requireProps(
+        requireSw(schemaProcessor({ $ref: '#/components/schemas/Payment' }, doc)).options['card'],
+      );
+    const payerFields = () => requireProps(cardFields()['payer']);
+
+    it('adds the fields and required names only the host declares, at any depth', () => {
+      const payer = payerFields();
+      expect(Object.keys(payer)).toEqual([
+        'email',
+        'id',
+        'status',
+        'address',
+        'contact',
+        'parent',
+        'state',
+        'pet',
+        'name',
+      ]);
+      expect(payer['email'].isRequired).toBe(true);
+      expect(payer['id'].isRequired).toBe(true);
+      const point = requireProps(requireProps(requireProps(payer['address'])['geo'])['point']);
+      expect(Object.keys(point)).toEqual(['lng', 'lat']);
+    });
+
+    it('merges the row of a nested field both declare and leaves an equal row as written', () => {
+      const payer = payerFields();
+      expect(payer['id']).toMatchObject({
+        type: 'string, <= 10 characters',
+        description: 'Payer id',
+      });
+      // an allOf of two equal enums would re-sort them
+      expect(payer['status'].enum).toEqual(['pending', 'active']);
+    });
+
+    it('applies the host item definition to the variant items', () => {
+      expect(cardFields()['tags'].items?.[0]).toMatchObject({
+        type: 'string, <= 10 characters',
+        enum: ['online', 'retail'],
+      });
+    });
+
+    it('keeps the variant field and its schema name where the host field is another schema', () => {
+      expect(payerFields()['contact'].schemaName).toBe('CardContact');
+    });
+
+    it('keeps the variant field where the host field is a stub of an open schema', () => {
+      const parent = payerFields()['parent'];
+      expect(parent.isCircular).toBeUndefined();
+      expect(Object.keys(requireProps(parent))).toEqual(['note']);
+    });
+
+    it('keeps the vendor extensions the host declares on a nested field', () => {
+      expect(payerFields()['state']).toMatchObject({
+        type: 'string or null',
+        description: 'Payment state',
+        enum: { a: 'Alpha', b: 'Beta' },
+        extensions: { 'x-custom': '1' },
+      });
+    });
+
+    it('keeps the own fields of a nested discriminator field when the host changes its row', () => {
+      const pet = payerFields()['pet'];
+      expect(pet.description).toBe('Pet of the payer');
+      expect(pet.schemaName).toBe('Pet');
+      // with its own ref in the row allOf, the field became its own parent and shared only `petType`
+      expect(requireSw(pet).sharesOnlyDiscriminator).toBeUndefined();
+    });
+
+    it('takes the schema name of the host field when the variant writes the field inline', () => {
+      const inlineDoc = makeDocument({
+        Payment: {
+          type: 'object',
+          discriminator: { propertyName: 'method', mapping: { card: '#/components/schemas/Card' } },
+          oneOf: [{ $ref: '#/components/schemas/Card' }],
+          properties: {
+            method: { type: 'string' },
+            payer: {
+              type: 'object',
+              properties: { contact: { $ref: '#/components/schemas/PayerContact' } },
+            },
+          },
+        },
+        Card: {
+          type: 'object',
+          properties: {
+            method: { const: 'card' },
+            payer: { type: 'object', properties: { contact: { description: 'Card contact' } } },
+          },
+        },
+        PayerContact: { type: 'object', properties: { phone: { type: 'string' } } },
+      });
+      const card = requireProps(
+        requireSw(schemaProcessor({ $ref: '#/components/schemas/Payment' }, inlineDoc)).options[
+          'card'
+        ],
+      );
+      const contact = requireProps(card['payer'])['contact'];
+      expect(contact.schemaName).toBe('PayerContact');
+      expect(contact.description).toBe('Card contact');
+    });
+
+    it('keeps the host structure of a field the variant redeclares with only an annotation', () => {
+      const annotatedDoc = makeDocument({
+        Payment: {
+          type: 'object',
+          discriminator: { propertyName: 'method', mapping: { card: '#/components/schemas/Card' } },
+          oneOf: [{ $ref: '#/components/schemas/Card' }],
+          properties: {
+            method: { type: 'string' },
+            payer: { type: 'object', properties: { id: { type: 'string' } } },
+          },
+        },
+        Card: {
+          type: 'object',
+          properties: { method: { const: 'card' }, payer: { description: 'Card payer' } },
+        },
+      });
+      const card = requireProps(
+        requireSw(schemaProcessor({ $ref: '#/components/schemas/Payment' }, annotatedDoc)).options[
+          'card'
+        ],
+      );
+      expect(card['payer'].description).toBe('Card payer');
+      expect(Object.keys(requireProps(card['payer']))).toEqual(['id']);
+    });
+
+    it('merges the value schemas of a map or tuple field the variant redeclares with the host', () => {
+      const valuesDoc = makeDocument({
+        Pet: {
+          type: 'object',
+          discriminator: { propertyName: 'kind', mapping: { dog: '#/components/schemas/Dog' } },
+          oneOf: [{ $ref: '#/components/schemas/Dog' }],
+          properties: {
+            kind: { type: 'string' },
+            attributes: {
+              type: 'object',
+              additionalProperties: { type: 'string', description: 'Attribute value' },
+              patternProperties: { '^x-': { type: 'string', description: 'Extension value' } },
+            },
+            position: { type: 'array', prefixItems: [{ type: 'number', description: 'Latitude' }] },
+          },
+        },
+        Dog: {
+          type: 'object',
+          properties: {
+            kind: { type: 'string' },
+            attributes: {
+              type: 'object',
+              additionalProperties: { type: 'string' },
+              patternProperties: { '^x-': { type: 'string' } },
+            },
+            position: {
+              type: 'array',
+              prefixItems: [{ type: 'number' }, { type: 'number', description: 'Longitude' }],
+            },
+          },
+        },
+      });
+      const dog = requireProps(
+        requireSw(schemaProcessor({ $ref: '#/components/schemas/Pet' }, valuesDoc)).options['dog'],
+      );
+      const attributes = requireProps(dog['attributes']);
+      expect(attributes['<property name>'].description).toBe('Attribute value');
+      expect(attributes['^x-'].description).toBe('Extension value');
+      expect(dog['position'].items?.map((item) => item.description)).toEqual([
+        'Latitude',
+        'Longitude',
+      ]);
+    });
+  });
+
+  it.each([
+    [true, { mode: { type: 'string' } }],
+    [true, undefined],
+    [false, { mode: { type: 'string' } }],
+    [false, undefined],
+  ])(
+    'marks a property a variant redeclares required when the host requires it (discriminator: %s, host properties: %o)',
+    (withDiscriminator, hostProperties) => {
+      const doc = makeDocument({
+        Shipment: {
+          type: 'object',
+          required: ['mode'],
+          ...(withDiscriminator && {
+            discriminator: {
+              propertyName: 'mode',
+              mapping: { air: '#/components/schemas/Air', sea: '#/components/schemas/Sea' },
+            },
+          }),
+          oneOf: [{ $ref: '#/components/schemas/Air' }, { $ref: '#/components/schemas/Sea' }],
+          ...(hostProperties && { properties: hostProperties }),
+        },
+        Air: { type: 'object', properties: { mode: { const: 'air' } } },
+        Sea: {
+          type: 'object',
+          required: ['vessel'],
+          properties: { mode: { const: 'sea' }, vessel: { type: 'string' } },
+        },
+      });
+
+      const options = Object.values(
+        requireSw(schemaProcessor({ $ref: '#/components/schemas/Shipment' }, doc)).options,
+      );
+
+      expect(options.map((option) => requireProps(option)['mode'].isRequired)).toEqual([
+        true,
+        true,
+      ]);
+      expect(requireProps(options[1])['vessel'].isRequired).toBe(true);
+    },
+  );
+
+  it('marks a redeclared property required when the variant shares only a plain allOf parent with the host', () => {
+    const doc = makeDocument({
+      Base: { type: 'object', properties: { id: { type: 'string' } } },
+      Shipment: {
+        allOf: [
+          { $ref: '#/components/schemas/Base' },
+          { type: 'object', required: ['mode'], properties: { mode: { type: 'string' } } },
+        ],
+        discriminator: {
+          propertyName: 'mode',
+          mapping: { air: '#/components/schemas/Air', sea: '#/components/schemas/Sea' },
+        },
+        oneOf: [{ $ref: '#/components/schemas/Air' }, { $ref: '#/components/schemas/Sea' }],
+      },
+      Air: {
+        allOf: [
+          { $ref: '#/components/schemas/Base' },
+          { type: 'object', properties: { mode: { const: 'air' } } },
+        ],
+      },
+      Sea: { type: 'object', properties: { mode: { const: 'sea' } } },
+    });
+
+    const options = Object.values(
+      requireSw(schemaProcessor({ $ref: '#/components/schemas/Shipment' }, doc)).options,
+    );
+
+    expect(options.map((option) => requireProps(option)['mode'].isRequired)).toEqual([true, true]);
+  });
 
   it("keeps a child page's own redeclared property out of its sibling variants", () => {
     const doc = makeDocument({
