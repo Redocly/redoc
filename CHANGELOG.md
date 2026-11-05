@@ -1,5 +1,38 @@
 # Redoc
 
+## 3.1.0
+
+### Minor Changes
+
+- e8097b6: Added the `createMarkdocAdapter` export, so that `Redoc` component can render without a hand-written adapter.
+- d6d785f: Added CSV rendering for CSV request and response examples (`text/csv`, `application/csv` and similar media types): a generated or object example that is a flat record, or an array of flat records, is now shown as a CSV table (header row plus RFC 4180-quoted rows) instead of JSON.
+- e8097b6: Fixed an issue where Redoc styles leaked into the host page.
+
+### Patch Changes
+
+- e8097b6: Fixed an issue where an `allOf` that also contained a `false` schema, inline or through a `$ref`, showed its other parts instead of `no value allowed`.
+- e8097b6: Fixed an issue where OpenAPI pages that use `allOf` inheritance with a `oneOf` discriminator stopped responding.
+- e8097b6: Fixed an issue where the page crashed when an OpenAPI or AsyncAPI description used a boolean schema (`true` or `false`) inside an `allOf` or as a top-level schema, such as `payload: true` in an AsyncAPI message.
+- e8097b6: Fixed an issue where content shifted on load when opening a direct link to an operation or a tag.
+- e8097b6: Fixed discriminator samples and schemas in OpenAPI docs to match the selected option and the API description.
+- e8097b6: Fixed security vulnerability `GHSA-cg2g-xh64-v4q7` in HTML sanitization.
+- e8097b6: Fixed an issue where API docs displayed a `false` schema as `any`.
+  A property, tuple item, or `oneOf`/`anyOf` option with a `false` schema displays as **no value allowed**, and the parent type label leaves it out.
+- be021c3: Fixed an issue where description headings with inline formatting were cut off in the sidebar and in section links.
+- e8097b6: Fixed an issue where GraphQL docs showed argument names in the operation overview list with a capital first letter instead of the case defined in the schema.
+- e8097b6: Fixed the **Expand all** and **Collapse all** buttons on GraphQL pages so they respect fields expanded or collapsed manually.
+- e8097b6: Fixed performance issues with the **Expand all** and **Collapse all** controls on GraphQL pages with many fields.
+- e8097b6: Fixed an issue where an invalid value in an OpenAPI or AsyncAPI description, such as a server without `url` or an empty `required:` in an `allOf` part, crashed the page, including pages built with `redocly build-docs`. The invalid part is skipped, the rest of the page renders, and the error is reported to telemetry.
+- e8097b6: Improved error messages for an incomplete `markdownAdapter` passed to the low-level `Redoc` component.
+  Errors name the missing `parse` or `render` function, or explain that `render` returned a Markdoc tree instead of React elements.
+- e8097b6: Reduced the page actions button to 24px and moved it below the title on mobile devices, so long titles use the full width of the screen.
+- e8097b6: Fixed an issue in Markdown pages and API docs where the Copy button label in page actions was highlighted when users selected the page title.
+- e8097b6: Fixed an issue where API docs displayed error on pages translated with the browser translation feature.
+- e8097b6: Fixed an issue where keywords next to a schema `$ref`, such as `example` or `examples`, were ignored in generated samples for OpenAPI 3.1 and later, and where a schema `examples` list was not shown as the field example.
+- e8097b6: Fixed an issue where a `$ref` to a `false` schema, such as `$ref: '#/components/schemas/NoValue'` with `NoValue: false`, showed `any` instead of `no value allowed`.
+- e8097b6: Fixed an issue where OpenAPI and AsyncAPI pages crashed when an API description set `x-badges` to a single object instead of a list.
+  The invalid value is ignored and reported in the console.
+
 ## 3.0.1
 
 ### Patch Changes
