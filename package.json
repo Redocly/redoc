@@ -110,7 +110,7 @@
     "@types/react-dom": "^19.2.3",
     "@typescript/native-preview": "beta",
     "@vitejs/plugin-react": "6.1.0",
-    "@vitest/coverage-v8": "^4.1.10",
+    "@vitest/coverage-v8": "^5.1.0",
     "dompurify": "^3.4.17",
     "fast-xml-parser": "^5.5.9",
     "flexsearch": "^0.8.2",
@@ -124,24 +124,27 @@
     "json-pointer": "^0.6.2",
     "linkedom": "^0.18.9",
     "openapi-sampler": "^1.7.9",
-    "oxlint": "1.67.0",
+    "oxlint": "1.91.0",
     "path-browserify": "1.0.1",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "react-router": "^8.3.0",
-    "rimraf": "5.0.10",
+    "rimraf": "6.1.4",
     "rolldown": "^1.2.4",
     "rollup-plugin-visualizer": "^7.1.1",
     "slugify": "^1.4.4",
     "styled-components": "^6.5.3",
     "typescript": "5.9.3",
     "vite": "^8.3.3",
-    "vitest": "^4.1.10",
+    "vitest": "^5.1.0",
     "web-vitals": "^6.2.1"
   },
   "overrides": {
     "fast-uri": "^3.1.9",
     "follow-redirects": "^1.16.2",
-    "qs": "^6.17.1"
+    "qs": "^6.17.1",
+    "@microsoft/api-extractor": {
+      "minimatch": "^11.0.4"
+    }
   }
 }

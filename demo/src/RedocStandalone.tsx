@@ -35,11 +35,11 @@ export default function RedocStandalone({ spec, basePath, onSettled }: RedocStan
     observer.observe(container, { childList: true });
 
     let root: RedocRoot | undefined;
-    let cancelled = false;
+    const abort = new AbortController();
 
     loadRedoc()
       .then((redoc) => {
-        if (cancelled) return;
+        if (abort.signal.aborted) return;
         root = redoc.init(
           spec,
           { router: 'history', basePath, sanitize: true, hideLoading: true, scrollYOffset },
@@ -47,14 +47,14 @@ export default function RedocStandalone({ spec, basePath, onSettled }: RedocStan
         );
       })
       .catch((err: unknown) => {
-        if (cancelled) return;
+        if (abort.signal.aborted) return;
         observer.disconnect();
         container.textContent = 'Failed to load API docs: ' + (err as Error).message;
         onSettledRef.current?.();
       });
 
     return () => {
-      cancelled = true;
+      abort.abort();
       observer.disconnect();
       root?.unmount();
       if (container.parentNode === host) host.removeChild(container);

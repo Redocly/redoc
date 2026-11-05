@@ -24,13 +24,15 @@ bucket, attach it to a release: there is nothing else to deploy.
 | `--title`             | the API's title     | page title                                                          |
 | `-t`, `--template`    | built-in            | path to a handlebars page template                                  |
 | `--templateOptions`   | —                   | values for your template, dot notation (`templateOptions.metaDescription`) |
-| `--theme`             | —                   | `theme.openapi` configuration, dot notation (`theme.openapi.nativeScrollbars`) |
-| `--disableGoogleFont` | `false`             | skip the Google Fonts stylesheet                                    |
+| `--openapi`           | —                   | Redoc options for an OpenAPI description, dot notation (`--openapi.layout=stacked`) |
+| `--asyncapi`          | —                   | Redoc options for an AsyncAPI description (`--asyncapi.jsonSamplesDepth=4`) |
+| `--graphql`           | —                   | Redoc options for a GraphQL schema (`--graphql.showBuiltInScalars`) |
+| `--inlineBundle`      | `false`             | embed the Redoc script instead of loading it from the Redocly CDN   |
 | `--config`            | `redocly.yaml`      | config file to read                                                 |
 | `--lint-config`       | `warn`              | severity for linting that config: `warn`, `error`, `off`            |
 
-`--theme` must reach `theme.openapi` or the command refuses the argument — `--theme.openapi.…`,
-not `--theme.…`.
+The option must match the description type, and replaces the matching `openapi`, `asyncapi` or
+`graphql` key of `redocly.yaml`. `--theme.openapi.…` was removed in Redocly CLI 2.
 
 ## How the page works
 
