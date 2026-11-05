@@ -17,7 +17,7 @@ const pending: ReportedError[] = [];
 /** Logs with `console.error` and sends to telemetry: now when a sender is mounted, at mount otherwise, or into the open `collectReportedErrors` batch. Never throws. */
 export function reportError(id: string, error: unknown, context?: string): Error {
   const normalized = error instanceof Error ? error : new Error(String(error));
-  console.error(`[api-docs] ${context ?? id}:`, normalized);
+  console.error('[api-docs] %s:', context ?? id, normalized);
   const reported = { id, error: normalized };
   if (collector) {
     collector.push(reported);
