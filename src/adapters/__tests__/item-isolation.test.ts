@@ -156,7 +156,8 @@ describe('an item whose content fails to build', () => {
         { id: 'buildItem', name: 'TypeError', message: 'n is not iterable' },
       ]);
       expect(console.error).toHaveBeenCalledWith(
-        '[api-docs] Could not build "Broken" from the API description:',
+        '[api-docs] %s:',
+        'Could not build "Broken" from the API description',
         expect.any(TypeError),
       );
     },
@@ -184,7 +185,8 @@ describe('an item whose content fails to build', () => {
       { id: 'buildDocument', name: 'TypeError', message: 'n is not iterable' },
     ]);
     expect(console.error).toHaveBeenCalledWith(
-      '[api-docs] Could not build the API description "T":',
+      '[api-docs] %s:',
+      'Could not build the API description "T"',
       expect.any(TypeError),
     );
   });
@@ -275,7 +277,8 @@ describe('an item whose content fails to build', () => {
       { id: 'buildItem', name: 'TypeError', message: 'n is not iterable' },
     ]);
     expect(console.error).toHaveBeenCalledWith(
-      '[api-docs] Could not build "Broken" from the API description:',
+      '[api-docs] %s:',
+      'Could not build "Broken" from the API description',
       expect.any(TypeError),
     );
   });
@@ -304,7 +307,8 @@ describe('an item whose content fails to build', () => {
       { id: 'buildItem', name: 'TypeError', message: 'n is not iterable' },
     ]);
     expect(console.error).toHaveBeenCalledWith(
-      '[api-docs] Could not build "Broken group" from the API description:',
+      '[api-docs] %s:',
+      'Could not build "Broken group" from the API description',
       expect.any(TypeError),
     );
   });
@@ -315,7 +319,8 @@ describe('an item whose content fails to build', () => {
       { id: 'buildItem', name: 'TypeError', message: 'n is not iterable' },
     ]);
     expect(console.error).toHaveBeenCalledWith(
-      '[api-docs] Could not build "Broken channel" from the API description:',
+      '[api-docs] %s:',
+      'Could not build "Broken channel" from the API description',
       expect.any(TypeError),
     );
   });
@@ -535,7 +540,8 @@ describe('withErrorHandling', () => {
 
     expect(build('a')).toEqual({ contentType: 'overview', children: [] });
     expect(console.error).toHaveBeenCalledWith(
-      '[api-docs] Could not build "Item a" from the API description:',
+      '[api-docs] %s:',
+      'Could not build "Item a" from the API description',
       cause,
     );
   });
@@ -554,7 +560,8 @@ describe('withErrorHandling', () => {
 
     expect(build()).toEqual({ contentType: 'item', children: [] });
     expect(console.error).toHaveBeenCalledWith(
-      '[api-docs] Could not build "item" from the API description:',
+      '[api-docs] %s:',
+      'Could not build "item" from the API description',
       cause,
     );
   });

@@ -29,7 +29,7 @@ describe('normalizeBadges', () => {
     const value = { name: 'x-deprecated', position: 'before' };
     expect(normalizeBadges(value)).toBeUndefined();
     expect(errorSpy).toHaveBeenCalledTimes(1);
-    expect(errorSpy.mock.calls[0][0]).toContain('x-badges');
+    expect(errorSpy.mock.calls[0][1]).toContain('x-badges');
   });
 
   it('reports the same invalid object each time it is read, so a rebuild reports it too', () => {

@@ -14,7 +14,7 @@ test('renders a malformed description, skipping and reporting invalid code sampl
 
   await expect(apiDocs.alert).toHaveCount(0);
   expect(
-    errors.some((text) => text.includes('[api-docs] Skipped invalid x-codeSamples entries')),
+    errors.some((text) => text.includes('[api-docs] %s: Skipped invalid x-codeSamples entries')),
   ).toBe(true);
 
   await apiDocs.clickThroughMenu('pets', 'Numeric operationId');

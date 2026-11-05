@@ -16,7 +16,7 @@ describe('reportError', () => {
       'Could not build "A"',
     );
     expect(before.message).toBe('n is not iterable');
-    expect(consoleError).toHaveBeenCalledWith('[api-docs] Could not build "A":', before);
+    expect(consoleError).toHaveBeenCalledWith('[api-docs] %s:', 'Could not build "A"', before);
 
     const send = vi.fn();
     setErrorSender(send);

@@ -24,9 +24,10 @@ describe('objectBindings', () => {
 
     expect(kept).toEqual([['kafka', { groupId: 'g' }]]);
     expect(error).toHaveBeenCalledTimes(2);
-    expect(error.mock.calls[0][0]).toBe(
-      '[api-docs] Could not build the "amqp" binding of "users" from the API description:',
-    );
+    expect(error.mock.calls[0].slice(0, 2)).toEqual([
+      '[api-docs] %s:',
+      'Could not build the "amqp" binding of "users" from the API description',
+    ]);
   });
 
   it('returns nothing for bindings that are not an object', () => {

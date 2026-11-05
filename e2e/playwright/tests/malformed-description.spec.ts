@@ -26,11 +26,11 @@ test.describe('Malformed descriptions render without crashing', () => {
     await expect(page.getByText(/Show\s+variables?/)).toHaveCount(0);
     await expect(page.locator('[role="alert"]')).toHaveCount(0);
     expect(
-      errors.some((text) => text.includes('[api-docs] Skipped invalid x-codeSamples entries')),
+      errors.some((text) => text.includes('[api-docs] %s: Skipped invalid x-codeSamples entries')),
     ).toBe(true);
     expect(errors.some((text) => text.includes('Ignored "x-badges"'))).toBe(true);
     expect(
-      errors.some((text) => text.includes('[api-docs] Could not bundle the API description')),
+      errors.some((text) => text.includes('[api-docs] %s: Could not bundle the API description')),
     ).toBe(true);
 
     await apiDocs.clickThroughMenu('pets', 'Numeric operationId');
@@ -59,7 +59,7 @@ test.describe('Malformed descriptions render without crashing', () => {
     await expect(channel).not.toContainText('Beta');
     expect(errors.some((text) => text.includes('Ignored "x-badges"'))).toBe(true);
     expect(
-      errors.some((text) => text.includes('[api-docs] Could not build the "amqp" binding')),
+      errors.some((text) => text.includes('[api-docs] %s: Could not build the "amqp" binding')),
     ).toBe(true);
     expect(errors.some((text) => text.includes('[api-docs] Rendering error'))).toBe(false);
     await expect(page.locator('[role="alert"]')).toHaveCount(0);
