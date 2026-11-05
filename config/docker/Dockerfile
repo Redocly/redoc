@@ -9,7 +9,8 @@
 # instead of building it in the image (the Docker smoke test uses it).
 ARG BUNDLE_STAGE=build
 
-FROM node:24.22.1-alpine3.24@sha256:06d7adf3e0ef61a13f1d28682726366f97a15aa1888c934d3ecec86c33918b53 AS build
+# The bundle is plain JS, so build it once on the runner's native platform instead of under QEMU.
+FROM --platform=$BUILDPLATFORM node:24.22.1-alpine3.24@sha256:06d7adf3e0ef61a13f1d28682726366f97a15aa1888c934d3ecec86c33918b53 AS build
 
 WORKDIR /build
 
