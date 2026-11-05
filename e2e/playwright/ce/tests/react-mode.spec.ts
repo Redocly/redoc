@@ -39,6 +39,7 @@ test('drives the low-level Redoc export with a caller-owned store', async ({ pag
   const apiDocs = await gotoReactCaseRaw(page, 'low-level');
 
   await expect(apiDocs.section('/react').first()).toBeVisible();
+  await expect(apiDocs.section('/react').first()).toContainText('Demo API for cafe operators');
   await expect(apiDocs.section('/react/products').first()).toBeAttached();
   await expect(apiDocs.sidebar).toHaveCount(0);
   expect((await readWindowState(page)).loaded).toEqual([{ ok: true }]);

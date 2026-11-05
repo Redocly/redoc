@@ -2,7 +2,6 @@ import type {
   ContentNode,
   PanelNode,
   ApiItemContent,
-  ItemContentNode,
   ParameterData,
   MessageBindingData,
   MessageReferencesGroups,
@@ -22,6 +21,7 @@ import type { ParseMarkdownOptions } from '../../../utils/parseMarkdown.js';
 import { combineUrls } from '@redocly/theme/core/openapi';
 
 import { asString, safeSlugify } from '../../../../utils/string.js';
+import { normalizeBadges } from '../../../../utils/normalize-badges.js';
 import { normalizePath } from '../../../../utils/url.js';
 import { JsonPointer } from '../../../openapi/utils/JsonPointer.js';
 import {
@@ -31,7 +31,8 @@ import {
   panelKind,
   schemaKind,
 } from '../../../../types/common.js';
-import { registerSchema, registerExample } from '../../../helpers.js';
+import { registerSchema, registerExample, withErrorHandling } from '../../../helpers.js';
+import { objectBindings } from '../../build/utils.js';
 import {
   readRbacScope,
   rbacProp,
@@ -87,7 +88,7 @@ export function buildMessageReferencesGroups(
   return groups;
 }
 
-export function buildChannelContent(
+function _buildChannelContent(
   channelId: string,
   channel: AsyncApiChannel,
   document: AsyncApiDefinition,
@@ -107,7 +108,7 @@ export function buildChannelContent(
       nodeType: nodeTypes.HEADER,
       level: 2,
       label: channelTitle,
-      badges: channel['x-badges'],
+      badges: normalizeBadges(channel['x-badges']),
       showPageActions: true,
       protocolTag: {
         label: labels.channel,
@@ -160,13 +161,10 @@ export function buildChannelContent(
         data: paramSchema,
       });
 
-      return {
-        name,
-        in: 'path' as const,
-        schemaId,
-        description: resolved.description,
-        ...rbacProp(readRbacScope(resolved)),
-      };
+      return Object.assign(
+        { name, in: 'path' as const, schemaId, description: resolved.description },
+        rbacProp(readRbacScope(resolved)),
+      );
     });
 
     channelChildren.push(
@@ -184,58 +182,51 @@ export function buildChannelContent(
         parameters: params,
         pointer: `channels/${channelId}/parameters`,
         ...rbacProp(sectionRbac),
-      } as ItemContentNode,
+      },
     );
   }
 
   const channelPanels: PanelNode[] = [];
 
-  if (document.servers && channel.servers) {
-    const channelServers = new Set(
-      channel.servers
-        .map((server) => resolveInDoc<AsyncApiServer>(document, server))
-        .filter((server): server is AsyncApiServer => server !== undefined),
-    );
+  const { sectionRbac: serversSectionRbac, entries: serverEntries } = splitRbacSection(
+    document.servers,
+  );
+  const listedServers = channel.servers?.length
+    ? new Set(channel.servers.map((server) => resolveInDoc<AsyncApiServer>(document, server)))
+    : undefined;
+  const channelServers = serverEntries.flatMap(([key, entry]) => {
+    const server = resolveInDoc<AsyncApiServer>(document, entry);
+    return server && (!listedServers || listedServers.has(server)) ? [{ key, entry, server }] : [];
+  });
 
-    const { sectionRbac: serversSectionRbac, entries: serverEntries } = splitRbacSection(
-      document.servers,
-    );
-    const filteredServers = serverEntries.filter(([, server]) => {
-      const resolved = resolveInDoc<AsyncApiServer>(document, server);
-      return resolved !== undefined && channelServers.has(resolved);
+  if (listedServers && channelServers.length > 0) {
+    channelPanels.push({
+      children: [
+        {
+          kind: panelKind.BROKERS,
+          panelLabel: labels.servers,
+          brokers: channelServers.map(({ key, entry }) =>
+            toBrokerData(key, entry, document, markdownOptions, serversSectionRbac),
+          ),
+        },
+      ],
     });
-
-    if (filteredServers.length > 0) {
-      channelPanels.push({
-        children: [
-          {
-            kind: panelKind.BROKERS,
-            panelLabel: labels.servers,
-            brokers: filteredServers.map(([name, server]) =>
-              toBrokerData(name, server, document, markdownOptions, serversSectionRbac),
-            ),
-          },
-        ],
-      });
-    }
   }
 
-  if (channel.bindings) {
-    const bindingEntries = Object.entries(channel.bindings);
-    if (bindingEntries.length > 0) {
-      const [bindingKey, bindingValue] = bindingEntries[0];
-      channelPanels.push({
-        title: labels.channelBinding,
-        children: [
-          {
-            kind: panelKind.CHANNEL_BINDING,
-            panelLabel: labels.channelBinding,
-            bindingKey,
-            bindingValue: bindingValue as Record<string, unknown>,
-          },
-        ],
-      } as PanelNode);
-    }
+  const [channelBinding] = objectBindings(channel.bindings, channelTitle, document);
+  if (channelBinding) {
+    const [bindingKey, bindingValue] = channelBinding;
+    channelPanels.push({
+      title: labels.channelBinding,
+      children: [
+        {
+          kind: panelKind.CHANNEL_BINDING,
+          panelLabel: labels.channelBinding,
+          bindingKey,
+          bindingValue,
+        },
+      ],
+    });
   }
 
   children.push({
@@ -260,8 +251,7 @@ export function buildChannelContent(
     const bindingsByMessageKey: Record<string, MessageBindingData> = {};
 
     const messages = messageEntries.map(([name, rawMessage]) => {
-      const message =
-        resolveInDoc<AsyncApiMessage>(document, rawMessage) ?? (rawMessage as AsyncApiMessage);
+      const message = resolveInDoc<AsyncApiMessage>(document, rawMessage) ?? rawMessage;
       let schemaId: string | undefined;
       let headerSchemaId: string | undefined;
       const exampleIds: string[] = [];
@@ -300,11 +290,8 @@ export function buildChannelContent(
         }
       }
 
-      if (storeCtx && message.bindings) {
-        const bindingEntries = Object.entries(message.bindings);
-        for (const [bindingKey, bindingValue] of bindingEntries) {
-          if (!bindingValue || typeof bindingValue !== 'object') continue;
-
+      if (storeCtx) {
+        for (const [bindingKey, bindingValue] of objectBindings(message.bindings, name, document)) {
           let keySchemaId: string | undefined;
           if (bindingKey === 'kafka') {
             const kafkaKey = (bindingValue as { key?: unknown }).key;
@@ -322,7 +309,7 @@ export function buildChannelContent(
 
           bindingsByMessageKey[name] = {
             bindingKey,
-            bindingValue: bindingValue as Record<string, unknown>,
+            bindingValue,
             keySchemaId,
             ...rbacProp(rbac),
           };
@@ -340,24 +327,26 @@ export function buildChannelContent(
 
       const correlationId = resolveInDoc<AsyncApiCorrelationId>(document, message.correlationId);
 
-      return {
-        name,
-        label: message.title || message.name || name,
-        summary: typeof message.summary === 'string' ? message.summary : undefined,
-        description: parseMarkdown(message.description, markdownOptions),
-        contentType: message.contentType,
-        schemaId,
-        headerSchemaId,
-        exampleIds: exampleIds.length > 0 ? exampleIds : undefined,
-        payload: message.payload,
-        payloadLabel: labels.payload,
-        headers: message.headers,
-        externalDocs,
-        correlationId: correlationId?.location
-          ? { location: correlationId.location, description: correlationId.description }
-          : undefined,
-        ...rbacProp(rbac),
-      };
+      return Object.assign(
+        {
+          name,
+          label: asString(message.title) ?? asString(message.name) ?? name,
+          summary: typeof message.summary === 'string' ? message.summary : undefined,
+          description: parseMarkdown(message.description, markdownOptions),
+          contentType: message.contentType,
+          schemaId,
+          headerSchemaId,
+          exampleIds: exampleIds.length > 0 ? exampleIds : undefined,
+          payload: message.payload,
+          payloadLabel: labels.payload,
+          headers: message.headers,
+          externalDocs,
+          correlationId: correlationId?.location
+            ? { location: correlationId.location, description: correlationId.description }
+            : undefined,
+        },
+        rbacProp(rbac),
+      );
     });
 
     messageChildren.push({
@@ -365,7 +354,7 @@ export function buildChannelContent(
       variant: 'messages',
       messages,
       pointer: `channels/${channelId}/messages`,
-    } as ItemContentNode);
+    });
 
     const visibleMessages = messages.filter((message) => !hasRbacScope(message));
     const allExampleIds = visibleMessages.flatMap((message) => message.exampleIds ?? []);
@@ -455,3 +444,8 @@ export function buildChannelContent(
     children,
   };
 }
+
+export const buildChannelContent = withErrorHandling(
+  (channelId, channel) => getChannelLabel(channel, channelId),
+  _buildChannelContent,
+);

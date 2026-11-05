@@ -89,17 +89,17 @@
     "styled-components": "^6.0.0"
   },
   "dependencies": {
-    "@redocly/redoc-opentelemetry": "^0.5.1"
+    "@redocly/redoc-opentelemetry": "^0.6.0"
   },
   "devDependencies": {
     "@changesets/cli": "3.0.3",
-    "@markdoc/markdoc": "0.5.2",
+    "@redocly/markdoc": "0.7.0-beta.2",
     "@microsoft/api-extractor": "7.58.2",
     "@playwright/test": "1.64.1",
-    "@redocly/allof-merge": "^0.6.9",
-    "@redocly/config": "^0.65.0",
-    "@redocly/openapi-core": "2.63.0",
-    "@redocly/theme": "0.71.0-next.0",
+    "@redocly/allof-merge": "^0.6.13",
+    "@redocly/config": "^0.72.0",
+    "@redocly/openapi-core": "2.73.0",
+    "@redocly/theme": "^0.72.0",
     "@tanstack/highlight": "0.0.10",
     "@testing-library/jest-dom": "6.6.3",
     "@testing-library/react": "16.3.0",
@@ -111,11 +111,10 @@
     "@typescript/native-preview": "beta",
     "@vitejs/plugin-react": "6.1.0",
     "@vitest/coverage-v8": "^4.1.10",
-    "dompurify": "^3.4.11",
+    "dompurify": "^3.4.17",
     "fast-xml-parser": "^5.5.9",
     "flexsearch": "^0.8.2",
     "graphql": "^16.11.0",
-    "htmlparser2": "8.0.2",
     "http-server": "14.1.1",
     "jest-styled-components": "7.2.0",
     "jotai": "^2.12.5",
@@ -124,7 +123,7 @@
     "jsdom": "^25.0.1",
     "json-pointer": "^0.6.2",
     "linkedom": "^0.18.9",
-    "openapi-sampler": "^1.7.5",
+    "openapi-sampler": "^1.7.9",
     "oxlint": "1.67.0",
     "path-browserify": "1.0.1",
     "react": "^19.2.7",
@@ -132,12 +131,17 @@
     "react-router": "^8.3.0",
     "rimraf": "5.0.10",
     "rolldown": "^1.2.4",
-    "rollup-plugin-bundle-stats": "^4.22.1",
+    "rollup-plugin-visualizer": "^7.1.1",
     "slugify": "^1.4.4",
     "styled-components": "^6.5.3",
     "typescript": "5.9.3",
-    "vite": "^8.2.1",
+    "vite": "^8.3.3",
     "vitest": "^4.1.10",
     "web-vitals": "^6.2.1"
+  },
+  "overrides": {
+    "fast-uri": "^3.1.9",
+    "follow-redirects": "^1.16.2",
+    "qs": "^6.17.1"
   }
 }

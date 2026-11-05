@@ -26,7 +26,6 @@ test.describe('Theme', () => {
     expect(width).toBeLessThan(750);
   });
 
-
   test('should apply styles to right panel headers', async ({ page }) => {
     await page.goto('/theme#tag/cafe');
 

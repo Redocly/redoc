@@ -4,7 +4,7 @@ import { Search } from '../page-objects/Search.js';
 import { StandalonePage } from '../page-objects/StandalonePage.js';
 
 // One spec type exercises the click → deep-link → section-visible path end to end; the
-// AsyncAPI/GraphQL index builds are covered by engine.ce.test.ts and init-graphql.ce.test.ts.
+// AsyncAPI/GraphQL index builds are covered by the search engine and GraphQL init unit tests.
 const SPEC_TYPES = [{ label: 'OpenAPI', specUrl: '/specs/cafe.yaml', term: 'menu' }];
 
 for (const { label, specUrl, term } of SPEC_TYPES) {

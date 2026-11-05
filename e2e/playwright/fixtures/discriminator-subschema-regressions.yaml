@@ -1,0 +1,137 @@
+openapi: 3.0.3
+info:
+  title: Discriminator samples next to refs into part of a schema
+  version: '2024-01-01'
+  description: >
+    Each operation uses one schema as both request body and response, so the request (code sample)
+    and response (generated example) samples are checked on the same shape.
+paths:
+  /animals:
+    post:
+      tags: [samples]
+      summary: Create an animal
+      operationId: createAnimal
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Animal'
+      responses:
+        '200':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Animal'
+  /codes:
+    post:
+      tags: [samples]
+      summary: Create a code
+      operationId: createCode
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Code'
+      responses:
+        '200':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Code'
+  /shapes:
+    post:
+      tags: [samples]
+      summary: Create a shape
+      operationId: createShape
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShapeBody'
+      responses:
+        '200':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShapeBody'
+components:
+  schemas:
+    # A variant inherits the host and refs one of its properties.
+    Animal:
+      type: object
+      required: [kind]
+      properties:
+        kind:
+          type: string
+        name:
+          type: string
+      discriminator:
+        propertyName: kind
+        mapping:
+          bird: '#/components/schemas/Bird'
+          fish: '#/components/schemas/Fish'
+      oneOf:
+        - $ref: '#/components/schemas/Bird'
+        - $ref: '#/components/schemas/Fish'
+    Bird:
+      allOf:
+        - $ref: '#/components/schemas/Animal'
+        - type: object
+          properties:
+            kind:
+              $ref: '#/components/schemas/Animal/properties/kind'
+            wings:
+              type: integer
+    Fish:
+      allOf:
+        - $ref: '#/components/schemas/Animal'
+        - type: object
+          properties:
+            kind:
+              $ref: '#/components/schemas/Animal/properties/kind'
+            fins:
+              type: integer
+    # An allOf part that refs a oneOf inside another schema.
+    ShapeBody:
+      allOf:
+        - $ref: '#/components/schemas/Shapes/properties/shape'
+        - type: object
+          properties:
+            id:
+              type: string
+    Shapes:
+      type: object
+      properties:
+        shape:
+          oneOf:
+            - $ref: '#/components/schemas/Circle'
+            - $ref: '#/components/schemas/Square'
+    Circle:
+      type: object
+      properties:
+        radius:
+          type: integer
+    Square:
+      type: object
+      properties:
+        side:
+          type: string
+    # A primitive host with an enum next to its options.
+    Code:
+      type: string
+      enum: [A1, B2]
+      anyOf:
+        - $ref: '#/components/schemas/LetterDigit'
+        - $ref: '#/components/schemas/TwoLetters'
+    LetterDigit:
+      type: string
+      example: Z9
+    TwoLetters:
+      type: string
+      example: QQ

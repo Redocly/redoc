@@ -68,7 +68,7 @@ describe('normalizeOptions', () => {
       });
     });
 
-    it('normalizes schemaDefinitionsTagName and markdocOptions as pass-through values', () => {
+    it('keeps pass-through options unchanged', () => {
       const result = normalizeOptions(
         makeOpenApiRaw({
           schemaDefinitionsTagName: 'Schemas',
@@ -135,7 +135,7 @@ describe('normalizeOptions', () => {
   });
 
   describe('common defaults for non-OpenAPI', () => {
-    it('applies default layout and feedback for graphql', () => {
+    it('applies the defaults for graphql', () => {
       const raw: RawApiDocsOptions = {
         specType: 'graphql',
         downloadUrls: [{ url: 'https://example.com/schema.graphql' }],
@@ -145,7 +145,7 @@ describe('normalizeOptions', () => {
       expect(result.layout).toBe(LayoutVariant.THREE_PANEL);
     });
 
-    it('applies default layout and feedback for asyncapi', () => {
+    it('applies the defaults for asyncapi', () => {
       const raw: RawApiDocsOptions = {
         specType: 'asyncapi',
         downloadUrls: [{ url: 'https://example.com/asyncapi.yaml' }],

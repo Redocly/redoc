@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Redoc CE — host page</title>
+    <style>
+      @layer theme, base, components, utilities;
+
+      @layer theme {
+        :root {
+          --color-white: #fff;
+          --color-black: #000;
+        }
+      }
+
+      @layer base {
+        html {
+          font-family: Georgia, serif;
+          color: rgb(31, 41, 55);
+        }
+
+        *,
+        ::before,
+        ::after {
+          margin: 0;
+          padding: 0;
+          border: 0 solid;
+        }
+
+        ol,
+        ul {
+          list-style: none;
+        }
+
+        img,
+        svg {
+          display: block;
+          vertical-align: middle;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+          font-size: inherit;
+          font-weight: inherit;
+        }
+
+        a {
+          color: inherit;
+          text-decoration: inherit;
+        }
+      }
+
+      @layer components {
+        .btn {
+          padding: 8px 16px;
+          border: 2px solid rgb(69, 6, 203);
+          background-color: rgb(87, 13, 248);
+          color: #fff;
+        }
+      }
+
+      @layer utilities {
+        .text-white {
+          color: var(--color-white);
+        }
+
+        .bg-black {
+          background-color: var(--color-black);
+        }
+      }
+
+      ul {
+        padding-left: 2rem;
+        margin-bottom: 1rem;
+      }
+
+      .btn-bs {
+        padding: 6px 12px;
+        border: 1px solid rgb(10, 88, 202);
+        background-color: rgb(13, 110, 253);
+        color: #fff;
+      }
+
+      .host-box {
+        width: 160px;
+        padding: 12px;
+        border: 4px solid gray;
+      }
+
+      .host-scroller {
+        width: 160px;
+        height: 48px;
+        overflow: auto;
+      }
+
+      .host-scroller > div {
+        width: 320px;
+        height: 120px;
+      }
+
+      .host-card {
+        background-color: rgb(248, 250, 252);
+        color: rgb(15, 23, 42);
+      }
+
+      .dark .host-card {
+        background-color: rgb(15, 23, 42);
+        color: rgb(248, 250, 252);
+      }
+    </style>
+  </head>
+  <body>
+    <header id="host">
+      <p id="host-paragraph">Host paragraph</p>
+      <button id="host-layered-button" class="btn" type="button">Layered</button>
+      <button id="host-unlayered-button" class="btn-bs" type="button">Unlayered</button>
+      <button id="host-plain-button" type="button">Plain</button>
+      <input id="host-input" value="Host input" aria-label="Host input" />
+      <span id="host-utility" class="text-white bg-black">text-white</span>
+      <div id="host-box" class="host-box">Box</div>
+      <div id="host-scroller" class="host-scroller"><div>Scroll</div></div>
+      <div id="host-card" class="host-card">Card</div>
+      <ul id="host-list">
+        <li>Host list</li>
+      </ul>
+    </header>
+    <redoc spec-url="/fixtures/host-page.yaml"></redoc>
+  </body>
+</html>

@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
-import type { Node } from '@markdoc/markdoc';
+import markdoc from '@redocly/markdoc';
+import type { Node } from '@redocly/markdoc';
 
 import {
   isMarkdocAst,
@@ -71,7 +72,6 @@ describe('extractSummaryText', () => {
   });
 });
 
-
 describe('extractFullText / collectMarkdownPlainText with string input', () => {
   it('returns the trimmed string as-is', () => {
     expect(extractFullText('  plain description  ')).toBe('plain description');
@@ -92,6 +92,28 @@ describe('extractFullText / collectMarkdownPlainText with string input', () => {
     expect(extractFullText('Use `redirect_uris` instead of `grant_types` for `id:<value>`')).toBe(
       'Use redirect_uris instead of grant_types for id:<value>',
     );
+  });
+});
+
+describe('extractFullText with a visibility tag', () => {
+  it('leaves agents-only content out of the indexed text', () => {
+    const description = [
+      'Shared description.',
+      '',
+      '{% visibility for="agents" %}',
+      'Agent only instruction.',
+      '{% /visibility %}',
+      '',
+      '{% visibility for="humans" %}',
+      'Human only note.',
+      '{% /visibility %}',
+    ].join('\n');
+
+    const text = extractFullText(markdoc.parse(description));
+
+    expect(text).not.toContain('Agent only instruction.');
+    expect(text).toContain('Shared description.');
+    expect(text).toContain('Human only note.');
   });
 });
 
@@ -238,6 +260,36 @@ describe('extractFirstParagraphText', () => {
   it('respects maxLength and truncates accordingly', () => {
     const nodes = [makeParagraphNode('Hello world this is a long text')];
     expect(extractFirstParagraphText(nodes, 5)).toBe('Hello');
+  });
+  it('skips leading agents-only content, which the page does not show', () => {
+    const ast = markdoc.parse(
+      [
+        '{% visibility for="agents" %}',
+        'Call the orders endpoint.',
+        '{% /visibility %}',
+        '',
+        'Creates an order.',
+      ].join('\n'),
+    );
+
+    vi.mocked(parseMarkdown).mockReturnValue(ast);
+
+    expect(extractFirstParagraphText(ast)).toBe('Creates an order.');
+    expect(extractSummaryText(ast)).toBe('Creates an order.');
+  });
+
+  it('takes leading humans-only content, which the page shows', () => {
+    const ast = markdoc.parse(
+      [
+        '{% visibility for="humans" %}',
+        'Open the Orders page.',
+        '{% /visibility %}',
+        '',
+        'Creates an order.',
+      ].join('\n'),
+    );
+
+    expect(extractFirstParagraphText(ast)).toBe('Open the Orders page.');
   });
 });
 
@@ -591,6 +643,25 @@ describe('re-stamping an already-stamped AST', () => {
 
     expect(heading.attributes.id).toBe('details/request');
     expect(heading.attributes.deepLinkHash).toBe('/details#details/request');
+  });
+
+  it('keeps the old id of a heading whose custom id equals its slug on a repeated run', () => {
+    vi.mocked(parseMarkdown).mockReturnValue(
+      markdocParser(
+        '# Intro **now**\n\n## Install with **npm** {% #install-with-npm %}\n\n# Plain\n\n## Install with **npm** {% #install-with-npm %}\n',
+      ),
+    );
+
+    extractMarkdownSections('...');
+    const [intro, plain] = extractMarkdownSections('...');
+    const headings = [intro, ...intro.items, plain, ...plain.items];
+
+    expect(headings.map(({ id, previousId }) => ({ id, previousId }))).toEqual([
+      { id: 'section/intro-now', previousId: 'section/intro' },
+      { id: 'section/intro-now/install-with-npm', previousId: 'section/intro/install-with-npm' },
+      { id: 'section/plain', previousId: undefined },
+      { id: 'section/plain/install-with-npm', previousId: undefined },
+    ]);
   });
 });
 

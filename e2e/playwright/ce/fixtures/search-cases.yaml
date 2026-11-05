@@ -14,7 +14,7 @@ info:
   termsOfService: https://search-cases.local/terms-of-service
   description: |
     One deliberately unique sentence per indexed part. Every sentence in this file is a
-    search query in SEARCH-CASES.md; do not reuse wording between fields.
+    distinct search query; do not reuse wording between fields.
 tags:
   - name: Orders
     description: Order lifecycle endpoints.

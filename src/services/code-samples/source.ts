@@ -10,7 +10,6 @@ import type {
   OAuthFlowsData,
 } from '../../types/store.js';
 
-
 type ServerVariable = {
   default?: string;
   enum?: string[];
@@ -30,6 +29,7 @@ export type ParameterEntry = {
   required?: boolean;
   deprecated?: boolean;
   example?: unknown;
+  allowEmptyValue?: boolean;
   schemaId?: string;
   serializationMime?: string;
   style?: string;
@@ -67,7 +67,6 @@ type DefinitionCodeSample = {
   source: string;
 };
 
-
 export type CodeSampleSource = {
   kind: typeof panelKind.CODE_SAMPLE;
 
@@ -95,7 +94,6 @@ export type CodeSampleSource = {
 
   /** Response status codes (for generators that include expected status) */
   responseCodes?: string[];
-
 
   /** Raw pointer into the spec (for deep linking) */
   pointer?: string;

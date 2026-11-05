@@ -1,4 +1,3 @@
-
 import { MediaTypes } from '../constants/openapi.js';
 
 const SEQUENTIAL_MEDIA_TYPES: ReadonlySet<string> = new Set([

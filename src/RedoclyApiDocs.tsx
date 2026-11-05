@@ -1,20 +1,28 @@
-import { memo, type ReactElement } from 'react';
+import { memo, useEffect, type ReactElement } from 'react';
+import { useAtomValue } from 'jotai';
 import type { LayoutVariant } from '@redocly/config';
 
 import type { ApiItem, ApiStore } from './types/store.js';
 import type { RawApiDocsOptions } from './types/options.js';
 import type { RouteIndex } from './utils/routing.js';
-import { type MarkdownAdapter, MarkdownAdapterProvider } from './contexts/markdownAdapter.js';
+import {
+  type MarkdownAdapter,
+  MarkdownAdapterProvider,
+  useProvidedMarkdownAdapterCheck,
+} from './contexts/markdownAdapter.js';
 import {
   type InitialTelemetryContext,
   type RedocTelemetryConfig,
+  sendBuildErrors,
+  sendErrorTelemetry,
+  setErrorSender,
   TelemetryContext,
   useRedocTelemetryInstance,
 } from './telemetry/index.js';
 
-import { GlobalStyle as ThemeCommonStyle } from '@redocly/theme/core/openapi';
 import { LinkIconSymbol } from '@redocly/theme/icons/LinkIcon/LinkIconSymbol';
 
+import { storeAtom } from './jotai/store.js';
 import { useApiDocsRoutes } from './hooks/useApiDocsRoutes.js';
 import { useVisitedChannelsTracker } from './hooks/useVisitedChannelsTracker.js';
 import { useRouterHashBridge } from './hooks/useRouterHashBridge.js';
@@ -22,6 +30,7 @@ import { useScrollSpyUrlSync } from './hooks/useScrollSpyUrlSync.js';
 import { usePageTelemetry } from './hooks/usePageTelemetry.js';
 import { EntryPage } from './pages/EntryPage.js';
 import { ErrorBoundary } from './components/ErrorBoundary.js';
+import { GlobalStyle } from './components/GlobalStyle.js';
 import { compose } from './utils/compose.js';
 import { isTelemetryDisabled } from './options/helpers.js';
 import { withRouter } from './hoc/withRouter.js';
@@ -50,6 +59,12 @@ const RedoclyApiDocsComponent = (props: RedoclyApiDocsInnerProps): ReactElement 
     ...telemetryConfig,
     ...(disableTelemetry ? { disabled: true } : {}),
   });
+  const { buildErrors } = useAtomValue(storeAtom);
+  useEffect(() => {
+    const unmount = setErrorSender(({ id, error }) => sendErrorTelemetry(telemetry, id, error));
+    sendBuildErrors(telemetry, buildErrors);
+    return unmount;
+  }, [telemetry, buildErrors]);
   return (
     <MarkdownAdapterProvider value={markdownAdapter}>
       <TelemetryContext.Provider value={telemetry}>
@@ -87,15 +102,21 @@ const RedoclyApiDocsBody = ({
     <>
       {/* Outside the boundary: a page crash must not unmount the global styles
           that the surrounding layout (e.g. the standalone sidebar) depends on. */}
-      <ThemeCommonStyle />
+      <GlobalStyle />
       {/* One copy of the link icon drawing that every deep link anchor on the page refers to. */}
       <LinkIconSymbol />
       <ErrorBoundary>
+        <MarkdownAdapterCheck />
         <EntryPage routeIndex={routeIndex} basePath={basePath} />
       </ErrorBoundary>
     </>
   );
 };
+
+function MarkdownAdapterCheck(): null {
+  useProvidedMarkdownAdapterCheck();
+  return null;
+}
 
 const RedoclyApiDocs = compose(
   withStoreProvider,

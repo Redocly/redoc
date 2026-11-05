@@ -68,6 +68,30 @@ describe('cloneStrip', () => {
     });
   });
 
+  it('removes stored credential extensions from security schemes', () => {
+    const source = deepFreeze({
+      components: {
+        securitySchemes: {
+          oauth: {
+            type: 'oauth2',
+            'x-defaultClientId': 'client',
+            'x-defaultClientSecret': 'secret',
+            'x-serverValues': { 'https://api.example.com': { password: 'pw' } },
+            flows: { password: { tokenUrl: '/token', 'x-defaultPassword': 'pw', scopes: {} } },
+          },
+        },
+      },
+    });
+
+    expect(cloneStrip(source, noInline)).toEqual({
+      components: {
+        securitySchemes: {
+          oauth: { type: 'oauth2', flows: { password: { tokenUrl: '/token', scopes: {} } } },
+        },
+      },
+    });
+  });
+
   it('drops entries whose value is undefined while keeping null', () => {
     const source = deepFreeze({
       keep: 1,

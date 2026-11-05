@@ -72,7 +72,7 @@ export function CallbackPayloadItem({
   useEffect(() => setSelectedExampleIdx(0), [effectiveExampleIds, activeMediaType]);
 
   const payload = resolved[selectedExampleIdx] ?? resolved[0];
-  const activeExampleDescription = exampleEntries[selectedExampleIdx]?.description;
+  const activeExampleEntry = exampleEntries[selectedExampleIdx];
 
   const languages = useMemo(() => {
     const items: { key: string; lang: string; title: string }[] = [
@@ -139,7 +139,10 @@ export function CallbackPayloadItem({
             selectedIdx={selectedExampleIdx}
             onSelect={setSelectedExampleIdx}
           />
-          <ExampleDescription description={activeExampleDescription} />
+          <ExampleDescription
+            key={activeExampleEntry?.id}
+            description={activeExampleEntry?.description}
+          />
           <PayloadDisplay
             payload={payload}
             emptyMessage="// No callback payload"

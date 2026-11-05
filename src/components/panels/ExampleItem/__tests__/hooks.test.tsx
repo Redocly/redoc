@@ -12,7 +12,12 @@ import { globalStoreAtom } from '../../../../jotai/store.js';
 import { itemStoreAtom } from '../../../../jotai/itemStore.js';
 import { ItemIdContext } from '../../../../hooks/useDeepLinkSection.js';
 import { normalizeOptions } from '../../../../options/normalizeOptions.js';
+import { buildExampleAtomKey, generatedExampleAtom } from '../../../../jotai/examples.js';
+import { populateOpenApiStore } from '../../../../adapters/openapi/store.js';
+import { createStoreContext, toRecord } from '../../../../adapters/helpers.js';
+import { markdocParser } from '../../../../components/markdoc/markdocParser.js';
 import type { PayloadExamplesPanelItem } from '../../../../types/content.js';
+import { discriminatorVariantsDefinition } from './__mocks__/discriminator-variants.js';
 
 import {
   useActiveVariantSchemaId,
@@ -614,6 +619,37 @@ describe('useActiveVariantSchemaId (oneOf nested in a oneOf variant)', () => {
 
     expect(result.current).toBe('components/schemas/OtpFailed');
   });
+
+  it('samples the selected variant when the body is itself one of the host options', () => {
+    const entry = (id: string, data: Record<string, unknown>): SchemaEntry => ({
+      id,
+      kind: schemaKind.JSON_SCHEMA,
+      data,
+    });
+    const store: Record<string, SchemaEntry> = {
+      'components/schemas/Pet': entry('components/schemas/Pet', {
+        type: 'object',
+        properties: { kind: { type: 'string' } },
+        discriminator: {
+          propertyName: 'kind',
+          mapping: { cat: '#/components/schemas/Cat', dog: '#/components/schemas/Dog' },
+        },
+      }),
+      'components/schemas/Cat': entry('components/schemas/Cat', {
+        allOf: [{ $ref: '#/components/schemas/Pet' }],
+      }),
+      'components/schemas/Dog': entry('components/schemas/Dog', {
+        allOf: [{ $ref: '#/components/schemas/Pet' }],
+      }),
+    };
+    const { jotaiStore, Wrapper } = makeWrapper(store);
+    jotaiStore.set(itemStoreAtom(TEST_ITEM_ID), { activeDiscriminator: { kind: 1 } });
+    const { result } = renderHook(() => useActiveVariantSchemaId('components/schemas/Cat'), {
+      wrapper: Wrapper,
+    });
+
+    expect(result.current).toBe('components/schemas/Dog');
+  });
 });
 
 describe('useActiveVariantSchemaId (nested oneOf with inline options)', () => {
@@ -628,5 +664,179 @@ describe('useActiveVariantSchemaId (nested oneOf with inline options)', () => {
     const { result } = renderHook(() => useActiveVariantSchemaId('body'), { wrapper: Wrapper });
 
     expect(result.current).toBe('body');
+  });
+});
+
+describe('discriminator variants definition', () => {
+  const { schemaStore } = populateOpenApiStore(
+    discriminatorVariantsDefinition,
+    createStoreContext(toRecord(discriminatorVariantsDefinition)),
+    normalizeOptions({
+      specType: 'openapi',
+      downloadUrls: [],
+      metadata: {},
+      markdownParser: markdocParser,
+    }),
+  );
+
+  const coffee = { kind: 'espresso', shots: 0 };
+  const tea = { kind: 'tea', leaf: 'string' };
+  const drinks = { coffee, tea };
+  const cat = { petType: 'Cat', name: 'string', meows: true };
+  const dog = { petType: 'Dog', name: 'string', barks: true };
+  const pets = { Cat: cat, Dog: dog };
+  const shapes = { Circle: { radius: 0 }, Square: { side: 0 } };
+  const methods = {
+    CardMethod: { type: 'CardMethod', last4: 'string' },
+    BankTransfer: { type: 'BankTransfer', iban: 'string' },
+  };
+  const lab = { type: 'lab', retrieves: true };
+  const poodle = { type: 'poodle', curls: 0 };
+  const feline = { type: 'cat', indoor: true };
+  const espresso = { kind: 'brew', style: 'espresso', shots: 0 };
+  const leafDrinks = { coffee, tea: { kind: 'string', leaf: 'string' } };
+  const unstampedMethods = {
+    CardMethod: { type: 'string', last4: 'string' },
+    BankTransfer: { type: 'string', iban: 'string' },
+  };
+
+  it.each<[string, Record<string, unknown>]>([
+    ['PlainOneOf', shapes],
+    ['PlainAnyOf', shapes],
+    ['Beverage', drinks],
+    ['Pet', pets],
+    [
+      'Payment',
+      {
+        card: { method: 'card', amount: 4.2, last4: 'string' },
+        bank: { method: 'bank', amount: 4.2, iban: 'string' },
+      },
+    ],
+    [
+      'Vehicle',
+      { car: { kind: 'car', wheels: 0, doors: 0 }, bike: { kind: 'bike', wheels: 0, gears: 0 } },
+    ],
+    [
+      'Shipment',
+      {
+        air: { mode: 'air', weight: 1.5, flight: 'string' },
+        sea: { mode: 'sea', weight: 1.5, vessel: 'string' },
+        road: { mode: 'road', weight: 1.5, plate: 'string' },
+      },
+    ],
+    ['KindPet', { cat: { petType: 'cat', meows: true }, dog: { petType: 'dog', barks: true } }],
+    [
+      'NamedKindPet',
+      {
+        NamedCat: { petType: 'cat', meows: true },
+        NamedDog: { petType: 'cat', barks: true },
+      },
+    ],
+    ['Cat', pets],
+    ['HouseCat', pets],
+    ['MaybeDog', pets],
+    ['TeaOrder', leafDrinks],
+    [
+      'Drink',
+      {
+        'brew / espresso': { ...espresso, refill: espresso },
+        'brew / latte': { kind: 'brew', style: 'latte', milk: 'string' },
+        juice: { kind: 'juice', fruit: 'string' },
+      },
+    ],
+    [
+      'Snack',
+      {
+        chips: { kind: 'chips', refill: { kind: 'chips', refill: {} } },
+        cookie: { kind: 'cookie', chocolate: true },
+      },
+    ],
+    [
+      'Menu',
+      {
+        'brew / espresso': [{ ...espresso, refill: {} }],
+        'brew / latte': [{ kind: 'brew', style: 'latte', milk: 'string' }],
+        juice: [{ kind: 'juice', fruit: 'string' }],
+      },
+    ],
+    [
+      'Layout',
+      { row: { kind: 'row', items: [{ kind: 'row', items: [] }] }, dot: { kind: 'dot', r: 0 } },
+    ],
+    [
+      'LayoutRow',
+      {
+        row: { kind: 'string', items: [{ kind: 'row', items: [{}] }] },
+        dot: { kind: 'string', items: [{ kind: 'dot', r: 0 }] },
+      },
+    ],
+    ['BareDrink', drinks],
+    ['DrinkSettings', { coffee: { default: coffee }, tea: { default: tea } }],
+    ['PaymentMethod', methods],
+    ['AnyPaymentMethod', methods],
+    ['ExampleHostMethod', methods],
+    [
+      'InheritedExampleMethod',
+      {
+        InheritCard: { type: 'InheritCard', last4: 'string' },
+        InheritBank: { type: 'InheritBank', iban: 'string' },
+      },
+    ],
+    [
+      'PinnedMethod',
+      {
+        ConstCard: { type: 'card' },
+        RefEnumCard: { type: 'card-ref' },
+        BaseCard: { type: 'card-base', last4: 'string' },
+      },
+    ],
+    ['RestrictedMethod', unstampedMethods],
+    ['PointerMethod', unstampedMethods],
+    ['ConstChoiceMethod', unstampedMethods],
+    ['OuterRestrictedMethod', unstampedMethods],
+    ['Animal', { lab, poodle, cat: feline }],
+    [
+      'Creature',
+      {
+        'dog / lab': { species: 'dog', breed: 'lab', retrieves: true },
+        'dog / poodle': { species: 'dog', breed: 'poodle', curls: 0 },
+        cat: { species: 'cat', indoor: true },
+      },
+    ],
+    ['ZooAnimal', { 'dog / lab': lab, 'dog / poodle': poodle, cat: feline }],
+    ['Pack', { 'PackDog / PackLab': lab, 'PackDog / PackPoodle': poodle, PackCat: feline }],
+    [
+      'Shepherd',
+      {
+        'herding / shepherd': { group: 'string', breed: 'string', herds: true },
+        'herding / collie': { group: 'string', breed: 'string', smart: true },
+        toy: { group: 'string', tiny: true },
+      },
+    ],
+  ])('%s samples each option on its own', (name, samples) => {
+    const schemaId = schemaStore[name] ? name : `components/schemas/${name}`;
+    const { jotaiStore, Wrapper } = makeWrapper(schemaStore);
+    const { result } = renderHook(
+      () => ({
+        selection: useSchemaVariantSelection(schemaId),
+        activeId: useActiveVariantSchemaId(schemaId),
+      }),
+      { wrapper: Wrapper },
+    );
+    const labels = Object.keys(samples).filter(Boolean);
+
+    expect(result.current.selection?.options.map((option) => option.label)).toEqual(
+      labels.length > 0 ? labels : undefined,
+    );
+    for (const [label, expected] of Object.entries(samples)) {
+      if (label) act(() => result.current.selection?.onSelect(labels.indexOf(label)));
+      const key = buildExampleAtomKey(
+        result.current.activeId ?? '',
+        'request',
+        'application/json',
+        TEST_ITEM_ID,
+      );
+      expect(jotaiStore.get(generatedExampleAtom(key))).toEqual(expected);
+    }
   });
 });

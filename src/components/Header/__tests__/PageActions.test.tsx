@@ -2,7 +2,6 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { createStore, Provider as JotaiProvider } from 'jotai';
 
-import type { GlobalStoreAtom } from '../../../jotai/store.js';
 import type { useCopySpecSlice } from '../../../hooks/useCopySpecSlice.js';
 
 import { ClipboardService } from '@redocly/theme/core/openapi';
@@ -42,7 +41,7 @@ function renderPageActions(slice: CopySpecSlice) {
       metadata: {},
       basePath: '',
     }),
-  } as GlobalStoreAtom);
+  });
 
   return render(
     <JotaiProvider store={store}>

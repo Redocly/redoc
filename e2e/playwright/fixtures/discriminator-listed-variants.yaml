@@ -1,0 +1,429 @@
+openapi: 3.0.1
+info:
+  title: Discriminator with listed variants that inherit it
+  version: '2024-01-01'
+  description: >
+    `Channel` lists its 19 variants in `oneOf` and `discriminator.mapping`, and every variant
+    inherits `Channel` through `allOf`.
+paths:
+  /notifications:
+    post:
+      operationId: sendNotification
+      summary: Send a notification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationRequest'
+      responses:
+        '201':
+          description: Created
+components:
+  schemas:
+    NotificationRequest:
+      type: object
+      required:
+        - instruction
+      properties:
+        instruction:
+          $ref: '#/components/schemas/Instruction'
+    Instruction:
+      type: object
+      required:
+        - channel
+      properties:
+        channel:
+          $ref: '#/components/schemas/Channel'
+    Channel:
+      type: object
+      required:
+        - type
+      discriminator:
+        mapping:
+          email: '#/components/schemas/EmailChannel'
+          sms: '#/components/schemas/SmsChannel'
+          mms: '#/components/schemas/MmsChannel'
+          push: '#/components/schemas/PushChannel'
+          voice: '#/components/schemas/VoiceChannel'
+          fax: '#/components/schemas/FaxChannel'
+          webhook: '#/components/schemas/WebhookChannel'
+          pager: '#/components/schemas/PagerChannel'
+          letter: '#/components/schemas/LetterChannel'
+          kiosk: '#/components/schemas/KioskChannel'
+          inbox: '#/components/schemas/InboxChannel'
+          rss: '#/components/schemas/RssChannel'
+          chat: '#/components/schemas/ChatChannel'
+          banner: '#/components/schemas/BannerChannel'
+          radio: '#/components/schemas/RadioChannel'
+          tv: '#/components/schemas/TvChannel'
+          feed: '#/components/schemas/FeedChannel'
+          postcard: '#/components/schemas/PostcardChannel'
+          signage: '#/components/schemas/SignageChannel'
+        propertyName: type
+      oneOf:
+        - $ref: '#/components/schemas/SmsChannel'
+        - $ref: '#/components/schemas/MmsChannel'
+        - $ref: '#/components/schemas/EmailChannel'
+        - $ref: '#/components/schemas/PushChannel'
+        - $ref: '#/components/schemas/VoiceChannel'
+        - $ref: '#/components/schemas/FaxChannel'
+        - $ref: '#/components/schemas/WebhookChannel'
+        - $ref: '#/components/schemas/PagerChannel'
+        - $ref: '#/components/schemas/LetterChannel'
+        - $ref: '#/components/schemas/KioskChannel'
+        - $ref: '#/components/schemas/InboxChannel'
+        - $ref: '#/components/schemas/RssChannel'
+        - $ref: '#/components/schemas/BannerChannel'
+        - $ref: '#/components/schemas/ChatChannel'
+        - $ref: '#/components/schemas/RadioChannel'
+        - $ref: '#/components/schemas/TvChannel'
+        - $ref: '#/components/schemas/FeedChannel'
+        - $ref: '#/components/schemas/PostcardChannel'
+        - $ref: '#/components/schemas/SignageChannel'
+      properties:
+        type:
+          type: string
+    SmsChannel:
+      allOf:
+        - $ref: '#/components/schemas/Channel'
+        - type: object
+          properties:
+            deviceType:
+              type: string
+            failureURL:
+              type: string
+            pendingURL:
+              type: string
+            successURL:
+              type: string
+            type:
+              type: string
+    MmsChannel:
+      allOf:
+        - $ref: '#/components/schemas/Channel'
+        - type: object
+          properties:
+            cancelURL:
+              type: string
+            country:
+              type: string
+            pendingURL:
+              type: string
+            recipientEmailAddress:
+              type: string
+            successURL:
+              type: string
+            type:
+              type: string
+    EmailChannel:
+      allOf:
+        - $ref: '#/components/schemas/Channel'
+        - type: object
+          properties:
+            cancelURL:
+              type: string
+            country:
+              type: string
+            pendingURL:
+              type: string
+            recipientEmailAddress:
+              type: string
+            successURL:
+              type: string
+            type:
+              type: string
+    PushChannel:
+      allOf:
+        - $ref: '#/components/schemas/Channel'
+        - type: object
+          properties:
+            cancelURL:
+              type: string
+            country:
+              type: string
+            pendingURL:
+              type: string
+            recipientEmailAddress:
+              type: string
+            successURL:
+              type: string
+            type:
+              type: string
+    VoiceChannel:
+      allOf:
+        - $ref: '#/components/schemas/Channel'
+        - type: object
+          properties:
+            cancelURL:
+              type: string
+            country:
+              type: string
+            pendingURL:
+              type: string
+            recipientEmailAddress:
+              type: string
+            successURL:
+              type: string
+            consentGiven:
+              type: boolean
+            type:
+              type: string
+    FaxChannel:
+      allOf:
+        - $ref: '#/components/schemas/Channel'
+        - type: object
+          properties:
+            cancelURL:
+              type: string
+            country:
+              type: string
+            failureURL:
+              type: string
+            pendingURL:
+              type: string
+            successURL:
+              type: string
+            type:
+              type: string
+    WebhookChannel:
+      allOf:
+        - $ref: '#/components/schemas/Channel'
+        - type: object
+          properties:
+            cancelURL:
+              type: string
+            country:
+              type: string
+            pendingURL:
+              type: string
+            recipientEmailAddress:
+              type: string
+            successURL:
+              type: string
+            type:
+              type: string
+    PagerChannel:
+      allOf:
+        - $ref: '#/components/schemas/Channel'
+        - type: object
+          properties:
+            cancelURL:
+              type: string
+            country:
+              type: string
+            failureURL:
+              type: string
+            recipientEmailAddress:
+              type: string
+            successURL:
+              type: string
+            routingCode:
+              type: string
+            type:
+              type: string
+    LetterChannel:
+      allOf:
+        - $ref: '#/components/schemas/Channel'
+        - type: object
+          properties:
+            cancelURL:
+              type: string
+            country:
+              type: string
+            failureURL:
+              type: string
+            language:
+              type: string
+            pendingURL:
+              type: string
+            successURL:
+              type: string
+            type:
+              type: string
+    KioskChannel:
+      allOf:
+        - $ref: '#/components/schemas/Channel'
+        - type: object
+          properties:
+            country:
+              type: string
+            lastName:
+              type: string
+            pendingURL:
+              type: string
+            recipientEmailAddress:
+              type: string
+            telephoneNumber:
+              type: string
+            type:
+              type: string
+    InboxChannel:
+      allOf:
+        - $ref: '#/components/schemas/Channel'
+        - type: object
+          properties:
+            cancelURL:
+              type: string
+            country:
+              type: string
+            failureURL:
+              type: string
+            language:
+              type: string
+            pendingURL:
+              type: string
+            recipientEmailAddress:
+              type: string
+            successURL:
+              type: string
+            type:
+              type: string
+    RssChannel:
+      allOf:
+        - $ref: '#/components/schemas/Channel'
+        - type: object
+          properties:
+            cancelURL:
+              type: string
+            country:
+              type: string
+            pendingURL:
+              type: string
+            recipientEmailAddress:
+              type: string
+            successURL:
+              type: string
+            type:
+              type: string
+    BannerChannel:
+      allOf:
+        - $ref: '#/components/schemas/Channel'
+        - type: object
+          properties:
+            cancelURL:
+              type: string
+            country:
+              type: string
+            pendingURL:
+              type: string
+            recipientEmailAddress:
+              type: string
+            successURL:
+              type: string
+            type:
+              type: string
+    ChatChannel:
+      allOf:
+        - $ref: '#/components/schemas/Channel'
+        - type: object
+          properties:
+            replyAddress:
+              type: object
+            cancelURL:
+              type: string
+            failureURL:
+              type: string
+            pendingURL:
+              type: string
+            autoConfirmation:
+              type: object
+            forwardAddress:
+              type: object
+            recipientEmailAddress:
+              type: string
+            successURL:
+              type: string
+            type:
+              type: string
+    RadioChannel:
+      allOf:
+        - $ref: '#/components/schemas/Channel'
+        - type: object
+          properties:
+            cancelURL:
+              type: string
+            country:
+              type: string
+            pendingURL:
+              type: string
+            recipientEmailAddress:
+              type: string
+            successURL:
+              type: string
+            type:
+              type: string
+    TvChannel:
+      allOf:
+        - $ref: '#/components/schemas/Channel'
+        - type: object
+          properties:
+            cancelURL:
+              type: string
+            country:
+              type: string
+            pendingURL:
+              type: string
+            recipientEmailAddress:
+              type: string
+            successURL:
+              type: string
+            type:
+              type: string
+    FeedChannel:
+      allOf:
+        - $ref: '#/components/schemas/Channel'
+        - type: object
+          properties:
+            cancelURL:
+              type: string
+            country:
+              type: string
+            pendingURL:
+              type: string
+            recipientEmailAddress:
+              type: string
+            successURL:
+              type: string
+            type:
+              type: string
+    PostcardChannel:
+      allOf:
+        - $ref: '#/components/schemas/Channel'
+        - type: object
+          properties:
+            cancelURL:
+              type: string
+            country:
+              type: string
+            failureURL:
+              type: string
+            language:
+              type: string
+            deliveryMode:
+              type: string
+            pendingURL:
+              type: string
+            recipientEmailAddress:
+              type: string
+            successURL:
+              type: string
+            type:
+              type: string
+    SignageChannel:
+      allOf:
+        - $ref: '#/components/schemas/Channel'
+        - type: object
+          properties:
+            cancelURL:
+              type: string
+            country:
+              type: string
+            pendingURL:
+              type: string
+            recipientEmailAddress:
+              type: string
+            successURL:
+              type: string
+            type:
+              type: string

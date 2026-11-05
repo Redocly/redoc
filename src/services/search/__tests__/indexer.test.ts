@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import type { Node } from '@markdoc/markdoc';
+import type { Node } from '@redocly/markdoc';
 import type { ApiItem, ApiItemContent, SchemaEntry } from '../../../types/store.js';
 import type {
   MarkdocNode,
@@ -317,7 +317,6 @@ describe('ApiDocsSearchIndexer', () => {
 
       expect(indexer.getResult()[0].isAdditionalOperation).toBeUndefined();
     });
-
 
     it('accumulates multiple items', () => {
       const indexer = new ApiDocsSearchIndexer(BASE_PATH);
@@ -2160,7 +2159,6 @@ describe('ApiDocsSearchIndexer', () => {
       });
     });
   });
-
 
   describe('markdown heading sub-results', () => {
     function headingNode(text: string, id?: string): Node {

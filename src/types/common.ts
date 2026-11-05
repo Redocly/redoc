@@ -1,4 +1,4 @@
-import type { Node } from '@markdoc/markdoc';
+import type { Node } from '@redocly/markdoc';
 
 export type ObjectValues<T> = T[keyof T];
 
@@ -10,7 +10,6 @@ export type OpenAPIRef = {
 };
 
 export type Referenced<T> = T | OpenAPIRef;
-
 
 export type ExternalDocsData = {
   url: string;

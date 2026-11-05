@@ -8,7 +8,7 @@ const dest = resolve(here, '../public/specs');
 
 if (!existsSync(src)) {
   console.error(
-    `${src} not found - in the monorepo, run \`pnpm run stage:ce\` from packages/api-docs first`,
+    `${src} not found - the demo copies its specs from playground/specs at the repo root`,
   );
   process.exit(1);
 }

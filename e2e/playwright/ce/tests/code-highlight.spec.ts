@@ -48,6 +48,6 @@ test('keeps the sample colored in dark mode', async ({ page }) => {
   await page.addInitScript(() => window.localStorage.setItem('redoc.colorMode', 'dark'));
   const { sample } = await openCreateBean(page);
 
-  await expect(page.locator('html')).toHaveClass(/dark/);
+  await expect(page.locator('.redoc').first()).toHaveClass(/\bdark\b/);
   expect((await tokenColors(sample)).length).toBeGreaterThanOrEqual(2);
 });

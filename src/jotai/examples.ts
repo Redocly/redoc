@@ -7,8 +7,9 @@ import type { ExampleEntry } from '../types/store.js';
 import { schemaKind } from '../types/common.js';
 import { convertSampleToString } from '../services/code-samples/index.js';
 import { applyActiveVariantsToStore } from '../services/code-samples/discriminator.js';
+import { toSamplerSpec } from '../services/code-samples/sampler-spec.js';
 import { isSequentialMediaType } from '../utils/media-type.js';
-import { storeAtom, globalOptionsAtom } from './store.js';
+import { storeAtom, globalOptionsAtom, samplerOpenapiVersionAtom } from './store.js';
 import { schemaStoreAtom } from './schema.js';
 import { activeDiscriminatorSelectAtom, activeOneOfSelectAtom } from './itemStore.js';
 
@@ -23,24 +24,6 @@ export const exampleStoreAtom = atom<Record<string, ExampleEntry>>(
   (get) => get(storeAtom).exampleStore ?? {},
 );
 
-function buildOpenApiStub(
-  schemas: Record<string, Record<string, unknown>>,
-): Record<string, unknown> {
-  const components: Record<string, unknown> = {};
-  for (const [key, val] of Object.entries(schemas)) {
-    const name = key.startsWith('components/schemas/')
-      ? key.replace('components/schemas/', '')
-      : key;
-    components[name] = val;
-  }
-  return {
-    openapi: '3.0.0',
-    info: { title: '', version: '' },
-    paths: {},
-    components: { schemas: components },
-  };
-}
-
 function hasVariantSelections(
   disc?: Record<string, number>,
   oneOf?: Record<string, number>,
@@ -49,7 +32,10 @@ function hasVariantSelections(
 }
 
 const defaultResolvedStoreAtom = atom<Record<string, Record<string, unknown>>>((get) =>
-  applyActiveVariantsToStore(get(schemaStoreAtom)),
+  applyActiveVariantsToStore({
+    schemaStore: get(schemaStoreAtom),
+    openapiVersion: get(samplerOpenapiVersionAtom),
+  }),
 );
 
 const resolvedStoreForSamplerAtom = atomFamily((itemId: string) =>
@@ -58,12 +44,17 @@ const resolvedStoreForSamplerAtom = atomFamily((itemId: string) =>
     const disc = get(activeDiscriminatorSelectAtom(itemId));
     const oneOf = get(activeOneOfSelectAtom(itemId));
     if (!hasVariantSelections(disc, oneOf)) return get(defaultResolvedStoreAtom);
-    return applyActiveVariantsToStore(get(schemaStoreAtom), disc, oneOf);
+    return applyActiveVariantsToStore({
+      schemaStore: get(schemaStoreAtom),
+      activeDiscriminator: disc,
+      activeOneOf: oneOf,
+      openapiVersion: get(samplerOpenapiVersionAtom),
+    });
   }),
 );
 
 const defaultVariantSpecAtom = atom<Record<string, unknown>>((get) =>
-  buildOpenApiStub(get(defaultResolvedStoreAtom)),
+  toSamplerSpec(get(defaultResolvedStoreAtom), get(samplerOpenapiVersionAtom)),
 );
 
 export const itemSpecForSamplerAtom = atomFamily((itemId: string) =>
@@ -71,7 +62,7 @@ export const itemSpecForSamplerAtom = atomFamily((itemId: string) =>
     const resolved = get(resolvedStoreForSamplerAtom(itemId));
     // Items without selections share the default map — reuse its stub too.
     if (resolved === get(defaultResolvedStoreAtom)) return get(defaultVariantSpecAtom);
-    return buildOpenApiStub(resolved);
+    return toSamplerSpec(resolved, get(samplerOpenapiVersionAtom));
   }),
 );
 
@@ -131,7 +122,6 @@ export const generatedExampleAtom = atomFamily((paramKey: string) => {
     // Sample the collapsed entry — raw entry.data still holds nested oneOf (always branch 0).
     const schemaForSampling = get(resolvedStoreForSamplerAtom(itemId))[schemaId] ?? entry.data;
     const { onlyRequiredInSamples, generatedSamplesMaxDepth } = get(globalOptionsAtom);
-
 
     const normalizedMediaType = mediaType?.toLowerCase();
     const isXml = normalizedMediaType ? normalizedMediaType.includes('xml') : false;
@@ -197,7 +187,6 @@ function sampleSchema(
       skipWriteOnly: context === 'response',
       quiet: true,
       skipNonRequired,
-      // @ts-expect-error openapi-sampler types incorrect
       maxSampleDepth,
       ...(isXml && { format: 'xml' }),
     },

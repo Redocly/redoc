@@ -1,0 +1,208 @@
+openapi: 3.1.0
+info:
+  title: Fuzz API
+  version: 1.0.0
+  description: Hello **world**
+  contact: { name: Me, email: team@example.com, url: https://example.com }
+  license: { name: MIT, url: https://example.com }
+  x-logo: { url: https://example.com/logo.png }
+servers:
+  - url: https://{env}.example.com/v1
+    description: Main
+    variables:
+      env: { default: api, enum: [api, sandbox], description: Env }
+tags:
+  - name: pets
+    description: Pets tag
+    externalDocs: { url: https://example.com }
+  - name: other
+x-tagGroups:
+  - name: Group
+    tags: [pets, other]
+externalDocs: { url: https://example.com, description: Docs }
+security:
+  - apiKey: []
+  - oauth: [read]
+paths:
+  /pets/{id}:
+    parameters:
+      - $ref: '#/components/parameters/Id'
+    get:
+      tags: [pets]
+      operationId: getPet
+      summary: Get pet
+      description: Get a pet
+      security:
+        - bearer: []
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema: { type: array, items: { type: string, enum: [a, b] } }
+          examples:
+            one: { value: [a] }
+        - name: X-H
+          in: header
+          content:
+            application/json:
+              schema: { type: object, properties: { a: { type: integer } } }
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Rate: { schema: { type: integer }, description: rate }
+          links:
+            self: { operationId: getPet, parameters: { id: $response.body#/id } }
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Pet' }
+              examples:
+                cat: { summary: Cat, value: { id: 1, kind: cat, name: Tom } }
+        default:
+          $ref: '#/components/responses/Error'
+    post:
+      tags: [other]
+      operationId: createPet
+      deprecated: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/Base'
+                - type: object
+                  required: [name]
+                  properties:
+                    name: { type: string, enum: [x, y] }
+            example: { id: 1, name: x }
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file: { type: string, format: binary }
+            encoding:
+              file: { contentType: image/png }
+          application/x-www-form-urlencoded:
+            schema: { type: object, properties: { a: { type: string } } }
+      callbacks:
+        onEvent:
+          '{$request.body#/url}':
+            post:
+              requestBody:
+                content:
+                  application/json:
+                    schema: { type: object, properties: { ev: { type: string } } }
+              responses:
+                '200': { description: ok }
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Cat'
+                  - $ref: '#/components/schemas/Dog'
+                discriminator:
+                  propertyName: kind
+                  mapping:
+                    cat: '#/components/schemas/Cat'
+                    dog: '#/components/schemas/Dog'
+      x-codeSamples:
+        - lang: curl
+          label: cURL
+          source: curl x
+webhooks:
+  newPet:
+    post:
+      tags: [other]
+      requestBody:
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/Pet' }
+      responses:
+        '200': { description: ok }
+components:
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      schema: { type: integer, minimum: 1 }
+  responses:
+    Error:
+      description: Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code: { type: integer }
+              message: { type: string }
+  securitySchemes:
+    apiKey: { type: apiKey, in: header, name: X-Key }
+    bearer: { type: http, scheme: bearer, bearerFormat: JWT }
+    oauth:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://example.com/auth
+          tokenUrl: https://example.com/token
+          scopes: { read: Read }
+    oidc: { type: openIdConnect, openIdConnectUrl: https://example.com/.well-known }
+  schemas:
+    Base:
+      type: object
+      required: [id]
+      properties:
+        id: { type: integer, format: int64, readOnly: true }
+    Pet:
+      allOf:
+        - $ref: '#/components/schemas/Base'
+        - type: object
+          required: [kind]
+          properties:
+            kind: { type: string, enum: [cat, dog] }
+            name: { type: string, minLength: 1, pattern: '^[a-z]+$', example: tom }
+            tags:
+              type: array
+              items: { type: string }
+            meta:
+              type: object
+              additionalProperties: { type: string }
+            nullable: { type: [string, 'null'] }
+            choice:
+              anyOf:
+                - { type: string }
+                - { type: integer }
+            const: { const: 5 }
+            examples: { type: string, examples: [a, b] }
+            dflt: { type: string, default: x }
+            notx: { not: { type: string } }
+            cond:
+              if: { properties: { a: { const: 1 } } }
+              then: { required: [b] }
+              else: { required: [c] }
+            pat:
+              type: object
+              patternProperties:
+                '^x-': { type: string }
+            tuple:
+              type: array
+              prefixItems: [{ type: string }, { type: integer }]
+            deps:
+              type: object
+              dependentRequired: { a: [b] }
+    Cat:
+      allOf:
+        - $ref: '#/components/schemas/Pet'
+        - type: object
+          properties:
+            purrs: { type: boolean }
+    Dog:
+      allOf:
+        - $ref: '#/components/schemas/Pet'
+        - type: object
+          properties:
+            barks: { type: boolean }

@@ -15,7 +15,6 @@ export const DEFAULT_WEBHOOKS_TAG_NAME = 'webhooks';
 export const MAX_NESTING_TAGS_LEVEL = 5;
 export const WEBHOOKS_GROUP_TITLE = 'Webhooks';
 
-
 export const MediaTypes = {
   OCTET_STREAM: 'application/octet-stream',
   MULTIPART: 'multipart/form-data',

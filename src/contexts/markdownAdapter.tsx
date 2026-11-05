@@ -27,12 +27,60 @@ const MarkdownAdapterContext = createContext<MarkdownAdapter | null>(null);
 
 export const MarkdownAdapterProvider = MarkdownAdapterContext.Provider;
 
+const ADAPTER_SHAPE =
+  'A markdown adapter is an object with `parse(source)` and `render(parsed)`, and `render` returns React elements. `createMarkdocAdapter()` returns the built-in one.';
+
+const checkedAdapters = new WeakMap<object, MarkdownAdapter>();
+
 export function useMarkdownAdapter(): MarkdownAdapter {
+  return checkMarkdownAdapter(useContext(MarkdownAdapterContext));
+}
+
+export function useProvidedMarkdownAdapterCheck(): void {
   const adapter = useContext(MarkdownAdapterContext);
+  if (adapter) checkMarkdownAdapter(adapter);
+}
+
+function checkMarkdownAdapter(adapter: MarkdownAdapter | null): MarkdownAdapter {
   if (!adapter) {
-    throw new Error(
-      'No markdown adapter found — pass `markdownAdapter` to <RedoclyApiDocs> (the standalone build supplies one automatically).',
+    throw new TypeError(
+      `No markdown adapter found: pass a \`markdownAdapter\` prop. ${ADAPTER_SHAPE}`,
     );
   }
-  return adapter;
+  const checked = checkedAdapters.get(adapter);
+  if (checked) return checked;
+
+  for (const method of ['parse', 'render'] as const) {
+    if (typeof adapter[method] !== 'function') {
+      throw new TypeError(`\`markdownAdapter.${method}\` is not a function. ${ADAPTER_SHAPE}`);
+    }
+  }
+  const result: MarkdownAdapter = {
+    parse: (source) => adapter.parse(source),
+    render: (parsed) => checkRendered(adapter.render(parsed)),
+  };
+  checkedAdapters.set(adapter, result);
+  return result;
+}
+
+function checkRendered(node: ReactNode): ReactNode {
+  for (const item of Array.isArray(node) ? node : [node]) {
+    if (!isUnrenderableObject(item)) continue;
+    throw new TypeError(
+      '$$mdtype' in item
+        ? '`markdownAdapter.render` returned a Markdoc tree instead of React elements. Render the tree with `Markdoc.renderers.react(tree, React)`, or use `createMarkdocAdapter()`.'
+        : '`markdownAdapter.render` returned an object that React cannot render. It must return React elements, a string, or `null`.',
+    );
+  }
+  return node;
+}
+
+function isUnrenderableObject(value: unknown): value is object {
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    !('$$typeof' in value) &&
+    !(Symbol.iterator in value) &&
+    typeof (value as { then?: unknown }).then !== 'function'
+  );
 }

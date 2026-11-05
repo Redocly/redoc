@@ -148,4 +148,16 @@ describe('wrapSliceForCopy', () => {
       'This is a subset of the full specification, limited to the Query type.\n\n```graphql\ntype Query { a: Int }\n```\n',
     );
   });
+
+  it('fences the slice with more backticks than any run inside it', () => {
+    const sdl = 'type Query {\n  """\n  ```\n  query { ping }\n  ````\n  """\n  ping: String\n}';
+    const text = wrapSliceForCopy(sdl, {
+      scope: { kind: 'graphql-type', name: 'Query' },
+      contentKind: 'graphql',
+    });
+
+    expect(text).toBe(
+      `This is a subset of the full specification, limited to the Query type.\n\n\`\`\`\`\`graphql\n${sdl}\n\`\`\`\`\`\n`,
+    );
+  });
 });

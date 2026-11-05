@@ -3,7 +3,8 @@ import type { OperationInfo } from '../../../../types/openapi.js';
 
 import { WEBHOOKS_GROUP_TITLE } from '../../../../constants/openapi.js';
 import { buildItemContent } from './content.js';
-import { getOperationData } from '../../utils/operation.js';
+import { getOperationData, getOperationLabel } from '../../utils/operation.js';
+import { reportError } from '../../../../telemetry/reportError.js';
 import { openApiContext } from '../../buildContext.js';
 import { readRbacScope, rbacProp, type RbacScope } from '../../../rbac.js';
 
@@ -66,15 +67,30 @@ function categorizeOperations(operations: OperationInfo[]): {
   return { regular, regularDeprecated, webhooks, webhooksDeprecated };
 }
 
+/** Reports and leaves out an operation whose nav item throws. */
 function addOperationItem(
   operation: OperationInfo,
   basePath: string,
   result: ApiItem[],
   parentRbac?: RbacScope,
 ): void {
-  const {
-    processContent,
-  } = openApiContext.get();
+  try {
+    result.push(buildOperationItem(operation, basePath, parentRbac));
+  } catch (error) {
+    reportError(
+      'buildItem',
+      error,
+      `Could not build "${getOperationLabel(operation)}" from the API description`,
+    );
+  }
+}
+
+function buildOperationItem(
+  operation: OperationInfo,
+  basePath: string,
+  parentRbac?: RbacScope,
+): ApiItem {
+  const { processContent } = openApiContext.get();
 
   const {
     slug,
@@ -99,5 +115,5 @@ function addOperationItem(
     Object.assign(item, { httpPath });
   }
 
-  result.push(item);
+  return item;
 }

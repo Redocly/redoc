@@ -1,4 +1,4 @@
-import type { Node } from '@markdoc/markdoc';
+import type { Node } from '@redocly/markdoc';
 import type {
   ContentNode,
   PanelNode,
@@ -7,7 +7,7 @@ import type {
   ApiItemContent,
 } from '../../../../types/content.js';
 import type { ItemMeta } from '../../../../types/store.js';
-import type { OpenAPIDefinition } from '../../../../types/openapi.js';
+import type { OpenAPIDefinition, OpenAPIServer } from '../../../../types/openapi.js';
 import type { ApiDocsOptions, NormalizedDownloadUrl } from '../../../../types/options.js';
 
 import { contentType, nodeTypes } from '../../../../types/common.js';
@@ -17,6 +17,8 @@ import { buildDownloadPanelContent } from '../../panels/download.js';
 import { buildOverviewPanelContent } from '../../panels/overview.js';
 import { buildMcpPanelContent } from '../../panels/mcp.js';
 import { buildServersPanelContent } from '../../panels/servers.js';
+import { serversWithUrl } from '../../utils/operation.js';
+import { withErrorHandling } from '../../../helpers.js';
 
 type OverviewContentOptions = {
   downloadUrls?: NormalizedDownloadUrl[];
@@ -24,7 +26,7 @@ type OverviewContentOptions = {
   markdownParser: ApiDocsOptions['markdownParser'];
 } & Partial<ApiDocsOptions>;
 
-export function buildOverviewContent({
+function _buildOverviewContent({
   document,
   description,
   sectionChildren,
@@ -51,7 +53,7 @@ export function buildOverviewContent({
     panels.push(mcpPanel);
   }
 
-  let mergedServers = document.servers ?? [];
+  let mergedServers: OpenAPIServer[] = serversWithUrl(document.servers);
   const normalizedServers = mergedServers.map((server) =>
     Object.assign({}, server, {
       description: typeof server.description === 'string' ? server.description : undefined,
@@ -129,3 +131,9 @@ export function buildOverviewContent({
     children: [containerNode],
   };
 }
+
+export const buildOverviewContent = withErrorHandling(
+  ({ document }) => asString(document.info?.title) ?? 'Overview',
+  _buildOverviewContent,
+  contentType.OVERVIEW,
+);

@@ -1,27 +1,27 @@
-import markdoc from '@markdoc/markdoc';
+import markdoc from '@redocly/markdoc';
+import { htmlTags } from '@redocly/markdoc/html';
 
+import type { ParserArgs } from '@redocly/markdoc';
 import type { MarkdownParser } from '../../adapters/utils/parseMarkdown.js';
 
 import { sanitizeMarkdownSource } from '../../adapters/utils/markdoc.js';
-import { simplifyAstStructure } from '../../adapters/utils/simplifyAstStructure.js';
-import { processHtmlTokens } from './html/process-html-tokens.js';
 
-const tokenizer = new markdoc.Tokenizer({
-  html: true,
+// Compact nodes carry no location or `inline` wrappers.
+const PARSE_OPTIONS: ParserArgs = {
+  html: htmlTags(),
   allowIndentation: true,
   allowComments: true,
-});
-// A temporary workaround for a markdown-it performance issue: https://github.com/markdown-it/markdown-it/issues/996
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-(tokenizer as any).parser.block.ruler.getRules('reference').length = 0;
+  compact: true,
+};
 
 /**
  * The default Markdoc-based {@link MarkdownParser}, supplied by the standalone build. api-docs core
  * stays free of a markdown engine; callers of `buildItems` pass this in (or their own parser).
- * Raw HTML in the source is tokenized and converted into `{% html %}` tag nodes, so it renders as
- * elements and never leaks markup into extracted text.
+ * Raw HTML in the source becomes `{% html %}` tag nodes, so it renders as elements and never
+ * leaks markup into extracted text.
  */
 export const markdocParser: MarkdownParser = (markdown, sanitizeOptions) => {
-  const tokens = tokenizer.tokenize(sanitizeMarkdownSource(markdown, sanitizeOptions));
-  return simplifyAstStructure(markdoc.parse(processHtmlTokens(tokens)));
+  const ast = markdoc.parse(sanitizeMarkdownSource(markdown, sanitizeOptions), PARSE_OPTIONS);
+  // Compact parsing unwraps a single-child document, and callers expect the top-level blocks.
+  return ast.type === 'document' ? ast.children : [ast];
 };

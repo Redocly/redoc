@@ -8,13 +8,8 @@ import type { ReactNode } from 'react';
 
 import type { DeepLinkSectionValue } from '../../../../hooks/useDeepLinkSection.js';
 
-import {
-  buildSchemaFieldSuffix,
-  useSchemaFieldDeepLink,
-  useSectionExpandBaseline,
-} from '../useSchemaFieldDeepLink.js';
+import { buildSchemaFieldSuffix, useSchemaFieldDeepLink } from '../useSchemaFieldDeepLink.js';
 import { globalStoreAtom } from '../../../../jotai/store.js';
-import { itemStoreAtom } from '../../../../jotai/itemStore.js';
 import { DeepLinkSectionContext, ItemIdContext } from '../../../../hooks/useDeepLinkSection.js';
 import { normalizeOptions } from '../../../../options/normalizeOptions.js';
 
@@ -74,11 +69,9 @@ describe('buildSchemaFieldSuffix', () => {
 function makeWrapper({
   itemId,
   section = null,
-  expandableSections,
 }: {
   itemId: string | undefined;
   section?: DeepLinkSectionValue | null;
-  expandableSections?: Record<string, boolean | undefined>;
 }) {
   const store = createStore();
   store.set(globalStoreAtom, {
@@ -91,9 +84,6 @@ function makeWrapper({
       basePath: '',
     }),
   });
-  if (itemId && expandableSections) {
-    store.set(itemStoreAtom(itemId), { expandableSections });
-  }
 
   return function Wrapper({ children }: { children: ReactNode }) {
     return createElement(
@@ -143,67 +133,5 @@ describe('useSchemaFieldDeepLink', () => {
     const { result } = renderHook(() => useSchemaFieldDeepLink('limit'), { wrapper });
 
     expect(result.current).toBe('');
-  });
-});
-
-describe('useSectionExpandBaseline', () => {
-  it('returns the stored baseline for the surrounding section (expanded)', () => {
-    const wrapper = makeWrapper({
-      itemId: '/test-op',
-      section: { t: 'request', in: 'query' },
-      expandableSections: { 't=request&in=query&path=': true },
-    });
-
-    const { result } = renderHook(() => useSectionExpandBaseline(), { wrapper });
-
-    expect(result.current).toBe(true);
-  });
-
-  it('reflects a collapsed baseline', () => {
-    const wrapper = makeWrapper({
-      itemId: '/test-op',
-      section: { t: 'response', c: '200' },
-      expandableSections: { 't=response&c=200&path=': false },
-    });
-
-    const { result } = renderHook(() => useSectionExpandBaseline(), { wrapper });
-
-    expect(result.current).toBe(false);
-  });
-
-  it('returns undefined when the section has no baseline registered', () => {
-    const wrapper = makeWrapper({
-      itemId: '/test-op',
-      section: { t: 'request' },
-      expandableSections: {},
-    });
-
-    const { result } = renderHook(() => useSectionExpandBaseline(), { wrapper });
-
-    expect(result.current).toBeUndefined();
-  });
-
-  it('reads only its own section key, not another section in the same item', () => {
-    const wrapper = makeWrapper({
-      itemId: '/test-op',
-      section: { t: 'response', c: '200' },
-      expandableSections: { 't=request&path=': true },
-    });
-
-    const { result } = renderHook(() => useSectionExpandBaseline(), { wrapper });
-
-    expect(result.current).toBeUndefined();
-  });
-
-  it('returns undefined when there is no section context', () => {
-    const wrapper = makeWrapper({
-      itemId: '/test-op',
-      section: null,
-      expandableSections: { 't=request': true },
-    });
-
-    const { result } = renderHook(() => useSectionExpandBaseline(), { wrapper });
-
-    expect(result.current).toBeUndefined();
   });
 });

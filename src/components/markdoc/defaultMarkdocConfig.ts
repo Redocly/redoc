@@ -1,9 +1,10 @@
-import markdoc from '@markdoc/markdoc';
+import markdoc from '@redocly/markdoc';
 
-import type { Node, Config, RenderableTreeNode, Schema } from '@markdoc/markdoc';
+import type { Node, Config, RenderableTreeNode, Schema } from '@redocly/markdoc';
 import type { MarkdocTagSchema } from '@redocly/theme/markdoc/tags/types';
 
 import { html } from '@redocly/theme/markdoc/tags/html';
+import { visibility } from '@redocly/theme/markdoc/tags/visibility';
 import { MARKDOWN_CLASS_NAME } from '@redocly/theme/core/constants';
 
 import { safeSlugify } from '../../utils/string.js';
@@ -14,7 +15,7 @@ import { schemaDefinitionTag } from './tags/schema-definition-tag.js';
 
 /**
  * Server-safe Markdoc config for api-docs descriptions: the built-in tag schemas
- * (html / schemaDefinition / MCP) and node transforms (heading). Deliberately free
+ * (html / schemaDefinition / visibility / MCP) and node transforms (heading). Deliberately free
  * of React component imports so an embedder can run the description transform
  * server-side — e.g. in a server function — without pulling the theme / jotai /
  * styled-components render layer into a server bundle. The matching render
@@ -30,6 +31,7 @@ function getMarkdownHeaderId(children: RenderableTreeNode[]): string | undefined
 export const apiDocsMarkdocTags: Record<string, MarkdocTagSchema> = {
   html: html.schema,
   schemaDefinition: schemaDefinitionTag,
+  visibility: visibility.schema,
   ...mcpTagSchemas,
 };
 

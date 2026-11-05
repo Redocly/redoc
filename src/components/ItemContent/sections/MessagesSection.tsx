@@ -4,7 +4,6 @@ import { useAtomValue, useSetAtom } from 'jotai';
 
 import type { ReactElement } from 'react';
 import type { SegmentedOption } from '@redocly/theme/core/openapi';
-import type { Node } from '@markdoc/markdoc';
 import type { ItemContentNode } from '../../../types/content.js';
 import type { DeepLinkSectionValue } from '../../../hooks/useDeepLinkSection.js';
 
@@ -240,7 +239,7 @@ function MessageDetail({ message }: { message: MessageData }): ReactElement {
       {message.summary && <MessageSummary>{message.summary}</MessageSummary>}
       {message.description && (
         <MessageDescription>
-          <Markdown source={message.description as Node[]} />
+          <Markdown key={message.name} source={message.description} />
         </MessageDescription>
       )}
       {message.externalDocs?.url && (
@@ -258,7 +257,7 @@ function MessageDetail({ message }: { message: MessageData }): ReactElement {
         <MessageDescription>
           <strong>Correlation ID</strong> <code>{message.correlationId.location}</code>
           {message.correlationId.description && (
-            <Markdown source={message.correlationId.description} />
+            <Markdown key={message.name} source={message.correlationId.description} />
           )}
         </MessageDescription>
       )}

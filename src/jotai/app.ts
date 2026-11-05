@@ -1,7 +1,6 @@
 import { atom } from 'jotai';
 import { atomWithStorage, createJSONStorage } from 'jotai/utils';
 import { LayoutVariant } from '@redocly/config';
-import { DEFAULT_COLOR_MODES } from '@redocly/theme/core/constants';
 
 import type { AsyncLocalStorage } from 'node:async_hooks';
 
@@ -66,7 +65,7 @@ const customStorage = {
       ...defaultAppStoreValue,
       ...sessionValue,
       ...cookieValue,
-    } as AppStore;
+    };
     if (!IS_BROWSER) return stored;
 
     const colorMode = window.localStorage.getItem(COLOR_MODE_STORAGE_KEY) || stored.colorMode;
@@ -94,7 +93,6 @@ export const appStore = atomWithStorage<AppStore>(
   defaultAppStoreValue,
   customStorage,
 );
-
 
 export const environmentAtom = atom<
   [Record<string, string>, string],
@@ -172,7 +170,6 @@ export const layoutAtom = atom<LayoutVariant, LayoutVariant[], void>(
   },
 );
 
-
 /**
  * appSessionStore saved to session storage
  */
@@ -187,35 +184,6 @@ const appSessionStore = atomWithStorage<AppSessionStore>(
 
 /** Mobile sidebar drawer — open state is per-view, never persisted. */
 export const isSidebarOpenedAtom = atom<boolean>(false);
-
-const COLOR_MODES = [DEFAULT_COLOR_MODES.LIGHT, DEFAULT_COLOR_MODES.DARK] as string[];
-
-function applyColorModeClass(mode: string): void {
-  const root = document.documentElement;
-  COLOR_MODES.forEach((m) => root.classList.remove(m));
-  root.classList.add(mode, 'notransition');
-  window.requestAnimationFrame(() => {
-    root.classList.remove('notransition');
-  });
-}
-
-export const colorModeAtom = atom<string, string[], void>(
-  (get) => {
-    const mode =
-      get(appStore).colorMode ||
-      (IS_BROWSER && window.matchMedia?.('(prefers-color-scheme: dark)').matches
-        ? DEFAULT_COLOR_MODES.DARK
-        : DEFAULT_COLOR_MODES.LIGHT);
-    if (IS_BROWSER) {
-      applyColorModeClass(mode);
-    }
-    return mode;
-  },
-  (get, set, colorMode) => {
-    const state = get(appStore);
-    set(appStore, { ...state, colorMode });
-  },
-);
 
 export const collapsedSidebarAtom = atom<boolean, boolean[], void>(
   (get) => get(appSessionStore).collapsedSidebar,
@@ -253,7 +221,6 @@ export const languageAtom = atom<LanguageAtom, [string], void>(
     set(appStore, { ...state, language: activeLanguage });
   },
 );
-
 
 /**
  * The `data-section-id` of whatever section is currently nearest the top of

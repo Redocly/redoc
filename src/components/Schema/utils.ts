@@ -1,4 +1,4 @@
-import type { Node } from '@markdoc/markdoc';
+import type { Node } from '@redocly/markdoc';
 import type { PropertyType } from '../../types/schema.js';
 
 export const LEVEL_COLORS = [
@@ -32,19 +32,13 @@ export type DiscriminatorEnumRender = {
   enumValues: unknown[];
 };
 
-export function getDiscriminatorEnumRender(
-  prop: PropertyType,
-  mappingKeys: string[],
-): DiscriminatorEnumRender {
+export function getDiscriminatorEnumRender(prop: PropertyType): DiscriminatorEnumRender {
   const propEnum = prop.enum;
   const enumDescriptions = propEnum && !Array.isArray(propEnum) ? propEnum : undefined;
-  const propEnumArray = propEnum && Array.isArray(propEnum) ? propEnum : undefined;
-  const enumValues: unknown[] =
-    propEnumArray && propEnumArray.length > 0 ? propEnumArray : mappingKeys;
   return {
     isDescriptionEnum: Boolean(enumDescriptions),
     enumDescriptions,
-    enumValues,
+    enumValues: Array.isArray(propEnum) ? propEnum : [],
   };
 }
 

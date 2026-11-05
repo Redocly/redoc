@@ -1,4 +1,4 @@
-import type { Node } from '@markdoc/markdoc';
+import type { Node } from '@redocly/markdoc';
 import type { JSONSchema7 } from 'json-schema';
 import type {
   AsyncApiSecuritySchemeType,
@@ -22,7 +22,6 @@ export type AsyncApiDefinition = {
     tags: string[];
   }[];
 };
-
 
 export type AsyncApiInfo = {
   title: string;
@@ -209,7 +208,6 @@ export type AsyncApiMessage = {
   examples?: AsyncApiMessageExample[];
 };
 
-
 export type AsyncApiCorrelationId = {
   description?: string | Node[] | Node;
   location: string;
@@ -243,7 +241,6 @@ export type AsyncApiOperations = {
   [name: string]: AsyncApiOperation;
 };
 
-
 export type AsyncApiOperation = {
   action: 'send' | 'receive';
   channel: AsyncApiChannel;
@@ -259,7 +256,6 @@ export type AsyncApiOperation = {
   security?: AsyncApiSecurityRequirement[];
   'x-badges'?: AsyncApiXBadges[];
 };
-
 
 export type AsyncApiOperationReply = {
   address?: {
@@ -302,7 +298,6 @@ export type AsyncApiComponents = {
   securitySchemes?: Record<string, AsyncApiSecurityScheme>;
   correlationIds?: Record<string, AsyncApiCorrelationId>;
 };
-
 
 export type AvroSchema = {
   type: string | string[] | AvroSchema[];

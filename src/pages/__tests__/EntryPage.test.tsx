@@ -76,7 +76,7 @@ function makeRoute(path: string, overrides: Partial<RouteItem> = {}): RouteItem 
     content: {
       contentType: contentType.GROUP,
       children: [],
-    } as ApiItemContent,
+    },
     ...overrides,
   };
 }
@@ -295,11 +295,10 @@ describe('EntryPage', () => {
     it('keeps an OUT-OF-SCOPE channel’s operations mounted as placeholders (asyncapi scroll stack)', () => {
       // A channel (content type ITEM/CHANNEL, not a GROUP tag hub) keeps its
       // operations in the DOM even when out of scope, so scrolling into a
-      // sibling/untagged channel reveals its operations. Regression for
-      // e31c773 ("fixed rendering channel operations at asyncapi").
+      // sibling/untagged channel reveals its operations.
       const root = makeRoute('/');
       const channel = makeRoute('/topics/ratings', {
-        content: { contentType: contentType.ITEM, children: [] } as ApiItemContent,
+        content: { contentType: contentType.ITEM, children: [] },
       });
       const op1 = makeRoute('/topics/ratings/operations/publishrating');
       const op2 = makeRoute('/topics/ratings/operations/receiverating');
@@ -371,7 +370,7 @@ describe('EntryPage', () => {
 
     it('section pointer routes (null content) make the root page eager', () => {
       const root = makeRoute('/', {
-        content: { contentType: contentType.OVERVIEW, children: [] } as ApiItemContent,
+        content: { contentType: contentType.OVERVIEW, children: [] },
       });
       const sectionPointer = makeRoute('/section/intro', {
         content: null as unknown as ApiItemContent,
@@ -408,7 +407,7 @@ describe('EntryPage', () => {
       const topGroup = makeRoute('/g');
       const subGroup = makeRoute('/g/sub');
       const op = makeRoute('/g/sub/op', {
-        content: { contentType: contentType.ITEM, children: [] } as ApiItemContent,
+        content: { contentType: contentType.ITEM, children: [] },
       });
       const topData: TagWithItems = { tag: topGroup, items: [subGroup] };
       const subData: TagWithItems = { tag: subGroup, items: [op] };

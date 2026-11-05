@@ -3,7 +3,6 @@ import { styled } from 'styled-components';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 
 import type { ReactElement } from 'react';
-import type { Node } from '@markdoc/markdoc';
 import type { ItemContentNode } from '../../../types/content.js';
 import type { DeepLinkSectionValue } from '../../../hooks/useDeepLinkSection.js';
 
@@ -89,12 +88,12 @@ export function ResponsesSection({ node }: { node: ItemContentNode }): ReactElem
       <ResponseContent>
         {summary && (
           <ResponseDescription>
-            <Markdown source={summary} />
+            <Markdown key={activeCode} source={summary} />
           </ResponseDescription>
         )}
         {description && (
           <ResponseDescription>
-            <Markdown source={description as Node | Node[]} />
+            <Markdown key={activeCode} source={description} />
           </ResponseDescription>
         )}
         <DeepLinkSectionContext.Provider value={sectionData}>

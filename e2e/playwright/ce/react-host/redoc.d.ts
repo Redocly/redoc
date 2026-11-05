@@ -1,6 +1,6 @@
 /**
  * Ambient surface for the built library: `bundles/` is generated, so tsconfig `paths` pointing at
- * its `.d.ts` would break a clean checkout. `check-build-purity.mjs` asserts this exact set.
+ * its `.d.ts` would break a clean checkout.
  */
 declare module 'redoc' {
   import type { ComponentType, ReactElement, ReactNode } from 'react';
@@ -42,6 +42,7 @@ declare module 'redoc' {
   export function prepareApiDocs(
     args: Pick<RedocStandaloneProps, 'spec' | 'specUrl' | 'options' | 'basePath'>,
   ): Promise<PreparedApiDocs>;
+  export function createMarkdocAdapter(options?: Record<string, unknown>): MarkdownAdapter;
   export function convertSwagger2OpenAPI(
     definition: Record<string, unknown>,
   ): Promise<Record<string, unknown>> | Record<string, unknown>;

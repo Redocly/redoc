@@ -30,7 +30,6 @@ export function useHashItemId(): string {
   );
 }
 
-
 /** Section data carried via context to the schema subtree. `id` is omitted —
  *  it comes from `ItemIdContext` separately. `null` means "no section". */
 export type DeepLinkSectionValue = Omit<DeepLinkSectionData, 'id'>;

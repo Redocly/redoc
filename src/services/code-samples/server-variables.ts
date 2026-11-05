@@ -17,4 +17,3 @@ export function replaceServerVariables(server: ServerWithVariables): string {
   }
   return url;
 }
-

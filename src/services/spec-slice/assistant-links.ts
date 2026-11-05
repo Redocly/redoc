@@ -76,6 +76,8 @@ export function wrapSliceForCopy(
 
   const heading = title ? `# ${title}\n\n` : '';
   const source = specUrl ? `, which you can find here: ${specUrl}` : '';
+  const longestRun = Math.max(0, ...(content.match(/`+/g) ?? []).map((run) => run.length));
+  const fence = '`'.repeat(Math.max(3, longestRun + 1));
 
-  return `${heading}This is a subset of the full specification${source}, limited to ${about}.\n\n\`\`\`${contentKind}\n${content.trimEnd()}\n\`\`\`\n`;
+  return `${heading}This is a subset of the full specification${source}, limited to ${about}.\n\n${fence}${contentKind}\n${content.trimEnd()}\n${fence}\n`;
 }

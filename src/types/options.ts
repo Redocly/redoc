@@ -5,7 +5,7 @@ import type {
   EditionGraphQLConfig,
   EditionRedocConfig,
 } from './edition-config.js';
-import type { ConfigFunction, Node, Schema } from '@markdoc/markdoc';
+import type { ConfigFunction, Node, Schema } from '@redocly/markdoc';
 import type { MarkdocTagSchema } from '@redocly/theme/markdoc/tags/types';
 import type { ComponentType } from 'react';
 import type { ApiSpecType, SidebarLogo } from './common.js';
@@ -95,7 +95,6 @@ export type ApiDocsOptions = {
   fieldExpandLevel: number;
 } & GraphQLOptions;
 
-
 export type RawApiDocsOptions = EditionRedocConfig &
   EditionAsyncApiConfig &
   EditionGraphQLConfig & {
@@ -111,4 +110,3 @@ export type RawApiDocsOptions = EditionRedocConfig &
       | EditionAsyncApiConfig['layout']
       | EditionGraphQLConfig['layout'];
   };
-

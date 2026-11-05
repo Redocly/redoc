@@ -5,11 +5,7 @@ import type { ItemContentNode } from '../../../types/content.js';
 
 import { graphqlTypeDataAtom, graphqlTypeLookupAtom } from '../../../jotai/graphql.js';
 import { GraphQLFieldView } from '../GraphQLFieldView.js';
-import {
-  useCollapsibleEntryKey,
-  useExpandableSection,
-  useRegisterCollapsibleEntry,
-} from '../../../hooks/useExpandableSection.js';
+import { useExpandableSection } from '../../../hooks/useExpandableSection.js';
 import { graphqlTypeHasExpandableFields } from '../../../utils/graphql-type-expansion.js';
 import { globalOptionsAtom } from '../../../jotai/store.js';
 
@@ -22,11 +18,7 @@ export function GraphQLFieldsSection({ node }: { node: ItemContentNode }): React
   const fields = typeData?.fields ?? [];
 
   const isExpandable = graphqlTypeHasExpandableFields(typeData, 0, maxExpandDepth, lookup);
-  const isExpanded = useExpandableSection(node.variant, isExpandable);
-  useRegisterCollapsibleEntry(
-    useCollapsibleEntryKey(isExpandable ? node.variant : undefined),
-    Boolean(isExpanded),
-  );
+  useExpandableSection(node.variant, isExpandable);
 
   if (fields.length === 0) return <></>;
 
@@ -39,7 +31,7 @@ export function GraphQLFieldsSection({ node }: { node: ItemContentNode }): React
           fieldExpandLevel={0}
           parentTypeName={typeName}
           parentRequiresScopes={typeData?.requiresScopes ?? null}
-          expanded={isExpanded}
+          sectionKey={node.variant}
         />
       ))}
     </>

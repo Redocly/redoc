@@ -1,4 +1,4 @@
-import type { Node } from '@markdoc/markdoc';
+import type { Node } from '@redocly/markdoc';
 import type { MarkdownParser } from '../../types/options.js';
 import type { MarkdownSanitizeOptions } from './markdoc.js';
 

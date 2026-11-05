@@ -1,4 +1,4 @@
-import type { Node } from '@markdoc/markdoc';
+import type { Node } from '@redocly/markdoc';
 import type { ItemContentNode } from '../../../../types/content.js';
 import type { ExtractContext, Extractor } from './context.js';
 

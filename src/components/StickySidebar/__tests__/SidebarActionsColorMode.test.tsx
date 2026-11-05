@@ -32,40 +32,38 @@ afterEach(() => {
 });
 
 describe('SidebarActions color mode switcher', () => {
-  it('toggles the root color mode class', () => {
+  it('toggles the color mode', () => {
     renderSidebarActions();
 
     const switcher = screen.getByTestId('color-mode-switcher');
     fireEvent.click(switcher);
-    expect(document.documentElement.classList.contains('dark')).toBe(true);
+    expect(switcher).toHaveAttribute('aria-label', 'dark');
 
     fireEvent.click(switcher);
-    expect(document.documentElement.classList.contains('light')).toBe(true);
-    expect(document.documentElement.classList.contains('dark')).toBe(false);
+    expect(switcher).toHaveAttribute('aria-label', 'light');
+    expect(document.documentElement.className).toBe('');
   });
 
   it('restores the persisted mode on a fresh render', () => {
     renderSidebarActions();
     fireEvent.click(screen.getByTestId('color-mode-switcher'));
-    expect(document.documentElement.classList.contains('dark')).toBe(true);
 
     cleanup();
-    document.documentElement.className = '';
-
     renderSidebarActions();
-    expect(document.documentElement.classList.contains('dark')).toBe(true);
+
+    expect(screen.getByTestId('color-mode-switcher')).toHaveAttribute('aria-label', 'dark');
   });
 
   it('falls back to the OS preference when nothing is stored', () => {
     vi.stubGlobal('matchMedia', (query: string) => ({ matches: query.includes('dark') }));
     renderSidebarActions();
 
-    expect(document.documentElement.classList.contains('dark')).toBe(true);
+    expect(screen.getByTestId('color-mode-switcher')).toHaveAttribute('aria-label', 'dark');
   });
 
   it('defaults to light without a stored mode or OS preference', () => {
     renderSidebarActions();
 
-    expect(document.documentElement.classList.contains('light')).toBe(true);
+    expect(screen.getByTestId('color-mode-switcher')).toHaveAttribute('aria-label', 'light');
   });
 });

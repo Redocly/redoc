@@ -1,4 +1,4 @@
-import type { Node } from '@markdoc/markdoc';
+import type { Node } from '@redocly/markdoc';
 import type { OpenAPIServer } from '../types/openapi.js';
 
 export type EnvironmentData = Record<string, Record<string, string>>;

@@ -1,6 +1,5 @@
 type ResolveExample = (id: string) => { key?: string } | undefined;
 
-
 /**
  * Resolves a spec-level example key to a store example id.
  * Spec-level keys (e.g. `beta` under `examples:`) never equal the generated
@@ -19,4 +18,3 @@ export function findExampleIdByKey(
     exampleIds.find((id) => resolveExample(id)?.key === key) ?? exampleIds.find((id) => id === key)
   );
 }
-

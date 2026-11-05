@@ -1,4 +1,4 @@
-import type { Node } from '@markdoc/markdoc';
+import type { Node } from '@redocly/markdoc';
 import type { Badge } from '../../../types/common.js';
 import type {
   ContainerNode,
@@ -18,6 +18,7 @@ import { parseMarkdown } from '../../utils/parseMarkdown.js';
 import { extractDescriptionSegments } from '../../utils/markdoc.js';
 import { getOperationColor, getOperationData, getOperationSummary } from '../utils/operation.js';
 import { readRbacScope, rbacProp } from '../../rbac.js';
+import { withErrorHandling } from '../../helpers.js';
 
 export type ChildTagInfo = {
   displayName: string;
@@ -31,7 +32,7 @@ const MCP_PANEL_TITLES: Record<keyof McpGroupItems, { title: string; translation
   prompts: { title: 'MCP Prompts', translationKey: 'openapi.mcp.prompts' },
 };
 
-export function buildGroupContent({
+function _buildGroupContent({
   tag,
   tagName,
   headerLabel,
@@ -195,7 +196,6 @@ export function buildGroupContent({
 
   const contentChildren: ContentNode[] = [containerNode, ...siblings];
 
-
   return {
     contentType: contentType.GROUP,
     meta: {
@@ -205,3 +205,9 @@ export function buildGroupContent({
     children: contentChildren,
   };
 }
+
+export const buildGroupContent = withErrorHandling(
+  ({ headerLabel, tagName }) => headerLabel ?? tagName,
+  _buildGroupContent,
+  contentType.GROUP,
+);

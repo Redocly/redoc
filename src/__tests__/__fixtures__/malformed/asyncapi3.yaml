@@ -1,0 +1,73 @@
+asyncapi: 3.0.0
+info:
+  title: Async
+  version: 1.0.0
+  description: d
+  tags: [{ name: t1, description: d }]
+  externalDocs: { url: https://example.com }
+defaultContentType: application/json
+servers:
+  prod:
+    host: '{env}.example.com:5672'
+    protocol: amqp
+    description: Prod
+    variables:
+      env: { default: api, enum: [api, dev] }
+    security:
+      - $ref: '#/components/securitySchemes/user'
+    bindings: { amqp: { bindingVersion: 0.3.0 } }
+channels:
+  user:
+    address: users.{id}
+    title: Users
+    description: chan
+    parameters:
+      id: { description: id, enum: [a, b], default: a }
+    messages:
+      signedUp: { $ref: '#/components/messages/SignedUp' }
+    servers: [{ $ref: '#/servers/prod' }]
+    bindings: { amqp: { is: queue } }
+operations:
+  onSignUp:
+    action: receive
+    channel: { $ref: '#/channels/user' }
+    title: On sign up
+    summary: s
+    tags: [{ name: t1 }]
+    security: [{ $ref: '#/components/securitySchemes/user' }]
+    messages: [{ $ref: '#/channels/user/messages/signedUp' }]
+    reply:
+      channel: { $ref: '#/channels/user' }
+      messages: [{ $ref: '#/channels/user/messages/signedUp' }]
+    traits: [{ description: trait }]
+  sendIt:
+    action: send
+    channel: { $ref: '#/channels/user' }
+components:
+  securitySchemes:
+    user: { type: userPassword, description: up }
+    oauth:
+      type: oauth2
+      flows: { clientCredentials: { tokenUrl: https://example.com, availableScopes: { a: b } } }
+  messages:
+    SignedUp:
+      name: SignedUp
+      title: Signed up
+      contentType: application/json
+      headers: { type: object, properties: { h: { type: string } } }
+      payload: { $ref: '#/components/schemas/User' }
+      correlationId: { location: '$message.header#/h' }
+      examples: [{ name: ex, payload: { id: 1, kind: a } }]
+      traits: [{ headers: { type: object, properties: { t: { type: string } } } }]
+      bindings: { amqp: { contentEncoding: gzip } }
+  schemas:
+    Base: { type: object, required: [id], properties: { id: { type: integer } } }
+    User:
+      allOf:
+        - $ref: '#/components/schemas/Base'
+        - type: object
+          required: [kind]
+          properties:
+            kind: { type: string, enum: [a, b] }
+            list: { type: array, items: { type: string } }
+            alt: { oneOf: [{ type: string }, { type: integer }] }

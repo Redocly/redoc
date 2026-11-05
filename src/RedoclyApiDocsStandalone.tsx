@@ -23,12 +23,15 @@ import {
 import { RedoclyApiDocsComponent } from './RedoclyApiDocs.js';
 import { Search } from './components/Search/index.js';
 import { SideMenu } from './components/SideMenu/SideMenu.js';
+import { ErrorBoundary } from './components/ErrorBoundary.js';
 import { StickySidebar } from './components/StickySidebar/StickySidebar.js';
 import { getStandaloneLayoutStyle } from './options/standaloneLayoutVars.js';
 import { toSidebarLogo } from './utils/logo.js';
 import { globalOptionsAtom, storeAtom } from './jotai/store.js';
-import { collapsedSidebarAtom, colorModeAtom } from './jotai/app.js';
+import { collapsedSidebarAtom } from './jotai/app.js';
 import { PrePaintColorModeScript } from './components/PrePaintColorModeScript.js';
+import { useRedocRootClassName } from './components/RedocRoot.js';
+import { PortalScope } from './components/common/BodyPortal.js';
 import { STANDALONE_THEME_CONFIG } from './standaloneThemeConfig.js';
 import { compose } from './utils/compose.js';
 import { normalizePath } from './utils/url.js';
@@ -94,8 +97,8 @@ const RedoclyApiDocsStandalone = compose(
     ...(disableTelemetry ? { disabled: true } : {}),
   });
   const initialTelemetry = useMemo(
-    () => ({ buildTimings, options: nonDefaultOptions(rawOptions) }),
-    [buildTimings, rawOptions],
+    () => ({ buildTimings, options: nonDefaultOptions(rawOptions, options) }),
+    [buildTimings, rawOptions, options],
   );
   const markdownAdapter = useMemo(
     () => markdownAdapterProp ?? createMarkdocAdapter(undefined, options),
@@ -103,7 +106,7 @@ const RedoclyApiDocsStandalone = compose(
   );
   const collapsedSidebar = useAtomValue(collapsedSidebarAtom);
 
-  useAtomValue(colorModeAtom);
+  const rootClassName = useRedocRootClassName();
 
   useAgentTools(items);
 
@@ -113,29 +116,35 @@ const RedoclyApiDocsStandalone = compose(
 
   return (
     <ThemeDataProvider>
-      <PrePaintColorModeScript />
       <TelemetryContext.Provider value={telemetry}>
-        <StandaloneLayout style={layoutStyle}>
-          <StickySidebar className="menu-content" collapsedSidebar={collapsedSidebar}>
-            <SidebarLogo dataTestId="logo" {...sidebarLogo} />
-            <Search
-              items={items}
-              store={store}
-              basePath={basePath}
-              document={isRecord(spec) ? spec : undefined}
-            />
-            <SideMenu items={items} />
-          </StickySidebar>
-          <MainContent>
-            <RedoclyApiDocsComponent
-              items={items}
-              basePath={basePath}
-              markdownAdapter={markdownAdapter}
-              telemetryConfig={telemetryConfig}
-              initialTelemetry={initialTelemetry}
-            />
-          </MainContent>
-        </StandaloneLayout>
+        <PortalScope>
+          <StandaloneLayout className={rootClassName} style={layoutStyle} suppressHydrationWarning>
+            <PrePaintColorModeScript />
+            <StickySidebar className="menu-content" collapsedSidebar={collapsedSidebar}>
+              <SidebarLogo dataTestId="logo" {...sidebarLogo} />
+              <ErrorBoundary scope="sidebar">
+                <Search
+                  items={items}
+                  store={store}
+                  basePath={basePath}
+                  document={isRecord(spec) ? spec : undefined}
+                />
+              </ErrorBoundary>
+              <ErrorBoundary scope="sidebar">
+                <SideMenu items={items} />
+              </ErrorBoundary>
+            </StickySidebar>
+            <MainContent>
+              <RedoclyApiDocsComponent
+                items={items}
+                basePath={basePath}
+                markdownAdapter={markdownAdapter}
+                telemetryConfig={telemetryConfig}
+                initialTelemetry={initialTelemetry}
+              />
+            </MainContent>
+          </StandaloneLayout>
+        </PortalScope>
       </TelemetryContext.Provider>
     </ThemeDataProvider>
   );

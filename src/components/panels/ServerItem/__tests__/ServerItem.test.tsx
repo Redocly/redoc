@@ -33,9 +33,9 @@ it('should render the server URL', () => {
   expect(screen.getByText('https://api.example.com')).toBeInTheDocument();
 });
 
-it('resolves a relative server URL (mock server) to an absolute URL with the page origin', () => {
-  render(<ServerItem server={{ url: '/_mock/api/openapi' }} />);
-  expect(screen.getByText(`${window.location.origin}/_mock/api/openapi`)).toBeInTheDocument();
+it('resolves a relative server URL to an absolute URL with the page origin', () => {
+  render(<ServerItem server={{ url: '/api/v1' }} />);
+  expect(screen.getByText(`${window.location.origin}/api/v1`)).toBeInTheDocument();
 });
 
 it('should show name as primary label, description as fallback, and tooltip only when both are present', () => {
@@ -46,9 +46,7 @@ it('should show name as primary label, description as fallback, and tooltip only
   expect(screen.queryByTestId('description-tooltip')).toBeNull();
 
   rerender(
-    <ServerItem
-      server={{ url: 'https://api.example.com', description: 'Primary server' as never }}
-    />,
+    <ServerItem server={{ url: 'https://api.example.com', description: 'Primary server' }} />,
   );
   expect(screen.getByTestId('server-panel-item-name')).toHaveTextContent('Primary server');
 
@@ -57,7 +55,7 @@ it('should show name as primary label, description as fallback, and tooltip only
       server={{
         url: 'https://api.example.com',
         name: 'Production',
-        description: 'Main server' as never,
+        description: 'Main server',
       }}
     />,
   );

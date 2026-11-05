@@ -1,6 +1,6 @@
 import type { ResolvedNavItem } from '@redocly/config';
 import type { DocumentNode } from 'graphql';
-import type { Node } from '@markdoc/markdoc';
+import type { Node } from '@redocly/markdoc';
 import type {
   ApiSpecType,
   AsyncApiSecuritySchemeType,
@@ -83,6 +83,8 @@ export type SchemaEntry = {
   kind: SchemaKind;
   title?: string;
   data: Record<string, unknown>;
+  /** Set when the entry is the boolean schema itself; `data` is then `{}`. */
+  booleanSchema?: boolean;
 };
 
 export type ExampleEntry = {
@@ -118,7 +120,6 @@ export type OAuthFlowsData = {
     tokenUrl: string;
     refreshUrl?: string;
     scopes: Record<string, string>;
-    'x-usePkce'?: boolean;
   };
   deviceAuthorization?: {
     deviceAuthorizationUrl: string;
@@ -127,7 +128,6 @@ export type OAuthFlowsData = {
     scopes: Record<string, string>;
   };
 };
-
 
 export type SecuritySchemeEntry = {
   id: string;
@@ -171,4 +171,7 @@ export type ApiStore = {
   logo?: SidebarLogo;
   specType?: ApiSpecType;
   convertedFrom?: string;
+  specVersion?: string;
+  /** Errors `buildItems` reported and skipped; the client sends them to telemetry at mount. */
+  buildErrors?: { id: string; name: string; message: string }[];
 };

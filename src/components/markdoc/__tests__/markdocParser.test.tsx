@@ -5,7 +5,7 @@ import { MemoryRouter } from 'react-router';
 import '@testing-library/jest-dom/vitest';
 
 import type { ReactNode } from 'react';
-import type { Node } from '@markdoc/markdoc';
+import type { Node } from '@redocly/markdoc';
 import type { OpenAPIDefinition } from '../../../types/openapi.js';
 
 import { createMarkdocAdapter } from '../markdocAdapter.js';

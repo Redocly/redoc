@@ -10,6 +10,7 @@ import { buildOverviewItems } from './items/overview/item.js';
 import { addTagItems } from './group/item.js';
 import { openApiContext } from './buildContext.js';
 import { toSidebarLogo } from '../../utils/logo.js';
+import { serversWithUrl } from './utils/operation.js';
 
 function yieldToMainThread(): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, 0));
@@ -23,17 +24,14 @@ function yieldToMainThread(): Promise<void> {
 function buildGlobalServers(
   document: OpenAPIDefinition,
 ): ServerData[] {
-  const rawServers = (document.servers ?? []) as OpenAPIServer[];
-  let merged = rawServers.filter((s): s is OpenAPIServer => typeof s?.url === 'string');
-  return merged.map((s) => ({
-    url: s.url,
-    ...(s.name && { name: s.name }),
-    ...(typeof s.description === 'string' && s.description && { description: s.description }),
-    ...(s.variables &&
-      Object.keys(s.variables).length > 0 && {
-        variables: s.variables as ServerData['variables'],
-      }),
-  }));
+  let merged: OpenAPIServer[] = serversWithUrl(document.servers);
+  return merged.map((s) => {
+    const server: ServerData = { url: s.url };
+    if (s.name) server.name = s.name;
+    if (typeof s.description === 'string' && s.description) server.description = s.description;
+    if (s.variables && Object.keys(s.variables).length > 0) server.variables = s.variables;
+    return server;
+  });
 }
 
 export async function processOpenApiDocument({
@@ -67,6 +65,7 @@ export async function processOpenApiDocument({
       exampleStore: storeCtx.exampleStore,
       securitySchemeStore: storeCtx.securitySchemeStore,
       mcp: storeCtx.document['x-mcp'] as ApiStore['mcp'],
+      specVersion: document.openapi,
       ...(globalServers.length > 0 && { servers: globalServers }),
       ...(logo && { logo }),
     },

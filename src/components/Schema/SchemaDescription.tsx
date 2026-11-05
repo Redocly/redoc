@@ -17,7 +17,7 @@ export function SchemaDescription({ value }: SchemaDescriptionProps): ReactEleme
   if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
     return (
       <Description>
-        <Markdown source={String(value)} />
+        <Markdown key={String(value)} source={String(value)} />
       </Description>
     );
   }

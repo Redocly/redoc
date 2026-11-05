@@ -9,11 +9,11 @@ export function useSchemaDocument() {
   const store = useAtomValue(storeAtom);
 
   return useMemo(() => {
-    const schemas: Record<string, OpenAPISchema> = {};
+    const schemas: Record<string, OpenAPISchema | boolean> = {};
     Object.keys(store.schemaStore).forEach((key) => {
       const schemaEntry = store.schemaStore[key];
       const schemaName = key.split('/').pop() ?? key;
-      schemas[schemaName] = schemaEntry.data;
+      schemas[schemaName] = schemaEntry.booleanSchema ?? schemaEntry.data;
     });
 
     return {

@@ -39,7 +39,6 @@ export type TargetServerSwitchedEvent = AnalyticsEvent & {
   serverUrl: string;
 };
 
-
 export type Events = {
   codeSamplesLanguageSwitch?: (event: CodeSamplesLanguageSwitchedEvent) => void;
   codeSamplesCopy?: (event: CodeSamplesCopiedEvent) => void;
@@ -65,4 +64,3 @@ export type TargetServerSwitchProps = {
   operation: Operation;
   serverUrl: string;
 };
-

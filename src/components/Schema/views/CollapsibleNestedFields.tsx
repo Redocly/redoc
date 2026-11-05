@@ -1,6 +1,5 @@
-import { useContext, useEffect, useMemo, useState } from 'react';
-import { useAtomValue, useSetAtom } from 'jotai';
-import { selectAtom } from 'jotai/utils';
+import { useMemo } from 'react';
+import { useAtomValue } from 'jotai';
 
 import type { ReactElement, ReactNode } from 'react';
 import type { TFunction } from '../../../hooks/useTranslate.js';
@@ -13,19 +12,10 @@ import { stripArrayMarkers } from '../../../utils/deep-link.js';
 import { useSpecTranslate } from '../../../hooks/useTranslate.js';
 import { useSchemaFieldTelemetry } from '../../../telemetry/index.js';
 import { useUrlHash } from '../../../hooks/useUrlHash.js';
-import { useUrlHashReassert } from '../../../hooks/useUrlHashReassert.js';
 import { globalOptionsAtom } from '../../../jotai/store.js';
-import { itemStoreAtom } from '../../../jotai/itemStore.js';
-import { ItemIdContext } from '../../../hooks/useDeepLinkSection.js';
 import { isWithinExpansionLevel, isRequiredAutoExpanded } from '../../../utils/expansion.js';
-import {
-  useSectionExpandBaseline,
-  useSectionBaselineKey,
-} from '../hooks/useSchemaFieldDeepLink.js';
-import {
-  useCollapsibleEntryKey,
-  useRegisterCollapsibleEntry,
-} from '../../../hooks/useExpandableSection.js';
+import { useSectionBaselineKey } from '../hooks/useSchemaFieldDeepLink.js';
+import { useCollapsibleState } from '../../../hooks/useExpandableSection.js';
 import { LazyMount } from '../../common/LazyMount.js';
 
 const COLLAPSIBLE_NESTED_DEFAULT_FALLBACK = 0;
@@ -157,39 +147,13 @@ export function CollapsibleNestedFields({
   required,
 }: CollapsibleNestedFieldsProps): ReactElement {
   const isDeepLinkTarget = useIsDeepLinkTarget(fieldPath);
-  const reassert = useUrlHashReassert();
   const { schemasExpansionLevel } = useAtomValue(globalOptionsAtom);
-  const itemId = useContext(ItemIdContext) ?? '';
-  const sectionKey = useSectionBaselineKey();
-  const baselineExpanded = useSectionExpandBaseline();
-  const entryKey = useCollapsibleEntryKey(sectionKey);
-  const setItemState = useSetAtom(itemStoreAtom(itemId));
-  const stored = useAtomValue(
-    useMemo(
-      () =>
-        selectAtom(itemStoreAtom(itemId), (s) => (entryKey ? s.collapsibles[entryKey] : undefined)),
-      [itemId, entryKey],
-    ),
+  const [isExpanded, setExpanded] = useCollapsibleState(
+    useSectionBaselineKey(),
+    getCollapsibleNestedInitialExpanded(expandByDefault, level, schemasExpansionLevel) ||
+      isRequiredAutoExpanded(level, required, schemasExpansionLevel),
+    isDeepLinkTarget,
   );
-  const [userToggle, setUserToggle] = useState<boolean | undefined>(undefined);
-
-  const isExpanded =
-    (entryKey ? stored : userToggle) ??
-    baselineExpanded ??
-    (isDeepLinkTarget ||
-      getCollapsibleNestedInitialExpanded(expandByDefault, level, schemasExpansionLevel) ||
-      isRequiredAutoExpanded(level, required, schemasExpansionLevel));
-
-  useRegisterCollapsibleEntry(entryKey, isExpanded);
-
-  useEffect(() => {
-    if (!isDeepLinkTarget) return;
-    if (entryKey) {
-      setItemState((curr) => ({ collapsibles: { ...curr.collapsibles, [entryKey]: true } }));
-    } else {
-      setUserToggle(true);
-    }
-  }, [isDeepLinkTarget, entryKey, setItemState, reassert]);
 
   const translate = useSpecTranslate();
   const reportToggle = useSchemaFieldTelemetry();
@@ -211,11 +175,7 @@ export function CollapsibleNestedFields({
       kind: 'property',
       ...(nested ? { childCount: nested.count, isArray: nested.isArray } : {}),
     });
-    if (entryKey) {
-      setItemState((curr) => ({ collapsibles: { ...curr.collapsibles, [entryKey]: expanded } }));
-    } else {
-      setUserToggle(expanded);
-    }
+    setExpanded(expanded);
   };
 
   return (

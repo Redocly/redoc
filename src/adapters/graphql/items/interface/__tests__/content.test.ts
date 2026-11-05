@@ -36,7 +36,6 @@ const hierarchySchema = buildASTSchema(
 
 const markdownSanitize: MarkdownSanitizeOptions = {
   sanitize: false,
-  unstable_hooks: {},
 };
 
 describe('buildInterfaceContent', () => {
@@ -51,8 +50,7 @@ describe('buildInterfaceContent', () => {
 
     const container = result.children[0] as ContainerNode;
     const implementedByNode = container.children.find(
-      (n): n is ItemContentNode =>
-        n.nodeType === nodeTypes.ITEM && (n as ItemContentNode).variant === 'implemented-by',
+      (n): n is ItemContentNode => n.nodeType === nodeTypes.ITEM && n.variant === 'implemented-by',
     );
 
     expect(implementedByNode).toBeDefined();
@@ -69,8 +67,7 @@ describe('buildInterfaceContent', () => {
 
     const container = result.children[0] as ContainerNode;
     const implementedByNode = container.children.find(
-      (n): n is ItemContentNode =>
-        n.nodeType === nodeTypes.ITEM && (n as ItemContentNode).variant === 'implemented-by',
+      (n): n is ItemContentNode => n.nodeType === nodeTypes.ITEM && n.variant === 'implemented-by',
     );
 
     expect(implementedByNode).toBeUndefined();
@@ -84,8 +81,7 @@ describe('buildInterfaceContent', () => {
 
     const container = result.children[0] as ContainerNode;
     const implementsNode = container.children.find(
-      (n): n is ItemContentNode =>
-        n.nodeType === nodeTypes.ITEM && (n as ItemContentNode).variant === 'implements',
+      (n): n is ItemContentNode => n.nodeType === nodeTypes.ITEM && n.variant === 'implements',
     );
 
     expect(implementsNode).toBeDefined();
@@ -101,8 +97,7 @@ describe('buildInterfaceContent', () => {
 
     const container = result.children[0] as ContainerNode;
     const implementsNode = container.children.find(
-      (n): n is ItemContentNode =>
-        n.nodeType === nodeTypes.ITEM && (n as ItemContentNode).variant === 'implements',
+      (n): n is ItemContentNode => n.nodeType === nodeTypes.ITEM && n.variant === 'implements',
     );
 
     expect(implementsNode).toBeUndefined();
@@ -123,8 +118,7 @@ describe('buildInterfaceContent', () => {
     });
 
     const fieldsNode = container.children.find(
-      (n): n is ItemContentNode =>
-        n.nodeType === nodeTypes.ITEM && (n as ItemContentNode).variant === 'graphql-fields',
+      (n): n is ItemContentNode => n.nodeType === nodeTypes.ITEM && n.variant === 'graphql-fields',
     );
     expect(fieldsNode).toBeDefined();
     expect(fieldsNode?.label).toBe('Fields');

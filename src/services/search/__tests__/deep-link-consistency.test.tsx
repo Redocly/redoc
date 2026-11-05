@@ -8,7 +8,7 @@ import type { GlobalStoreAtom } from '../../../jotai/store.js';
 import type { ApiItem, SchemaEntry } from '../../../types/store.js';
 import type { ContainerNode, ItemContentNode } from '../../../types/content.js';
 import type { ApiDocsOptions } from '../../../types/options.js';
-import type { Node } from '@markdoc/markdoc';
+import type { Node } from '@redocly/markdoc';
 
 import { contentType, itemVariant, nodeTypes, panelKind } from '../../../types/common.js';
 import { globalStoreAtom } from '../../../jotai/store.js';
@@ -123,15 +123,23 @@ const BASE_PATH = '/docs';
 const ITEM_ID = '/docs/pet/updatepet';
 const ROOT_SCHEMA_ID = 'components/schemas/Pet';
 
-const SCHEMA_STORE: Record<string, SchemaEntry> = Object.fromEntries(
-  Object.entries(DOCUMENT.components.schemas).map(([name, data]) => [
-    `components/schemas/${name}`,
-    { id: name, kind: 'json-schema', data } as SchemaEntry,
-  ]),
-);
+function storeOf(schemas: Record<string, Record<string, unknown>>): Record<string, SchemaEntry> {
+  return Object.fromEntries(
+    Object.entries(schemas).map(([name, data]) => [
+      `components/schemas/${name}`,
+      { id: name, kind: 'json-schema', data },
+    ]),
+  );
+}
 
-function indexRequestBodyFields(): Array<{ name: string; deepLink: string }> {
-  const indexer = new ApiDocsSearchIndexer(BASE_PATH, SCHEMA_STORE, DOCUMENT);
+const SCHEMA_STORE = storeOf(DOCUMENT.components.schemas);
+
+function indexRequestBodyFields(
+  schemaStore = SCHEMA_STORE,
+  document: Record<string, unknown> = DOCUMENT,
+  schemaId = ROOT_SCHEMA_ID,
+): Array<{ name: string; deepLink: string }> {
+  const indexer = new ApiDocsSearchIndexer(BASE_PATH, schemaStore, document);
   indexer.addItem({
     type: 'link',
     label: 'Update an existing pet',
@@ -143,7 +151,7 @@ function indexRequestBodyFields(): Array<{ name: string; deepLink: string }> {
           nodeType: nodeTypes.ITEM,
           variant: 'body',
           parameters: [],
-          mediaTypeSchemas: { 'application/json': { schemaId: ROOT_SCHEMA_ID } },
+          mediaTypeSchemas: { 'application/json': { schemaId } },
         },
       ],
     },
@@ -169,7 +177,7 @@ function renderAtHash(
       exampleStore: {},
       securitySchemeStore: {},
       ...storeExtras,
-    } as GlobalStoreAtom['store'],
+    },
     options: normalizeOptions({
       specType: 'openapi',
       downloadUrls: [],
@@ -179,7 +187,7 @@ function renderAtHash(
       schemasExpansionLevel: 'all',
       markdownParser: (
         source: string,
-        _?: Partial<Pick<ApiDocsOptions, 'sanitize' | 'unstable_hooks'>>,
+        _?: Partial<Pick<ApiDocsOptions, 'sanitize'>>,
       ): Node | Node[] | undefined => ({ type: 'text', attributes: { content: source } }) as Node,
     }),
   });
@@ -202,6 +210,49 @@ function renderAtHash(
 
   return render(wrapped).container;
 }
+
+const ref = (name: string) => ({ $ref: `#/components/schemas/${name}` });
+
+function discriminator(propertyName: string, mapping: Record<string, string>) {
+  return {
+    propertyName,
+    mapping: Object.fromEntries(
+      Object.entries(mapping).map(([value, name]) => [value, ref(name).$ref]),
+    ),
+  };
+}
+
+function indexBodyFields(
+  schemas: Record<string, Record<string, unknown>>,
+  root: string,
+): Array<{ name: string; deepLink: string }> {
+  return indexRequestBodyFields(
+    storeOf(schemas),
+    { ...DOCUMENT, components: { schemas } },
+    `components/schemas/${root}`,
+  );
+}
+
+function unrenderedFieldIds(
+  fields: Array<{ deepLink: string }>,
+  schemas: Record<string, Record<string, unknown>>,
+  root: string,
+): string[] {
+  return fields
+    .map(({ deepLink }) => deepLinkToId(deepLink))
+    .filter((targetId) => {
+      const container = renderAtHash(
+        `#${targetId}`,
+        <DeepLinkSectionContext.Provider value={{ t: 'request' }}>
+          <SchemaView schemaId={`components/schemas/${root}`} level={1} expandByDefault />
+        </DeepLinkSectionContext.Provider>,
+        { schemaStore: storeOf(schemas) },
+      );
+      return !Array.from(container.querySelectorAll('[id]')).some((el) => el.id === targetId);
+    });
+}
+
+const requestLink = (suffix: string): string => `/pet/updatepet#pet/updatepet/t=request&${suffix}`;
 
 describe('search deep links resolve to rendered field ids', () => {
   afterEach(() => {
@@ -596,5 +647,311 @@ describe('search deep links resolve to rendered field ids', () => {
     expect(deepLinks).toContain(link('path=&d=0/tags[]/name'));
     expect(deepLinks).toContain(link('path=&d=0/origin&oneof=1/kennels[]/code'));
     expect(deepLinks).toContain(link('path=pettype'));
+  });
+
+  it('keeps the field path of a discriminator option that is a discriminator host', () => {
+    const schemas = {
+      Drink: {
+        oneOf: [ref('Brew'), ref('Juice')],
+        discriminator: discriminator('kind', { brew: 'Brew', juice: 'Juice' }),
+      },
+      Brew: {
+        properties: { temperature: { type: 'string' } },
+        oneOf: [ref('Espresso'), ref('Latte')],
+        discriminator: discriminator('style', { espresso: 'Espresso', latte: 'Latte' }),
+      },
+      Espresso: {
+        type: 'object',
+        properties: {
+          kind: { type: 'string' },
+          style: { type: 'string' },
+          shots: { type: 'integer' },
+        },
+      },
+      Latte: {
+        type: 'object',
+        properties: {
+          kind: { type: 'string' },
+          style: { type: 'string' },
+          milk: { type: 'string' },
+        },
+      },
+      Juice: {
+        type: 'object',
+        properties: { kind: { type: 'string' }, fruit: { type: 'string' } },
+      },
+    };
+    const deepLinks = indexBodyFields(schemas, 'Drink').map((field) => field.deepLink);
+
+    expect(deepLinks).toContain(requestLink('path=kind'));
+    expect(deepLinks).toContain(requestLink('path=&d=0/style'));
+    expect(deepLinks).toContain(requestLink('path=&d=0&d=0/shots'));
+    expect(deepLinks).toContain(requestLink('path=&d=0&d=1/milk'));
+    expect(deepLinks).toContain(requestLink('path=&d=1/fruit'));
+    expect(deepLinks).toContain(requestLink('path=&d=0/temperature'));
+  });
+
+  it('keeps the outer discriminator row for a nested host on the same property', () => {
+    const schemas = {
+      Drink: {
+        oneOf: [ref('Brew'), ref('Juice')],
+        discriminator: discriminator('kind', { brew: 'Brew', juice: 'Juice' }),
+      },
+      Brew: {
+        oneOf: [ref('Espresso'), ref('Latte')],
+        discriminator: discriminator('kind', { espresso: 'Espresso', latte: 'Latte' }),
+      },
+      Espresso: {
+        type: 'object',
+        properties: { kind: { type: 'string' }, shots: { type: 'integer' } },
+      },
+      Latte: {
+        type: 'object',
+        properties: { kind: { type: 'string' }, milk: { type: 'string' } },
+      },
+      Juice: {
+        type: 'object',
+        properties: { kind: { type: 'string' }, fruit: { type: 'string' } },
+      },
+    };
+    const fields = indexBodyFields(schemas, 'Drink');
+
+    expect(fields).toEqual([
+      { name: 'kind', deepLink: requestLink('path=kind') },
+      { name: 'shots', deepLink: requestLink('path=&d=0&d=0/shots') },
+      { name: 'milk', deepLink: requestLink('path=&d=0&d=1/milk') },
+      { name: 'fruit', deepLink: requestLink('path=&d=1/fruit') },
+    ]);
+    expect(unrenderedFieldIds(fields, schemas, 'Drink')).toEqual([]);
+  });
+
+  it('keeps every outer discriminator row in options three hosts deep', () => {
+    const schemas = {
+      Drink: {
+        oneOf: [ref('Brew'), ref('Juice')],
+        discriminator: discriminator('kind', { brew: 'Brew', juice: 'Juice' }),
+      },
+      Brew: {
+        oneOf: [ref('Espresso'), ref('Tea')],
+        discriminator: discriminator('style', { espresso: 'Espresso', tea: 'Tea' }),
+      },
+      Espresso: {
+        oneOf: [ref('Single'), ref('Double')],
+        discriminator: discriminator('size', { single: 'Single', double: 'Double' }),
+      },
+      Single: {
+        type: 'object',
+        properties: {
+          kind: { type: 'string' },
+          style: { type: 'string' },
+          size: { type: 'string' },
+          shots: { type: 'integer' },
+        },
+      },
+      Double: {
+        type: 'object',
+        properties: {
+          kind: { type: 'string' },
+          style: { type: 'string' },
+          size: { type: 'string' },
+          crema: { type: 'string' },
+        },
+      },
+      Tea: {
+        type: 'object',
+        properties: {
+          kind: { type: 'string' },
+          style: { type: 'string' },
+          leaf: { type: 'string' },
+        },
+      },
+      Juice: {
+        type: 'object',
+        properties: { kind: { type: 'string' }, fruit: { type: 'string' } },
+      },
+    };
+    const fields = indexBodyFields(schemas, 'Drink');
+
+    expect(fields).toEqual([
+      { name: 'kind', deepLink: requestLink('path=kind') },
+      { name: 'style', deepLink: requestLink('path=&d=0/style') },
+      { name: 'size', deepLink: requestLink('path=&d=0&d=0/size') },
+      { name: 'shots', deepLink: requestLink('path=&d=0&d=0&d=0/shots') },
+      { name: 'crema', deepLink: requestLink('path=&d=0&d=0&d=1/crema') },
+      { name: 'leaf', deepLink: requestLink('path=&d=0&d=1/leaf') },
+      { name: 'fruit', deepLink: requestLink('path=&d=1/fruit') },
+    ]);
+    expect(unrenderedFieldIds(fields, schemas, 'Drink')).toEqual([]);
+  });
+
+  it('keeps sibling option paths when an option that inherits the discriminator declares a oneOf', () => {
+    const schemas = {
+      Pet: {
+        type: 'object',
+        properties: {
+          petType: { type: 'string' },
+          name: { type: 'string' },
+          nickname: { type: 'string' },
+        },
+        discriminator: discriminator('petType', { cat: 'Cat', dog: 'Dog' }),
+      },
+      Cat: {
+        allOf: [ref('Pet'), { oneOf: [{ required: ['name'] }, { required: ['nickname'] }] }],
+      },
+      Dog: {
+        allOf: [ref('Pet'), { type: 'object', properties: { packSize: { type: 'integer' } } }],
+      },
+    };
+    const fields = indexBodyFields(schemas, 'Pet');
+
+    expect(fields).toEqual([
+      { name: 'petType', deepLink: requestLink('path=pettype') },
+      { name: 'name', deepLink: requestLink('path=&d=0/name') },
+      { name: 'nickname', deepLink: requestLink('path=&d=0/nickname') },
+      { name: 'packSize', deepLink: requestLink('path=&d=1/packsize') },
+    ]);
+    expect(unrenderedFieldIds(fields, schemas, 'Pet')).toEqual([]);
+  });
+
+  it('walks an option that redeclares a discriminator without variants as a plain option', () => {
+    const schemas = {
+      Pet: {
+        oneOf: [ref('Cat'), ref('Dog')],
+        discriminator: discriminator('petType', { cat: 'Cat', dog: 'Dog' }),
+      },
+      Cat: {
+        type: 'object',
+        properties: { petType: { type: 'string' }, breed: { type: 'string' } },
+        discriminator: discriminator('breed', { lion: 'Lion' }),
+      },
+      Lion: {
+        allOf: [ref('Cat'), { type: 'object', properties: { mane: { type: 'string' } } }],
+      },
+      Dog: {
+        type: 'object',
+        properties: { petType: { type: 'string' }, bark: { type: 'string' } },
+      },
+    };
+    const fields = indexBodyFields(schemas, 'Pet');
+
+    expect(fields).toEqual([
+      { name: 'petType', deepLink: requestLink('path=pettype') },
+      { name: 'breed', deepLink: requestLink('path=&d=0/breed') },
+      { name: 'bark', deepLink: requestLink('path=&d=1/bark') },
+    ]);
+    expect(unrenderedFieldIds(fields, schemas, 'Pet')).toEqual([]);
+  });
+
+  it('keeps nested host paths below a schema that inherits the discriminator', () => {
+    const schemas = {
+      Cat: {
+        allOf: [ref('Pet'), { type: 'object', properties: { huntingSkill: { type: 'string' } } }],
+      },
+      Pet: {
+        type: 'object',
+        properties: { petType: { type: 'string' }, name: { type: 'string' } },
+        discriminator: discriminator('petType', { cat: 'Cat', dog: 'Dog' }),
+      },
+      Dog: {
+        oneOf: [ref('Puppy'), ref('Adult')],
+        discriminator: discriminator('age', { puppy: 'Puppy', adult: 'Adult' }),
+      },
+      Puppy: {
+        type: 'object',
+        properties: {
+          petType: { type: 'string' },
+          age: { type: 'string' },
+          teeth: { type: 'integer' },
+        },
+      },
+      Adult: {
+        type: 'object',
+        properties: {
+          petType: { type: 'string' },
+          age: { type: 'string' },
+          packSize: { type: 'integer' },
+        },
+      },
+    };
+    const fields = indexBodyFields(schemas, 'Cat');
+
+    expect(fields).toEqual([
+      { name: 'petType', deepLink: requestLink('path=pettype') },
+      { name: 'name', deepLink: requestLink('path=&d=0/name') },
+      { name: 'huntingSkill', deepLink: requestLink('path=&d=0/huntingskill') },
+      { name: 'age', deepLink: requestLink('path=&d=1/age') },
+      { name: 'teeth', deepLink: requestLink('path=&d=1&d=0/teeth') },
+      { name: 'packSize', deepLink: requestLink('path=&d=1&d=1/packsize') },
+    ]);
+    expect(unrenderedFieldIds(fields, schemas, 'Cat')).toEqual([]);
+  });
+
+  it('walks an option whose own discriminator sits in an inline allOf part as a nested host', () => {
+    const schemas = {
+      Payment: {
+        oneOf: [ref('Card'), ref('Bank')],
+        discriminator: discriminator('kind', { card: 'Card', bank: 'Bank' }),
+      },
+      Common: { type: 'object', properties: { kind: { type: 'string' } } },
+      Card: {
+        allOf: [
+          ref('Common'),
+          {
+            oneOf: [ref('Visa'), ref('Amex')],
+            discriminator: discriminator('network', { visa: 'Visa', amex: 'Amex' }),
+          },
+        ],
+      },
+      Visa: {
+        type: 'object',
+        properties: { network: { type: 'string' }, cvv: { type: 'string' } },
+      },
+      Amex: {
+        type: 'object',
+        properties: { network: { type: 'string' }, cid: { type: 'string' } },
+      },
+      Bank: {
+        type: 'object',
+        properties: { kind: { type: 'string' }, iban: { type: 'string' } },
+      },
+    };
+    const fields = indexBodyFields(schemas, 'Payment');
+
+    expect(fields).toEqual([
+      { name: 'kind', deepLink: requestLink('path=kind') },
+      { name: 'network', deepLink: requestLink('path=&d=0/network') },
+      { name: 'cvv', deepLink: requestLink('path=&d=0&d=0/cvv') },
+      { name: 'cid', deepLink: requestLink('path=&d=0&d=1/cid') },
+      { name: 'iban', deepLink: requestLink('path=&d=1/iban') },
+    ]);
+    expect(unrenderedFieldIds(fields, schemas, 'Payment')).toEqual([]);
+  });
+
+  it('does not walk an option that inherits the discriminator through an intermediate parent as a nested host', () => {
+    const schemas = {
+      Pet: {
+        type: 'object',
+        properties: { petType: { type: 'string' } },
+        discriminator: discriminator('petType', { cat: 'Cat' }),
+      },
+      Feline: { allOf: [ref('Pet')] },
+      Cat: {
+        allOf: [
+          ref('Feline'),
+          {
+            oneOf: [ref('Lion'), ref('Lynx')],
+            discriminator: discriminator('breed', { lion: 'Lion', lynx: 'Lynx' }),
+          },
+        ],
+      },
+      Lion: { type: 'object', properties: { breed: { type: 'string' }, mane: { type: 'string' } } },
+      Lynx: {
+        type: 'object',
+        properties: { breed: { type: 'string' }, tufts: { type: 'string' } },
+      },
+    };
+    const deepLinks = indexBodyFields(schemas, 'Pet').map((field) => field.deepLink);
+
+    expect(deepLinks.filter((link) => link.includes('&d=0&d='))).toEqual([]);
   });
 });

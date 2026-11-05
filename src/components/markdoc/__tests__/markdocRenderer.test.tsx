@@ -6,7 +6,7 @@ import '@testing-library/jest-dom/vitest';
 
 import { createMarkdocAdapter } from '../markdocAdapter.js';
 import { markdocParser } from '../markdocParser.js';
-import markdoc from '@markdoc/markdoc';
+import markdoc from '@redocly/markdoc';
 import {
   extractMarkdownSections,
   resolveMarkdocHeadingIds,

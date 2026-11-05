@@ -25,6 +25,7 @@
           }),
 
         'bad-definition': () => init('/fixtures/broken.yaml'),
+        malformed: () => init('/fixtures/malformed.yaml'),
       };
 
       const name = new URLSearchParams(window.location.search).get('case') ?? 'events';

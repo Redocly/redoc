@@ -24,6 +24,7 @@ export type RouteIndex = {
   tagByPath: Map<string, TagWithItems>;
   itemToParentTag: Map<string, TagWithItems>;
   routeIndexByPath: Map<string, number>;
+  /** The overview: the first route, which every adapter emits with content. */
   rootPage: RouteItem | undefined;
   tags: RouteItem[];
 };
@@ -164,8 +165,8 @@ export function collectRoutesRecursively({
 
 function toRouteItem(item: ApiItem): RouteItem {
   const path = tryDecodeURIComponent(item.routeSlug ?? item.link ?? '').toLowerCase();
-  const badges = 'badges' in item ? (item.badges as BadgeData[] | undefined) : undefined;
-  const deprecated = 'deprecated' in item ? (item.deprecated as boolean | undefined) : undefined;
+  const badges = 'badges' in item ? item.badges : undefined;
+  const deprecated = 'deprecated' in item ? item.deprecated : undefined;
   return {
     path,
     previousPath:

@@ -2,23 +2,17 @@ import {
   memo,
   useMemo,
   useLayoutEffect,
-  type PropsWithChildren,
-  type ReactElement,
   type ComponentType,
   type FC,
 } from 'react';
 import { createStore, Provider, useStore, getDefaultStore } from 'jotai';
-import { LayoutVariant } from '@redocly/config';
 
 import type { ApiItem, ApiStore } from '../types/store.js';
 import type { ApiDocsOptions, RawApiDocsOptions } from '../types/options.js';
-import type { OpenAPIDefinition } from '../types/openapi.js';
 
-import { createStoreContext, toRecord } from '../adapters/helpers.js';
-import { populateOpenApiStore } from '../adapters/openapi/store.js';
 import { DEFAULT_MAX_DISPLAYED_ENUM_VALUES } from '../options/constants.js';
 import { normalizeOptions } from '../options/normalizeOptions.js';
-import { globalStoreAtom } from '../jotai/store.js';
+import { globalOptionsAtom, globalStoreAtom } from '../jotai/store.js';
 import { appStore, environmentAtom, layoutAtom } from '../jotai/app.js';
 import { buildServerEnvValues } from '../services/code-samples/server-env.js';
 
@@ -26,18 +20,10 @@ type WithStoreProviderProps = {
   items: ApiItem[];
   store: ApiStore;
   options: RawApiDocsOptions;
-  layout?: LayoutVariant;
+  layout?: ApiDocsOptions['layout'];
   basePath?: string;
   spec?: Record<string, unknown> | string;
   specUrl?: string;
-};
-
-export type StoreProviderProps = {
-  options?: RawApiDocsOptions;
-  /** Pre-built store (e.g. from server-side `buildItems`). Preferred path — no client-side indexing. */
-  apiStore?: ApiStore;
-  /** Raw OpenAPI definition to index client-side. Used by json-schema tag which constructs a synthetic definition. */
-  definition?: OpenAPIDefinition;
 };
 
 // Markdoc tags/nodes/components defaults are intentionally NOT merged here — that pulls in the
@@ -152,7 +138,18 @@ export function withStoreProvider<P extends WithStoreProviderProps>(
       seedServerEnvironments(newStore, propsStore);
       return newStore;
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [existingStore, items, propsStore, normalizedOptions, resolvedLayout]);
+    }, [existingStore, items, propsStore]);
+
+    useLayoutEffect(() => {
+      if (!store) {
+        return;
+      }
+      store.set(layoutAtom, resolvedLayout);
+      if (store.get(globalOptionsAtom) === normalizedOptions) {
+        return;
+      }
+      store.set(globalOptionsAtom, normalizedOptions);
+    }, [store, normalizedOptions, resolvedLayout]);
 
     if (existingStore || !store) {
       return <WrappedComponent {...props} />;
@@ -173,53 +170,3 @@ export function withStoreProvider<P extends WithStoreProviderProps>(
 function getDisplayName<T>(WrappedComponent: ComponentType<T>) {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 }
-
-function buildStoreFromDefinition(
-  definition: OpenAPIDefinition,
-  normalizedOptions: ApiDocsOptions,
-): ApiStore {
-  const storeCtx = createStoreContext(toRecord(definition));
-  populateOpenApiStore(definition, storeCtx, normalizedOptions);
-  return {
-    schemaStore: storeCtx.schemaStore,
-    exampleStore: storeCtx.exampleStore,
-    securitySchemeStore: storeCtx.securitySchemeStore,
-    mcp: storeCtx.document['x-mcp'] as ApiStore['mcp'],
-  };
-}
-
-export const StoreProvider = memo(function StoreProvider({
-  children,
-  definition,
-  apiStore: apiStoreProp,
-  options: rawOptions,
-}: PropsWithChildren<StoreProviderProps>): ReactElement {
-  const jotaiStore = useMemo(() => {
-    const normalizedOptions = buildGlobalStoreOptions(
-      { specType: 'openapi', ...rawOptions } as RawApiDocsOptions,
-      rawOptions?.basePath ?? '',
-    );
-
-    let apiStore: ApiStore;
-    if (apiStoreProp) {
-      apiStore = apiStoreProp;
-    } else if (definition) {
-      apiStore = buildStoreFromDefinition(definition, normalizedOptions);
-    } else {
-      throw new Error('StoreProvider requires either apiStore or definition');
-    }
-
-    const store = createStore();
-    store.set(globalStoreAtom, {
-      items: [],
-      store: apiStore,
-      options: normalizedOptions,
-    });
-    ensureAppStoreMounted(store);
-    store.set(layoutAtom, LayoutVariant.STACKED);
-    seedServerEnvironments(store, apiStore);
-    return store;
-  }, [apiStoreProp, definition, rawOptions]);
-
-  return <Provider store={jotaiStore}>{children}</Provider>;
-});

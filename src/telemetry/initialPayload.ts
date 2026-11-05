@@ -2,6 +2,7 @@ import type { EventPayload } from '@redocly/redoc-opentelemetry';
 import type { LayoutVariant } from '@redocly/config';
 
 import type { ApiItem, ApiStore } from '../types/store.js';
+import type { ApiDocsOptions } from '../types/options.js';
 import type { ItemVariant } from '../types/common.js';
 import type { RouteKind } from '../utils/routeKind.js';
 import type { TypeOfUsage } from './RedocTelemetry.js';
@@ -103,7 +104,6 @@ const CODE_SAMPLE_EXTENSIONS: ReadonlySet<string> = new Set(['x-codeSamples', 'x
 const SCAN_BUDGET = 50_000;
 
 type DocumentScan = {
-  specVersion?: string;
   extensionsCount: number;
   redocExtensions: RedocExtensions;
   hasCodeSamples: boolean;
@@ -174,7 +174,6 @@ export function scanDocument(document: Record<string, unknown>): DocumentScan {
     Object.values(operations).some((operation) => isRecord(operation) && 'reply' in operation);
 
   return {
-    specVersion: majorMinor(document.openapi ?? document.asyncapi ?? document.swagger),
     extensionsCount: extensionKeys.size,
     redocExtensions,
     hasCodeSamples,
@@ -248,8 +247,9 @@ export function isLocalhost(hostname: string): boolean {
   return hostname === '' || LOCAL_HOST_PATTERN.test(hostname);
 }
 
-/** Options injected by the loader or carrying API description content. */
+/** Options injected by the loader, carrying API description content, or a security value. */
 const SKIPPED_OPTION_KEYS: ReadonlySet<string> = new Set([
+  'nonce',
   'specType',
   'metadata',
   'markdownParser',
@@ -262,20 +262,62 @@ const SKIPPED_OPTION_KEYS: ReadonlySet<string> = new Set([
   'menu',
   'events',
   'schemaDefinitionsTagName',
-  'corsProxyUrl',
 ]);
 
 /** Options whose string values are enums worth reporting verbatim. */
-const STRING_OPTION_KEYS: ReadonlySet<string> = new Set(['layout', 'protocol']);
+const STRING_OPTION_KEYS: ReadonlySet<string> = new Set(['layout', 'protocol', 'sideNavStyle']);
+
+/** Redoc 2 options that Redoc 3 no longer reads; reported by value like current options. */
+const REDOC_2_OPTION_KEYS: ReadonlySet<string> = new Set([
+  'allowedMdComponents',
+  'disableSearch',
+  'downloadDefinitionUrl',
+  'downloadFileName',
+  'enumSkipQuotes',
+  'expandDefaultServerVariables',
+  'expandResponses',
+  'expandSingleSchemaField',
+  'generatedPayloadSamplesMaxDepth',
+  'hideDownloadButton',
+  'hideFab',
+  'hideHostname',
+  'hideRequestPayloadSample',
+  'hideSecuritySection',
+  'hideSingleRequestSampleTab',
+  'jsonSampleExpandLevel',
+  'labels',
+  'menuToggle',
+  'minCharacterLengthToInitSearch',
+  'nativeScrollbars',
+  'pathInMiddlePanel',
+  'payloadSampleIdx',
+  'requiredPropsFirst',
+  'schemaExpansionLevel',
+  'showObjectSchemaExamples',
+  'showSecuritySchemeType',
+  'showWebhookVerb',
+  'sideNavStyle',
+  'simpleOneOfTypeLabel',
+  'sortEnumValuesAlphabetically',
+  'sortOperationsAlphabetically',
+  'sortPropsAlphabetically',
+  'sortTagsAlphabetically',
+  'theme',
+  'unstable_ignoreMimeParameters',
+  'untrustedSpec',
+]);
 
 export function nonDefaultOptions(
   raw: Record<string, unknown> | undefined,
+  normalized: ApiDocsOptions,
 ): Record<string, TelemetryOptionValue> | undefined {
   if (!raw) return undefined;
   const result: Record<string, TelemetryOptionValue> = {};
   for (const [key, value] of Object.entries(raw)) {
     if (value === undefined || value === null || SKIPPED_OPTION_KEYS.has(key)) continue;
-    if (typeof value === 'boolean' || typeof value === 'number') {
+    if (!(key in normalized) && !REDOC_2_OPTION_KEYS.has(key)) {
+      result[key] = Array.isArray(value) ? 'array' : typeof value;
+    } else if (typeof value === 'boolean' || typeof value === 'number') {
       result[key] = value;
     } else if (typeof value === 'string') {
       if (value === 'true' || value === 'false') result[key] = value === 'true';
@@ -307,7 +349,7 @@ export function buildInitialPayload(input: InitialPayloadInput): InitialItem {
   const counts = countItems(items);
   const document = isRecord(definition) ? definition : undefined;
   const scan = document ? scanDocument(document) : undefined;
-  const specVersion = majorMinor(apiStore.convertedFrom) ?? scan?.specVersion;
+  const specVersion = majorMinor(apiStore.convertedFrom) ?? majorMinor(apiStore.specVersion);
   const variant = counts.byVariant;
 
   const shape: Shape = {

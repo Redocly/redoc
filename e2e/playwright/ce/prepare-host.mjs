@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
 /**
- * Stages `bundles/` and `specs/` into this directory, which the `bundles` project serves
- * statically. Must run after every source-preparation step, which deletes the enclosing tree.
+ * Copies `bundles/` and `playground/specs/` into this directory, which the `bundles` project
+ * serves statically. Run it after every build: `npm run e2e:build` does it as its last step.
  */
 import { cpSync, existsSync, readFileSync, rmSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
@@ -24,10 +24,7 @@ const rel = (p) => p.replace(`${REDOC_ROOT}/`, '');
 
 function replaceDir(from, to) {
   if (!existsSync(from)) {
-    throw new Error(
-      `Missing ${rel(from)}. Run \`npm run e2e:build\` first (and, in the monorepo, ` +
-        `the repository's source-preparation step).`,
-    );
+    throw new Error(`Missing ${rel(from)}. Run \`npm run e2e:build\` first.`);
   }
   rmSync(to, { recursive: true, force: true });
   cpSync(from, to, { recursive: true });

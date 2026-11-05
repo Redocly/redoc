@@ -1,14 +1,7 @@
 import type { OpenAPIPath } from '../../../types/openapi.js';
 
 import { resolveJsonPointer } from '../../helpers.js';
-
-/** Path Item Reference Objects may carry `summary` / `description` siblings from OpenAPI 3.1 on. */
-function openapiAllowsPathItemRefSiblings(openapi: string | undefined): boolean {
-  const [major, minor] = String(openapi ?? '')
-    .split('.')
-    .map((part) => Number.parseInt(part, 10));
-  return major === 3 && minor >= 1;
-}
+import { openapiAppliesRefSiblings } from '../../../utils/openapi-version.js';
 
 export function resolvePathItemRef(
   document: Record<string, unknown>,
@@ -23,10 +16,8 @@ export function resolvePathItemRef(
     return pathItem;
   }
 
-  const mergeSiblings = openapiAllowsPathItemRefSiblings(openapi);
-  return derefPathItem(document, pathItem as Record<string, unknown>, mergeSiblings, []) as
-    | OpenAPIPath
-    | undefined;
+  const mergeSiblings = openapiAppliesRefSiblings(openapi);
+  return derefPathItem(document, pathItem, mergeSiblings, []);
 }
 
 function derefPathItem(

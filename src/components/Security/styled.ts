@@ -2,7 +2,6 @@ import { styled } from 'styled-components';
 
 import { Panel } from '@redocly/theme/components/Panel/Panel';
 import { Button } from '@redocly/theme/components/Button/Button';
-import { Typography } from '@redocly/theme/components/Typography/Typography';
 
 export { DeprecatedBadge } from '../Schema/styled.js';
 
@@ -70,59 +69,6 @@ export const ScopeInline = styled.span`
   margin-left: var(--spacing-xxs);
   color: var(--text-color-secondary);
   line-height: var(--line-height-base);
-`;
-
-export const ModalBackground = styled.div`
-  background: var(--bg-color-modal-overlay, rgba(0, 0, 0, 0.4));
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  z-index: var(--z-index-popover, 200);
-  left: 0;
-  top: 0;
-  pointer-events: auto;
-`;
-
-export const ModalWrapper = styled.div`
-  background: var(--bg-color);
-  box-shadow: var(--bg-raised-shadow, 0 8px 32px rgba(0, 0, 0, 0.15));
-  border-radius: var(--border-radius-lg);
-  padding: var(--spacing-lg);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  position: absolute;
-  width: 720px;
-  max-width: 100%;
-  height: auto;
-  max-height: 600px;
-  overflow-y: scroll;
-  left: 50%;
-  top: 100px;
-  transform: translateX(-50%);
-
-  .tag-grey span {
-    font-size: var(--font-size-base);
-    line-height: var(--line-height-base);
-  }
-`;
-
-export const CloseButton = styled(Button)`
-  position: absolute;
-  right: var(--spacing-md);
-  top: var(--spacing-md);
-`;
-
-export const ModalTitle = styled(Typography)`
-  display: flex;
-  align-items: center;
-  font-size: var(--h4-font-size);
-  font-weight: var(--h4-font-weight);
-  margin-bottom: var(--spacing-lg);
-
-  svg {
-    margin-right: var(--spacing-xs);
-  }
 `;
 
 export const FlowWrapper = styled.div`

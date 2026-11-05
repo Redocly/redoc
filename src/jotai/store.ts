@@ -14,13 +14,22 @@ export type GlobalStoreAtom = {
 
 const EMPTY_STORE: ApiStore = { schemaStore: {}, exampleStore: {}, securitySchemeStore: {} };
 
-export const globalStoreAtom = atom<GlobalStoreAtom>({
+export const globalOptionsAtom = atom<ApiDocsOptions>({} as ApiDocsOptions);
+
+const contentAtom = atom<Omit<GlobalStoreAtom, 'options'>>({
   items: [],
   store: EMPTY_STORE,
-  options: {} as ApiDocsOptions,
 });
 
-export const globalItemsAtom = atom<ApiItem[]>((get) => get(globalStoreAtom).items);
+export const globalStoreAtom = atom(
+  (get): GlobalStoreAtom => ({ ...get(contentAtom), options: get(globalOptionsAtom) }),
+  (_get, set, { options, ...content }: GlobalStoreAtom) => {
+    set(globalOptionsAtom, options);
+    set(contentAtom, content);
+  },
+);
+
+export const globalItemsAtom = atom<ApiItem[]>((get) => get(contentAtom).items);
 
 /** Maps a component-schema name to the route slug of its schema-definition page (if it has one). */
 export const schemaDefinitionSlugMapAtom = atom<Record<string, string>>((get) => {
@@ -38,22 +47,23 @@ export const schemaDefinitionSlugMapAtom = atom<Record<string, string>>((get) =>
     }
   }
 
-  walk(get(globalStoreAtom).items);
+  walk(get(globalItemsAtom));
   return map;
 });
-export const globalOptionsAtom = atom<ApiDocsOptions>((get) => get(globalStoreAtom).options);
 export const specTypeAtom = atom<ApiSpecType>(
-  (get) => get(globalStoreAtom).store?.specType ?? get(globalStoreAtom).options.specType,
+  (get) => get(contentAtom).store?.specType ?? get(globalOptionsAtom).specType,
 );
-export const routingBasePathAtom = atom<string>((get) => get(globalStoreAtom).options.basePath);
+/** `undefined` for AsyncAPI and converted Swagger 2.0, so the sampler ignores `$ref` siblings. */
+export const samplerOpenapiVersionAtom = atom<string | undefined>((get) => {
+  const store = get(contentAtom).store;
+  return get(specTypeAtom) === 'openapi' && !store?.convertedFrom ? store?.specVersion : undefined;
+});
+export const routingBasePathAtom = atom<string>((get) => get(globalOptionsAtom).basePath);
 
-export const storeAtom = atom<ApiStore>((get) => get(globalStoreAtom).store ?? EMPTY_STORE);
+export const storeAtom = atom<ApiStore>((get) => get(contentAtom).store ?? EMPTY_STORE);
 
 export const definitionAtom = atom<Record<string, unknown> | string | undefined>(
-  (get) => get(globalStoreAtom).definition,
+  (get) => get(contentAtom).definition,
 );
 
-export const definitionUrlAtom = atom<string | undefined>(
-  (get) => get(globalStoreAtom).definitionUrl,
-);
-
+export const definitionUrlAtom = atom<string | undefined>((get) => get(contentAtom).definitionUrl);

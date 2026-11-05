@@ -2,6 +2,7 @@ import { afterEach, describe, it, expect, vi } from 'vitest';
 
 import { loadAndBundleDefinition } from '../loadAndBundleSpec.js';
 import { prepareApiDocs } from '../../RedocStandalone.js';
+import { collectReportedErrors } from '../../telemetry/reportError.js';
 
 const v2 = {
   asyncapi: '2.6.0',
@@ -15,6 +16,51 @@ const v2 = {
 };
 
 describe('loadAndBundleDefinition', () => {
+  it('renders a description the bundler throws on, unbundled, and reports the error', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const finish = collectReportedErrors();
+
+    const { items, store } = await prepareApiDocs({
+      spec: {
+        openapi: '3.1.0',
+        info: { title: 'Pets', version: '1.0.0' },
+        paths: {
+          '/pets': {
+            get: {
+              summary: 'List pets',
+              responses: {
+                '200': {
+                  description: 'OK',
+                  content: {
+                    'application/json': {
+                      schema: {
+                        oneOf: [{ $ref: '#/components/schemas/Cat' }],
+                        discriminator: null,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+        components: { schemas: { Cat: { type: 'object' } } },
+      },
+    });
+
+    expect(finish().map(({ id }) => id)).toEqual(['bundleDocument']);
+    expect(JSON.stringify(items)).toContain('List pets');
+    expect(store.buildErrors).toBeUndefined();
+    vi.restoreAllMocks();
+  });
+
+  it.each([
+    ['not an API description', { foo: 1 }, 'Unsupported specification'],
+    ['an unsupported OpenAPI version', { openapi: '4.0.0', paths: {} }, 'Unsupported OpenAPI'],
+  ])('still fails to load a document that is %s', async (_, spec, message) => {
+    await expect(loadAndBundleDefinition(spec)).rejects.toThrow(message);
+  });
+
   it('bundles an AsyncAPI 2.x spec object and leaves the input at 2.x', async () => {
     const spec = structuredClone(v2);
 

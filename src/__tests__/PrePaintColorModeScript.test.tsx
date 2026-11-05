@@ -15,34 +15,61 @@ function mockPrefersDark(matches: boolean): void {
   vi.stubGlobal('matchMedia', () => ({ matches }));
 }
 
+let root: HTMLElement;
+
 beforeEach(() => {
   document.documentElement.className = '';
+  document.documentElement.removeAttribute('data-bs-theme');
+  document.documentElement.removeAttribute('data-theme');
   window.localStorage.clear();
+  root = document.createElement('div');
+  root.className = 'redoc light';
+  document.body.appendChild(root);
 });
 
 afterEach(() => {
+  root.remove();
   vi.unstubAllGlobals();
 });
 
 describe('prePaintColorModeScript', () => {
-  it('applies the stored mode', () => {
+  it('applies the stored mode to the Redoc root, not to <html>', () => {
     window.localStorage.setItem('redoc.colorMode', 'dark');
     mockPrefersDark(false);
     runScript();
-    expect(document.documentElement.className).toBe('dark');
+    expect(root.className).toBe('redoc dark');
+    expect(document.documentElement.className).toBe('');
   });
 
   it('falls back to prefers-color-scheme when nothing valid is stored', () => {
     window.localStorage.setItem('redoc.colorMode', 'sepia');
     mockPrefersDark(true);
     runScript();
-    expect(document.documentElement.className).toBe('dark');
+    expect(root.className).toBe('redoc dark');
 
-    document.documentElement.className = '';
     window.localStorage.clear();
     mockPrefersDark(false);
     runScript();
-    expect(document.documentElement.className).toBe('light');
+    expect(root.className).toBe('redoc light');
+  });
+
+  it('follows a light or dark class the page sets on <html>', () => {
+    window.localStorage.setItem('redoc.colorMode', 'light');
+    document.documentElement.className = 'dark';
+    runScript();
+    expect(root.className).toBe('redoc dark');
+
+    window.localStorage.setItem('redoc.colorMode', 'dark');
+    document.documentElement.className = 'light';
+    runScript();
+    expect(root.className).toBe('redoc light');
+  });
+
+  it.each(['data-bs-theme', 'data-theme'])('follows the %s attribute on <html>', (name) => {
+    window.localStorage.setItem('redoc.colorMode', 'light');
+    document.documentElement.setAttribute(name, 'dark');
+    runScript();
+    expect(root.className).toBe('redoc dark');
   });
 
   it('never throws when storage is unavailable', () => {
@@ -84,11 +111,11 @@ describe('PrePaintColorModeScript', () => {
     host.innerHTML = serverHtml;
     document.body.appendChild(host);
 
-    const root = await act(async () => hydrateRoot(host, <PrePaintColorModeScript />));
+    const hydrated = await act(async () => hydrateRoot(host, <PrePaintColorModeScript />));
     expect(consoleError).not.toHaveBeenCalled();
     expect(host.innerHTML).toBe(serverHtml);
 
-    await act(async () => root.unmount());
+    await act(async () => hydrated.unmount());
     host.remove();
   });
 });

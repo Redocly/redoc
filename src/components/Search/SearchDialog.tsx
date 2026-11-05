@@ -7,7 +7,6 @@ import {
   useRef,
   useState,
 } from 'react';
-import { createPortal } from 'react-dom';
 import { useSetAtom } from 'jotai';
 import { styled } from 'styled-components';
 
@@ -27,6 +26,7 @@ import { Button } from '@redocly/theme/components/Button/Button';
 
 import { RESOURCES, uiResource, useTelemetry } from '../../telemetry/index.js';
 import { markNavigationCauseAtom } from '../../jotai/telemetry.js';
+import { BodyPortal } from '../common/BodyPortal.js';
 
 export type SearchDialogProps = {
   onClose: () => void;
@@ -238,7 +238,7 @@ export function SearchDialog({ onClose, search, isReady }: SearchDialogProps) {
   );
 
   // Render the search dialog on document.body to avoid being clipped by the sidebar's overflow
-  return createPortal(searchDialogContent, document.body);
+  return <BodyPortal>{searchDialogContent}</BodyPortal>;
 }
 
 const SearchOverlay = styled.div`

@@ -95,6 +95,10 @@ function domSnapshotWithoutClasses(element: HTMLElement): string {
   return clone.outerHTML;
 }
 
+function renderedFieldNames(container: HTMLElement): (string | null)[] {
+  return [...container.querySelectorAll('.schema-name')].map((name) => name.textContent);
+}
+
 describe('SwitcherRenderer discriminator state keys', () => {
   it('invokes onOneOfChange when discriminator tab changes and jsonPointer is set', () => {
     const onOneOfChange = vi.fn();
@@ -243,7 +247,7 @@ describe('SwitcherRenderer discriminator state keys', () => {
     expect(stateAfter2['countries/mode']).toBe(1);
   });
 
-  it('renders Enum (not Value) before discriminator when multiple mapping keys, no trailing Value', () => {
+  it('renders no enum row from the mapping keys, and no trailing Value', () => {
     const switcher = makeDiscriminator('type', {
       'three-columns': opt({
         properties: { col: { type: 'string' } },
@@ -264,13 +268,7 @@ describe('SwitcherRenderer discriminator state keys', () => {
 
     renderWithStore(<SwitcherRenderer property={property} level={0} fieldParentsName={[]} />);
 
-    const enumRow = screen.getByTestId('schema-enum-values');
-    expect(enumRow.textContent).toContain('Enum:');
-    expect(enumRow.textContent).toContain('three-columns');
-    expect(enumRow.textContent).toContain('two-columns');
-    expect(enumRow.textContent).toContain('one-column');
-    expect(enumRow.textContent).toContain('list');
-
+    expect(screen.queryByTestId('schema-enum-values')).toBeNull();
     expect(screen.queryByText(/^Value:$/)).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByText('list'));
@@ -321,8 +319,7 @@ describe('SwitcherRenderer discriminator state keys', () => {
 
     renderWithStore(<SwitcherRenderer property={property} level={0} fieldParentsName={[]} />);
 
-    const valueLabels = screen.getAllByText('Value:');
-    expect(valueLabels.length).toBe(2);
+    expect(screen.getAllByText('Value:')).toHaveLength(1);
   });
 
   it('prefers schema enum on discriminator property when present', () => {
@@ -506,6 +503,366 @@ describe('SwitcherRenderer state key shape', () => {
 
     const state = store.get(itemStoreAtom(TEST_ITEM_ID)).activeDiscriminator;
     expect(state['tripFilters[]/filterType']).toBe(1);
+  });
+});
+
+describe('SwitcherRenderer discriminator options that are discriminator hosts', () => {
+  const field = (type: string): PropertyType => ({ type });
+  const tabRows = () =>
+    screen.getAllByRole('tablist').map((list) =>
+      within(list)
+        .getAllByRole('tab')
+        .map((tab) => tab.textContent),
+    );
+  const unmatchedHost = () =>
+    makeDiscriminator('type', {
+      dog: {
+        switcher: makeDiscriminator('type', {
+          lab: { properties: { type: field('string'), retrieves: field('boolean') } },
+          poodle: { properties: { type: field('string'), curls: field('integer') } },
+        }),
+      },
+      cat: { properties: { type: field('string'), indoor: field('boolean') } },
+    });
+
+  it('renders the nested variant with a tab row per level', () => {
+    const style = makeDiscriminator('style', {
+      espresso: {
+        properties: { kind: field('string'), style: field('string'), shots: field('integer') },
+      },
+      latte: {
+        properties: { kind: field('string'), style: field('string'), milk: field('string') },
+      },
+    });
+    const switcher = makeDiscriminator('kind', {
+      brew: { switcher: style },
+      juice: { properties: { kind: field('string'), fruit: field('string') } },
+    });
+
+    const { store } = renderWithStore(
+      <SwitcherRenderer
+        property={makeSwitcherProperty(switcher)}
+        level={0}
+        fieldParentsName={[]}
+      />,
+    );
+
+    expect(screen.getByText('shots')).toBeTruthy();
+    fireEvent.click(screen.getByText('latte'));
+    expect(screen.getByText('milk')).toBeTruthy();
+    expect(store.get(itemStoreAtom(TEST_ITEM_ID)).activeDiscriminator['&d=0/style']).toBe(1);
+    fireEvent.click(screen.getByText('juice'));
+    expect(screen.getByText('fruit')).toBeTruthy();
+  });
+
+  it('shows one row when both levels use the same property, the inner option following the outer value', () => {
+    const inner = makeDiscriminator('type', {
+      lab: { properties: { type: field('string'), retrieves: field('boolean') } },
+      poodle: { properties: { type: field('string'), curls: field('integer') } },
+    });
+    const switcher = makeDiscriminator('type', {
+      lab: { switcher: inner },
+      poodle: { switcher: inner },
+      cat: { properties: { type: field('string'), indoor: field('boolean') } },
+    });
+
+    renderWithStore(
+      <SwitcherRenderer
+        property={makeSwitcherProperty(switcher)}
+        level={0}
+        fieldParentsName={[]}
+      />,
+    );
+
+    expect(screen.getAllByText('type')).toHaveLength(1);
+    expect(screen.getByText('retrieves')).toBeTruthy();
+    fireEvent.click(screen.getByText('poodle'));
+    expect(screen.getByText('curls')).toBeTruthy();
+    expect(screen.queryByText('retrieves')).toBeNull();
+  });
+
+  it('follows the inner default mapping when the outer value names no inner option', () => {
+    const inner: SwitcherType = {
+      ...makeDiscriminator('type', {
+        lab: { properties: { type: field('string'), retrieves: field('boolean') } },
+      }),
+    };
+    inner.options['Default mapping'] = opt({
+      isDefaultMapping: true,
+      properties: { type: field('string'), mixed: field('boolean') },
+    });
+    const switcher = makeDiscriminator('type', {
+      dog: { switcher: inner },
+      cat: { properties: { type: field('string'), indoor: field('boolean') } },
+    });
+
+    renderWithStore(
+      <SwitcherRenderer
+        property={makeSwitcherProperty(switcher)}
+        level={0}
+        fieldParentsName={[]}
+      />,
+    );
+
+    expect(screen.getAllByText('type')).toHaveLength(1);
+    expect(screen.getByText('mixed')).toBeTruthy();
+  });
+
+  it('shows one row for three levels on the same property', () => {
+    const canine = makeDiscriminator('type', {
+      dog: { properties: { type: field('string'), barks: field('boolean') } },
+    });
+    const mammal = makeDiscriminator('type', {
+      dog: { switcher: canine },
+      whale: { properties: { type: field('string'), fins: field('integer') } },
+    });
+    const switcher = makeDiscriminator('type', {
+      dog: { switcher: mammal },
+      bird: { properties: { type: field('string'), wings: field('integer') } },
+    });
+
+    renderWithStore(
+      <SwitcherRenderer
+        property={makeSwitcherProperty(switcher)}
+        level={0}
+        fieldParentsName={[]}
+      />,
+    );
+
+    expect(screen.getAllByText('type')).toHaveLength(1);
+    expect(screen.getByText('barks')).toBeTruthy();
+  });
+
+  it('keeps the inner tab row with all its options when the outer value names no inner option and there is no default mapping', () => {
+    const { container } = renderWithStore(
+      <SwitcherRenderer
+        property={makeSwitcherProperty(unmatchedHost())}
+        level={0}
+        fieldParentsName={[]}
+      />,
+    );
+
+    expect(tabRows()).toEqual([
+      ['dog', 'cat'],
+      ['lab', 'poodle'],
+    ]);
+    fireEvent.click(screen.getByText('poodle'));
+    expect(renderedFieldNames(container)).toEqual(['type', 'type', 'curls']);
+  });
+
+  it('gives the second tab row of the same property its own key', () => {
+    const consoleError = vi.spyOn(console, 'error');
+
+    renderWithStore(
+      <SwitcherRenderer
+        property={makeSwitcherProperty(unmatchedHost())}
+        level={0}
+        fieldParentsName={[]}
+      />,
+    );
+
+    expect(consoleError).not.toHaveBeenCalled();
+    consoleError.mockRestore();
+  });
+
+  it('keeps the inner tab row and its free selection when the outer value is the default mapping', () => {
+    const inner = makeDiscriminator('type', {
+      lab: { properties: { type: field('string'), retrieves: field('boolean') } },
+    });
+    inner.options['Default mapping'] = opt({
+      isDefaultMapping: true,
+      properties: { type: field('string'), mixed: field('boolean') },
+    });
+    const switcher = makeDiscriminator('type', {
+      cat: { properties: { type: field('string'), indoor: field('boolean') } },
+    });
+    switcher.options['Default mapping'] = opt({ isDefaultMapping: true, switcher: inner });
+
+    const { container } = renderWithStore(
+      <SwitcherRenderer
+        property={makeSwitcherProperty(switcher)}
+        level={0}
+        fieldParentsName={[]}
+      />,
+    );
+    fireEvent.click(within(screen.getByRole('tablist')).getAllByRole('tab')[1]);
+
+    expect(tabRows()).toEqual([
+      ['cat', 'Default mapping'],
+      ['lab', 'Default mapping'],
+    ]);
+    expect(renderedFieldNames(container)).toEqual(['type', 'type', 'retrieves']);
+  });
+
+  it('follows the nearest outer row on the same property when two outer rows use it', () => {
+    const breed = makeDiscriminator('type', {
+      dog: { properties: { type: field('string'), barks: field('boolean') } },
+      lab: { properties: { type: field('string'), retrieves: field('boolean') } },
+    });
+    const canine = makeDiscriminator('type', {
+      lab: { switcher: breed },
+      poodle: { properties: { type: field('string'), curls: field('integer') } },
+    });
+    const switcher = makeDiscriminator('type', {
+      dog: { switcher: canine },
+      cat: { properties: { type: field('string'), indoor: field('boolean') } },
+    });
+
+    const { container } = renderWithStore(
+      <SwitcherRenderer
+        property={makeSwitcherProperty(switcher)}
+        level={0}
+        fieldParentsName={[]}
+      />,
+    );
+
+    expect(tabRows()).toEqual([
+      ['dog', 'cat'],
+      ['lab', 'poodle'],
+    ]);
+    expect(renderedFieldNames(container)).toEqual(['type', 'type', 'retrieves']);
+  });
+
+  it('lists the outer row, then the inner row, ahead of the fields of the inner option', () => {
+    const style = makeDiscriminator('style', {
+      espresso: {
+        properties: { shots: field('integer'), style: field('string'), kind: field('string') },
+      },
+      latte: {
+        properties: { milk: field('string'), style: field('string'), kind: field('string') },
+      },
+    });
+    const switcher = makeDiscriminator('kind', {
+      brew: { switcher: style },
+      juice: { properties: { kind: field('string'), fruit: field('string') } },
+    });
+
+    const { container } = renderWithStore(
+      <SwitcherRenderer
+        property={makeSwitcherProperty(switcher)}
+        level={0}
+        fieldParentsName={[]}
+      />,
+    );
+
+    expect(renderedFieldNames(container)).toEqual(['kind', 'style', 'shots']);
+  });
+
+  it('renders an outer tab row that no level declares as a string field', () => {
+    const style = makeDiscriminator('style', {
+      espresso: { properties: { style: field('string'), shots: field('integer') } },
+      latte: { properties: { style: field('string'), milk: field('string') } },
+    });
+    const switcher = makeDiscriminator('kind', {
+      brew: { switcher: style },
+      juice: { properties: { kind: field('string'), fruit: field('string') } },
+    });
+
+    const { container } = renderWithStore(
+      <SwitcherRenderer
+        property={makeSwitcherProperty(switcher)}
+        level={0}
+        fieldParentsName={[]}
+      />,
+    );
+
+    expect(
+      [...container.querySelectorAll('.schema-name')].map((name) => [
+        name.textContent,
+        name.parentElement?.nextElementSibling?.textContent,
+      ]),
+    ).toEqual([
+      ['kind', 'string'],
+      ['style', 'string'],
+      ['shots', 'integer'],
+    ]);
+  });
+
+  it('lists enum values only from the property enum, not from the mapping keys', () => {
+    const switcher = makeDiscriminator('type', {
+      lab: { properties: { type: { type: 'string', const: 'lab' } } },
+      cat: { properties: { type: { type: 'string', const: 'cat' } } },
+    });
+
+    renderWithStore(
+      <SwitcherRenderer
+        property={makeSwitcherProperty(switcher)}
+        level={0}
+        fieldParentsName={[]}
+      />,
+    );
+
+    expect(screen.queryByText('Enum:')).toBeNull();
+    expect(screen.getByText('Value:')).toBeTruthy();
+  });
+
+  it('adds the tab row of a property no option lists, so every option stays reachable', () => {
+    const switcher = makeDiscriminator('petType', {
+      cat: { properties: { meow: field('boolean') } },
+      dog: { properties: { bark: field('boolean') } },
+    });
+
+    renderWithStore(
+      <SwitcherRenderer
+        property={makeSwitcherProperty(switcher)}
+        level={0}
+        fieldParentsName={[]}
+      />,
+    );
+    fireEvent.click(screen.getByText('dog'));
+
+    expect(screen.getByText('petType')).toBeTruthy();
+    expect(screen.getByText('bark')).toBeTruthy();
+  });
+
+  it('keeps the same tab row on a plain option and on a sibling that is a discriminator host', () => {
+    const switcher = makeDiscriminator('kind', {
+      car: { properties: { wheels: field('integer') } },
+      boat: {
+        switcher: makeDiscriminator('propulsion', {
+          sail: { properties: { masts: field('integer') } },
+          motor: { properties: { hp: field('integer') } },
+        }),
+      },
+    });
+    const rowNames = () =>
+      screen.getAllByText(/^(kind|propulsion|wheels|masts)$/).map((node) => node.textContent);
+
+    renderWithStore(
+      <SwitcherRenderer
+        property={makeSwitcherProperty(switcher)}
+        level={0}
+        fieldParentsName={[]}
+      />,
+    );
+    expect(rowNames()).toEqual(['kind', 'wheels']);
+
+    fireEvent.click(screen.getByText('boat'));
+    expect(rowNames()).toEqual(['kind', 'propulsion', 'masts']);
+
+    fireEvent.click(screen.getByText('car'));
+    expect(rowNames()).toEqual(['kind', 'wheels']);
+  });
+
+  it('keeps the tab row mounted when the property moves to another position', () => {
+    const switcher = makeDiscriminator('kind', {
+      car: { properties: { kind: field('string'), wheels: field('integer') } },
+      bike: {
+        properties: { gears: field('integer'), color: field('string'), kind: field('string') },
+      },
+    });
+
+    renderWithStore(
+      <SwitcherRenderer
+        property={makeSwitcherProperty(switcher)}
+        level={0}
+        fieldParentsName={[]}
+      />,
+    );
+    const bikeTab = screen.getByText('bike');
+    fireEvent.click(bikeTab);
+
+    expect(screen.getByText('bike')).toBe(bikeTab);
   });
 });
 
@@ -739,6 +1096,10 @@ describe('deep-link reload restoration', () => {
     return { ...result, store };
   }
 
+  function fieldIds(container: HTMLElement): string[] {
+    return [...container.querySelectorAll(`[id^="${TEST_ITEM_ID}/"]`)].map((el) => el.id);
+  }
+
   it('restores a nested oneOf tab from the hash on reload', () => {
     const innerOneOf: SwitcherType = {
       type: 'oneOf',
@@ -855,6 +1216,192 @@ describe('deep-link reload restoration', () => {
 
     expect(screen.getByText('bField')).toBeInTheDocument();
     expect(container.querySelector('[id*="&d=1"]')).toBeTruthy();
+  });
+
+  it('keeps the outer level first and its paths and definitions in a nested host option', () => {
+    const style = makeDiscriminator('style', {
+      espresso: {
+        properties: {
+          kind: { type: 'string' },
+          style: { type: 'string' },
+          shots: { type: 'integer' },
+        },
+      },
+      latte: {
+        properties: {
+          kind: { type: 'string' },
+          style: { type: 'string' },
+          milk: { type: 'string' },
+        },
+      },
+    });
+    const switcher = makeDiscriminator('kind', {
+      brew: { properties: { temperature: { type: 'string' } }, switcher: style },
+      juice: { properties: { kind: { type: 'string' }, fruit: { type: 'string' } } },
+    });
+    const { container } = renderAtHash(
+      <SwitcherRenderer
+        property={makeSwitcherProperty(switcher, {
+          kind: { type: 'string', description: 'Drink kind' },
+        })}
+        level={0}
+        fieldParentsName={[]}
+      />,
+    );
+
+    expect(screen.getByText('Drink kind')).toBeInTheDocument();
+    expect(
+      screen.getByText('kind').compareDocumentPosition(screen.getByText('temperature')) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    expect(container.querySelector('[id$="path=&d=0/temperature"]')).toBeTruthy();
+  });
+
+  it('keeps the outer level path on the outer tab row in a nested host option', () => {
+    const style = makeDiscriminator('style', {
+      espresso: {
+        properties: {
+          kind: { type: 'string' },
+          style: { type: 'string' },
+          shots: { type: 'integer' },
+        },
+      },
+      latte: {
+        properties: {
+          kind: { type: 'string' },
+          style: { type: 'string' },
+          milk: { type: 'string' },
+        },
+      },
+    });
+    const switcher = makeDiscriminator('kind', {
+      brew: { switcher: style },
+      juice: { properties: { kind: { type: 'string' }, fruit: { type: 'string' } } },
+    });
+    const { container } = renderAtHash(
+      <SwitcherRenderer
+        property={makeSwitcherProperty(switcher)}
+        level={0}
+        fieldParentsName={[]}
+      />,
+    );
+
+    expect(fieldIds(container)).toEqual([
+      'test-item/t=request&path=kind',
+      'test-item/t=request&path=&d=0/style',
+      'test-item/t=request&path=&d=0&d=0/shots',
+    ]);
+  });
+
+  it('gives a field the inner option redeclares the inner level path', () => {
+    const style = makeDiscriminator('style', {
+      espresso: {
+        properties: {
+          kind: { type: 'string' },
+          style: { type: 'string' },
+          temperature: { type: 'string' },
+          shots: { type: 'integer' },
+        },
+      },
+      latte: {
+        properties: {
+          kind: { type: 'string' },
+          style: { type: 'string' },
+          milk: { type: 'string' },
+        },
+      },
+    });
+    const switcher = makeDiscriminator('kind', {
+      brew: { properties: { temperature: { type: 'string' } }, switcher: style },
+      juice: { properties: { kind: { type: 'string' }, fruit: { type: 'string' } } },
+    });
+    const { container } = renderAtHash(
+      <SwitcherRenderer
+        property={makeSwitcherProperty(switcher)}
+        level={0}
+        fieldParentsName={[]}
+      />,
+    );
+
+    expect(fieldIds(container)).toEqual([
+      'test-item/t=request&path=kind',
+      'test-item/t=request&path=&d=0/style',
+      'test-item/t=request&path=&d=0&d=0/temperature',
+      'test-item/t=request&path=&d=0&d=0/shots',
+    ]);
+  });
+
+  it('takes the definition and path of a field from the outermost level that declares it, across three levels', () => {
+    const roast = makeDiscriminator('roast', {
+      light: { properties: { roast: { type: 'string' }, notes: { type: 'string' } } },
+      dark: { properties: { roast: { type: 'string' }, bitterness: { type: 'integer' } } },
+    });
+    const style = makeDiscriminator('style', {
+      espresso: {
+        properties: {
+          kind: { type: 'string', description: 'Espresso kind' },
+          style: { type: 'string' },
+          temperature: { type: 'string' },
+        },
+        switcher: roast,
+      },
+      latte: {
+        properties: {
+          kind: { type: 'string' },
+          style: { type: 'string' },
+          milk: { type: 'string' },
+        },
+      },
+    });
+    const switcher = makeDiscriminator('kind', {
+      brew: { properties: { temperature: { type: 'string' } }, switcher: style },
+      juice: { properties: { kind: { type: 'string' }, fruit: { type: 'string' } } },
+    });
+    const { container } = renderAtHash(
+      <SwitcherRenderer
+        property={makeSwitcherProperty(switcher, {
+          kind: { type: 'string', description: 'Drink kind' },
+        })}
+        level={0}
+        fieldParentsName={[]}
+      />,
+    );
+
+    expect(fieldIds(container)).toEqual([
+      'test-item/t=request&path=kind',
+      'test-item/t=request&path=&d=0/style',
+      'test-item/t=request&path=&d=0&d=0/roast',
+      'test-item/t=request&path=&d=0/temperature',
+      'test-item/t=request&path=&d=0&d=0&d=0/notes',
+    ]);
+    expect(screen.getByText('Drink kind')).toBeInTheDocument();
+    expect(screen.queryByText('Espresso kind')).not.toBeInTheDocument();
+  });
+
+  it('keeps the inner option implied by the outer value when the hash marks another one', () => {
+    const inner = makeDiscriminator('type', {
+      lab: { properties: { type: { type: 'string' }, retrieves: { type: 'boolean' } } },
+      poodle: { properties: { type: { type: 'string' }, curls: { type: 'integer' } } },
+    });
+    const switcher = makeDiscriminator('type', {
+      lab: { switcher: inner },
+      poodle: { switcher: inner },
+      cat: { properties: { type: { type: 'string' }, indoor: { type: 'boolean' } } },
+    });
+    const { container, store } = renderAtHash(
+      <SwitcherRenderer
+        property={makeSwitcherProperty(switcher)}
+        level={0}
+        fieldParentsName={[]}
+      />,
+      '#test-item/t=request&path=&d=0&d=1/curls',
+    );
+
+    expect(store.get(itemStoreAtom(REQUEST_STORE_ID)).activeDiscriminator).toEqual({
+      type: 0,
+      '&d=0/type': 1,
+    });
+    expect(renderedFieldNames(container)).toEqual(['type', 'retrieves']);
   });
 
   it('does not render a phantom "." parent prefix for a root variant marker', () => {
@@ -1020,7 +1567,7 @@ describe('SwitcherRenderer description and variant behavior', () => {
     expect(screen.queryByText('huntingSkill')).not.toBeInTheDocument();
   });
 
-  it('renders the host required property for every discriminator variant', () => {
+  it('renders the host required property for every discriminator variant, in the host order', () => {
     const discriminator = makeDiscriminator('method', {
       card: {
         properties: {
@@ -1043,7 +1590,7 @@ describe('SwitcherRenderer description and variant behavior', () => {
     renderWithStore(<SwitcherRenderer property={property} level={0} fieldParentsName={[]} />);
 
     const renderedNames = screen.getAllByText(/^(method|amount|last4|iban)$/);
-    expect(renderedNames.map((node) => node.textContent)).toEqual(['amount', 'method', 'last4']);
+    expect(renderedNames.map((node) => node.textContent)).toEqual(['method', 'amount', 'last4']);
     expect(screen.getByText('required')).toBeInTheDocument();
   });
 
@@ -1066,6 +1613,33 @@ describe('SwitcherRenderer description and variant behavior', () => {
 
     renderWithStore(<SwitcherRenderer property={property} level={0} fieldParentsName={[]} />);
     expect(screen.getByText('(ScalarTitle)')).toBeInTheDocument();
+  });
+
+  it('keeps the host order on every tab when only some options redeclare every host property', () => {
+    const discriminator = makeDiscriminator('method', {
+      card: {
+        properties: { method: { type: 'string', const: 'card' }, last4: { type: 'string' } },
+      },
+      bank: {
+        properties: {
+          amount: { type: 'number' },
+          method: { type: 'string', const: 'bank' },
+          iban: { type: 'string' },
+        },
+      },
+    });
+    const property = makeSwitcherProperty(discriminator, {
+      method: { type: 'string' },
+      amount: { type: 'number' },
+    });
+    const renderedNames = () =>
+      screen.getAllByText(/^(method|amount|last4|iban)$/).map((node) => node.textContent);
+
+    renderWithStore(<SwitcherRenderer property={property} level={0} fieldParentsName={[]} />);
+    expect(renderedNames()).toEqual(['method', 'amount', 'last4']);
+
+    fireEvent.click(screen.getByText('bank'));
+    expect(renderedNames()).toEqual(['method', 'amount', 'iban']);
   });
 
   it('preserves the variant property order when the variant already exposes the discriminator field', () => {

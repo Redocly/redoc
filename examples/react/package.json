@@ -10,7 +10,7 @@
   "dependencies": {
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
-    "redoc": "^3.0.0-rc.1",
+    "redoc": "^3.0.0",
     "styled-components": "^6.5.3"
   },
   "devDependencies": {

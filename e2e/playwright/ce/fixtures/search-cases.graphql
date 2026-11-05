@@ -1,5 +1,5 @@
 """
-Search Cases GraphQL. Every description here is a query in SEARCH-CASES.md.
+Search Cases GraphQL. Every description here is a distinct search query.
 """
 schema {
   query: Query

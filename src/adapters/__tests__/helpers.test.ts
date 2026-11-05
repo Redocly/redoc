@@ -3,6 +3,7 @@ import { describe, it, expect } from 'vitest';
 import {
   registerExample,
   resolveContent,
+  resolveJsonPointer,
   resolveRef,
   stableStringify,
   pickRenderableDescription,
@@ -99,7 +100,6 @@ describe('stableStringify', () => {
     expect(stableStringify(data)).toBe('{"a":true,"z":[{"a":1,"b":2},null,"str"]}');
   });
 });
-
 
 describe('resolveRef ignoreNamedSchemas', () => {
   const spec: Record<string, unknown> = {
@@ -255,5 +255,43 @@ describe('registerExample fallback ids', () => {
     expect(id).toBe('example_2');
     expect(store[id]?.value).toBe('runtime');
     expect(store.example_0.value).toBe('built');
+  });
+
+  it('keeps the first entry registered under an explicit id', () => {
+    const store = {};
+    expect(registerExample(store, { id: 'components/examples/A', value: 'first' })).toBe(
+      'components/examples/A',
+    );
+    registerExample(store, { id: 'components/examples/A', value: 'second' });
+    expect(store).toEqual({
+      'components/examples/A': { id: 'components/examples/A', value: 'first' },
+    });
+  });
+});
+
+describe('resolveJsonPointer', () => {
+  const spec: Record<string, unknown> = {
+    paths: { '/pets': { get: { operationId: 'listPets' } } },
+    'a~b': { found: true },
+    info: { title: 'Pets' },
+  };
+
+  it('unescapes ~1 to a slash', () => {
+    expect(resolveJsonPointer(spec, '#/paths/~1pets')).toEqual({
+      get: { operationId: 'listPets' },
+    });
+  });
+
+  it('unescapes ~0 to a tilde', () => {
+    expect(resolveJsonPointer(spec, '#/a~0b')).toEqual({ found: true });
+  });
+
+  it('returns undefined for a non-local ref', () => {
+    expect(resolveJsonPointer(spec, 'http://x#/a')).toBeUndefined();
+  });
+
+  it('returns undefined for a primitive leaf or a missing path', () => {
+    expect(resolveJsonPointer(spec, '#/info/title')).toBeUndefined();
+    expect(resolveJsonPointer(spec, '#/paths/~1missing/get')).toBeUndefined();
   });
 });

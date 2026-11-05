@@ -5,6 +5,7 @@ import type { ReactElement, ReactNode } from 'react';
 
 import { SECTION_ATTR } from '../../constants/openapi.js';
 import { useManualScrollAnchor } from '../../hooks/useManualScrollAnchor.js';
+import { ErrorBoundary } from '../ErrorBoundary.js';
 
 type LazySectionProps = {
   /** `data-section-id` placed on the placeholder (used for URL → element lookup
@@ -74,7 +75,11 @@ function LazySectionComponent({
   }, [mounted, sectionId]);
 
   if (mounted) {
-    return <SectionContainer ref={containerRef}>{children}</SectionContainer>;
+    return (
+      <SectionContainer ref={containerRef}>
+        <ErrorBoundary scope="section">{children}</ErrorBoundary>
+      </SectionContainer>
+    );
   } else {
     return <Placeholder ref={placeholderRef} {...{ [SECTION_ATTR]: sectionId }} />;
   }

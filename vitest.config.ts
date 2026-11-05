@@ -8,8 +8,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // Theme is aliased to source, same as the build. Resolution order: explicit
-// REDOC_THEME_PATH override → own node_modules (standalone repo) → hoisted
-// installs walking up (running inside the Redocly monorepo).
+// REDOC_THEME_PATH override → own node_modules → hoisted installs in a parent
+// directory.
 const THEME_CANDIDATES = [
   process.env.REDOC_THEME_PATH && resolve(__dirname, process.env.REDOC_THEME_PATH),
   resolve(__dirname, 'node_modules/@redocly/theme/src'),
@@ -59,7 +59,6 @@ export default defineConfig({
     alias: {
       path: 'path-browserify',
       '@redocly/theme': THEME_PATH,
-      '@portal': resolve(THEME_PATH, 'mocks'),
       'flexsearch-global?raw': `${resolve(FLEXSEARCH_DIST, 'flexsearch.bundle.min.js')}?raw`,
     },
     dedupe: ['react', 'react-dom', 'styled-components'],

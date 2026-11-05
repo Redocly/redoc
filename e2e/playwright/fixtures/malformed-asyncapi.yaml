@@ -1,0 +1,35 @@
+asyncapi: 3.0.0
+info:
+  title: Malformed AsyncAPI
+  version: 1.0.0
+servers:
+  prod:
+    host: 42
+    protocol: amqp
+channels:
+  user:
+    address: users
+    x-badges: { name: Beta }
+    bindings:
+      amqp:
+    messages:
+      signedUp:
+        title: {}
+        payload:
+          allOf:
+            - type: object
+              required: [id]
+              properties:
+                id:
+                  type: integer
+            - type: object
+              properties:
+operations:
+  onSignUp:
+    action: receive
+    title: On sign up
+    x-badges: { name: Beta }
+    channel:
+      $ref: '#/channels/user'
+    messages:
+      - $ref: '#/channels/user/messages/signedUp'

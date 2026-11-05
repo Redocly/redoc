@@ -21,7 +21,6 @@ function renderSection(sectionId: string, basePath: string): HTMLElement {
       basePath,
       markdownParser: () => undefined,
     }),
-    replayDefinition: null,
   });
   const node: OverviewSectionWrapperNode = {
     nodeType: nodeTypes.OVERVIEW_SECTION_WRAPPER,

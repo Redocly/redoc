@@ -337,7 +337,7 @@ describe('extractAsyncApiSlice — server refs', () => {
 });
 
 describe('extractAsyncApiSlice — document scope', () => {
-  it('clones the whole document and strips platform and circular-ref markers', () => {
+  it('clones the whole document and strips internal markers', () => {
     const source = deepFreeze({
       asyncapi: '3.0.0',
       info: { title: 'Doc', version: '1.0.0' },

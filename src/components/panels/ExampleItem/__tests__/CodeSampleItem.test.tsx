@@ -11,7 +11,7 @@ const mocks = vi.hoisted(() => ({
   useResolvedExamplesMock: vi.fn(),
   setLanguageMock: vi.fn(),
   languageStateValue: {
-    activeLanguage: 'payload' as string,
+    activeLanguage: 'payload',
     languages: [{ key: 'payload', lang: 'json', title: 'Payload' }] as Array<{
       key: string;
       lang: string;
@@ -119,7 +119,6 @@ vi.mock('../../../../jotai/store.js', () => ({
   specTypeAtom: { id: 'specTypeAtom' },
 }));
 
-
 vi.mock('../../../../hooks/useTranslate.js', () => ({
   useSpecTranslate: () => (_key: string, fallback?: string) => fallback ?? '',
 }));
@@ -135,7 +134,6 @@ vi.mock('../../../ItemContent/hooks.js', () => ({
   useResolvedExamples: (...args: unknown[]) => mocks.useResolvedExamplesMock(...args),
 }));
 
-
 vi.mock('../../styled.js', () => ({
   CodeBlockPanel: ({ children, footer }: { children: ReactNode; footer?: ReactNode }) => (
     <div>
@@ -143,8 +141,8 @@ vi.mock('../../styled.js', () => ({
       <div data-testid="code-block-panel-footer">{footer}</div>
     </div>
   ),
-  StyledCodeBlock: ({ lang }: { lang?: string }) => (
-    <div data-testid="styled-code-block" data-lang={lang} />
+  StyledCodeBlock: ({ lang, source }: { lang?: string; source?: string }) => (
+    <div data-testid="styled-code-block" data-lang={lang} data-source={source} />
   ),
 }));
 
@@ -344,7 +342,6 @@ describe('CodeSampleItem variant picker vs spec-provided examples', () => {
     expect(queryByTestId('variant-picker')).toBeTruthy();
   });
 });
-
 
 describe('CodeSampleItem payload example description', () => {
   beforeEach(() => {

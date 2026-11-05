@@ -46,7 +46,6 @@ test.describe('AsyncAPI AMQP rendering', () => {
       await expect(page.locator('text=/^Pub$/').first()).toBeVisible();
     });
 
-
     test('receive operation renders a Cons action tag', async ({ page }) => {
       await page.goto(`${QUEUE_PATH}/operations/consumeOrderPlacedForFulfillment`);
       await apiDocs.waitForPageLoad();

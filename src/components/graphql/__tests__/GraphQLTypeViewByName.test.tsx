@@ -2,10 +2,10 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { cleanup, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/vitest';
 import { MemoryRouter } from 'react-router';
+import { createStore, Provider as JotaiProvider } from 'jotai';
 
-import type { RawApiDocsOptions } from '../../../types/options.js';
-
-import { StoreProvider } from '../../../hoc/withStoreProvider.js';
+import { globalStoreAtom } from '../../../jotai/store.js';
+import { normalizeOptions } from '../../../options/normalizeOptions.js';
 import { MarkdownAdapterProvider } from '../../../contexts/markdownAdapter.js';
 import { createMarkdocAdapter } from '../../markdoc/markdocAdapter.js';
 import { buildGraphqlStoreFromSdl } from '../../../adapters/graphql/buildStoreFromSdl.js';
@@ -29,17 +29,29 @@ const SDL = `
   }
 `;
 
+function createGlobalStore() {
+  const store = createStore();
+  store.set(globalStoreAtom, {
+    items: [],
+    store: buildGraphqlStoreFromSdl(SDL),
+    options: normalizeOptions({
+      specType: 'graphql',
+      downloadUrls: [],
+      metadata: {},
+      basePath: '',
+    }),
+  });
+  return store;
+}
+
 function renderTypeView(typeName: string) {
   return render(
     <MemoryRouter>
-      <StoreProvider
-        apiStore={buildGraphqlStoreFromSdl(SDL)}
-        options={{ specType: 'graphql' } as RawApiDocsOptions}
-      >
+      <JotaiProvider store={createGlobalStore()}>
         <MarkdownAdapterProvider value={createMarkdocAdapter()}>
           <GraphQLTypeViewByName typeName={typeName} fieldExpandLevel={0} />
         </MarkdownAdapterProvider>
-      </StoreProvider>
+      </JotaiProvider>
     </MemoryRouter>,
   );
 }
@@ -48,7 +60,7 @@ afterEach(() => {
   cleanup();
 });
 
-describe('GraphQLTypeViewByName preview wiring', () => {
+describe('GraphQLTypeViewByName', () => {
   it('resolves the type from the store document and renders its fields', () => {
     renderTypeView('User');
 

@@ -21,6 +21,8 @@ type SchemaWalkFrame = {
   discriminatorPropertyName?: string;
   discriminatorLinkPath?: string[];
   discriminatorValues?: string[];
+  outerDiscriminators?: { propertyName: string; linkPath: string[] }[];
+  inheritsDiscriminator?: boolean;
 };
 
 type SchemaWalkFn = (next: SchemaNode, nextFrame: SchemaWalkFrame) => void;
@@ -70,7 +72,7 @@ export class SchemaWalker {
     const entry = this.#schemaStore?.[schemaId];
     if (!entry || entry.kind !== schemaKind.JSON_SCHEMA) return;
     if (hasRbacScope(entry)) return;
-    this.extractSchemaNodeFields(entry.data as SchemaNode, args, scope);
+    this.extractSchemaNodeFields(entry.data, args, scope);
   }
 
   /** Walks a schema that is not in the store (MCP input/output schemas, prompt arguments). */
@@ -139,6 +141,17 @@ export class SchemaWalker {
     return 'any';
   }
 
+  #inheritsDiscriminator(allOf: SchemaNode[], seen = new Set<string>()): boolean {
+    return allOf.some((part) => {
+      if (!part.$ref) return !!part.allOf && this.#inheritsDiscriminator(part.allOf, seen);
+      if (seen.has(part.$ref)) return false;
+      seen.add(part.$ref);
+      const parent = this.#resolveRef(part.$ref);
+      if ((parent?.discriminator ?? parent?.['x-discriminator'])?.propertyName) return true;
+      return !!parent?.allOf && this.#inheritsDiscriminator(parent.allOf, seen);
+    });
+  }
+
   #resolveRef(ref: string): SchemaNode | undefined {
     if (!ref.startsWith('#/')) return undefined;
     const segments = ref.slice(2).split('/');
@@ -150,7 +163,11 @@ export class SchemaWalker {
     return current != null && typeof current === 'object' ? (current as SchemaNode) : undefined;
   }
 
-  #walkSchemaNode(schema: SchemaNode, frame: SchemaWalkFrame, ctx: SchemaWalkContext): void {
+  #walkSchemaNode(
+    schema: SchemaNode,
+    { inheritsDiscriminator: inherited, ...frame }: SchemaWalkFrame,
+    ctx: SchemaWalkContext,
+  ): void {
     if (frame.depth > MAX_SCHEMA_DEPTH || hasRbacScope(schema)) return;
 
     const walk = (next: SchemaNode, nextFrame: SchemaWalkFrame): void =>
@@ -162,12 +179,14 @@ export class SchemaWalker {
     }
 
     if (schema.allOf) {
-      walk(this.#mergeAllOf(schema.allOf, ctx.visited), frame);
+      const inheritsDiscriminator = this.#inheritsDiscriminator(schema.allOf);
+      walk(this.#mergeAllOf(schema.allOf, ctx.visited), { ...frame, inheritsDiscriminator });
       return;
     }
 
+    const nestedHost = !inherited && Array.isArray(schema.oneOf ?? schema.anyOf);
     const discriminator = schema.discriminator ?? schema['x-discriminator'];
-    if (discriminator?.propertyName && !frame.inDiscriminatorVariant) {
+    if (discriminator?.propertyName && (!frame.inDiscriminatorVariant || nestedHost)) {
       this.#walkDiscriminatorVariants(schema, discriminator, walk, frame);
       return;
     }
@@ -239,10 +258,13 @@ export class SchemaWalker {
     visited: Set<string>,
   ): void {
     if (schema.properties) {
-      walk({ ...schema, oneOf: undefined, anyOf: undefined } as SchemaNode, {
-        ...frame,
-        linkPath: appendVariantSuffix(frame.linkPath, '&oneof=0'),
-      });
+      walk(
+        { ...schema, oneOf: undefined, anyOf: undefined },
+        {
+          ...frame,
+          linkPath: appendVariantSuffix(frame.linkPath, '&oneof=0'),
+        },
+      );
     }
     variants.forEach((variant, index) => {
       if (variant.$ref) {
@@ -379,8 +401,10 @@ export class SchemaWalker {
     isDiscriminatorRow: boolean,
     frame: SchemaWalkFrame,
   ): string[] {
-    const parentLinkPath =
-      isDiscriminatorRow && frame.discriminatorLinkPath
+    const outer = frame.outerDiscriminators?.find((row) => row.propertyName === name);
+    const parentLinkPath = outer
+      ? outer.linkPath
+      : isDiscriminatorRow && frame.discriminatorLinkPath
         ? frame.discriminatorLinkPath
         : frame.linkPath;
     return [...parentLinkPath, name];
@@ -430,7 +454,7 @@ export class SchemaWalker {
             fieldPath: fieldLinkPath,
             scope: ctx.scope,
           }),
-      example: example as string | undefined,
+      example,
       enum: enumValues,
     };
   }
@@ -480,8 +504,17 @@ export class SchemaWalker {
     frame: SchemaWalkFrame,
   ): void {
     const options = this.#resolveDiscriminatorOptions(schema, discriminator);
+    const outer = frame.discriminatorPropertyName
+      ? {
+          propertyName: frame.discriminatorPropertyName,
+          linkPath: frame.discriminatorLinkPath ?? frame.linkPath,
+        }
+      : undefined;
     const variantFrame = (index: number, values: string[] | undefined): SchemaWalkFrame => ({
       ...frame,
+      outerDiscriminators: outer
+        ? [...(frame.outerDiscriminators ?? []), outer]
+        : frame.outerDiscriminators,
       linkPath: appendVariantSuffix(frame.linkPath, `&d=${index}`),
       inDiscriminatorVariant: true,
       discriminatorPropertyName: discriminator.propertyName,
@@ -500,9 +533,14 @@ export class SchemaWalker {
           'x-discriminator': undefined,
           oneOf: undefined,
           anyOf: undefined,
-        } as SchemaNode,
+        },
 
-        options.length ? variantFrame(0, allValues.length ? allValues : undefined) : frame,
+        options.length
+          ? {
+              ...variantFrame(0, allValues.length ? allValues : undefined),
+              ...(frame.inDiscriminatorVariant && { linkPath: frame.linkPath }),
+            }
+          : frame,
       );
     }
 

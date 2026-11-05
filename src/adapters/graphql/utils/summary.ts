@@ -1,4 +1,4 @@
-import type { Node } from '@markdoc/markdoc';
+import type { Node } from '@redocly/markdoc';
 import type { GraphQLSchema } from 'graphql';
 import type { GraphqlItemVariant } from '../../../types/graphql.js';
 import type { ParseMarkdownOptions } from '../../utils/parseMarkdown.js';

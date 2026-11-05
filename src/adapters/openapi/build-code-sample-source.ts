@@ -1,6 +1,7 @@
 import type {
   OpenAPIExample,
   OpenAPIMediaType,
+  OpenAPISecurityRequirement,
   OpenAPIServer,
   OperationInfo,
 } from '../../types/openapi.js';
@@ -24,16 +25,18 @@ import { isRbacKey, readRbacScope, rbacProp } from '../rbac.js';
 
 import {
   registerExample,
+  isRecord,
   pickRenderableDescription,
   registerSchema,
   resolveContent,
   resolveRef,
 } from '../helpers.js';
 import { isStatusCode } from '../../utils/status-code.js';
+import { securityRequirements } from './utils/security.js';
 import { encodeJsonPointerSegment } from '../../utils/refPointer.js';
 import { applyIgnoreNamedSchemasDeep } from './utils/applyIgnoreNamedSchemasDeep.js';
 import { pickFormFieldEncoding } from './utils/form-encoding.js';
-import { pickOperationServers } from './utils/operation.js';
+import { parameterList, pickOperationServers } from './utils/operation.js';
 import {
   hasOpenApiExampleValue,
   resolveOpenApiExampleValue,
@@ -48,6 +51,22 @@ function resolveParamRef(
   return applyIgnoreNamedSchemasDeep(top, ignoreNamedSchemas) as Record<string, unknown>;
 }
 
+function pickNamedExampleValue(
+  examples: Record<string, unknown> | undefined,
+  doc: Record<string, unknown>,
+  ignoreNamedSchemas?: Set<string>,
+): unknown {
+  for (const rawNamedExample of Object.values(examples ?? {})) {
+    if (!rawNamedExample || typeof rawNamedExample !== 'object') continue;
+    const resolvedNamedExample =
+      resolveRef<OpenAPIExample>(doc, rawNamedExample, ignoreNamedSchemas) ?? rawNamedExample;
+    if (hasOpenApiExampleValue(resolvedNamedExample)) {
+      return resolveOpenApiExampleValue(resolvedNamedExample);
+    }
+  }
+  return undefined;
+}
+
 export function buildCodeSampleSource(
   operationInfo: OperationInfo,
   storeCtx: StoreContext,
@@ -56,6 +75,7 @@ export function buildCodeSampleSource(
   href?: string,
 ): CodeSampleSource {
   const doc = storeCtx?.document ?? {};
+  const requirements = securityRequirements(operationInfo.security);
   const opServers = buildOperationServers(
     operationInfo,
     doc,
@@ -66,12 +86,11 @@ export function buildCodeSampleSource(
     storeCtx,
     ignoreNamedSchemas,
   );
-  const security = buildSecurityRequirements(operationInfo, storeCtx);
+  const security = buildSecurityRequirements(requirements, storeCtx);
   const requestBodyMap = buildRequestBodyMap(operationInfo, doc, storeCtx, ignoreNamedSchemas);
 
   const responsesMap = (operationInfo as Record<string, unknown>).responses;
   const responseCodes = responsesMap ? Object.keys(responsesMap).filter(isStatusCode) : undefined;
-
 
   return {
     kind: panelKind.CODE_SAMPLE,
@@ -95,25 +114,55 @@ function buildOperationServers(
   doc: Record<string, unknown>,
 ): ServerEntry[] {
   const documentServers = (doc as { servers?: OpenAPIServer[] }).servers;
-  let mergedServers = pickOperationServers(
-    operationInfo.servers,
-    documentServers,
-  ) as OpenAPIServer[];
+  let mergedServers: OpenAPIServer[] = pickOperationServers(operationInfo.servers, documentServers);
 
-
-  const opServers: ServerEntry[] = mergedServers.map((s) => ({
-    url: s.url ?? '',
-    name: s.name,
-    description: typeof s.description === 'string' ? s.description : undefined,
-    variables:
-      s.variables && Object.keys(s.variables).length > 0
-        ? Object.fromEntries(
-            Object.entries(s.variables).map(([k, v]) => [k, { default: v.default, enum: v.enum }]),
-          )
-        : undefined,
-  }));
+  const opServers: ServerEntry[] = mergedServers.map((s) => {
+    const entry: ServerEntry = {
+      url: s.url,
+      name: s.name,
+      description: typeof s.description === 'string' ? s.description : undefined,
+      variables:
+        s.variables && Object.keys(s.variables).length > 0
+          ? Object.fromEntries(
+              Object.entries(s.variables).map(([k, v]) => [
+                k,
+                { default: v.default, enum: v.enum },
+              ]),
+            )
+          : undefined,
+    };
+    return entry;
+  });
 
   return opServers.length > 0 ? opServers : [{ url: '/' }];
+}
+
+/**
+ * The parameter's documented example, or `undefined` when nothing is documented. Picks the first
+ * non-null of the parameter `example`, the first named `examples` value and the schema `example`.
+ * In a query, a `null` with nothing else documented is an empty value; the schema's `const`,
+ * `examples`, `enum` or `default` outranks it. In other locations `null` documents nothing.
+ */
+function pickParameterExample(
+  loc: ParameterEntry['in'],
+  paramExample: unknown,
+  namedExample: unknown,
+  schema: Record<string, unknown> | undefined,
+): unknown {
+  const schemaExample = schema && 'example' in schema ? schema.example : undefined;
+  const candidates = [paramExample, namedExample, schemaExample];
+  const value = candidates.find((candidate) => candidate != null);
+  if (value !== undefined || loc !== 'query' || !candidates.includes(null)) return value;
+  return schema && declaresSchemaValue(schema) ? undefined : null;
+}
+
+function declaresSchemaValue(schema: Record<string, unknown>): boolean {
+  return (
+    schema.const !== undefined ||
+    (Array.isArray(schema.examples) && schema.examples.length > 0) ||
+    (Array.isArray(schema.enum) && schema.enum.length > 0) ||
+    schema.default !== undefined
+  );
 }
 
 function buildParametersByLocation(
@@ -122,7 +171,7 @@ function buildParametersByLocation(
   storeCtx: StoreContext,
   ignoreNamedSchemas?: Set<string>,
 ): CodeSampleSource['parameters'] {
-  const rawParams = operationInfo.parameters ?? [];
+  const rawParams = parameterList(operationInfo.parameters) ?? [];
   const allParams = rawParams.map((p) => resolveParamRef(p, doc, ignoreNamedSchemas)) as {
     name?: string;
     in?: string;
@@ -131,6 +180,7 @@ function buildParametersByLocation(
     example?: unknown;
     examples?: Record<string, unknown>;
     required?: boolean;
+    allowEmptyValue?: boolean;
     style?: string;
     explode?: boolean;
     allowReserved?: boolean;
@@ -144,7 +194,6 @@ function buildParametersByLocation(
     cookie: [],
   };
 
-
   for (const param of allParams) {
     const loc = param.in as ParameterEntry['in'] | undefined;
     if (!loc || !paramsByLocation[loc]) continue;
@@ -154,12 +203,11 @@ function buildParametersByLocation(
     const rawEffectiveSchema =
       serializationMime && paramContent
         ? (paramContent[serializationMime]?.schema as Record<string, unknown> | undefined)
-        : (param.schema as Record<string, unknown> | undefined);
+        : param.schema;
 
     const effectiveSchema =
       rawEffectiveSchema && typeof rawEffectiveSchema === 'object'
-        ? ((resolveRef(doc, rawEffectiveSchema, ignoreNamedSchemas) ??
-            rawEffectiveSchema) as Record<string, unknown>)
+        ? (resolveRef(doc, rawEffectiveSchema, ignoreNamedSchemas) ?? rawEffectiveSchema)
         : rawEffectiveSchema;
 
     let schemaId: string | undefined;
@@ -170,33 +218,26 @@ function buildParametersByLocation(
       });
     }
 
-    const exampleFromSchema =
-      effectiveSchema &&
-      typeof effectiveSchema === 'object' &&
-      'example' in (effectiveSchema as Record<string, unknown>)
-        ? (effectiveSchema as Record<string, unknown>).example
-        : undefined;
+    const exampleFromNamedExamples = pickNamedExampleValue(param.examples, doc, ignoreNamedSchemas);
 
-    let exampleFromNamedExamples: unknown;
-    if (param.examples && typeof param.examples === 'object') {
-      for (const rawNamedExample of Object.values(param.examples)) {
-        if (!rawNamedExample || typeof rawNamedExample !== 'object') continue;
-        const resolvedNamedExample =
-          resolveRef<OpenAPIExample>(doc, rawNamedExample as OpenAPIExample, ignoreNamedSchemas) ??
-          (rawNamedExample as OpenAPIExample);
-        if (hasOpenApiExampleValue(resolvedNamedExample)) {
-          exampleFromNamedExamples = resolveOpenApiExampleValue(resolvedNamedExample);
-          break;
-        }
-      }
-    }
-
+    const mediaType = serializationMime ? paramContent?.[serializationMime] : undefined;
+    const exampleFromMediaType =
+      mediaType?.example !== undefined
+        ? mediaType.example
+        : pickNamedExampleValue(mediaType?.examples, doc, ignoreNamedSchemas);
 
     paramsByLocation[loc].push({
       name: param.name ?? '',
       in: loc,
       required: param.required,
-      example: param.example ?? exampleFromNamedExamples ?? exampleFromSchema,
+      example: pickParameterExample(
+        loc,
+        param.example,
+        exampleFromNamedExamples !== undefined ? exampleFromNamedExamples : exampleFromMediaType,
+        isRecord(effectiveSchema) ? effectiveSchema : undefined,
+      ),
+      // `allowEmptyValue` applies to query parameters only.
+      ...(loc === 'query' && param.allowEmptyValue && { allowEmptyValue: true }),
       schemaId,
       serializationMime,
       style: param.style,
@@ -209,10 +250,9 @@ function buildParametersByLocation(
 }
 
 function buildSecurityRequirements(
-  operationInfo: OperationInfo,
+  securityArr: OpenAPISecurityRequirement[] | undefined,
   storeCtx: StoreContext,
 ): SecurityRequirement[] {
-  const securityArr = operationInfo.security as Array<Record<string, unknown>> | undefined;
   const security: SecurityRequirement[] = [];
   if (!securityArr || !storeCtx) return security;
 
@@ -221,21 +261,18 @@ function buildSecurityRequirements(
     const schemes = schemeNames
       .map((name) => storeCtx.securitySchemeStore[name])
       .filter(Boolean)
-      .map((scheme) => {
-        let entry = {
-          id: scheme.id,
-          type: scheme.type as Exclude<SecuritySchemeType, typeof securitySchemeType.MUTUAL_TLS>,
-          name: scheme.paramName,
-          in: scheme.in as Exclude<typeof scheme.in, 'user' | 'password'>,
-          scheme: scheme.scheme,
-          bearerFormat: scheme.bearerFormat,
-          openIdConnectUrl: scheme.openIdConnectUrl,
-          flows: scheme.flows,
-        };
-        return entry;
-      });
+      .map((scheme) => ({
+        id: scheme.id,
+        type: scheme.type as Exclude<SecuritySchemeType, typeof securitySchemeType.MUTUAL_TLS>,
+        name: scheme.paramName,
+        in: scheme.in as Exclude<typeof scheme.in, 'user' | 'password'>,
+        scheme: scheme.scheme,
+        bearerFormat: scheme.bearerFormat,
+        openIdConnectUrl: scheme.openIdConnectUrl,
+        flows: scheme.flows,
+      }));
     if (schemes.length > 0) {
-      const scopes = schemeNames.flatMap((name) => (req[name] as string[]) ?? []);
+      const scopes = schemeNames.flatMap((name) => req[name] ?? []);
       security.push({ schemes, scopes });
     }
   }
@@ -263,10 +300,7 @@ function buildRequestBodyMap(
     const itemSchemaRaw = (content as { itemSchema?: unknown }).itemSchema;
     const schemaSource = (content.schema ?? itemSchemaRaw) as Record<string, unknown> | undefined;
     if (schemaSource) {
-      const resolvedBodySchema =
-        (resolveRef(doc, schemaSource, ignoreNamedSchemas) as
-          | Record<string, unknown>
-          | undefined) ?? schemaSource;
+      const resolvedBodySchema = resolveRef(doc, schemaSource, ignoreNamedSchemas) ?? schemaSource;
       bodySchemaId = registerSchema(storeCtx.schemaStore, storeCtx.hashIndex, {
         kind: schemaKind.JSON_SCHEMA,
         data: resolvedBodySchema,
@@ -321,4 +355,3 @@ function buildRequestBodyMap(
 
   return requestBodyMap;
 }
-

@@ -1,5 +1,7 @@
 import { styled } from 'styled-components';
 
+import { DARK_MODE_ANCESTOR } from '../../constants/color-mode.js';
+
 type IconProps = React.SVGProps<SVGSVGElement> & { 'data-component-name'?: string };
 
 const Icon = (props: IconProps) => (
@@ -48,8 +50,8 @@ export const CurlIcon = styled(Icon).attrs({
     fill: #073551;
   }
 
-  html.dark & .path-primary,
-  html.dark & .path-secondary {
+  ${DARK_MODE_ANCESTOR} & .path-primary,
+  ${DARK_MODE_ANCESTOR} & .path-secondary {
     fill: #ffffff;
   }
 `;

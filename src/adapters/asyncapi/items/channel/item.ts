@@ -15,6 +15,7 @@ import { buildOperationItem } from '../operation/item.js';
 import { asyncApiContext } from '../../buildContext.js';
 import { readRbacScope, rbacProp } from '../../../rbac.js';
 import { getChannelLabel } from '../../utils/get-channel-label.js';
+import { normalizeBadges } from '../../../../utils/normalize-badges.js';
 
 function resolveChannelLabelAndSeo(
   channel: AsyncApiChannel,
@@ -86,7 +87,7 @@ export function buildTaggedChannelItem({
     type: 'group',
     link: channelLink,
     routeSlug: channelLink,
-    badges: channel?.['x-badges'] || [],
+    badges: normalizeBadges(channel?.['x-badges']) ?? [],
     httpVerb: labels.channel,
     content: processContent
       ? buildChannelContent(channelId, channel, document, options, protocol)
@@ -149,7 +150,7 @@ export function buildUntaggedChannelItem({
     link: channelLink,
     routeSlug: channelLink,
     httpVerb: labels.channel,
-    badges: channel?.['x-badges'] || [],
+    badges: normalizeBadges(channel?.['x-badges']) ?? [],
     ...rbacProp(readRbacScope(channel)),
     content: processContent
       ? buildChannelContent(channelId, channel, document, options, protocol)

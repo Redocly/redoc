@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { highlightTextForSearch } from '../highlight.js';
+import { highlightTextForSearch, markMatchedValue } from '../highlight.js';
 
 describe('highlightTextForSearch', () => {
   it('wraps a single matching word', () => {
@@ -76,5 +76,19 @@ describe('highlightTextForSearch', () => {
     expect(opens).toBe(closes);
     expect(opens).toBeGreaterThan(0);
     expect(result).not.toMatch(/<\/?m[^>]*$/);
+  });
+});
+
+describe('markMatchedValue', () => {
+  it('returns the marked value when the query matches', () => {
+    expect(markMatchedValue('pet', 'Find pets')).toBe('Find <mark>pets</mark>');
+  });
+
+  it('returns undefined when the query does not match', () => {
+    expect(markMatchedValue('order', 'Find pets')).toBeUndefined();
+  });
+
+  it('returns undefined for an empty value', () => {
+    expect(markMatchedValue('pet', '')).toBeUndefined();
   });
 });

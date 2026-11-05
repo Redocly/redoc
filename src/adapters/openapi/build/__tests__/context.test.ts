@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 
 import type {
   OpenAPICallback,
@@ -93,6 +93,30 @@ describe('createBuildContext - OpenAPI 3.2 tags', () => {
     const animalsTag = ctx.tagsMap.get('Animals');
 
     expect(animalsTag?.children).toContain('Dogs');
+  });
+
+  it('drops a single x-badges object instead of a list and keeps building', () => {
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const doc = makeDoc({
+      tags: [{ name: 'Animals' }],
+      paths: {
+        '/pets': {
+          get: {
+            operationId: 'listPets',
+            tags: ['Animals'],
+            'x-badges': { name: 'x-deprecated', position: 'before' },
+            responses: {},
+          },
+        },
+      } as unknown as OpenAPIPaths,
+    });
+
+    const op = buildContext(doc).tagsMap.get('Animals')?.operations[0];
+
+    expect(op?.operationId).toBe('listPets');
+    expect(op?.['x-badges']).toBeUndefined();
+    expect(errorSpy).toHaveBeenCalledTimes(1);
+    errorSpy.mockRestore();
   });
 
   it('generates badges from badge kind tags on operations', () => {
@@ -253,6 +277,30 @@ describe('createBuildContext - OpenAPI 3.2 tags', () => {
     const untagged = ctx.tagsMap.get('');
     expect(untagged?.operations).toHaveLength(1);
     expect(untagged?.operations[0]?.parameters).toHaveLength(3);
+  });
+
+  it('ignores non-array parameters on the operation and path item', () => {
+    const doc = makeDoc({
+      paths: {
+        '/op-string': {
+          parameters: [{ name: 'id', in: 'path' }],
+          get: { operationId: 'opString', parameters: 'abc', responses: {} },
+        },
+        '/path-string': {
+          parameters: 'abc',
+          get: { operationId: 'pathString', parameters: [{ name: 'q', in: 'query' }], responses: {} },
+        },
+      },
+    } as unknown as Partial<OpenAPIDefinition>);
+
+    const ops = buildContext(doc).tagsMap.get('')?.operations ?? [];
+
+    expect(ops.find((o) => o.operationId === 'opString')?.parameters).toEqual([
+      { name: 'id', in: 'path' },
+    ]);
+    expect(ops.find((o) => o.operationId === 'pathString')?.parameters).toEqual([
+      { name: 'q', in: 'query' },
+    ]);
   });
 
   it('inherits PathItem.servers when the operation declares none, but operation servers win', () => {
@@ -632,7 +680,7 @@ describe('normalizeCallbacks', () => {
     expect(result?.[0].operations).toBeUndefined();
   });
 
-  it('falls back to path-level servers/parameters and prefers operation-level when present', () => {
+  it('falls back to path-level servers, prefers operation servers and merges path-level parameters', () => {
     const pathServers = [{ url: 'https://path.example.com' }];
     const opServers = [{ url: 'https://op.example.com' }];
     const pathParams = [{ name: 'id', in: 'path' }];
@@ -667,7 +715,27 @@ describe('normalizeCallbacks', () => {
     expect(fallbackOp?.servers).toEqual(pathServers);
     expect(fallbackOp?.parameters).toEqual(pathParams);
     expect(overrideOp?.servers).toEqual(opServers);
-    expect(overrideOp?.parameters).toEqual(opParams);
+    expect(overrideOp?.parameters).toEqual([...opParams, ...pathParams]);
+  });
+
+  it('ignores non-array parameters on the callback operation and path item', () => {
+    const callbacks = {
+      onEvent: {
+        '/op-string': {
+          parameters: [{ name: 'id', in: 'path' }],
+          post: { parameters: 'abc', responses: {} },
+        },
+        '/path-string': {
+          parameters: 'abc',
+          post: { parameters: [{ name: 'q', in: 'query' }], responses: {} },
+        },
+      },
+    } as unknown as { [name: string]: Referenced<OpenAPICallback> };
+
+    const result = normalizeCallbacks(callbacks, {});
+
+    expect(result?.[0].operations?.[0].parameters).toEqual([{ name: 'id', in: 'path' }]);
+    expect(result?.[1].operations?.[0].parameters).toEqual([{ name: 'q', in: 'query' }]);
   });
 
   it('copies x- extensions without overriding known fields', () => {

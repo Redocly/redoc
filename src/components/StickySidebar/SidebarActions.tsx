@@ -10,7 +10,8 @@ import { SidebarActions as ThemeSidebarActions } from '@redocly/theme/components
 import { Tooltip } from '@redocly/theme/components/Tooltip/Tooltip';
 import { breakpoints } from '@redocly/theme/core/openapi';
 
-import { collapsedSidebarAtom, colorModeAtom, layoutAtom } from '../../jotai/app.js';
+import { collapsedSidebarAtom, layoutAtom } from '../../jotai/app.js';
+import { colorModeAtom } from '../../jotai/color-mode.js';
 import { RESOURCES, useTelemetry } from '../../telemetry/index.js';
 import { RedoclyAttributionLogo } from './RedoclyAttributionLogo.js';
 

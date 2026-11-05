@@ -25,6 +25,7 @@ export function processAsyncApiDocument(
       schemaStore: storeCtx.schemaStore,
       exampleStore: storeCtx.exampleStore,
       securitySchemeStore: storeCtx.securitySchemeStore,
+      specVersion: props.document.asyncapi,
     },
   };
 }

@@ -70,7 +70,9 @@ function renderUseApiDocsScroll(opts: RenderOpts = {}) {
   const initialEntries = opts.initialEntries ?? ['/pets'];
   const routingBasePath = opts.routingBasePath ?? '';
   const activeRoute = 'activeRoute' in opts ? opts.activeRoute : makeRoute();
-  const routes = opts.routes ?? (activeRoute ? [activeRoute] : []);
+  // An overview leads the page, so by default the active route is not its first section.
+  const routes =
+    opts.routes ?? (activeRoute ? [makeRoute({ path: '/overview' }), activeRoute] : []);
   const routeIndex = buildRouteIndex(routes, [], routingBasePath);
 
   const store = createStore();
@@ -150,32 +152,25 @@ describe('useApiDocsScroll', () => {
       expect(scrollIntoViewSpy).toHaveBeenCalledWith({ block: 'start' });
     });
 
-    it('lands at the document top when the section is the first one on the page', () => {
+    it('lands at the document top when the active route is the first one on the page', () => {
       const { el, scrollIntoViewSpy } = makeElementWithScrollSpy();
-      el.setAttribute('data-section-id', '/section/pets');
-      querySelectorSpy.mockImplementation((selector: string) =>
-        selector === '[data-section-id="/section/pets"]' || selector === '[data-section-id]'
-          ? el
-          : null,
-      );
+      querySelectorSpy.mockReturnValue(el);
+      const activeRoute = makeRoute({ path: '/section/pets' });
 
-      renderUseApiDocsScroll({
-        activeRoute: makeRoute({ path: '/section/pets' }),
-      });
+      renderUseApiDocsScroll({ activeRoute, routes: [activeRoute] });
 
       expect(scrollToSpy).toHaveBeenCalledWith(0, 0);
       expect(scrollIntoViewSpy).not.toHaveBeenCalled();
     });
 
-    it('scrolls the section into view when another section precedes it', () => {
+    it('scrolls a section that another route precedes into view while it is the first one mounted', () => {
       const { el, scrollIntoViewSpy } = makeElementWithScrollSpy();
-      el.setAttribute('data-section-id', '/section/pets');
-      const precedingSection = document.createElement('div');
-      querySelectorSpy.mockImplementation((selector: string) => {
-        if (selector === '[data-section-id="/section/pets"]') return el;
-        if (selector === '[data-section-id]') return precedingSection;
-        return null;
-      });
+      // Before hydration the page renders only from the active entry on.
+      querySelectorSpy.mockImplementation((selector: string) =>
+        selector === '[data-section-id="/section/pets"]' || selector === '[data-section-id]'
+          ? el
+          : null,
+      );
 
       renderUseApiDocsScroll({
         activeRoute: makeRoute({ path: '/section/pets' }),
@@ -476,11 +471,8 @@ describe('useApiDocsScroll', () => {
 
     it('does not anchor a leading section — the top of the page has nothing above it to settle', () => {
       const { el, scrollIntoViewSpy } = makeElementWithScrollSpy();
-      el.setAttribute('data-section-id', '/pets');
-      querySelectorSpy.mockImplementation((selector: string) =>
-        selector === '[data-section-id="/pets"]' || selector === '[data-section-id]' ? el : null,
-      );
-      renderUseApiDocsScroll();
+      querySelectorSpy.mockReturnValue(el);
+      renderUseApiDocsScroll({ routes: [makeRoute()] });
 
       expect(scrollToSpy).toHaveBeenCalledWith(0, 0);
       expect(scrollIntoViewSpy).not.toHaveBeenCalled();

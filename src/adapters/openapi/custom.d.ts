@@ -4,4 +4,3 @@ type ExtendedError = Error & {
 };
 
 type Maybe<T> = undefined | null | T;
-

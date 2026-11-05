@@ -4,7 +4,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { createRequire } from 'module';
 import react from '@vitejs/plugin-react';
-import { bundleStats } from 'rollup-plugin-bundle-stats';
+import { visualizer } from 'rollup-plugin-visualizer';
 
 import pkg from './package.json' with { type: 'json' };
 
@@ -21,8 +21,8 @@ const THEME_PATH = THEME_CANDIDATES.find((p) => existsSync(p)) ?? THEME_CANDIDAT
 
 const require = createRequire(import.meta.url);
 const FLEXSEARCH_DIST = dirname(require.resolve('flexsearch'));
-// The monorepo hoists the catalog's js-yaml 4 next to openapi-core's 5; the published repo has
-// one copy. Pin js-yaml to the copy openapi-core resolves so both builds carry one.
+// A hoisted install can put a second js-yaml major next to openapi-core's. Pin js-yaml to the
+// copy openapi-core resolves so the bundle carries one.
 const JS_YAML_PATH = dirname(
   createRequire(require.resolve('@redocly/openapi-core')).resolve('js-yaml/package.json'),
 );
@@ -190,7 +190,7 @@ export default defineConfig(({ command, mode }) => {
       bundledLicenses(baseFileName),
       react(),
       ...(isStandalone ? [] : [styledComponentsNamedImport]),
-      ...(mode === 'analyze' ? [bundleStats()] : []),
+      ...(mode === 'analyze' ? [visualizer()] : []),
     ],
     root: command === 'serve' ? resolve(__dirname, 'playground') : undefined,
     resolve: {
@@ -203,7 +203,6 @@ export default defineConfig(({ command, mode }) => {
         '@redocly/ajv/dist/draft4.js': resolve(__dirname, 'src/ajv-stub.js'),
         'ajv-formats': resolve(__dirname, 'src/ajv-stub.js'),
         '@redocly/theme': THEME_PATH,
-        '@portal': resolve(THEME_PATH, 'mocks'),
         // Worker support lives only in the full bundle; the global build is what boots inside each worker.
         flexsearch: resolve(FLEXSEARCH_DIST, 'flexsearch.bundle.module.min.js'),
         'flexsearch-global?raw': `${resolve(FLEXSEARCH_DIST, 'flexsearch.bundle.min.js')}?raw`,

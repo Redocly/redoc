@@ -23,20 +23,27 @@ import {
   primitiveArrayItemsHaveOwnInfo,
   promotePrimitiveArrayMetadata,
   schemaHasType,
+  schemaType,
   toPropertyExample,
 } from './propertyBuilder.js';
 import { deriveVariantLabel } from './variant-label.js';
 
 export type SchemaTreeContext = {
   prepareVariant(ref: SchemaNode): SchemaNode;
+  prepareRefOnItsOwn(ref: string): SchemaNode | undefined;
+  /** The definition a ref points to as the document declares it, unresolved. */
+  definitionOf(ref: string): SchemaNode | undefined;
   propertyRefCache: Map<string, PropertyType>;
   variantResolutionCache: Map<string, SchemaNode>;
+  propertyTargetCache: Map<string, SchemaNode | undefined>;
   isChild?: boolean;
   implicitDiscriminatorChildren?: Record<string, ImplicitDiscriminatorChild[]>;
   exampleSerializer?: (value: unknown) => string;
   sortRequiredPropsFirst?: boolean;
   /** Refs open on the current DFS path; reaching one again is a cycle. */
   activeRefs: Set<string>;
+  /** The ref the page root was resolved from; an ancestor of every node, kept out of `activeRefs`. */
+  rootRef?: string;
   depth: number;
   /** Refs on a reference cycle; memoized by ref alone so a cyclic component expands once. */
   recursiveRefs: ReadonlySet<string>;
@@ -69,11 +76,12 @@ function getNamedDefinitionTitle(jsonPointer: string): string | undefined {
 }
 
 function buildPropertyForNode(
-  schema: SchemaNode,
+  node: SchemaNode,
   ctx: SchemaTreeContext,
   options: PropertyShellOptions = {},
   jsonPointer: string,
 ): PropertyType {
+  const schema = expandCycleStubsOffTheirPath(node, ctx);
   const property = buildPropertyShell(schema, {
     ...options,
     exampleSerializer: ctx.exampleSerializer,
@@ -279,7 +287,7 @@ function attachNestedStructure(
   ctx: SchemaTreeContext,
   jsonPointer: string,
 ): void {
-  const type = schema.type || detectJsonSchemaType(schema);
+  const type = schemaType(schema);
   const primitive = isPrimitiveLikeSchema(schema, type);
 
   const discriminatorSwitcher = buildAppliedDiscriminatorSwitcher(schema, ctx, jsonPointer);
@@ -399,11 +407,13 @@ function buildObjectProperties(
 
   const props = schema.properties || {};
   for (const [name, raw] of Object.entries(props)) {
-    const merged: SchemaNode = { ...raw };
-    if (merged.default === undefined && defaults[name] !== undefined)
-      merged.default = defaults[name];
-    if (merged.example === undefined && parentExample?.[name] !== undefined) {
-      merged.example = parentExample[name];
+    const merged: SchemaNode = (raw as unknown) === false ? raw : { ...raw };
+    if ((merged as unknown) !== false) {
+      if (merged.default === undefined && defaults[name] !== undefined)
+        merged.default = defaults[name];
+      if (merged.example === undefined && parentExample?.[name] !== undefined) {
+        merged.example = parentExample[name];
+      }
     }
     const childPointer = `${parentPointer}/properties/${encodeJsonPointerSegment(name)}`;
     result[name] = buildPropertyForNode(
@@ -430,7 +440,7 @@ function buildObjectProperties(
 
   const additional = schema.additionalProperties ?? schema.unevaluatedProperties;
   if (isSchemaNode(additional)) {
-    const label = (additional['x-additionalPropertiesName'] || 'property name') + '*';
+    const label = `<${additional['x-additionalPropertiesName'] || 'property name'}>`;
     const childPointer = `${parentPointer}/additionalProperties`;
     result[label] = buildPropertyForNode(
       additional,
@@ -441,7 +451,7 @@ function buildObjectProperties(
       childPointer,
     );
   } else if (additional === true) {
-    result['property name*'] = buildPropertyForNode(
+    result['<property name>'] = buildPropertyForNode(
       {},
       propertyCtx,
       {
@@ -536,10 +546,7 @@ function buildArrayItems(
   if (isSchemaNode(schema.items)) {
     if (
       isStructuredArrayItems(schema.items) ||
-      !isPrimitiveLikeSchema(
-        schema.items,
-        schema.items.type || detectJsonSchemaType(schema.items),
-      ) ||
+      !isPrimitiveLikeSchema(schema.items, schemaType(schema.items)) ||
       primitiveArrayItemsHaveOwnInfo(schema.items)
     ) {
       return [buildPropertyForNode(schema.items, itemCtx, {}, `${parentPointer}/items`)];
@@ -597,9 +604,14 @@ function inheritsDiscriminator(
   return (schema['x-parentRefs'] ?? []).some((ref) => hostsDiscriminator(ref, propertyName, ctx));
 }
 
+function inheritsAnyDiscriminator(schema: SchemaNode, ctx: SchemaTreeContext): boolean {
+  return (schema['x-parentRefs'] ?? []).some((ref) => {
+    const parent = resolveRefTarget(ref, ctx);
+    return !!parent && !!getDiscriminatorObject(parent)?.propertyName;
+  });
+}
+
 function stripVariantHostMarkers(variant: SchemaNode, ref: string): SchemaNode {
-  delete variant.discriminator;
-  delete variant['x-discriminator'];
   delete variant['x-original-ref'];
 
   // a variant inherits the parent's oneOf/anyOf through allOf; when that list
@@ -610,19 +622,33 @@ function stripVariantHostMarkers(variant: SchemaNode, ref: string): SchemaNode {
       delete variant[key];
     }
   }
+  if (!declaresVariants(variant)) {
+    delete variant.discriminator;
+    delete variant['x-discriminator'];
+  }
   return variant;
+}
+
+function declaresVariants(schema: SchemaNode): boolean {
+  return Array.isArray(schema.oneOf) || Array.isArray(schema.anyOf);
 }
 
 function resolveMappedVariant(ref: string, ctx: SchemaTreeContext): SchemaNode | undefined {
   const cached = ctx.variantResolutionCache.get(ref);
   if (cached) return cached;
 
-  const merged = resolveRefTarget(ref, ctx);
+  // a cached result of the variant can hold the stubs of the refs that were open where it was built
+  const merged = ctx.prepareRefOnItsOwn(ref);
   if (!merged) return undefined;
 
   const variant = stripVariantHostMarkers(merged, ref);
   ctx.variantResolutionCache.set(ref, variant);
   return variant;
+}
+
+/** A listed entry that lost fields to a cycle stub on this page. */
+function lostFieldsToCycle(listed: SchemaNode): boolean {
+  return listed['x-circular-ref'] !== undefined || listed['x-allof-cycle'] !== undefined;
 }
 
 /** The option body: the copy merged for the page, unless a cycle stub cost it fields. */
@@ -631,15 +657,57 @@ function variantOptionBody(
   listed: SchemaNode | undefined,
   ctx: SchemaTreeContext,
 ): SchemaNode | undefined {
-  const lossy =
-    listed === undefined ||
-    listed['x-circular-ref'] !== undefined ||
-    listed['x-allof-cycle'] !== undefined;
-  if (lossy) return resolveMappedVariant(ref, ctx);
+  if (listed === undefined || lostFieldsToCycle(listed)) return resolveMappedVariant(ref, ctx);
   return stripVariantHostMarkers({ ...listed }, ref);
 }
 
-/** A property redeclared by a variant keeps the host's definition too (`const` + host `type`). */
+function withoutStubOffItsPath(
+  schema: SchemaNode,
+  pathRefs: ReadonlySet<string>,
+  ctx: SchemaTreeContext,
+): SchemaNode {
+  const ancestor = schema['x-circular-ref'];
+  if (typeof ancestor !== 'string' || pathRefs.has(ancestor)) return schema;
+  // a stub of the page root renders as the cycle, unless it has no fields: the stub of a
+  // schema built only from allOf
+  if (ancestor === ctx.rootRef && detectJsonSchemaType(schema) !== 'any') return schema;
+  if (!ctx.propertyTargetCache.has(ancestor)) {
+    ctx.propertyTargetCache.set(ancestor, resolveRefTarget(ancestor, ctx));
+  }
+  const target = ctx.propertyTargetCache.get(ancestor);
+  if (!target) return schema;
+  const ownKeywords = ownKeywordsOfStub(schema, ancestor, ctx);
+  return Object.keys(ownKeywords).length > 0 ? { ...target, ...ownKeywords } : target;
+}
+
+/** The row keywords a stub adds to the definition it copies: `$ref` siblings, a wrapper's keywords. */
+function ownKeywordsOfStub(stub: SchemaNode, ref: string, ctx: SchemaTreeContext): SchemaNode {
+  const definition = ctx.definitionOf(ref);
+  if (!definition) return {};
+  const [row] = splitRowAndSubschemas(stub);
+  const [keywords] = splitResolverMarkers(row);
+  // the stub copies the row of the definition, so only a value that differs from it is its own
+  return Object.fromEntries(
+    Object.entries(keywords).filter(([key, value]) => !equalKeywordValues(definition[key], value)),
+  );
+}
+
+/**
+ * A cycle stub stands for an ancestor on the tree path. A cached result reused elsewhere on the
+ * page carries the stubs of the refs that were open where it was built; there, render the schema.
+ */
+function expandCycleStubsOffTheirPath(node: SchemaNode, ctx: SchemaTreeContext): SchemaNode {
+  const schema = withoutStubOffItsPath(node, ctx.activeRefs, ctx);
+  if (!isSchemaNode(schema.items)) return schema;
+  // the array row reads the stub marker of its items before the items are built
+  const ownRef = schema['x-original-ref'];
+  const itemPathRefs =
+    typeof ownRef === 'string' ? new Set([...ctx.activeRefs, ownRef]) : ctx.activeRefs;
+  const items = withoutStubOffItsPath(schema.items, itemPathRefs, ctx);
+  return items === schema.items ? schema : { ...schema, items };
+}
+
+/** A property a variant redeclares keeps the host's definition and `required` too. */
 function withHostPropertyDefinitions(
   variant: SchemaNode,
   variantRef: string | undefined,
@@ -647,23 +715,227 @@ function withHostPropertyDefinitions(
   hostRef: string | undefined,
   ctx: SchemaTreeContext,
 ): SchemaNode {
-  const hostProps = host.properties;
+  const hostProps = host.properties ?? {};
   const variantProps = variant.properties;
-  if (!hostProps || !variantProps) return variant;
-  const hostLineage = new Set([hostRef, ...(host['x-parentRefs'] ?? [])]);
+  if (!variantProps) return variant;
+  const hostLineage = new Set([
+    hostRef,
+    ...(host['x-parentRefs'] ?? []).filter((ref) => {
+      const parent = resolveRefTarget(ref, ctx);
+      return !!parent && (declaresVariants(parent) || !!getDiscriminatorObject(parent));
+    }),
+  ]);
   const variantLineage = [variantRef, ...(variant['x-parentRefs'] ?? [])];
   if (variantLineage.some((ref) => ref !== undefined && hostLineage.has(ref))) return variant;
 
   const shared = Object.keys(variantProps).filter((name) => Object.hasOwn(hostProps, name));
-  if (shared.length === 0) return variant;
+  const required = variant.required ?? [];
+  const hostRequired = (Array.isArray(host.required) ? host.required : []).filter(
+    (name) => Object.hasOwn(variantProps, name) && !required.includes(name),
+  );
+  if (shared.length === 0 && hostRequired.length === 0) return variant;
   const properties = { ...variantProps };
   for (const name of shared) {
-    properties[name] = ctx.prepareVariant({ allOf: [variantProps[name], hostProps[name]] });
+    properties[name] = mergeRedeclaredProperty(variantProps[name], hostProps[name], ctx);
   }
-  return { ...variant, properties };
+  return {
+    ...variant,
+    properties,
+    ...(hostRequired.length > 0 && { required: [...required, ...hostRequired] }),
+  };
 }
 
 const DEFAULT_MAPPING_KEY = 'Default mapping';
+
+// Keywords merged apart from the row: those that hold subschemas, plus `required` and `discriminator`.
+const SUBSCHEMA_KEYWORDS = new Set([
+  'properties',
+  'patternProperties',
+  'additionalProperties',
+  'unevaluatedProperties',
+  'propertyNames',
+  'dependentSchemas',
+  'required',
+  'items',
+  'prefixItems',
+  'additionalItems',
+  'unevaluatedItems',
+  'contains',
+  'allOf',
+  'anyOf',
+  'oneOf',
+  'not',
+  'if',
+  'then',
+  'else',
+  'discriminator',
+  'dependencies',
+  'contentSchema',
+  '$defs',
+  'definitions',
+]);
+
+function splitRowAndSubschemas(node: SchemaNode): [row: SchemaNode, subschemas: SchemaNode] {
+  const row: SchemaNode = {};
+  const subschemas: SchemaNode = {};
+  for (const [key, value] of Object.entries(node)) {
+    (SUBSCHEMA_KEYWORDS.has(key) ? subschemas : row)[key] = value;
+  }
+  return [row, subschemas];
+}
+
+function equalKeywordValues(a: unknown, b: unknown): boolean {
+  // resolved values share nodes: a pair already under comparison counts as equal, so each pair
+  // is compared once, and any difference still makes the whole comparison false
+  const comparing = new Map<object, Set<object>>();
+  function equal(x: unknown, y: unknown): boolean {
+    if (x === y) return true;
+    if (typeof x !== 'object' || typeof y !== 'object' || x === null || y === null) return false;
+    if (Array.isArray(x) !== Array.isArray(y)) return false;
+    const comparedWithX = comparing.get(x) ?? new Set<object>();
+    if (comparedWithX.has(y)) return true;
+    comparing.set(x, comparedWithX.add(y));
+    const keys = Object.keys(x);
+    return (
+      keys.length === Object.keys(y).length &&
+      keys.every((key) => Object.hasOwn(y, key) && equal(Reflect.get(x, key), Reflect.get(y, key)))
+    );
+  }
+  return equal(a, b);
+}
+
+// A cycle stub stands for an open ancestor and holds its raw, unresolved definition.
+function isCycleStub(node: SchemaNode): boolean {
+  return node['x-circular-ref'] !== undefined;
+}
+
+// Markers the resolver stamps on a node: they say where it was resolved, not what it means.
+const RESOLVER_MARKERS = new Set([
+  'x-original-ref',
+  'x-parentRefs',
+  'x-allof-cycle',
+  'x-circular-ref',
+]);
+
+function splitResolverMarkers(row: SchemaNode): [keywords: SchemaNode, markers: SchemaNode] {
+  const keywords: SchemaNode = {};
+  const markers: SchemaNode = {};
+  for (const [key, value] of Object.entries(row)) {
+    (RESOLVER_MARKERS.has(key) ? markers : keywords)[key] = value;
+  }
+  return [keywords, markers];
+}
+
+type MergeRows = (
+  variantRow: SchemaNode,
+  hostRow: SchemaNode,
+  ctx: SchemaTreeContext,
+) => SchemaNode;
+
+function mergePropertyRows(
+  variantRow: SchemaNode,
+  hostRow: SchemaNode,
+  ctx: SchemaTreeContext,
+): SchemaNode {
+  return ctx.prepareVariant({ allOf: [variantRow, hostRow] });
+}
+
+function mergeNestedFieldRows(
+  variantRow: SchemaNode,
+  hostRow: SchemaNode,
+  ctx: SchemaTreeContext,
+): SchemaNode {
+  // in the allOf, the field's own ref would become its own parent; merging equal rows re-sorts them
+  const [variantKeywords, variantMarkers] = splitResolverMarkers(variantRow);
+  const [hostKeywords, hostMarkers] = splitResolverMarkers(hostRow);
+  const markers = variantMarkers['x-original-ref'] === undefined ? hostMarkers : variantMarkers;
+  const hostChangesRow = Object.entries(hostKeywords).some(
+    ([key, value]) => !equalKeywordValues(variantKeywords[key], value),
+  );
+  if (!hostChangesRow) return { ...variantKeywords, ...markers };
+  return { ...ctx.prepareVariant({ allOf: [variantKeywords, hostKeywords] }), ...markers };
+}
+
+function mergeRedeclaredProperty(
+  variantProp: SchemaNode,
+  hostProp: SchemaNode,
+  ctx: SchemaTreeContext,
+): SchemaNode {
+  // variant node -> host node -> merged node: a pair that many paths reach merges once
+  const mergedPairs = new Map<SchemaNode, Map<SchemaNode, SchemaNode>>();
+
+  function mergeNestedField(variantField: SchemaNode, hostField: SchemaNode): SchemaNode {
+    if (variantField === hostField || isCycleStub(variantField) || isCycleStub(hostField)) {
+      return variantField;
+    }
+    return mergeWithHost(variantField, hostField, mergeNestedFieldRows);
+  }
+
+  function mergeWithHost(
+    variantNode: SchemaNode,
+    hostNode: SchemaNode,
+    mergeRows: MergeRows,
+  ): SchemaNode {
+    const alreadyMerged = mergedPairs.get(variantNode)?.get(hostNode);
+    if (alreadyMerged) return alreadyMerged;
+
+    const [variantRow, variantSubschemas] = splitRowAndSubschemas(variantNode);
+    const [hostRow, hostSubschemas] = splitRowAndSubschemas(hostNode);
+    const mergedNode: SchemaNode = {
+      ...hostSubschemas,
+      ...variantSubschemas,
+      ...mergeRows(variantRow, hostRow, ctx),
+    };
+    const mergedWithHosts = mergedPairs.get(variantNode) ?? new Map<SchemaNode, SchemaNode>();
+    mergedWithHosts.set(hostNode, mergedNode);
+    mergedPairs.set(variantNode, mergedWithHosts);
+
+    for (const key of ['properties', 'patternProperties'] as const) {
+      const variantFields = variantSubschemas[key];
+      const hostFields = hostSubschemas[key];
+      if (!variantFields || !hostFields) continue;
+      const fields = { ...variantFields };
+      for (const [name, hostField] of Object.entries(hostFields)) {
+        const variantField = fields[name];
+        if (!Object.hasOwn(fields, name)) {
+          fields[name] = hostField;
+        } else if (isSchemaNode(variantField) && isSchemaNode(hostField)) {
+          fields[name] = mergeNestedField(variantField, hostField);
+        }
+      }
+      mergedNode[key] = fields;
+    }
+    const { required: variantRequired } = variantSubschemas;
+    const { required: hostRequired } = hostSubschemas;
+    if (Array.isArray(variantRequired) && Array.isArray(hostRequired)) {
+      mergedNode.required = [...new Set([...variantRequired, ...hostRequired])];
+    }
+    for (const key of ['items', 'additionalProperties'] as const) {
+      const variantField = variantSubschemas[key];
+      const hostField = hostSubschemas[key];
+      if (isSchemaNode(variantField) && isSchemaNode(hostField)) {
+        mergedNode[key] = mergeNestedField(variantField, hostField);
+      }
+    }
+    const { prefixItems: variantTuple } = variantSubschemas;
+    const { prefixItems: hostTuple } = hostSubschemas;
+    if (Array.isArray(variantTuple) && Array.isArray(hostTuple)) {
+      mergedNode.prefixItems = Array.from(
+        { length: Math.max(variantTuple.length, hostTuple.length) },
+        (_, index) => {
+          const variantItem = variantTuple[index];
+          const hostItem = hostTuple[index];
+          return isSchemaNode(variantItem) && isSchemaNode(hostItem)
+            ? mergeNestedField(variantItem, hostItem)
+            : (variantItem ?? hostItem);
+        },
+      );
+    }
+    return mergedNode;
+  }
+
+  return mergeWithHost(variantProp, hostProp, mergePropertyRows);
+}
 
 function resolveDiscriminatorParentRef(
   schema: SchemaNode,
@@ -681,7 +953,10 @@ function buildAppliedDiscriminatorSwitcher(
   pointer: string,
 ): SwitcherType | undefined {
   const discriminator = getDiscriminatorObject(schema);
-  if (ctx.isChild || !discriminator?.propertyName) return undefined;
+  if (!discriminator?.propertyName) return undefined;
+  if (ctx.isChild && (!declaresVariants(schema) || inheritsAnyDiscriminator(schema, ctx))) {
+    return undefined;
+  }
   const switcher = buildDiscriminatorSwitcher(schema, discriminator, ctx, pointer);
   return Object.keys(switcher.options).length > 0 ? switcher : undefined;
 }
@@ -712,14 +987,21 @@ function buildDiscriminatorSwitcher(
     ref: string | undefined,
     isDefaultMapping: boolean,
     pointer: string,
-  ): SwitcherOptionType =>
-    buildSwitcherOption(
-      withHostPropertyDefinitions(variant, ref, schema, ownRef, ctx),
+  ): SwitcherOptionType => {
+    const body = withHostPropertyDefinitions(variant, ref, schema, ownRef, ctx);
+    const {
+      discriminator: _discriminator,
+      'x-discriminator': _xDiscriminator,
+      ...withoutOwn
+    } = body;
+    return buildSwitcherOption(
+      ref !== undefined && ref === ownRef ? withoutOwn : body,
       optionCtx(ref),
       isDefaultMapping,
       pointer,
       ref,
     );
+  };
 
   if (Object.keys(mapping).length > 0) {
     for (const [name, ref] of Object.entries(mapping)) {
@@ -796,15 +1078,14 @@ function buildOneOfSwitcher(
 
   for (let i = 0; i < variants.length; i++) {
     const variant = variants[i];
+    const ref = variant['x-original-ref'];
+    const body =
+      typeof ref === 'string' && lostFieldsToCycle(variant)
+        ? (resolveMappedVariant(ref, ctx) ?? variant)
+        : variant;
     const variantMergedWithParent = {
       type: parentSchema.type,
-      ...withHostPropertyDefinitions(
-        variant,
-        variant['x-original-ref'],
-        parentSchema,
-        parentRef,
-        ctx,
-      ),
+      ...withHostPropertyDefinitions(body, ref, parentSchema, parentRef, ctx),
     };
     const { label: title, typeLabel } = deriveVariantLabel(variant, parentSchema);
     const variantPointer = `${parentPointer}/${compositionKey}/${i}`;
@@ -892,7 +1173,7 @@ function buildSwitcherOption(
     return option;
   }
 
-  const type = schema.type || detectJsonSchemaType(schema);
+  const type = schemaType(schema);
 
   if (optionRef) ctx.activeRefs.add(optionRef);
   try {
@@ -943,6 +1224,8 @@ export function buildPropertyTree(
   ctx: SchemaTreeContext,
   rootJsonPointer: string,
 ): PropertyType {
+  const rootRef = preparedRoot['x-original-ref'];
   delete preparedRoot['x-original-ref'];
-  return buildPropertyForNode(preparedRoot, ctx, {}, rootJsonPointer);
+  const rootCtx = typeof rootRef === 'string' ? { ...ctx, rootRef } : ctx;
+  return buildPropertyForNode(preparedRoot, rootCtx, {}, rootJsonPointer);
 }

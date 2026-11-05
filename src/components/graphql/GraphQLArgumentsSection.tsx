@@ -9,7 +9,7 @@ interface Props {
   fieldExpandLevel?: number;
   parentName?: string;
   title?: string;
-  expanded?: boolean;
+  sectionKey?: string;
 }
 
 function GraphQLArgumentsSectionComponent({
@@ -17,7 +17,7 @@ function GraphQLArgumentsSectionComponent({
   fieldExpandLevel = 0,
   parentName,
   title,
-  expanded,
+  sectionKey,
 }: Props) {
   return (
     <>
@@ -39,7 +39,7 @@ function GraphQLArgumentsSectionComponent({
           isArgument
           fieldExpandLevel={fieldExpandLevel}
           parentTypeName={parentName}
-          expanded={expanded}
+          sectionKey={sectionKey}
         />
       ))}
     </>

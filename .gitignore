@@ -1,6 +1,7 @@
 node_modules
 bin
 stats.json
+stats.html
 scripts/*.pem
 scripts/*.pem.pub
 typings/

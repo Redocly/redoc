@@ -451,7 +451,6 @@ describe('resolveLegacyHashToRoute', () => {
     );
   });
 
-
   describe('old ids of description headings renamed from all of their inline text', () => {
     const sectionRouteIndex = (description: string) => {
       const { sectionItems } = collectMarkdownSections(description, '/docs', {
@@ -504,11 +503,44 @@ describe('resolveLegacyHashToRoute', () => {
       expect(resolveLegacyHashToRoute('#section/item', '/docs', index)).toBe('/docs/section/item');
     });
 
+    it('prefers a current path over an old id in the tail fallback', () => {
+      const index = buildRouteIndex(
+        [
+          {
+            ...makeRoute('/docs/other/section/item-one'),
+            previousPath: '/docs/other/section/item',
+          },
+          makeRoute('/docs/section/item'),
+        ],
+        [],
+        '/docs',
+      );
+
+      expect(resolveLegacyHashToRoute('#section/item/api_key', '/docs', index)).toBe(
+        '/docs/section/item#section/item/api_key',
+      );
+    });
+
     it('sends an old id two headings shared to the first of them', () => {
       const index = sectionRouteIndex('# Top\n\n## Same **a**\n\n## Same **b**\n');
 
       expect(resolveLegacyHashToRoute('#section/top/same', '/docs', index)).toBe(
         '/docs/section/top/same-a',
+      );
+    });
+
+    it('resolves the old path of a renamed tag-description heading, which has no legacy prefix', () => {
+      const index = buildRouteIndex(
+        [
+          makeRoute('/docs/pets'),
+          { ...makeRoute('/docs/pets/header-with-bold'), previousPath: '/docs/pets/header-with' },
+        ],
+        [],
+        '/docs',
+      );
+
+      expect(resolveLegacyHashToRoute('#pets/header-with', '/docs', index)).toBe(
+        '/docs/pets/header-with-bold',
       );
     });
   });

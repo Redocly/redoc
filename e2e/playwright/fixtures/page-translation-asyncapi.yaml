@@ -1,0 +1,46 @@
+asyncapi: 3.0.0
+info:
+  title: Pet Events
+  version: 1.0.0
+channels:
+  petEvents:
+    address: pets/events
+    messages:
+      petCreated:
+        $ref: '#/components/messages/PetCreated'
+      petDeleted:
+        $ref: '#/components/messages/PetDeleted'
+operations:
+  publishPetEvent:
+    action: send
+    channel:
+      $ref: '#/channels/petEvents'
+    messages:
+      - $ref: '#/channels/petEvents/messages/petCreated'
+      - $ref: '#/channels/petEvents/messages/petDeleted'
+components:
+  messages:
+    PetCreated:
+      name: PetCreated
+      title: Pet created
+      description: Sent when a `pet` is **created**.
+      correlationId:
+        location: $message.header#/correlationId
+        description: Matches the `request` **id**.
+      payload:
+        type: object
+        properties:
+          id:
+            type: string
+    PetDeleted:
+      name: PetDeleted
+      title: Pet deleted
+      description: Sent when a pet is deleted.
+      correlationId:
+        location: $message.header#/correlationId
+        description: Matches the request.
+      payload:
+        type: object
+        properties:
+          id:
+            type: string

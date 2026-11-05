@@ -1,8 +1,10 @@
-import type { Node } from '@markdoc/markdoc';
+import type { Node } from '@redocly/markdoc';
 import type { ContentNode, OverviewSectionWrapperNode } from '../../types/content.js';
 import type { ApiItem } from '../../types/store.js';
 import type { ApiDocsOptions } from '../../types/options.js';
 import type { MarkdownHeading } from '../../types/openapi.js';
+
+import { isForAgentsOnly } from '@redocly/theme/markdoc/tags/visibility';
 
 import { contentType, itemVariant, nodeTypes } from '../../types/common.js';
 import { safeSlugify } from '../../utils/string.js';
@@ -231,6 +233,8 @@ export function resolveMarkdocHeadingIds(
   }
 }
 
+// `saveHeading` overwrites `attributes.id`, and items can be built again over the same nodes;
+// the authored id kept here lets every run derive the same `id` and `previousId`.
 const authoredHeadingIds = new WeakMap<Node, string | undefined>();
 
 export function extractMarkdownSections(
@@ -273,7 +277,7 @@ export function extractMarkdownSections(
     const previousId = headingId(
       unescapeHTMLChars(getMarkdownContent(node) || ''),
       authoredId,
-      parent && (parent.previousId ?? parent.id),
+      parent?.previousId,
     );
 
     node.attributes.id = id;
@@ -476,7 +480,7 @@ export function extractFirstParagraphText(
   }
 
   const topLevelNodes = Array.isArray(ast) ? ast : (ast.children ?? [ast]);
-  const firstNode = topLevelNodes[0];
+  const firstNode = topLevelNodes.find((node) => !isForAgentsOnly(node));
 
   if (!firstNode) return undefined;
 
@@ -501,7 +505,6 @@ export function extractSummaryText(
   return text ? (text.length === 50 ? text + '…' : text) : undefined;
 }
 
-
 function isMarkdocNode(value: unknown): value is Node {
   return !!value && typeof value === 'object' && '$$mdtype' in value;
 }
@@ -525,6 +528,7 @@ export function collectTextContent(node: Node): string {
   const parts: string[] = [];
 
   function walk(current: Node): void {
+    if (isForAgentsOnly(current)) return;
     if (isRawHtmlCode(current)) return;
     if (typeof current.attributes?.content === 'string') {
       parts.push(current.attributes.content);

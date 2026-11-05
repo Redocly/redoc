@@ -134,7 +134,7 @@ export function PageActions({ pageSlug }: { pageSlug: string }): JSX.Element | n
   };
 
   const copyButton = (
-    <Button variant="outlined" icon={renderIcon(state)} onClick={handleCopy}>
+    <Button variant="outlined" size="small" icon={renderIcon(state)} onClick={handleCopy}>
       {copyAction.buttonText}
     </Button>
   );
@@ -175,7 +175,7 @@ export function PageActions({ pageSlug }: { pageSlug: string }): JSX.Element | n
       <SplitButton
         portalled
         variant="outlined"
-        size="medium"
+        size="small"
         toggleAriaLabel={translate('page.actions.moreActions', 'More actions')}
         button={copyButton}
       >
@@ -199,10 +199,12 @@ function renderIcon(state: CopyState): JSX.Element {
 const PageActionsWrapper = styled.div`
   margin-left: auto;
   padding-left: var(--page-actions-padding-left);
+  user-select: none;
   --button-color: var(--page-actions-button-text-color);
 
-  .button-group-size-medium .button.button-size-medium {
+  && .button.button-size-small {
     --button-icon-left-padding: var(--page-actions-button-padding);
+    --button-icon-padding: var(--page-actions-toggle-padding);
   }
 `;
 
