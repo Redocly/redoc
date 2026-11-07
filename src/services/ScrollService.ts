@@ -10,13 +10,19 @@ export class ScrollService {
   private _scrollParent: Window | HTMLElement | undefined;
   private _emiter: EventEmitter;
   private _prevOffsetY = 0;
+  private _bound = false;
   constructor(private options: RedocNormalizedOptions) {
     this._scrollParent = IS_BROWSER ? window : undefined;
     this._emiter = new EventEmitter();
-    this.bind();
   }
 
+  /**
+   * Starts listening to scroll events. Called when the store is mounted, so a store
+   * that is never mounted does not leave a listener behind.
+   */
   bind() {
+    if (this._bound) return;
+    this._bound = true;
     this._prevOffsetY = this.scrollY();
     if (this._scrollParent) {
       this._scrollParent.addEventListener('scroll', this.handleScroll);
@@ -24,6 +30,7 @@ export class ScrollService {
   }
 
   dispose() {
+    this._bound = false;
     if (this._scrollParent) {
       this._scrollParent.removeEventListener('scroll', this.handleScroll);
     }

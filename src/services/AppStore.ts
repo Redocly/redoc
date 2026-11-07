@@ -79,13 +79,19 @@ export class AppStore {
         this.search.indexItems(this.menu.items);
       }
 
-      this.disposer = observe(this.menu, 'activeItemIdx', change => {
-        this.updateMarkOnMenu(change.newValue as number);
-      });
+      this.observeActiveItem();
     }
   }
 
   onDidMount() {
+    // listeners are attached on mount (not in the constructor), so a store that is never
+    // mounted, e.g. one built twice by React StrictMode, doesn't leak them, and a store that
+    // is disposed and mounted again (StrictMode remount) gets them back
+    this.scroll.bind();
+    this.menu.subscribe();
+    if (this.search) {
+      this.observeActiveItem();
+    }
     this.menu.updateOnHistory();
     this.updateMarkOnMenu(this.menu.activeItemIdx);
   }
@@ -98,7 +104,15 @@ export class AppStore {
     }
     if (this.disposer != null) {
       this.disposer();
+      this.disposer = null;
     }
+  }
+
+  private observeActiveItem() {
+    if (this.disposer != null) return;
+    this.disposer = observe(this.menu, 'activeItemIdx', change => {
+      this.updateMarkOnMenu(change.newValue as number);
+    });
   }
 
   /**
