@@ -232,6 +232,7 @@ function addSingleTagItem(
     result: tagItems,
     basePath: tagSlug,
     parentRbac: effectiveTagRbac,
+    headingLevel: 3,
   });
 
   tagItems.push(...childItems);

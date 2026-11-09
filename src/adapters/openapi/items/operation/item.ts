@@ -13,11 +13,14 @@ export function addOperationItems({
   result,
   basePath: basePathOverride,
   parentRbac,
+  headingLevel,
 }: {
   operations: OperationInfo[];
   result: ApiItem[];
   basePath?: string;
   parentRbac?: RbacScope;
+  /** Heading level of the operation title: 3 when nested under a tag, 2 otherwise. */
+  headingLevel?: number;
 }): void {
   const { basePath } = openApiContext.get();
   const effectiveBasePath = basePathOverride ?? basePath;
@@ -25,7 +28,7 @@ export function addOperationItems({
     categorizeOperations(operations);
 
   for (const operation of [...regular, ...regularDeprecated]) {
-    addOperationItem(operation, effectiveBasePath, result, parentRbac);
+    addOperationItem(operation, effectiveBasePath, result, parentRbac, headingLevel);
   }
 
   const hasWebhooks = webhooks.length > 0 || webhooksDeprecated.length > 0;
@@ -41,7 +44,7 @@ export function addOperationItems({
   }
 
   for (const operation of [...webhooks, ...webhooksDeprecated]) {
-    addOperationItem(operation, effectiveBasePath, result, parentRbac);
+    addOperationItem(operation, effectiveBasePath, result, parentRbac, headingLevel);
   }
 }
 
@@ -73,9 +76,10 @@ function addOperationItem(
   basePath: string,
   result: ApiItem[],
   parentRbac?: RbacScope,
+  headingLevel?: number,
 ): void {
   try {
-    result.push(buildOperationItem(operation, basePath, parentRbac));
+    result.push(buildOperationItem(operation, basePath, parentRbac, headingLevel));
   } catch (error) {
     reportError(
       'buildItem',
@@ -89,6 +93,7 @@ function buildOperationItem(
   operation: OperationInfo,
   basePath: string,
   parentRbac?: RbacScope,
+  headingLevel?: number,
 ): ApiItem {
   const { processContent } = openApiContext.get();
 
@@ -105,7 +110,7 @@ function buildOperationItem(
     link: slug,
     routeSlug: slug,
     ...rbacProp(readRbacScope(operation) ?? parentRbac),
-    content: processContent ? buildItemContent(operation, slug) : null,
+    content: processContent ? buildItemContent(operation, slug, headingLevel) : null,
   };
 
   if (badges) {

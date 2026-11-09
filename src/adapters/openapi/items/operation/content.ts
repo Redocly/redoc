@@ -92,7 +92,11 @@ export function createCallbackIdFactory(): (name: string, httpVerb: string) => s
   };
 }
 
-function _buildItemContent(operationInfo: OperationInfo, pageSlug: string): ApiItemContent {
+function _buildItemContent(
+  operationInfo: OperationInfo,
+  pageSlug: string,
+  headingLevel: number = 2,
+): ApiItemContent {
   const { options, storeCtx, basePath } = openApiContext.get();
   const operationName = getOperationLabel(operationInfo);
   const children: ContentNode[] = [];
@@ -101,7 +105,7 @@ function _buildItemContent(operationInfo: OperationInfo, pageSlug: string): ApiI
   const headerChildren: ContentNode[] = [
     {
       nodeType: nodeTypes.HEADER,
-      level: 2,
+      level: headingLevel,
       label: operationName,
       badges: operationInfo['x-badges'],
       isWebhook,
