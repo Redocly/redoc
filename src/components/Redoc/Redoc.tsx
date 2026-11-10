@@ -28,6 +28,14 @@ export class Redoc extends React.Component<RedocProps> {
     this.props.store.onDidMount();
   }
 
+  componentDidUpdate(prevProps: RedocProps) {
+    if (prevProps.store !== this.props.store) {
+      // only detach: the previous store may be passed in again, so its search worker must keep running
+      prevProps.store.detach();
+      this.props.store.onDidMount();
+    }
+  }
+
   componentWillUnmount() {
     this.props.store.dispose();
   }

@@ -46,8 +46,8 @@ export class MenuStore {
   /**
    * cached flattened menu items to support absolute indexing
    */
-  private _unsubscribe: () => void;
-  private _hashUnsubscribe: () => void;
+  private _unsubscribe?: () => void;
+  private _hashUnsubscribe?: () => void;
 
   /**
    *
@@ -61,13 +61,18 @@ export class MenuStore {
 
     this.flatItems = flattenByProp(this.items || [], 'items');
     this.flatItems.forEach((item, idx) => (item.absoluteIdx = idx));
-
-    this.subscribe();
   }
 
+  /**
+   * Subscribes to scroll and history updates. Called when the store is mounted.
+   */
   subscribe() {
-    this._unsubscribe = this.scroll.subscribe(this.updateOnScroll);
-    this._hashUnsubscribe = this.history.subscribe(this.updateOnHistory);
+    if (!this._unsubscribe) {
+      this._unsubscribe = this.scroll.subscribe(this.updateOnScroll);
+    }
+    if (!this._hashUnsubscribe) {
+      this._hashUnsubscribe = this.history.subscribe(this.updateOnHistory);
+    }
   }
 
   @action
@@ -252,7 +257,9 @@ export class MenuStore {
   }
 
   dispose() {
-    this._unsubscribe();
-    this._hashUnsubscribe();
+    this._unsubscribe?.();
+    this._hashUnsubscribe?.();
+    this._unsubscribe = undefined;
+    this._hashUnsubscribe = undefined;
   }
 }

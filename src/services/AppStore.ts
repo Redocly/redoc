@@ -79,26 +79,48 @@ export class AppStore {
         this.search.indexItems(this.menu.items);
       }
 
-      this.disposer = observe(this.menu, 'activeItemIdx', change => {
-        this.updateMarkOnMenu(change.newValue as number);
-      });
+      this.observeActiveItem();
     }
   }
 
   onDidMount() {
+    // listeners are attached on mount (not in the constructor), so a store that is never
+    // mounted, e.g. one built twice by React StrictMode, doesn't leak them, and a store that
+    // is disposed and mounted again (StrictMode remount) gets them back
+    this.scroll.bind();
+    this.menu.subscribe();
+    if (this.search) {
+      this.observeActiveItem();
+    }
     this.menu.updateOnHistory();
     this.updateMarkOnMenu(this.menu.activeItemIdx);
   }
 
-  dispose() {
+  /**
+   * Removes the scroll, history and menu listeners attached by `onDidMount`.
+   * The store stays usable and can be mounted again; the search worker keeps running.
+   */
+  detach() {
     this.scroll.dispose();
     this.menu.dispose();
+    if (this.disposer != null) {
+      this.disposer();
+      this.disposer = null;
+    }
+  }
+
+  dispose() {
+    this.detach();
     if (this.search) {
       this.search.dispose();
     }
-    if (this.disposer != null) {
-      this.disposer();
-    }
+  }
+
+  private observeActiveItem() {
+    if (this.disposer != null) return;
+    this.disposer = observe(this.menu, 'activeItemIdx', change => {
+      this.updateMarkOnMenu(change.newValue as number);
+    });
   }
 
   /**
