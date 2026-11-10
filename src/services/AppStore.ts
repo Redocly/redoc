@@ -96,15 +96,23 @@ export class AppStore {
     this.updateMarkOnMenu(this.menu.activeItemIdx);
   }
 
-  dispose() {
+  /**
+   * Removes the scroll, history and menu listeners attached by `onDidMount`.
+   * The store stays usable and can be mounted again; the search worker keeps running.
+   */
+  detach() {
     this.scroll.dispose();
     this.menu.dispose();
-    if (this.search) {
-      this.search.dispose();
-    }
     if (this.disposer != null) {
       this.disposer();
       this.disposer = null;
+    }
+  }
+
+  dispose() {
+    this.detach();
+    if (this.search) {
+      this.search.dispose();
     }
   }
 

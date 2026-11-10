@@ -98,7 +98,7 @@ describe('Redoc scroll listeners', () => {
     expect(scrollListeners.size).toBe(0);
   });
 
-  test('Redoc disposes the previous store when it receives a new one', () => {
+  test('Redoc detaches the previous store when it receives a new one', () => {
     const first = new AppStore(spec as any, undefined, options);
     const second = new AppStore(spec as any, undefined, options);
 
@@ -111,6 +111,28 @@ describe('Redoc scroll listeners', () => {
 
     act(() => root.unmount());
 
+    expect(scrollListeners.size).toBe(0);
+  });
+
+  test('Redoc keeps the search worker of a store that is passed in again', () => {
+    const first = new AppStore(spec as any);
+    const second = new AppStore(spec as any);
+    // the in-process worker used by jest has no terminate()
+    const terminateFirst = jest.fn();
+    (first.search!.searchWorker as any).terminate = terminateFirst;
+    (second.search!.searchWorker as any).terminate = jest.fn();
+
+    act(() => root.render(<Redoc store={first} />));
+    act(() => root.render(<Redoc store={second} />));
+    act(() => root.render(<Redoc store={first} />));
+
+    expect(terminateFirst).not.toHaveBeenCalled();
+    expect(scrollSubscribers(first)).toBe(1);
+    expect(scrollSubscribers(second)).toBe(0);
+
+    act(() => root.unmount());
+
+    expect(terminateFirst).toHaveBeenCalledTimes(1);
     expect(scrollListeners.size).toBe(0);
   });
 });
