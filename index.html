@@ -8,6 +8,16 @@
       content="ReDoc Interactive Demo. OpenAPI/Swagger-generated API Reference Documentation"
     />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <script>
+      // Opt the page into Redoc's page-level color mode: Redoc syncs <html> only when it already has a mode.
+      try {
+        var m = localStorage.getItem('redoc.colorMode');
+        if (m !== 'light' && m !== 'dark') {
+          m = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.classList.add(m);
+      } catch (e) {}
+    </script>
     <link rel="icon" type="image/svg+xml" href="/redoc/favicon.svg" />
     <script type="module" crossorigin src="/redoc/assets/index-D1_vZUUf.js"></script>
     <link rel="stylesheet" crossorigin href="/redoc/assets/index-5YXVxjRj.css">
