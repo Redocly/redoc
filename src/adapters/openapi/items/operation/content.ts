@@ -282,6 +282,7 @@ function _buildItemContent(operationInfo: OperationInfo, pageSlug: string): ApiI
       options,
       operationId,
       ignoreNamedSchemas,
+      isWebhook,
     );
     if (responsesNode) {
       const hasAnyResponseSample = responsesNode.responses?.some(
@@ -438,6 +439,7 @@ function buildCallbackOperationSection(
     options,
     `${operationId}/callbacks/${callbackId}`,
     ignoreNamedSchemas,
+    true,
   );
   const contentChildren: ContentNode[] = [...cbRequestChildren];
   if (cbResponsesSection) {
@@ -967,6 +969,7 @@ function buildResponsesSection(
   markdownOptions: ParseMarkdownOptions,
   operationId: string,
   ignoreNamedSchemas?: Set<string>,
+  isEvent?: boolean,
 ): ItemContentNode | undefined {
   if (!operationInfo.responses) return undefined;
 
@@ -1103,6 +1106,7 @@ function buildResponsesSection(
     variant: 'responses',
     responses: responsesList,
     pointer: operationInfo.pointer + '/responses',
+    ...(isEvent && { isEvent: true }),
   };
 }
 

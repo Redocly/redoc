@@ -125,7 +125,13 @@ export function ResponsesSection({ node }: { node: ItemContentNode }): ReactElem
             />
           )}
           {activeSchemaId && (
-            <SchemaView schemaId={activeSchemaId} expandByDefault level={1} skipWriteOnly />
+            <SchemaView
+              schemaId={activeSchemaId}
+              expandByDefault
+              level={1}
+              skipReadOnly={Boolean(node.isEvent)}
+              skipWriteOnly={!node.isEvent}
+            />
           )}
         </DeepLinkSectionContext.Provider>
       </ResponseContent>
