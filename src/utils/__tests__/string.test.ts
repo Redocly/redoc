@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 
-import { asString, tryDecodeURIComponent } from '../string.js';
+import { asString, safeSlugify, tryDecodeURIComponent } from '../string.js';
 
 describe('asString', () => {
   it('keeps non-empty strings', () => {
@@ -51,5 +51,27 @@ describe('tryDecodeURIComponent', () => {
   it('decodes the rest of a string around a lone percent sign', () => {
     expect(tryDecodeURIComponent('/other/50%%20off')).toBe('/other/50% off');
     expect(tryDecodeURIComponent('/other/50%off')).toBe('/other/50%off');
+  });
+});
+
+describe('safeSlugify', () => {
+  it('slugifies latin text', () => {
+    expect(safeSlugify('Hello World')).toBe('Hello-World');
+    expect(safeSlugify('Café & Bar')).toBe('Cafe-and-Bar');
+    expect(safeSlugify('Привет мир')).toBe('Privet-mir');
+  });
+
+  it('keeps text that slugify() cannot transliterate', () => {
+    expect(safeSlugify('数据')).toBe('数据');
+  });
+
+  it('keeps the CJK part of a name that also has an ASCII part', () => {
+    expect(safeSlugify('demo数据')).toBe('demo数据');
+    expect(safeSlugify('demo数据备份')).toBe('demo数据备份');
+    expect(safeSlugify('demo数据')).not.toBe(safeSlugify('demo数据备份'));
+  });
+
+  it('ignores dropped symbols that are not letters or digits', () => {
+    expect(safeSlugify('ok 👍')).toBe('ok');
   });
 });

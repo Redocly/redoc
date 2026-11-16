@@ -30,13 +30,23 @@ export function tryDecodeURIComponent(str: string): string {
 }
 
 /**
+ * slugify() silently drops letters it has no transliteration for, such as CJK characters, so
+ * `demo数据` and `demo数据备份` would share the slug `demo`.
+ */
+function dropsLetters(value: string): boolean {
+  if (!/[^\p{ASCII}]/u.test(value)) return false;
+  return Array.from(value).some((char) => /[\p{L}\p{N}]/u.test(char) && !slugify(char));
+}
+
+/**
  * slugify() returns empty string when failed to slugify.
  * so try to return minimum slugified-string with failed one which keeps original value
  * the regex codes are referenced with https://gist.github.com/mathewbyrne/1280286
  */
 export function safeSlugify(value: string): string {
+  const slug = slugify(value);
   return (
-    slugify(value) ||
+    (slug && !dropsLetters(value) ? slug : '') ||
     value
       .toString()
       .toLowerCase()
