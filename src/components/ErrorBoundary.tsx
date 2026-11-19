@@ -2,17 +2,21 @@ import { Component } from 'react';
 import { styled } from 'styled-components';
 
 import type { ReactElement, ReactNode, ErrorInfo, ContextType } from 'react';
+import type { RedocTelemetryConfig } from '../telemetry/RedocTelemetry.js';
 
 import { breakpoints } from '@redocly/theme/core/openapi';
 import { Accordion } from '@redocly/theme/markdoc/components/Accordion/Accordion';
 
 import { sendErrorTelemetry, TelemetryContext } from '../telemetry/index.js';
+import { RedocTelemetry } from '../telemetry/RedocTelemetry.js';
 
 type ErrorBoundaryProps = {
   children: ReactNode;
   fallback?: ReactNode;
-  /** `page` (default) replaces the page body; any other scope renders nothing in its place. */
-  scope?: 'page' | 'section' | 'node' | 'sidebar';
+  /** `page` (default) and `root` show the error page in place of their children; any other scope renders nothing. */
+  scope?: 'root' | 'page' | 'section' | 'node' | 'sidebar';
+  /** Reports through its own telemetry instance instead of the context: for a boundary that sits above the telemetry provider. */
+  telemetryConfig?: Partial<RedocTelemetryConfig>;
 };
 
 type ErrorBoundaryState = {
@@ -35,12 +39,10 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
     console.error('[api-docs] Rendering error:', error, errorInfo.componentStack);
-    sendErrorTelemetry(
-      this.context,
-      errorEventId(this.props.scope),
-      error,
-      errorInfo.componentStack,
-    );
+    const { telemetryConfig, scope } = this.props;
+    const telemetry = telemetryConfig ? new RedocTelemetry(telemetryConfig) : this.context;
+    sendErrorTelemetry(telemetry, errorEventId(scope), error, errorInfo.componentStack);
+    if (telemetryConfig) void telemetry.forceFlush();
   }
 
   render(): ReactNode {
@@ -48,7 +50,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
       if (this.props.fallback) {
         return this.props.fallback;
       }
-      if (this.props.scope && this.props.scope !== 'page') {
+      if (this.props.scope && this.props.scope !== 'page' && this.props.scope !== 'root') {
         return null;
       }
       return <ErrorPage message={this.state.error?.message} />;
@@ -114,6 +116,15 @@ const Title = styled.h1`
 
 const DetailsAccordion = styled(Accordion)`
   margin: var(--spacing-lg, 24px) 0 0;
+
+  summary svg {
+    width: var(--md-accordion-chevron-icon-size, 16px);
+    height: var(--md-accordion-chevron-icon-size, 16px);
+  }
+
+  summary svg path {
+    fill: var(--md-accordion-chevron-icon-color, currentColor);
+  }
 `;
 
 const Message = styled.div`

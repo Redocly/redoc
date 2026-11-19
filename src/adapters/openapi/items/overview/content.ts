@@ -79,7 +79,7 @@ function _buildOverviewContent({
     sectionId: '/',
   };
 
-  const summary = parseMarkdown(info.summary, options);
+  const summary = parseMarkdown(info?.summary, options);
   if (summary) {
     overviewSection.children.push({
       nodeType: nodeTypes.MARKDOC,

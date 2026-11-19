@@ -1,6 +1,7 @@
 import type { GraphQLConfig, LayoutVariant } from '@redocly/config';
 import type { GraphQLSchema } from 'graphql';
 import type { ApiDocsOptions } from './options.js';
+import type { UniqueSlugger } from '../utils/unique-slugger.js';
 
 export type GraphQLInfo = {
   title?: string;
@@ -79,4 +80,5 @@ export type GraphqlBuildContext = {
   menuConfig?: MenuConfig;
   options: ApiDocsOptions;
   processContent: boolean;
+  slugger: UniqueSlugger;
 };

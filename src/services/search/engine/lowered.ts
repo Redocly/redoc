@@ -1,7 +1,11 @@
 import type { SearchDocument } from '../types.js';
 import type { ParsedQuery } from './types.js';
 
-import { MIN_INFIX_MATCH_LENGTH, MIN_QUERY_WORD_LENGTH, isWordChar } from '../text-match.js';
+import {
+  MIN_INFIX_MATCH_LENGTH,
+  MIN_QUERY_WORD_LENGTH,
+  isWordChar,
+} from '@redocly/theme/core/utils/search-text-match';
 import { lowerText } from './text.js';
 
 /**

@@ -8,6 +8,7 @@ import type { RawApiDocsOptions } from '../../types/options.js';
 
 import { withStoreProvider } from '../withStoreProvider.js';
 import { appStore, environmentAtom } from '../../jotai/app.js';
+import { writeAppState } from '../../utils/app-state-storage.js';
 
 const NO_ITEMS: ApiItem[] = [];
 
@@ -30,13 +31,11 @@ const SERVERS: NonNullable<ApiStore['servers']> = [
   },
 ];
 
-const Wrapped = withStoreProvider(
-  (() => null) as unknown as React.ComponentType<{
-    items: ApiItem[];
-    store: ApiStore;
-    options: RawApiDocsOptions;
-  }>,
-);
+const Wrapped = withStoreProvider<{
+  items: ApiItem[];
+  store: ApiStore;
+  options: RawApiDocsOptions;
+}>(() => null);
 
 function renderWithParentStore(apiStore: ApiStore) {
   const parentStore = createStore();
@@ -49,7 +48,7 @@ function renderWithParentStore(apiStore: ApiStore) {
 }
 
 beforeEach(() => {
-  document.cookie = 'redoc.appStore=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+  writeAppState('redoc.appStore', null);
   sessionStorage.clear();
 });
 
@@ -69,18 +68,26 @@ describe('withStoreProvider server environment seeding', () => {
     expect(store.get(appStore).environments).toEqual({});
   });
 
-  it('resolves a persisted environment name in a fresh session (cookie only, no sessionStorage)', () => {
-    // The env name survives in the cookie while the env values (sessionStorage)
-    // are gone — seeding must restore them so the saved selection sticks.
-    document.cookie = `redoc.appStore=${encodeURIComponent(
-      JSON.stringify({ environment: 'Prod env' }),
-    )}; path=/`;
+  it('resolves a persisted environment name in a fresh session (no sessionStorage)', () => {
+    // The env name is persisted while the env values (sessionStorage) are gone,
+    // so seeding must restore them for the saved selection to stick.
+    writeAppState('redoc.appStore', JSON.stringify({ environment: 'Prod env' }));
 
     const store = renderWithParentStore(makeStore(SERVERS));
 
     const [env, envName] = store.get(environmentAtom);
     expect(envName).toBe('Prod env');
     expect(env.server).toBe('https://rest.prod.example.com');
+  });
+
+  it('defaults to its own first server when an earlier store in the session seeded others first', () => {
+    renderWithParentStore(makeStore(SERVERS.slice(1)));
+
+    const store = renderWithParentStore(makeStore(SERVERS));
+
+    const [env, envName] = store.get(environmentAtom);
+    expect(envName).toBe('Test env');
+    expect(env.server).toBe('https://rest.test.example.com');
   });
 
   it('does not revert user-edited environment values when the effect re-runs', () => {

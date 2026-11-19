@@ -11,7 +11,7 @@ export function buildEnumContent(
 ): ApiItemContent {
   const values = enumType.getValues();
   const containerChildren: ContentNode[] = [
-    { nodeType: nodeTypes.HEADER, level: 2, label: enumType.name, showPageActions: true },
+    { nodeType: nodeTypes.HEADER, level: 3, label: enumType.name, showPageActions: true },
   ];
 
   const descriptionContent = parseMarkdown(enumType.description, markdownOptions);

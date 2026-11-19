@@ -94,7 +94,6 @@ describe('populateAsyncApiStore — security schemes', () => {
 
     expect(store.securitySchemeStore.oauth.flows).toEqual({});
   });
-
 });
 
 describe('processAsyncApiDocument specVersion', () => {

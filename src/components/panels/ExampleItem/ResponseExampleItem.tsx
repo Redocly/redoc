@@ -203,7 +203,9 @@ export function ResponseExampleItem({ node }: { node: ResponseExamplesPanelItem 
     return (
       <ResponsePanelHeader>
         {!node.hideHeaderTitle && (
-          <PanelHeaderTitle>{translate('response', 'Response')}</PanelHeaderTitle>
+          <PanelHeaderTitle>
+            {node.panelLabel ?? translate('response', 'Response')}
+          </PanelHeaderTitle>
         )}
         {responseCodes && responseCodes.length > 0 && (
           <ResponseCodesTabList>
@@ -225,7 +227,7 @@ export function ResponseExampleItem({ node }: { node: ResponseExamplesPanelItem 
         )}
       </ResponsePanelHeader>
     );
-  }, [responseCodes, activeCode, node.hideHeaderTitle, translate, selectCode]);
+  }, [responseCodes, activeCode, node.hideHeaderTitle, node.panelLabel, translate, selectCode]);
 
   if (resolved.length === 0 && !responseCodes?.length) {
     return <></>;

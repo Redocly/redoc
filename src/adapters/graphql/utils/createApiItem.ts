@@ -14,7 +14,6 @@ import type { ApiItemContent } from '../../../types/content.js';
 import { type ItemVariant, itemVariant } from '../../../types/common.js';
 import type { ParseMarkdownOptions } from '../../utils/parseMarkdown.js';
 
-import { safeSlugify } from '../../../utils/string.js';
 import { joinWithSeparator } from '../../../utils/url.js';
 import { shouldIncludeItem } from '../utils/shouldIncludeItem.js';
 import { buildDirectiveContent } from '../items/directive/content.js';
@@ -73,7 +72,7 @@ export function createApiItem<T>(params: CreateApiItemParams<T>): ApiItem | null
     ? params.parentPath
     : joinWithSeparator(context.basePath, DEFAULT_PARENT_PATH_SEGMENTS[params.variant]);
 
-  const slug = joinWithSeparator(parentPath, safeSlugify(params.name.toLowerCase()));
+  const slug = context.slugger(params.name, parentPath, itemKey);
 
   const label = params.label ?? params.name;
 

@@ -41,7 +41,7 @@ function BodyMimeTypeFieldComponent({
   const bodyLabel = translate('body', 'Body');
 
   return (
-    <Title id={headingId}>
+    <BodyTitle id={headingId}>
       {deepLink ? <DeepLinkAnchor to={deepLink} label={`link to ${bodyLabel}`} /> : null}
       {bodyLabel}
       {hasMultiple ? (
@@ -68,16 +68,16 @@ function BodyMimeTypeFieldComponent({
           </DropdownMenu>
         </DropdownTheme>
       ) : (
-        <SingleMediaType>{mediaTypes[0]}</SingleMediaType>
+        <BodyMediaType>{mediaTypes[0]}</BodyMediaType>
       )}
       {required ? <RequiredLabel>{translate('required', 'required')}</RequiredLabel> : null}
-    </Title>
+    </BodyTitle>
   );
 }
 
 export const BodyMimeTypeField = memo(BodyMimeTypeFieldComponent);
 
-const Title = styled.div`
+const BodyTitle = styled.div`
   position: relative;
   display: flex;
   align-items: center;
@@ -135,7 +135,7 @@ const RequiredLabel = styled.span`
   font-weight: var(--font-weight-regular);
 `;
 
-const SingleMediaType = styled.span`
+const BodyMediaType = styled.span`
   margin-right: var(--spacing-unit);
   cursor: default;
   background: none;

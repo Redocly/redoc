@@ -15,8 +15,6 @@ import { buildUnionItems } from '../items/union/item.js';
 import { buildInterfaceItems } from '../items/interface/item.js';
 import { createGroup } from './utils.js';
 import { graphqlContext } from '../buildContext.js';
-import { joinWithSeparator } from '../../../utils/url.js';
-import { safeSlugify } from '../../../utils/string.js';
 import { DEFAULT_GROUP_LABELS, GRAPHQL_VARIANTS } from '../utils/constants.js';
 import { GRAPHQL_MENU_GROUP_ITEM_BUILDERS } from './itemBuilders.js';
 
@@ -79,10 +77,7 @@ function buildCustomGroup(
   const typeFilter = groupConfig.types;
   const items: ApiItem[] = [];
   const context = graphqlContext.get();
-  const parentPath = joinWithSeparator(
-    context.basePath,
-    safeSlugify(groupConfig.name?.toLowerCase()),
-  );
+  const parentPath = context.slugger(groupConfig.name, context.basePath);
 
   const appendBuiltItems = (enabled: boolean, build: () => ApiItem[]): void => {
     if (!enabled) return;
@@ -204,16 +199,13 @@ function buildCustomGroup(
 function buildOtherGroup(processedItems: Set<string>): ApiItem | null {
   const context = graphqlContext.get();
   const groupName = context.menuConfig?.otherItemsGroupName || 'Other';
-  const parentPath = joinWithSeparator(context.basePath, safeSlugify(groupName?.toLowerCase()));
+  const parentPath = context.slugger(groupName, context.basePath);
   const items: ApiItem[] = [];
 
   for (const typeGroup of GRAPHQL_VARIANTS) {
     const groupItems = GRAPHQL_MENU_GROUP_ITEM_BUILDERS[typeGroup]({
       processedItems,
-      parentPath: joinWithSeparator(
-        parentPath,
-        safeSlugify(DEFAULT_GROUP_LABELS[typeGroup]?.toLowerCase()),
-      ),
+      parentPath: context.slugger(DEFAULT_GROUP_LABELS[typeGroup], parentPath),
     });
     if (groupItems.length > 0) {
       items.push(

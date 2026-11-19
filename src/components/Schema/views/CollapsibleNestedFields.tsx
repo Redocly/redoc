@@ -5,7 +5,7 @@ import type { ReactElement, ReactNode } from 'react';
 import type { TFunction } from '../../../hooks/useTranslate.js';
 import type { PropertyType } from '../../../types/schema.js';
 
-import { LEVEL_COLORS } from '../utils.js';
+import { cycleColorsByLevel } from '../utils.js';
 import { ShowProperty, CircleIconSpan, NestedWrapper, StyledNested } from '../styled.js';
 import { tryDecodeURIComponent } from '../../../utils/string.js';
 import { stripArrayMarkers } from '../../../utils/deep-link.js';
@@ -204,6 +204,6 @@ function CircleIcon({
   level?: number;
   expanded?: boolean;
 }): ReactElement {
-  const color = expanded ? LEVEL_COLORS[level % LEVEL_COLORS.length] : undefined;
+  const color = expanded ? cycleColorsByLevel(level) : undefined;
   return <CircleIconSpan $color={color}>{sign}</CircleIconSpan>;
 }

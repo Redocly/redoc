@@ -1,6 +1,7 @@
 import { hasRbacScope } from '../../../../adapters/rbac.js';
 
 import type { ItemContentNode } from '../../../../types/content.js';
+import type { AccessFilter } from '../../../../utils/access-filter.js';
 import type { ExtractContext, Extractor } from './context.js';
 
 import {
@@ -8,6 +9,7 @@ import {
   makeDeepLink,
   CALLBACKS_SECTION,
 } from '../../../../utils/deep-link.js';
+import { accessFilterOf } from '../../../../utils/access-filter.js';
 import { makeParam } from '../param.js';
 import {
   responseFieldsPlace,
@@ -26,7 +28,7 @@ export const responsesExtractor: Extractor = {
     for (const resp of node.responses ?? []) {
       if (hasRbacScope(resp)) continue;
       addResponseRow(resp, ctx);
-      if (ctx.hasSchemas) extractResponseFields(resp, ctx);
+      if (ctx.hasSchemas) extractResponseFields(resp, accessFilterOf(node), ctx);
     }
   },
 };
@@ -59,7 +61,11 @@ function addResponseRow(resp: Response, ctx: ExtractContext): void {
   );
 }
 
-function extractResponseFields(resp: Response, ctx: ExtractContext): void {
+function extractResponseFields(
+  resp: Response,
+  accessFilter: AccessFilter,
+  ctx: ExtractContext,
+): void {
   const respPlace = scopedPlace(responseFieldsPlace(resp.code), ctx.scope.callbackId);
 
   const entries: Array<[string | undefined, string]> = resp.mediaTypeContent
@@ -81,6 +87,7 @@ function extractResponseFields(resp: Response, ctx: ExtractContext): void {
         mediaType,
         hasMultipleMediaTypes,
         isResponse: true,
+        accessFilter,
       },
       ctx.scope,
     );

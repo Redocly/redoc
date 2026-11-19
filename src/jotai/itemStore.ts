@@ -95,14 +95,6 @@ export function buildVariantStoreId(
   return `${itemId}#${scope.filter(Boolean).join('&')}`;
 }
 
-export function buildVariantStateKey(
-  parentPath: ReadonlyArray<string> | undefined,
-  localPart: string,
-): string {
-  const basePath = parentPath?.length ? parentPath.join('/') : '';
-  return basePath ? `${basePath}/${localPart}` : localPart;
-}
-
 export type DeepLinkSectionData = {
   /** Route-level item id (slug) */
   id: string;

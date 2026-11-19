@@ -9,6 +9,7 @@ import type { TypeOfUsage } from './telemetry/RedocTelemetry.js';
 import { RedocStandalone, prepareApiDocs } from './RedocStandalone.js';
 import { TypeOfUsageContext } from './telemetry/TypeOfUsageContext.js';
 import { RedoclyApiDocsStandalone } from './RedoclyApiDocsStandalone.js';
+import { ErrorBoundary } from './components/ErrorBoundary.js';
 import { logoFromSpec } from './utils/x-logo.js';
 import { decodeDeepLinkSeparator } from './hooks/deepLinkHash.js';
 import { isTelemetryDisabled } from './options/helpers.js';
@@ -20,12 +21,15 @@ export type { RedocStandaloneProps };
 export type InitOptions = NonNullable<RedocStandaloneProps['options']> & {
   router?: 'hash' | 'history';
   disableTelemetry?: boolean;
-  /** The Docker image sets `type-of-usage="docker"` on the `<redoc>` element. */
+  /**
+   * How this Redoc is used, sent with telemetry: `html`, `cli`, `react`, `docker` or `vs-code`.
+   * Any other value is reported as `html` by `init()` and as `cli` by `hydrate()`.
+   */
   typeOfUsage?: TypeOfUsage;
   basePath?: string;
 };
 
-const TYPES_OF_USAGE: readonly TypeOfUsage[] = ['html', 'cli', 'react', 'docker'];
+const TYPES_OF_USAGE: readonly TypeOfUsage[] = ['html', 'cli', 'react', 'docker', 'vs-code'];
 
 function resolveTypeOfUsage(value: unknown, fallback: TypeOfUsage): TypeOfUsage {
   return TYPES_OF_USAGE.includes(value as TypeOfUsage) ? (value as TypeOfUsage) : fallback;
@@ -155,19 +159,24 @@ export async function hydrate(
   // hydration must render the post-resolution tree, as the server pass does
   const prepared = await prepareApiDocs({ ...props, basePath, convertedDownload: false });
 
-  const app: ReactElement = createElement(RedoclyApiDocsStandalone, {
-    items: prepared.items,
-    store: prepared.store,
-    basePath,
-    options: prepared.options,
-    logo: logoFromSpec(prepared.document),
-    telemetryConfig: {
-      typeOfUsage,
-      ...(isTelemetryDisabled(props.options?.disableTelemetry) ? { disabled: true } : {}),
-    },
-    spec: prepared.document,
-    specUrl: props.specUrl,
-  });
+  const telemetryConfig = {
+    typeOfUsage,
+    ...(isTelemetryDisabled(props.options?.disableTelemetry) ? { disabled: true } : {}),
+  };
+  const app: ReactElement = (
+    <ErrorBoundary scope="root" telemetryConfig={telemetryConfig}>
+      <RedoclyApiDocsStandalone
+        items={prepared.items}
+        store={prepared.store}
+        basePath={basePath}
+        options={prepared.options}
+        logo={logoFromSpec(prepared.document)}
+        telemetryConfig={telemetryConfig}
+        spec={prepared.document}
+        specUrl={props.specUrl}
+      />
+    </ErrorBoundary>
+  );
 
   if (target.childElementCount === 0) {
     createRoot(target).render(wrapInRouter(app, router));

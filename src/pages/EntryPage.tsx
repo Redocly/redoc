@@ -15,6 +15,7 @@ import { TopLevelEntryView } from './TopLevelEntryView.js';
 import { buildTopLevelEntries, buildEagerSlugs, resolveRouteByPathname } from '../utils/routing.js';
 import { useApiDocsScroll } from '../hooks/useApiDocsScroll.js';
 import { useHashLinkRedirect } from '../hooks/useHashLinkRedirect.js';
+import { resolveUnmatchedUrl } from '../utils/deep-link.js';
 import { useIsHydrated } from '../hooks/useIsHydrated.js';
 
 type EntryPageProps = {
@@ -38,7 +39,7 @@ type EntryPageProps = {
  * Section pointer routes (`route.content === null`) live inside the root
  * page's overview body — when one is active, the root page is eager.
  */
-function EntryPageComponent({ routeIndex, basePath }: EntryPageProps): ReactElement {
+function EntryPageComponent({ routeIndex, basePath }: EntryPageProps): ReactElement | null {
   const layout = useAtomValue(layoutAtom);
   const collapsedSidebar = useAtomValue(collapsedSidebarAtom);
   const location = useLocation();
@@ -83,6 +84,8 @@ function EntryPageComponent({ routeIndex, basePath }: EntryPageProps): ReactElem
   }, [topLevelEntries, activePath, isHydrated]);
 
   if (!activeRoute && routeIndex.allRoutes.length > 0) {
+    // `useApiDocsScroll` redirects this URL after the commit.
+    if (resolveUnmatchedUrl(location.pathname, location.hash, basePath, routeIndex)) return null;
     return <NotFoundPage routingBasePath={basePath} />;
   }
 

@@ -13,6 +13,7 @@ import type { RouteItem, TagWithItems } from '../routing.js';
 import { buildItems } from '../../adapters/build.js';
 import { markdocParser } from '../../components/markdoc/markdocParser.js';
 import { buildMarkdownSectionItem, extractMarkdownSections } from '../../adapters/utils/markdoc.js';
+import { resolveLegacyHashToRoute } from '../deep-link.js';
 import {
   buildRouteIndex,
   buildTopLevelEntries,
@@ -356,6 +357,54 @@ describe('collectRoutesRecursively', () => {
 });
 
 describe('buildRouteIndex', () => {
+  it('routes each tag whose name slugifies like another tag to its own operations', async () => {
+    const document = {
+      openapi: '3.1.0',
+      info: { title: 'Demo', version: '1.0.0' },
+      tags: [{ name: 'demo数据' }, { name: 'demo数据备份' }],
+      paths: {
+        '/demo-data': {
+          get: {
+            tags: ['demo数据'],
+            operationId: 'listData',
+            responses: { '200': { description: 'ok' } },
+          },
+        },
+        '/demo-data-backup': {
+          get: {
+            tags: ['demo数据备份'],
+            operationId: 'listBackups',
+            responses: { '200': { description: 'ok' } },
+          },
+        },
+      },
+    } as OpenAPIDefinition;
+    const { items } = await buildItems({
+      type: 'openapi',
+      document,
+      basePath: '/',
+      options: { specType: 'openapi', downloadUrls: [], metadata: {} },
+      markdownParser: markdocParser,
+    });
+    const { allRoutes, tagsWithItems, allTagsWithItems } = runCollect(items);
+
+    const maps = buildRouteIndex(allRoutes, tagsWithItems, '/', allTagsWithItems);
+
+    expect(maps.tags.map((t) => [t.label, t.path])).toEqual([
+      ['demo数据', '/demo'],
+      ['demo数据备份', '/demo-1'],
+    ]);
+    expect(maps.tagByPath.get('/demo')?.items.map((i) => i.path)).toEqual(['/demo/listdata']);
+    expect(maps.tagByPath.get('/demo-1')?.items.map((i) => i.path)).toEqual([
+      '/demo-1/listbackups',
+    ]);
+    expect(maps.itemToParentTag.get('/demo/listdata')?.tag.path).toBe('/demo');
+    expect(resolveLegacyHashToRoute('#demo/listbackups', '/', maps)).toBe('/demo-1/listbackups');
+    expect(resolveLegacyHashToRoute('#demo/listbackups/responses/200', '/', maps)).toBe(
+      '/demo-1/listbackups#demo-1/listbackups/responses/200',
+    );
+  });
+
   it('should return empty maps when called with empty arrays', () => {
     const maps = buildRouteIndex([], [], '/');
     expect(maps.allRoutes).toHaveLength(0);

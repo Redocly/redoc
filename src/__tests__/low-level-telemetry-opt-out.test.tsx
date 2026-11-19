@@ -1,16 +1,33 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { act, cleanup, render, waitFor } from '@testing-library/react';
-import { Telemetry } from '@redocly/redoc-opentelemetry';
 
 import type { ReactElement, ReactNode } from 'react';
 import type { MarkdownAdapter } from '../contexts/markdownAdapter.js';
+import type * as RedocTelemetryModule from '../telemetry/RedocTelemetry.js';
+import type { RedocTelemetryConfig } from '../telemetry/RedocTelemetry.js';
 import type { RawApiDocsOptions } from '../types/options.js';
 
 import { RedocStandalone, prepareApiDocs } from '../RedocStandalone.js';
 import { RedoclyApiDocs } from '../RedoclyApiDocs.js';
 import { RedoclyApiDocsStandalone } from '../RedoclyApiDocsStandalone.js';
+import { TELEMETRY_DISABLED_BY_DEFAULT } from '../telemetry/defaults.js';
 
-const initSpy = vi.spyOn(Telemetry.prototype, 'init');
+const builtWith = vi.hoisted((): Partial<RedocTelemetryConfig>[] => []);
+
+vi.mock('../telemetry/RedocTelemetry.js', async (importOriginal) => {
+  const actual = await importOriginal<typeof RedocTelemetryModule>();
+  class RecordedRedocTelemetry extends actual.RedocTelemetry {
+    constructor(config: RedocTelemetryConfig) {
+      super(config);
+      builtWith.push(config);
+    }
+  }
+  return { ...actual, RedocTelemetry: RecordedRedocTelemetry };
+});
+
+function disabledFlags(): boolean[] {
+  return builtWith.map((config) => config.disabled ?? TELEMETRY_DISABLED_BY_DEFAULT);
+}
 
 type Prepared = Awaited<ReturnType<typeof prepareApiDocs>>;
 
@@ -59,11 +76,11 @@ async function telemetryDisabledFlags(
   await act(async () => {
     render(renderDocs(prepared));
   });
-  return initSpy.mock.calls.map(([config]) => config.disabled);
+  return disabledFlags();
 }
 
 beforeEach(() => {
-  initSpy.mockClear();
+  builtWith.length = 0;
 });
 
 afterEach(() => {
@@ -83,19 +100,18 @@ describe.each(LOW_LEVEL_COMPONENTS)('%s rendered from prepareApiDocs', (_, rende
 describe('RedocStandalone', () => {
   it('follows disableTelemetry when it changes without a new spec', async () => {
     const spec = structuredClone(SPEC);
-    const disabledFlags = () => initSpy.mock.calls.map(([config]) => config.disabled);
     const { rerender } = render(
       <RedocStandalone spec={spec} options={{ disableTelemetry: true }} />,
     );
     await waitFor(() => expect(disabledFlags()).toEqual([true]));
 
-    initSpy.mockClear();
+    builtWith.length = 0;
     await act(async () => {
       rerender(<RedocStandalone spec={spec} options={{ disableTelemetry: false }} />);
     });
     expect(disabledFlags()).toEqual([false]);
 
-    initSpy.mockClear();
+    builtWith.length = 0;
     await act(async () => {
       rerender(<RedocStandalone spec={spec} options={{ disableTelemetry: true }} />);
     });

@@ -1,8 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import {
-  replaceServerVariables,
-} from '../server-variables.js';
+import { replaceServerVariables } from '../server-variables.js';
 
 describe('replaceServerVariables', () => {
   it('substitutes a variable with its default value', () => {

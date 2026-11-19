@@ -26,21 +26,21 @@ export function buildInlinePromptLink(
 export function describeSliceScope(scope: SpecSliceScope): string | undefined {
   switch (scope.kind) {
     case 'operation':
-      return `the ${scope.httpVerb.toUpperCase()} ${scope.pathName} operation`;
+      return `the \`${scope.httpVerb.toUpperCase()} ${scope.pathName}\` operation`;
     case 'tag':
-      return `the "${scope.tagName}" operations`;
+      return `the "${scope.tagName}" tag`;
     case 'schema':
-      return `the ${scope.name} schema`;
+      return `the \`${scope.name}\` schema`;
     case 'channel':
-      return `the "${scope.channelId}" channel`;
+      return `the \`${scope.channelId}\` channel`;
     case 'async-operation':
-      return `the "${scope.operationId}" operation`;
+      return `the \`${scope.operationId}\` operation`;
     case 'graphql-operation':
-      return `the ${scope.name} ${scope.operationType}`;
+      return `the \`${scope.name}\` ${scope.operationType}`;
     case 'graphql-type':
-      return `the ${scope.name} type`;
+      return `the \`${scope.name}\` type`;
     case 'graphql-directive':
-      return `the @${scope.name} directive`;
+      return `the \`@${scope.name}\` directive`;
     case 'graphql-group':
       return scope.label ? `the "${scope.label}" section` : undefined;
     default:
@@ -62,22 +62,48 @@ export function buildFetchSpecPromptLink(
   return url.toString();
 }
 
+/** The sentence a slice carries in place of the description of the whole specification. */
+export function describeSliceSubset(scope: SpecSliceScope): string {
+  const about = describeSliceScope(scope);
+  return about
+    ? `This is a subset of the full specification, limited to ${about}.`
+    : 'This is a subset of the full specification.';
+}
+
+type SliceCopyIntro = {
+  scope: SpecSliceScope;
+  title?: string;
+  /** What the page is about in one line, such as `GET /pets` (`describeSliceTarget`). */
+  target?: string;
+  specUrl?: string;
+};
+
+/** Title, target line and subset quote above a copied slice. */
+export function sliceCopyIntro({ scope, title, target, specUrl }: SliceCopyIntro): string {
+  const quote = [`> ${describeSliceSubset(scope)}`];
+  if (specUrl) quote.push('>', `> You can find the full specification here: ${specUrl}`);
+  return [title ? `# ${title}` : '', target ? `\`${target}\`` : '', quote.join('\n')]
+    .filter((part) => part !== '')
+    .join('\n\n');
+}
+
 export function wrapSliceForCopy(
   content: string,
-  {
-    scope,
-    contentKind,
-    title,
-    specUrl,
-  }: { scope: SpecSliceScope; contentKind: SliceContentKind; title?: string; specUrl?: string },
+  options: SliceCopyIntro & { contentKind: SliceContentKind },
 ): string {
-  const about = describeSliceScope(scope);
-  if (!about) return content;
+  if (!describeSliceScope(options.scope)) return content;
 
-  const heading = title ? `# ${title}\n\n` : '';
-  const source = specUrl ? `, which you can find here: ${specUrl}` : '';
-  const longestRun = Math.max(0, ...(content.match(/`+/g) ?? []).map((run) => run.length));
+  return `${sliceCopyIntro(options)}\n\n${fenceSlice(content, options.contentKind)}\n`;
+}
+
+/**
+ * `content` as a fenced code block tagged `contentKind`, with a fence longer than any backtick
+ * run inside it (at least three), so a Markdown code fence in a description cannot close it.
+ */
+function fenceSlice(content: string, contentKind: SliceContentKind): string {
+  let longestRun = 0;
+  for (const [run] of content.matchAll(/`+/g)) longestRun = Math.max(longestRun, run.length);
   const fence = '`'.repeat(Math.max(3, longestRun + 1));
 
-  return `${heading}This is a subset of the full specification${source}, limited to ${about}.\n\n${fence}${contentKind}\n${content.trimEnd()}\n${fence}\n`;
+  return `${fence}${contentKind}\n${content.trimEnd()}\n${fence}`;
 }

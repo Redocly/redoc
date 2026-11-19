@@ -256,5 +256,4 @@ describe('Nav-only adapter mode (processContent: false)', () => {
       expect(store.securitySchemeStore).toEqual({});
     });
   });
-
 });

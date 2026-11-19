@@ -10,15 +10,16 @@ import type {
 import { createStoreContext } from '../../../../helpers.js';
 import { asyncApiContext } from '../../../buildContext.js';
 import { buildTaggedChannelItem, buildUntaggedChannelItem } from '../item.js';
+import { createUniqueSlugger } from '../../../../../utils/unique-slugger.js';
 
 const baseDoc: AsyncApiDefinition = {
   asyncapi: '3.0.0',
   info: { title: 'Test', version: '1.0' },
   channels: {},
-} as AsyncApiDefinition;
+};
 
 function withBuildContext<T>(document: AsyncApiDefinition, fn: () => T): T {
-  const storeCtx = createStoreContext(document as unknown as Record<string, unknown>);
+  const storeCtx = createStoreContext(document);
   const ctx = {
     document,
     options: {} as ApiDocsOptions,
@@ -30,6 +31,7 @@ function withBuildContext<T>(document: AsyncApiDefinition, fn: () => T): T {
     items: [],
     descriptionItems: [],
     channelSummaries: new Map(),
+    tagSlugger: createUniqueSlugger(),
     processContent: false,
   } as unknown as AsyncApiBuildContext;
   return asyncApiContext.run(ctx, fn);

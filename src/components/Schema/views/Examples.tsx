@@ -10,6 +10,7 @@ import {
   ExampleSummary,
   ExampleDescription,
 } from '../styled.js';
+import { Markdown } from '../../common/Markdown.js';
 import { ExpandableExample } from './ExpandableExample.js';
 
 type ExamplesProps = {
@@ -33,7 +34,9 @@ export function Examples({ examples }: ExamplesProps): ReactElement | null {
           <ExampleItem key={id}>
             <ExampleSummary>{example.summary || id}</ExampleSummary>
             {example.description ? (
-              <ExampleDescription>{example.description}</ExampleDescription>
+              <ExampleDescription>
+                <Markdown source={example.description} />
+              </ExampleDescription>
             ) : null}
             {example.value !== undefined ? <ExpandableExample value={example.value} /> : null}
           </ExampleItem>

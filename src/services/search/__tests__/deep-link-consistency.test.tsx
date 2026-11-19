@@ -26,6 +26,7 @@ import { McpPrompt } from '../../../components/Mcp/McpPrompt.js';
 import { DeepLinkSectionContext, ItemIdContext } from '../../../hooks/useDeepLinkSection.js';
 import { deepLinkToId } from '../../../utils/deep-link.js';
 import { ApiDocsSearchIndexer } from '../indexer/index.js';
+import { collected } from './collected.js';
 
 const DOCUMENT = {
   openapi: '3.1.0',
@@ -139,7 +140,13 @@ function indexRequestBodyFields(
   document: Record<string, unknown> = DOCUMENT,
   schemaId = ROOT_SCHEMA_ID,
 ): Array<{ name: string; deepLink: string }> {
-  const indexer = new ApiDocsSearchIndexer(BASE_PATH, schemaStore, document);
+  const indexer = collected(
+    new ApiDocsSearchIndexer({
+      basePath: BASE_PATH,
+      store: { schemaStore: schemaStore },
+      document: document,
+    }),
+  );
   indexer.addItem({
     type: 'link',
     label: 'Update an existing pet',
@@ -286,7 +293,13 @@ describe('search deep links resolve to rendered field ids', () => {
         ],
       } as unknown as ItemContentNode;
 
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, SCHEMA_STORE, DOCUMENT);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: { schemaStore: SCHEMA_STORE },
+          document: DOCUMENT,
+        }),
+      );
       indexer.addItem({
         type: 'link',
         label: 'Update an existing pet',
@@ -321,7 +334,13 @@ describe('search deep links resolve to rendered field ids', () => {
       ],
     } as unknown as ItemContentNode;
 
-    const indexer = new ApiDocsSearchIndexer(BASE_PATH, SCHEMA_STORE, DOCUMENT);
+    const indexer = collected(
+      new ApiDocsSearchIndexer({
+        basePath: BASE_PATH,
+        store: { schemaStore: SCHEMA_STORE },
+        document: DOCUMENT,
+      }),
+    );
     indexer.addItem({
       type: 'link',
       label: 'Update an existing pet',
@@ -357,7 +376,13 @@ describe('search deep links resolve to rendered field ids', () => {
       },
     } as unknown as ItemContentNode;
 
-    const indexer = new ApiDocsSearchIndexer(BASE_PATH, SCHEMA_STORE, DOCUMENT);
+    const indexer = collected(
+      new ApiDocsSearchIndexer({
+        basePath: BASE_PATH,
+        store: { schemaStore: SCHEMA_STORE },
+        document: DOCUMENT,
+      }),
+    );
     indexer.addItem({
       type: 'link',
       label: 'Update an existing pet',
@@ -419,7 +444,13 @@ describe('search deep links resolve to rendered field ids', () => {
       },
     } as unknown as ItemContentNode;
 
-    const indexer = new ApiDocsSearchIndexer(BASE_PATH, SCHEMA_STORE, DOCUMENT);
+    const indexer = collected(
+      new ApiDocsSearchIndexer({
+        basePath: BASE_PATH,
+        store: { schemaStore: SCHEMA_STORE },
+        document: DOCUMENT,
+      }),
+    );
     indexer.addItem({
       type: 'link',
       label: 'Update an existing pet',
@@ -456,7 +487,13 @@ describe('search deep links resolve to rendered field ids', () => {
   });
 
   it('lands on schema definition page fields (pathOnly anchors)', () => {
-    const indexer = new ApiDocsSearchIndexer(BASE_PATH, SCHEMA_STORE, DOCUMENT);
+    const indexer = collected(
+      new ApiDocsSearchIndexer({
+        basePath: BASE_PATH,
+        store: { schemaStore: SCHEMA_STORE },
+        document: DOCUMENT,
+      }),
+    );
     indexer.addItem({
       type: 'link',
       label: 'Pet',
@@ -500,7 +537,13 @@ describe('search deep links resolve to rendered field ids', () => {
       ],
     } as unknown as ItemContentNode;
 
-    const indexer = new ApiDocsSearchIndexer(BASE_PATH, SCHEMA_STORE, DOCUMENT);
+    const indexer = collected(
+      new ApiDocsSearchIndexer({
+        basePath: BASE_PATH,
+        store: { schemaStore: SCHEMA_STORE },
+        document: DOCUMENT,
+      }),
+    );
     indexer.addItem({
       type: 'link',
       label: 'User events',
@@ -560,7 +603,13 @@ describe('search deep links resolve to rendered field ids', () => {
         },
       }) as unknown as ApiItem;
 
-    const indexer = new ApiDocsSearchIndexer(BASE_PATH, SCHEMA_STORE, document);
+    const indexer = collected(
+      new ApiDocsSearchIndexer({
+        basePath: BASE_PATH,
+        store: { schemaStore: SCHEMA_STORE },
+        document: document,
+      }),
+    );
     indexer.addItem(mcpItem('tool', 'echo'));
     indexer.addItem(mcpItem('prompt', 'complex_prompt'));
     const [tool, prompt] = indexer.getResult();
@@ -605,7 +654,13 @@ describe('search deep links resolve to rendered field ids', () => {
       children: [],
     } as unknown as ContainerNode;
 
-    const indexer = new ApiDocsSearchIndexer(BASE_PATH, SCHEMA_STORE, DOCUMENT);
+    const indexer = collected(
+      new ApiDocsSearchIndexer({
+        basePath: BASE_PATH,
+        store: { schemaStore: SCHEMA_STORE },
+        document: DOCUMENT,
+      }),
+    );
     indexer.addItem({
       type: 'link',
       label: 'User events',

@@ -114,32 +114,36 @@ function HeaderItemComponent({ node, path, parentNode }: HeaderItemProps): React
       </>
     );
 
+    const titleWithStatusBadges = (
+      <>
+        {titleWithBadges}
+        {showDeprecated && (
+          <>
+            {' '}
+            <StyledBadge $deprecated>{translate('badges.deprecated', 'deprecated')}</StyledBadge>
+          </>
+        )}
+        {isWebhook && <StyledBadge $webhook>{translate('badges.webhook', 'Webhook')}</StyledBadge>}
+      </>
+    );
+
     switch (level) {
       case 1:
         return <H1 $inline={isGraphQL}>{titleWithBadges}</H1>;
       case 2:
-        return (
-          <H2 $inline={isGraphQL}>
-            {titleWithBadges}
-            {showDeprecated && (
-              <>
-                {' '}
-                <StyledBadge $deprecated>
-                  {translate('badges.deprecated', 'deprecated')}
-                </StyledBadge>
-              </>
-            )}
-            {isWebhook && (
-              <StyledBadge $webhook>{translate('badges.webhook', 'Webhook')}</StyledBadge>
-            )}
-          </H2>
-        );
+        return <H2 $inline={isGraphQL}>{titleWithStatusBadges}</H2>;
       case 3:
-        return <H3 $inline={isGraphQL}>{titleWithBadges}</H3>;
+        return <H3 $inline={isGraphQL}>{titleWithStatusBadges}</H3>;
       case 4:
         return <H4 $inline={isGraphQL}>{titleWithBadges}</H4>;
       case 5:
         return <H5 $inline={isGraphQL}>{titleWithBadges}</H5>;
+      case 6:
+        return (
+          <H4 as="h6" $inline={isGraphQL}>
+            {titleWithBadges}
+          </H4>
+        );
       default:
         return null;
     }
@@ -232,7 +236,7 @@ const HeadingContentWrapper = styled.div<{
   ${({ $isAsyncApi }) =>
     $isAsyncApi &&
     css`
-      &:has(h4) {
+      &:has(h4, h6) {
         margin-top: var(--spacing-md);
         margin-bottom: 0;
       }

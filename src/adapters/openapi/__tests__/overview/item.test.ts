@@ -71,5 +71,4 @@ describe('buildOverviewItems', () => {
       content: mockedOverviewContent,
     });
   });
-
 });

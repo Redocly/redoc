@@ -1,9 +1,7 @@
 import { memo, useMemo, type ReactElement } from 'react';
-import { styled } from 'styled-components';
 import { useAtomValue } from 'jotai';
 
 import type { PanelNode, ExamplesNode } from '../../types/content.js';
-import type { SchemaNode } from '../../types/schema.js';
 
 import { panelKind } from '../../types/common.js';
 import { refPointerToStoreId } from '../../utils/refPointer.js';
@@ -11,14 +9,7 @@ import { DeepLinkSectionContext } from '../../hooks/useDeepLinkSection.js';
 import { schemaEntryAtom } from '../../jotai/schema.js';
 import { useResolvedExamples } from '../ItemContent/hooks.js';
 import { SchemaView } from '../Schema/SchemaView.js';
-import { Markdown } from '../common/Markdown.js';
 import { ContentWrapper } from '../common/ContentWrapper.js';
-import { isPrimitiveLikeSchema, schemaType } from '../../services/schema/propertyBuilder.js';
-
-function isStructuralSchema(data: SchemaNode): boolean {
-  const type = schemaType(data);
-  return !isPrimitiveLikeSchema(data, type);
-}
 
 export type SchemaDefinitionProps = {
   schemaRef?: string;
@@ -47,17 +38,6 @@ function SchemaDefinitionComponent({
     [schemaId],
   );
 
-  const descriptionSource = useMemo((): unknown => {
-    const data = schemaEntry?.data;
-    const raw = data?.description;
-    if (!raw || (typeof raw === 'string' && !raw.trim()) || !data || !isStructuralSchema(data)) {
-      return undefined;
-    }
-    // Schema descriptions aren't parsed at build — `raw` is a raw markdown string (standalone,
-    // parsed lazily by the adapter) or an AST/renderable tree (an embedder that pre-parses).
-    return raw;
-  }, [schemaEntry?.data]);
-
   const hasSamples = resolved.length > 0;
 
   const panels = useMemo((): PanelNode[] | undefined => {
@@ -83,11 +63,6 @@ function SchemaDefinitionComponent({
   return (
     <div data-testid="schema-definition">
       <ContentWrapper panels={panels}>
-        {descriptionSource ? (
-          <Description>
-            <Markdown source={descriptionSource} />
-          </Description>
-        ) : null}
         <DeepLinkSectionContext.Provider value={sectionData}>
           <SchemaView
             expandByDefault
@@ -103,10 +78,3 @@ function SchemaDefinitionComponent({
 }
 
 export const SchemaDefinition = memo(SchemaDefinitionComponent);
-
-const Description = styled.div`
-  margin-bottom: var(--spacing-vertical);
-  p:last-child {
-    margin-bottom: 0;
-  }
-`;

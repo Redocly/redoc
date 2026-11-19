@@ -3,7 +3,7 @@ import * as Sampler from 'openapi-sampler';
 
 import type { Node } from '@redocly/markdoc';
 import type { McpExampleNode } from '../../types/content.js';
-import type { McpPromptArgument, McpResource, OpenAPISchema } from '../../types/openapi.js';
+import type { McpResource, OpenAPISchema } from '../../types/openapi.js';
 
 import { panelKind } from '../../types/common.js';
 import { resolveMarkdocHeadingIds } from '../../adapters/utils/markdoc.js';
@@ -66,24 +66,5 @@ export function buildResourceContentPanel(resource: McpResource): McpExampleNode
         language: resource.mimeType,
       },
     ],
-  };
-}
-
-export function buildPromptArgumentsSchema(args: McpPromptArgument[]): OpenAPISchema | null {
-  if (!args.length) return null;
-
-  return {
-    type: 'object',
-    properties: Object.fromEntries(
-      args.map((arg) => [
-        arg.name,
-        {
-          type: 'string',
-          example: arg.example ?? 'string',
-          description: typeof arg.description === 'string' ? arg.description : undefined,
-        },
-      ]),
-    ),
-    required: args.filter((arg) => arg.required).map((arg) => arg.name),
   };
 }

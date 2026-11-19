@@ -1,25 +1,31 @@
 import { isRecord, resolveJsonPointer } from '../../adapters/helpers.js';
-import { encodeJsonPointerSegment } from '../../utils/refPointer.js';
+import { decodeJsonPointerSegment, encodeJsonPointerSegment } from '../../utils/refPointer.js';
 
 const COMPONENTS_REF_PREFIX = '#/components/';
 
 export type ComponentClosure = {
   keep: Map<string, Set<string>>;
-  inlineTargets: Map<string, unknown>;
+  refTargets: Map<string, Record<string, unknown>>;
+  /** Whether a target more than `maxRefDepth` `$ref` hops from the seeds was left out. */
+  truncated: boolean;
 };
 
-function decodePointerSegment(segment: string): string {
-  return segment.replace(/~1/g, '/').replace(/~0/g, '~');
-}
-
+/**
+ * The components and local `$ref` targets the seeds reach, at most `maxRefDepth` `$ref` hops
+ * away; each target counts at its shortest distance.
+ */
 export function collectComponentClosure(
   document: Record<string, unknown>,
   seeds: unknown[],
   retainRef?: (ref: string) => boolean,
+  maxRefDepth = Infinity,
 ): ComponentClosure {
   const keep = new Map<string, Set<string>>();
-  const inlineTargets = new Map<string, unknown>();
-  const queue: unknown[] = [...seeds];
+  const refTargets = new Map<string, Record<string, unknown>>();
+  let layer: unknown[] = [...seeds];
+  let nextLayer: unknown[] = [];
+  let depth = 0;
+  let truncated = false;
   const seen = new WeakSet<object>();
 
   let implicitVariants: Map<string, string[]> | undefined;
@@ -34,7 +40,7 @@ export function collectComponentClosure(
         for (const part of def.allOf) {
           if (!isRecord(part) || typeof part.$ref !== 'string') continue;
           if (!part.$ref.startsWith(schemaRefPrefix)) continue;
-          const parentName = decodePointerSegment(part.$ref.slice(schemaRefPrefix.length));
+          const parentName = decodeJsonPointerSegment(part.$ref.slice(schemaRefPrefix.length));
           const parentDef = schemas[parentName];
           if (!isRecord(parentDef) || !(parentDef.discriminator || parentDef['x-discriminator'])) {
             continue;
@@ -49,7 +55,7 @@ export function collectComponentClosure(
   };
 
   const keepComponent = (bucket: string, encodedName: string): void => {
-    const name = decodePointerSegment(encodedName);
+    const name = decodeJsonPointerSegment(encodedName);
     let bucketNames = keep.get(bucket);
     if (!bucketNames) {
       bucketNames = new Set();
@@ -62,8 +68,12 @@ export function collectComponentClosure(
     if (!resolved) {
       return;
     }
+    if (depth >= maxRefDepth) {
+      truncated = true;
+      return;
+    }
     bucketNames.add(name);
-    queue.push(resolved);
+    nextLayer.push(resolved);
 
     if (bucket === 'schemas' && (resolved.discriminator || resolved['x-discriminator'])) {
       for (const childName of getImplicitVariants().get(name) ?? []) {
@@ -82,24 +92,27 @@ export function collectComponentClosure(
     }
     if (retainRef?.(ref)) return;
     if (ref.startsWith('#/')) {
-      if (inlineTargets.has(ref)) return;
+      if (refTargets.has(ref)) return;
       const resolved = resolveJsonPointer(document, ref);
       if (!resolved) {
         return;
       }
-      inlineTargets.set(ref, resolved);
-      queue.push(resolved);
+      if (depth >= maxRefDepth) {
+        truncated = true;
+        return;
+      }
+      refTargets.set(ref, resolved);
+      nextLayer.push(resolved);
       return;
     }
   };
 
-  while (queue.length) {
-    const node = queue.pop();
+  const visitNode = (node: unknown, stack: unknown[]): void => {
     if (Array.isArray(node)) {
-      queue.push(...node);
-      continue;
+      for (const entry of node) stack.push(entry);
+      return;
     }
-    if (!isRecord(node) || seen.has(node)) continue;
+    if (!isRecord(node) || seen.has(node)) return;
     seen.add(node);
 
     for (const [key, value] of Object.entries(node)) {
@@ -115,7 +128,7 @@ export function collectComponentClosure(
           }
         }
       }
-      queue.push(value);
+      stack.push(value);
     }
 
     const discriminator = node.discriminator ?? node['x-discriminator'];
@@ -130,9 +143,17 @@ export function collectComponentClosure(
         }
       }
     }
+  };
+
+  while (layer.length) {
+    nextLayer = [];
+    const stack = layer;
+    while (stack.length) visitNode(stack.pop(), stack);
+    layer = nextLayer;
+    depth += 1;
   }
 
-  return { keep, inlineTargets };
+  return { keep, refTargets, truncated };
 }
 
 export function buildComponentsFromClosure(

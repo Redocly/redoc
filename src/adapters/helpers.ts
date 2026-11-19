@@ -12,6 +12,7 @@ import { contentType } from '../types/common.js';
 import { getDefinitionName } from './openapi/utils/helpers.js';
 import { readRbacScope, rbacProp } from './rbac.js';
 import { isRecord } from '../utils/is-record.js';
+import { localRefPath } from '../utils/refPointer.js';
 import { reportError } from '../telemetry/reportError.js';
 
 export { isRecord };
@@ -263,11 +264,8 @@ export function resolveJsonPointer(
   spec: Record<string, unknown>,
   ref: string,
 ): Record<string, unknown> | undefined {
-  if (!ref.startsWith('#/')) return undefined;
-  const parts = ref
-    .slice(2)
-    .split('/')
-    .map((p) => p.replace(/~1/g, '/').replace(/~0/g, '~'));
+  const parts = localRefPath(ref);
+  if (!parts) return undefined;
 
   let current: unknown = spec;
   for (const part of parts) {

@@ -286,6 +286,47 @@ describe('extractAsyncApiSlice — reply channel expansion', () => {
   });
 });
 
+describe('extractAsyncApiSlice — local $ref into a channel outside the slice', () => {
+  it('writes only the $ref target under that channel, without the channel address', () => {
+    const source = deepFreeze({
+      asyncapi: '3.0.0',
+      info: { title: 'Shared message', version: '1.0.0' },
+      channels: {
+        lights: {
+          address: 'lights',
+          messages: { changed: { $ref: '#/channels/audit/messages/changed' } },
+        },
+        audit: {
+          address: 'audit',
+          messages: {
+            changed: { payload: { type: 'string' } },
+            purged: { payload: { type: 'number' } },
+          },
+        },
+      },
+      operations: {
+        onLights: {
+          action: 'receive',
+          channel: { $ref: '#/channels/lights' },
+          messages: [{ $ref: '#/channels/lights/messages/changed' }],
+        },
+      },
+    });
+
+    const doc = expectDefined(
+      extractAsyncApiSlice(source, { kind: 'channel', channelId: 'lights' }),
+    ).document;
+
+    expect(doc.channels).toEqual({
+      lights: {
+        address: 'lights',
+        messages: { changed: { $ref: '#/channels/audit/messages/changed' } },
+      },
+      audit: { messages: { changed: { payload: { type: 'string' } } } },
+    });
+  });
+});
+
 describe('extractAsyncApiSlice — tag scope', () => {
   it('selects channels carrying the tag while operation tags do not select', () => {
     const slice = extractAsyncApiSlice(makeTagFixture(), { kind: 'tag', tagName: 'featured' });
@@ -364,8 +405,8 @@ describe('extractAsyncApiSlice — document scope', () => {
   });
 });
 
-describe('info description trimming', () => {
-  it('trims a long info description in a channel slice', () => {
+describe('info description', () => {
+  it('says a channel slice is a subset in place of the description of the whole API', () => {
     const doc = deepFreeze({
       ...makeChannelsFixture(),
       info: { title: 'Lights', description: 'y'.repeat(150) },
@@ -373,7 +414,7 @@ describe('info description trimming', () => {
 
     const slice = expectDefined(extractAsyncApiSlice(doc, { kind: 'channel', channelId: 'alpha' }));
     expect((slice.document.info as { description: string }).description).toBe(
-      `${'y'.repeat(100)} ... trimmed`,
+      'This is a subset of the full specification, limited to the `alpha` channel.',
     );
   });
 });

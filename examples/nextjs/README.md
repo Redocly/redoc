@@ -15,7 +15,7 @@ Then open http://localhost:3000.
 ## Use it in your app
 
 ```bash
-npm install redoc styled-components
+npm install redoc styled-components react-router @redocly/config
 ```
 
 `components/redoc.tsx` loads `RedocStandalone` with `next/dynamic` and `ssr: false`: Redoc fetches

@@ -35,6 +35,11 @@ export function resolveUrl(url: string, to: string): string {
   return stripTrailingSlash(res);
 }
 
+/** A `badge` or `audience` tag labels operations: the navigation never nests it under its `parent`. */
+export function isNonNavTag(tag: { kind?: string }): boolean {
+  return tag.kind === 'badge' || tag.kind === 'audience';
+}
+
 export function titleize(text: string): string {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }

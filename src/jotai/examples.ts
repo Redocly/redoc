@@ -126,10 +126,12 @@ export const generatedExampleAtom = atomFamily((paramKey: string) => {
     const normalizedMediaType = mediaType?.toLowerCase();
     const isXml = normalizedMediaType ? normalizedMediaType.includes('xml') : false;
 
+    const skipNonRequired = context !== 'response' && onlyRequiredInSamples;
+
     try {
       const sampleContext: SampleContext = {
         context,
-        skipNonRequired: context !== 'response' && onlyRequiredInSamples,
+        skipNonRequired,
         maxSampleDepth: generatedSamplesMaxDepth,
         isXml,
       };

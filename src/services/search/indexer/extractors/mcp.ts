@@ -3,7 +3,7 @@ import type { ApiItem, McpData } from '../../../../types/store.js';
 import type { SchemaNode } from '../../../../types/schema.js';
 import type { ExtractContext } from './context.js';
 
-import { buildPromptArgumentsSchema } from '../../../../components/Mcp/utils.js';
+import { buildPromptArgumentsSchema } from '../../../../utils/mcp-prompt-arguments-schema.js';
 import {
   MCP_INPUT_SCHEMA_PLACE,
   MCP_OUTPUT_SCHEMA_PLACE,
@@ -20,7 +20,7 @@ export function extractMcpFields(
   document: Record<string, unknown> | undefined,
   ctx: ExtractContext,
 ): McpFields | undefined {
-  const verb = 'httpVerb' in item ? (item.httpVerb as string | undefined) : undefined;
+  const verb = 'httpVerb' in item ? item.httpVerb : undefined;
   const name = item.content?.meta?.name;
   if (!verb || !MCP_VERBS.has(verb) || typeof name !== 'string') return undefined;
 

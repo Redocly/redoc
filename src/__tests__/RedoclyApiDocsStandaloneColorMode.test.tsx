@@ -12,7 +12,6 @@ import RedoclyApiDocsStandalone from '../RedoclyApiDocsStandalone.js';
 import { COLOR_MODE_STORAGE_KEY } from '../jotai/app.js';
 import { colorModeAtom } from '../jotai/color-mode.js';
 import { prePaintColorModeScript } from '../components/PrePaintColorModeScript.js';
-import { getCookie, removeCookie, setCookie } from '../utils/cookies.js';
 
 const EMPTY_STORE: ApiStore = { schemaStore: {}, exampleStore: {}, securitySchemeStore: {} };
 
@@ -35,7 +34,6 @@ beforeEach(() => {
   document.documentElement.className = '';
   document.documentElement.removeAttribute('data-bs-theme');
   document.documentElement.removeAttribute('data-theme');
-  removeCookie('redoc.appStore');
   window.sessionStorage.clear();
   window.localStorage.clear();
 });
@@ -55,15 +53,6 @@ describe('standalone color mode application', () => {
 
     expect(redocRoot()).toHaveClass('redoc', 'dark');
     expect(document.documentElement.className).toBe('');
-  });
-
-  it('falls back to a mode saved in the cookie by older builds', () => {
-    setCookie('redoc.appStore', JSON.stringify({ colorMode: 'dark' }));
-
-    renderStandalone();
-
-    expect(redocRoot()).toHaveClass('dark');
-    expect(window.localStorage.getItem(COLOR_MODE_STORAGE_KEY)).toBe('dark');
   });
 
   it('follows the light or dark class the page sets on <html>', async () => {
@@ -158,7 +147,7 @@ describe('standalone color mode application', () => {
     expect(document.documentElement.className).toBe('');
   });
 
-  it('persists a toggled mode to localStorage, not the cookie', () => {
+  it('persists a toggled mode to localStorage and sets no cookie', () => {
     const store = createStore();
     render(
       <Provider store={store}>
@@ -174,7 +163,7 @@ describe('standalone color mode application', () => {
     act(() => store.set(colorModeAtom, 'dark'));
 
     expect(window.localStorage.getItem(COLOR_MODE_STORAGE_KEY)).toBe('dark');
-    expect(getCookie('redoc.appStore')).not.toContain('colorMode');
+    expect(document.cookie).toBe('');
   });
 
   it('opens the server-rendered Redoc root with the pre-paint script', () => {

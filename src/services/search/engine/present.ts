@@ -7,8 +7,12 @@ import type {
 import type { LowerDocument } from './lowered.js';
 import type { DocumentMatch, ParsedQuery } from './types.js';
 
+import {
+  highlightTextForSearch as highlight,
+  markMatchedValue,
+} from '@redocly/theme/core/utils/search-highlight';
+
 import { isExamplesPlace } from '../indexer/places.js';
-import { highlightTextForSearch as highlight, markMatchedValue } from '../highlight.js';
 import { coversQuery } from './query.js';
 import { lowerText, toText } from './text.js';
 

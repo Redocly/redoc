@@ -126,7 +126,7 @@ describe('schemaProcessor — documented primitive array items', () => {
       emptyDoc,
     );
 
-    expect(result.type).toBe('Array of strings, [ 1 .. 20 ] items');
+    expect(result.type).toBe('array of strings, [ 1 .. 20 ] items');
     expect(result.pattern).toBeUndefined();
     expect(result.title).toBeUndefined();
     expect(result.description).toBe(
@@ -170,7 +170,7 @@ describe('schemaProcessor — documented primitive array items', () => {
 
     expect(result.description).toBe('List of tags.');
     expect(result.pattern).toBeUndefined();
-    expect(result.type).toBe('Array of strings, non-empty');
+    expect(result.type).toBe('array of strings, non-empty');
     // trivial items stay flattened into the array row
     expect(result.items).toBeUndefined();
   });
@@ -192,7 +192,7 @@ describe('schemaProcessor — documented primitive array items', () => {
       emptyDoc,
     );
 
-    expect(result.type).toBe('Array of numbers, <= 5 items');
+    expect(result.type).toBe('array of numbers, <= 5 items');
     expect(result.description).toBeUndefined();
     expect(result.items?.[0].type).toBe('number, (double), multiple of 0.5, [ 0 .. 100 ]');
     expect(result.items?.[0].description).toBe('A percentage value.');
@@ -204,7 +204,7 @@ describe('schemaProcessor — documented primitive array items', () => {
       emptyDoc,
     );
 
-    expect(result.type).toBe('Array of integers');
+    expect(result.type).toBe('array of integers');
     expect(result.items?.[0].type).toBe('integer, (int64), >= 1');
   });
 
@@ -214,7 +214,7 @@ describe('schemaProcessor — documented primitive array items', () => {
       emptyDoc,
     );
 
-    expect(result.type).toBe('Array of booleans');
+    expect(result.type).toBe('array of booleans');
     expect(result.description).toBeUndefined();
     expect(result.items?.[0].description).toBe('Feature flags.');
   });
@@ -225,7 +225,7 @@ describe('schemaProcessor — documented primitive array items', () => {
       emptyDoc,
     );
 
-    expect(result.type).toBe('Array of numbers or null');
+    expect(result.type).toBe('array of numbers or null');
     expect(result.items?.[0].type).toBe('number or null, <= 10');
   });
 
@@ -248,6 +248,24 @@ describe('schemaProcessor — documented primitive array items', () => {
 
     expect(result.items).toBeUndefined();
     expect(result.enum).toEqual(['a', 'b']);
+  });
+
+  it('promotes the items enum onto an anyOf variant that is an array of enum items', () => {
+    const result = schemaProcessor(
+      {
+        anyOf: [
+          { type: 'array', items: { type: 'string', enum: ['a', 'b'] } },
+          { type: 'array', items: { type: 'string', enum: ['c', 'd'], description: 'A choice.' } },
+        ],
+      },
+      emptyDoc,
+    );
+
+    const [enumOnly, documented] = Object.values(result.switcher?.options ?? {});
+    expect(enumOnly.enum).toEqual(['a', 'b']);
+    expect(enumOnly.items).toBeUndefined();
+    expect(documented.enum).toBeUndefined();
+    expect(documented.items?.[0].enum).toEqual(['c', 'd']);
   });
 
   it('keeps the items enum on the nested items row when items also have a description', () => {
@@ -297,19 +315,19 @@ describe('schemaProcessor — documented primitive array items', () => {
     expect(result.example).toEqual(['kuku.test']);
   });
 
-  it('displays an array with no items schema as Array of any', () => {
+  it('displays an array with no items schema as array of any', () => {
     const result = schemaProcessor({ type: 'array' }, emptyDoc);
-    expect(result.type).toBe('Array of any');
+    expect(result.type).toBe('array of any');
   });
 
   it('does not advertise an item type when extra items are disallowed (items: false)', () => {
     const result = schemaProcessor({ type: 'array', items: false }, emptyDoc);
-    expect(result.type).toBe('Array of items');
+    expect(result.type).toBe('array of items');
   });
 
-  it('labels the parent of an items-less nested array as Array of arrays', () => {
+  it('labels the parent of an items-less nested array as array of arrays', () => {
     const result = schemaProcessor({ type: 'array', items: { type: 'array' } }, emptyDoc);
-    expect(result.type).toBe('Array of arrays');
+    expect(result.type).toBe('array of arrays');
   });
 
   it('does not promote items info when items are an object (non-primitive)', () => {
@@ -329,7 +347,7 @@ describe('schemaProcessor — documented primitive array items', () => {
     );
 
     expect(result.description).toBe('List of members.');
-    expect(result.type).toBe('Array of objects, non-empty');
+    expect(result.type).toBe('array of objects, non-empty');
     expect(result.items).toHaveLength(1);
     expect(result.items?.[0].properties?.name).toBeDefined();
   });
@@ -370,12 +388,12 @@ describe('schemaProcessor — nested arrays keep their structure', () => {
     );
 
     // the label stays generic and nothing is promoted from the nested array
-    expect(result.type).toBe('Array of items');
+    expect(result.type).toBe('array of items');
     expect(result.description).toBe('Array of arrays of primitives.');
 
     // the inner array keeps its own row; its documented items get their own nested row
     expect(result.items).toHaveLength(1);
-    expect(result.items?.[0].type).toBe('Array of strings');
+    expect(result.items?.[0].type).toBe('array of strings');
     expect(result.items?.[0].description).toBeUndefined();
     expect(result.items?.[0].items?.[0].type).toBe('string, non-empty');
     expect(result.items?.[0].items?.[0].description).toBe('Inner primitive item description.');
@@ -395,9 +413,9 @@ describe('schemaProcessor — nested arrays keep their structure', () => {
       emptyDoc,
     );
 
-    expect(result.type).toBe('Array of items, <= 5 items');
+    expect(result.type).toBe('array of items, <= 5 items');
     expect(result.pattern).toBeUndefined();
-    expect(result.items?.[0].type).toBe('Array of strings, <= 10 items');
+    expect(result.items?.[0].type).toBe('array of strings, <= 10 items');
     expect(result.items?.[0].pattern).toBeUndefined();
     expect(result.items?.[0].items?.[0].type).toBe('string, (uuid), <= 64 characters');
     expect(result.items?.[0].items?.[0].pattern).toBe('^[0-9a-f-]+$');
@@ -416,7 +434,7 @@ describe('schemaProcessor — nested arrays keep their structure', () => {
       emptyDoc,
     );
 
-    expect(result.type).toBe('Array of items');
+    expect(result.type).toBe('array of items');
     expect(result.description).toBe('Array of arrays of objects.');
     expect(result.items?.[0].items?.[0].properties?.name).toBeDefined();
   });
@@ -428,7 +446,7 @@ describe('schemaProcessor — nested arrays keep their structure', () => {
     );
 
     // minItems: 1 and minLength: 1 both humanize to "non-empty"
-    expect(result.type).toBe('Array of strings, non-empty');
+    expect(result.type).toBe('array of strings, non-empty');
   });
 
   it('does not surface the inner array format on the nested structure row', () => {
@@ -440,9 +458,9 @@ describe('schemaProcessor — nested arrays keep their structure', () => {
       emptyDoc,
     );
 
-    expect(result.type).toBe('Array of items');
+    expect(result.type).toBe('array of items');
     // arrays display their items' format, never their own
-    expect(result.items?.[0].type).toBe('Array of integers');
+    expect(result.items?.[0].type).toBe('array of integers');
   });
 
   it('renders a documented circular array-of-array item as a nested recursive row', () => {
@@ -460,7 +478,7 @@ describe('schemaProcessor — nested arrays keep their structure', () => {
       emptyDoc,
     );
 
-    expect(result.type).toBe('Array of arrays');
+    expect(result.type).toBe('array of arrays');
     expect(result.description).toBe('Own description.');
     expect(result.items).toHaveLength(1);
     expect(result.items?.[0].isCircular).toBe(true);
@@ -484,7 +502,7 @@ describe('schemaProcessor — nested arrays keep their structure', () => {
     );
 
     expect(result.description).toBe('Direct children of this node.');
-    expect(result.type).toBe('Array of objects');
+    expect(result.type).toBe('array of objects');
   });
 
   it('renders a documented inner array without items as a nested row', () => {
@@ -496,9 +514,9 @@ describe('schemaProcessor — nested arrays keep their structure', () => {
       emptyDoc,
     );
 
-    expect(result.type).toBe('Array of arrays');
+    expect(result.type).toBe('array of arrays');
     expect(result.description).toBeUndefined();
-    expect(result.items?.[0].type).toBe('Array of any');
+    expect(result.items?.[0].type).toBe('array of any');
     expect(result.items?.[0].description).toBe('Inner array description.');
   });
 
@@ -517,9 +535,9 @@ describe('schemaProcessor — nested arrays keep their structure', () => {
       emptyDoc,
     );
 
-    expect(result.type).toBe('Array of items');
-    expect(result.items?.[0].type).toBe('Array of items');
-    expect(result.items?.[0].items?.[0].type).toBe('Array of integers');
+    expect(result.type).toBe('array of items');
+    expect(result.items?.[0].type).toBe('array of items');
+    expect(result.items?.[0].items?.[0].type).toBe('array of integers');
     expect(result.items?.[0].items?.[0].items?.[0].type).toBe('integer, >= 0');
   });
 });
@@ -638,5 +656,12 @@ describe('schemaProcessor — array title inherits from items', () => {
   it('leaves an anonymous array of untitled primitives without a title', () => {
     const result = schemaProcessor({ type: 'array', items: { type: 'string' } }, emptyDoc);
     expect(result.title).toBeUndefined();
+  });
+});
+
+describe('schemaProcessor — malformed array items', () => {
+  it('treats a YAML null items as absent', () => {
+    const result = schemaProcessor({ type: 'array', items: null } as never, emptyDoc);
+    expect(result).toEqual(schemaProcessor({ type: 'array' }, emptyDoc));
   });
 });

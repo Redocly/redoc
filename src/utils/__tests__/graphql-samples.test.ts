@@ -206,6 +206,36 @@ describe('graphql-samples', () => {
     });
   });
 
+  describe('generateOperationResponseExample', () => {
+    const { store, lookup } = setup(`
+      type Query {
+        status: Int
+        item: Widget
+      }
+      type Mutation {
+        renameItem(name: String!): Widget
+      }
+      type Widget {
+        id: String
+      }
+    `);
+
+    it('keys data by the root field name, as a GraphQL server responds', () => {
+      const renameItem = getOperationFromStore(store, 'mutation', 'renameItem');
+      if (!renameItem) throw new Error('expected mutation "renameItem" to resolve from the store');
+
+      expect(generateOperationResponseExample(queryOperation(store, 'status'), lookup, 1)).toEqual({
+        data: { status: 40 },
+      });
+      expect(generateOperationResponseExample(queryOperation(store, 'item'), lookup, 1)).toEqual({
+        data: { item: { id: 'Example String' } },
+      });
+      expect(generateOperationResponseExample(renameItem, lookup, 1)).toEqual({
+        data: { renameItem: { id: 'Example String' } },
+      });
+    });
+  });
+
   describe('jsonSamplesDepth via expandLevel', () => {
     const { store, lookup } = setup(`
       type Query {
@@ -219,18 +249,17 @@ describe('graphql-samples', () => {
     const operation = queryOperation(store, 'item');
 
     it('generateOperationResponseExample respects expandLevel for nesting', () => {
-      const shallow = generateOperationResponseExample(operation.type.display, lookup, 1) as {
-        data: Record<string, unknown>;
-      };
-      expect(shallow.data).toMatchObject({ id: 'Example String' });
-      expect(shallow.data.nested).toEqual({ __typename: 'Widget' });
+      expect(generateOperationResponseExample(operation, lookup, 1)).toEqual({
+        data: { item: { id: 'Example String', nested: { __typename: 'Widget' } } },
+      });
 
-      const deeper = generateOperationResponseExample(operation.type.display, lookup, 2) as {
-        data: Record<string, unknown>;
-      };
-      expect(deeper.data.nested).toMatchObject({
-        id: 'Example String',
-        nested: { __typename: 'Widget' },
+      expect(generateOperationResponseExample(operation, lookup, 2)).toEqual({
+        data: {
+          item: {
+            id: 'Example String',
+            nested: { id: 'Example String', nested: { __typename: 'Widget' } },
+          },
+        },
       });
     });
 
@@ -292,10 +321,12 @@ describe('graphql-samples', () => {
     });
 
     it('generateOperationResponseExample stops at the re-entered type with __typename', () => {
-      expect(generateOperationResponseExample('GraphNode', lookup, 2)).toEqual({
+      expect(generateOperationResponseExample(queryOperation(store, 'graph'), lookup, 2)).toEqual({
         data: {
-          id: '9cfb1c81-4c79-452f-b1f5-8ee6571276b4',
-          edges: [{ weight: 40, node: { __typename: 'GraphNode' } }],
+          graph: {
+            id: '9cfb1c81-4c79-452f-b1f5-8ee6571276b4',
+            edges: [{ weight: 40, node: { __typename: 'GraphNode' } }],
+          },
         },
       });
     });

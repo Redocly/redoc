@@ -64,23 +64,23 @@ describe('describeSliceScope', () => {
         httpVerb: 'get',
         source: 'paths',
       }),
-    ).toBe('the GET /pets operation');
-    expect(describeSliceScope({ kind: 'tag', tagName: 'Orders' })).toBe('the "Orders" operations');
-    expect(describeSliceScope({ kind: 'schema', name: 'Pet' })).toBe('the Pet schema');
+    ).toBe('the `GET /pets` operation');
+    expect(describeSliceScope({ kind: 'tag', tagName: 'Orders' })).toBe('the "Orders" tag');
+    expect(describeSliceScope({ kind: 'schema', name: 'Pet' })).toBe('the `Pet` schema');
     expect(describeSliceScope({ kind: 'channel', channelId: 'userSignedUp' })).toBe(
-      'the "userSignedUp" channel',
+      'the `userSignedUp` channel',
     );
     expect(
       describeSliceScope({ kind: 'graphql-operation', operationType: 'query', name: 'menu' }),
-    ).toBe('the menu query');
+    ).toBe('the `menu` query');
     expect(describeSliceScope({ kind: 'graphql-type', name: 'MenuItem' })).toBe(
-      'the MenuItem type',
+      'the `MenuItem` type',
     );
     expect(describeSliceScope({ kind: 'graphql-directive', name: 'auth' })).toBe(
-      'the @auth directive',
+      'the `@auth` directive',
     );
     expect(describeSliceScope({ kind: 'async-operation', operationId: 'sendUserSignedUp' })).toBe(
-      'the "sendUserSignedUp" operation',
+      'the `sendUserSignedUp` operation',
     );
     expect(describeSliceScope({ kind: 'document' })).toBeUndefined();
   });
@@ -101,7 +101,7 @@ describe('buildFetchSpecPromptLink', () => {
     const url = new URL(link);
     expect(url.origin + url.pathname).toBe('https://claude.ai/new');
     expect(url.searchParams.get('q')).toBe(
-      `Read ${specUrl} and answer questions about the GET /pets operation.`,
+      `Read ${specUrl} and answer questions about the \`GET /pets\` operation.`,
     );
   });
 
@@ -123,29 +123,33 @@ describe('wrapSliceForCopy', () => {
     ).toBe('openapi: 3.1.0\n');
   });
 
-  it('wraps a partial slice with a title, the spec link and a fenced block', () => {
+  it('wraps a partial slice with a title, the target, a quote with the spec link and a fenced block', () => {
     const text = wrapSliceForCopy('openapi: 3.1.0\n', {
       scope: { kind: 'operation', pathName: '/pets', httpVerb: 'get', source: 'paths' },
       contentKind: 'yaml',
-      title: 'Petstore – List pets',
+      title: 'List pets',
+      target: 'GET /pets',
       specUrl: 'https://api.example.com/openapi.yaml',
     });
 
     expect(text).toBe(
-      '# Petstore – List pets\n\n' +
-        'This is a subset of the full specification, which you can find here: https://api.example.com/openapi.yaml, limited to the GET /pets operation.\n\n' +
+      '# List pets\n\n' +
+        '`GET /pets`\n\n' +
+        '> This is a subset of the full specification, limited to the `GET /pets` operation.\n' +
+        '>\n' +
+        '> You can find the full specification here: https://api.example.com/openapi.yaml\n\n' +
         '```yaml\nopenapi: 3.1.0\n```\n',
     );
   });
 
-  it('omits the link and heading when they are unknown', () => {
+  it('omits the heading, the target and the link when they are unknown', () => {
     const text = wrapSliceForCopy('type Query { a: Int }', {
       scope: { kind: 'graphql-type', name: 'Query' },
       contentKind: 'graphql',
     });
 
     expect(text).toBe(
-      'This is a subset of the full specification, limited to the Query type.\n\n```graphql\ntype Query { a: Int }\n```\n',
+      '> This is a subset of the full specification, limited to the `Query` type.\n\n```graphql\ntype Query { a: Int }\n```\n',
     );
   });
 
@@ -157,7 +161,7 @@ describe('wrapSliceForCopy', () => {
     });
 
     expect(text).toBe(
-      `This is a subset of the full specification, limited to the Query type.\n\n\`\`\`\`\`graphql\n${sdl}\n\`\`\`\`\`\n`,
+      `> This is a subset of the full specification, limited to the \`Query\` type.\n\n\`\`\`\`\`graphql\n${sdl}\n\`\`\`\`\`\n`,
     );
   });
 });

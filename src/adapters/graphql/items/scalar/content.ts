@@ -10,7 +10,7 @@ export function buildScalarContent(
   markdownOptions: ParseMarkdownOptions,
 ): ApiItemContent {
   const containerChildren: ContentNode[] = [
-    { nodeType: nodeTypes.HEADER, level: 2, label: scalar.name, showPageActions: true },
+    { nodeType: nodeTypes.HEADER, level: 3, label: scalar.name, showPageActions: true },
   ];
 
   const descriptionContent = parseMarkdown(scalar.description, markdownOptions);

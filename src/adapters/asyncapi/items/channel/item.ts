@@ -1,11 +1,8 @@
 import type { ApiItem } from '../../../../types/store.js';
 import type { AsyncApiChannel } from '../../../../types/asyncapi.js';
 
-import { combineUrls } from '@redocly/theme/core/openapi';
+import { combineUrls } from '@redocly/theme/core/utils/urls';
 
-import {
-  safeSlugify,
-} from '../../../../utils/string.js';
 import {
   componentLabelsByProtocol,
   itemLabelsByProtocol,
@@ -60,7 +57,8 @@ export function buildTaggedChannelItem({
   operationIds: string[];
   tagName: string;
 }): ApiItem {
-  const { document, basePath, options, protocol, processContent } = asyncApiContext.get();
+  const { document, basePath, options, protocol, processContent, tagSlugger } =
+    asyncApiContext.get();
   const operations = document.operations || {};
   const channelHasOperations = operationIds.length > 0;
   const labels = itemLabelsByProtocol(protocol ?? null, channel.bindings);
@@ -69,18 +67,13 @@ export function buildTaggedChannelItem({
     channelBindings: channel.bindings,
   });
   const protocolSlug = `${labels.channel}s`;
-  const tagSlug = safeSlugify(tagName).toLowerCase();
+  const tagSlug = tagSlugger(tagName);
   const channelLink = combineUrls(basePath, tagSlug, protocolSlug, channelId).toLowerCase();
   const sortedOperations = buildSortedOperationsWithGroupHeaders(operationIds, operations, {
     send: componentLabels.sendLabel,
     receive: componentLabels.receiveLabel,
   });
-  const {
-    label,
-  } = resolveChannelLabelAndSeo(
-    channel,
-    channelId,
-  );
+  const { label } = resolveChannelLabelAndSeo(channel, channelId);
 
   return {
     label,
@@ -100,7 +93,7 @@ export function buildTaggedChannelItem({
               operationId,
               operation: operations[operationId],
               linkParts: [basePath, tagSlug, protocolSlug, channelId, 'operations', operationId],
-              channelBindings: channel.bindings as Record<string, unknown> | undefined,
+              channelBindings: channel.bindings,
               document,
               options,
               protocol,
@@ -137,12 +130,7 @@ export function buildUntaggedChannelItem({
     send: componentLabels.sendLabel,
     receive: componentLabels.receiveLabel,
   });
-  const {
-    label,
-  } = resolveChannelLabelAndSeo(
-    channel,
-    channelId,
-  );
+  const { label } = resolveChannelLabelAndSeo(channel, channelId);
 
   return {
     label,
@@ -162,7 +150,7 @@ export function buildUntaggedChannelItem({
               operationId,
               operation: operations[operationId],
               linkParts: [basePath, protocolSlug, channelId, 'operations', operationId],
-              channelBindings: channel.bindings as Record<string, unknown> | undefined,
+              channelBindings: channel.bindings,
               document,
               options,
               protocol,

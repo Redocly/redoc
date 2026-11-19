@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 
 import type { Node } from '@redocly/markdoc';
 
+import { buildPropertyShell } from '../../../../services/schema/propertyBuilder.js';
 import { SchemaEnumDescriptions } from '../SchemaEnumDescriptions.js';
 
 vi.mock('../../SchemaDescription.js', () => ({
@@ -100,10 +101,12 @@ describe('SchemaEnumDescriptions', () => {
   });
 
   describe('"Items" prefix for array types (regression 2.10.5)', () => {
+    const arrayType = buildPropertyShell({ type: 'array', items: { type: 'string' } }).type;
+
     it('prefixes "Items" for an array type with multiple enum values', () => {
       render(
         <SchemaEnumDescriptions
-          type="Array<string>"
+          type={arrayType}
           values={{ first: 'First value.', second: 'Second value.' }}
         />,
       );
@@ -111,7 +114,7 @@ describe('SchemaEnumDescriptions', () => {
     });
 
     it('prefixes "Items" for an array type with a single enum value', () => {
-      render(<SchemaEnumDescriptions type="Array<string>" values={{ only: 'Only value.' }} />);
+      render(<SchemaEnumDescriptions type={arrayType} values={{ only: 'Only value.' }} />);
       expect(screen.getByRole('columnheader', { name: 'Items Value' })).toBeInTheDocument();
     });
 

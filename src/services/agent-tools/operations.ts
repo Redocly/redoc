@@ -40,9 +40,17 @@ function methodOf(item: ApiItem): string | undefined {
  */
 export function collectOperations(
   items: ApiItem[],
-  resolveDocUrl: (link: string) => string = (link) => link,
+  resolveDocUrl?: (link: string) => string,
 ): ApiOperationSummary[] {
-  const operations: ApiOperationSummary[] = [];
+  return collectOperationEntries(items, resolveDocUrl).map((entry) => entry.summary);
+}
+
+/** Like `collectOperations`, with the item each summary was flattened from. */
+export function collectOperationEntries(
+  items: ApiItem[],
+  resolveDocUrl: (link: string) => string = (link) => link,
+): Array<{ summary: ApiOperationSummary; item: ApiItem }> {
+  const operations: Array<{ summary: ApiOperationSummary; item: ApiItem }> = [];
 
   const walk = (list: ApiItem[], section?: string): void => {
     for (const item of list) {
@@ -53,12 +61,15 @@ export function collectOperations(
         const path = pathFromPointer(meta?.pointer);
 
         operations.push({
-          method,
-          title: item.label ?? '',
-          url: resolveDocUrl(item.link),
-          ...(path ? { path } : {}),
-          ...(section ? { section } : {}),
-          ...(meta?.deprecated === true ? { deprecated: true } : {}),
+          summary: {
+            method,
+            title: item.label ?? '',
+            url: resolveDocUrl(item.link),
+            ...(path ? { path } : {}),
+            ...(section ? { section } : {}),
+            ...(meta?.deprecated === true ? { deprecated: true } : {}),
+          },
+          item,
         });
       }
 

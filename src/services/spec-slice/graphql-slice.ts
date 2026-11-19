@@ -1,5 +1,5 @@
 import { Kind, OperationTypeNode, parse, print, visit } from 'graphql';
-import { trimDescription } from './trim-description.js';
+import { describeSliceSubset } from './assistant-links.js';
 
 import type {
   ASTNode,
@@ -159,17 +159,32 @@ function collectRootFields(
   return fields;
 }
 
-export function extractGraphqlSlice(sdl: string, scope: SpecSliceScope): string | undefined {
-  const seeds = collectSeeds(scope);
-  if (!seeds) return undefined;
+// A host slices one schema for each of its pages, so the last parse is kept.
+let lastParsed: { sdl: string; doc: DocumentNode; index: SdlIndex } | undefined;
 
-  let doc: DocumentNode;
+function parseIndexed(sdl: string): { doc: DocumentNode; index: SdlIndex } | undefined {
+  if (lastParsed?.sdl === sdl) return lastParsed;
   try {
-    doc = parse(sdl, { noLocation: true });
+    const doc = parse(sdl, { noLocation: true });
+    lastParsed = { sdl, doc, index: indexDefinitions(doc) };
+    return lastParsed;
   } catch {
     return undefined;
   }
-  const index = indexDefinitions(doc);
+}
+
+/** `maxRefDepth`: keep types at most this many references from the seeds (`0`: the seeds only). */
+export function extractGraphqlSlice(
+  sdl: string,
+  scope: SpecSliceScope,
+  maxRefDepth = Infinity,
+): string | undefined {
+  const seeds = collectSeeds(scope);
+  if (!seeds) return undefined;
+
+  const parsed = parseIndexed(sdl);
+  if (!parsed) return undefined;
+  const { doc, index } = parsed;
 
   const trimmedRoots = new Map<string, ObjectTypeDefinitionNode>();
   const schemaEntries: OperationTypeDefinitionNode[] = [];
@@ -203,10 +218,7 @@ export function extractGraphqlSlice(sdl: string, scope: SpecSliceScope): string 
     schemaEntries.length && (index.schemaDef || hasNonDefaultRootName)
       ? {
           kind: Kind.SCHEMA_DEFINITION,
-          description: index.schemaDef?.description && {
-            ...index.schemaDef.description,
-            value: trimDescription(index.schemaDef.description.value),
-          },
+          description: { kind: Kind.STRING, value: describeSliceSubset(scope) },
           directives: index.schemaDef?.directives,
           operationTypes: schemaEntries,
         }
@@ -214,7 +226,8 @@ export function extractGraphqlSlice(sdl: string, scope: SpecSliceScope): string 
 
   const keptTypes = new Set<string>();
   const keptDirectives = new Set<string>();
-  const queue: ASTNode[] = [];
+  let layer: ASTNode[] = [];
+  let depth = 0;
 
   const keepType = (name: string): void => {
     if (keptTypes.has(name)) return;
@@ -223,10 +236,10 @@ export function extractGraphqlSlice(sdl: string, scope: SpecSliceScope): string 
     keptTypes.add(name);
     const trimmed = trimmedRoots.get(name);
     if (trimmed) {
-      queue.push(trimmed);
+      layer.push(trimmed);
       return;
     }
-    queue.push(def, ...(index.typeExts.get(name) ?? []));
+    layer.push(def, ...(index.typeExts.get(name) ?? []));
   };
 
   const keepDirective = (name: string): void => {
@@ -234,27 +247,30 @@ export function extractGraphqlSlice(sdl: string, scope: SpecSliceScope): string 
     const def = index.directiveDefs.get(name);
     if (!def) return;
     keptDirectives.add(name);
-    queue.push(def);
+    layer.push(def);
   };
 
-  if (syntheticSchemaDef) queue.push(syntheticSchemaDef);
+  if (syntheticSchemaDef) layer.push(syntheticSchemaDef);
   for (const rootName of trimmedRoots.keys()) keepType(rootName);
   for (const name of seeds.typeNames) keepType(name);
   for (const name of seeds.directiveNames) keepDirective(name);
 
   if (keptTypes.size === 0 && keptDirectives.size === 0) return undefined;
 
-  while (queue.length) {
-    const node = queue.pop();
-    if (!node) continue;
-    visit(node, {
-      NamedType(named) {
-        keepType(named.name.value);
-      },
-      Directive(directive) {
-        keepDirective(directive.name.value);
-      },
-    });
+  while (layer.length > 0 && depth < maxRefDepth) {
+    const current = layer;
+    layer = [];
+    depth += 1;
+    for (const node of current) {
+      visit(node, {
+        NamedType(named) {
+          keepType(named.name.value);
+        },
+        Directive(directive) {
+          keepDirective(directive.name.value);
+        },
+      });
+    }
   }
 
   const definitions: DefinitionNode[] = [];

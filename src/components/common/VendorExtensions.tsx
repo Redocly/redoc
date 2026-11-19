@@ -17,7 +17,7 @@ function VendorExtensionsComponent({ extensions }: VendorExtensionsProps): React
   return (
     <>
       {Object.keys(extensions).map((key) => (
-        <MarkdownWrapper key={key}>
+        <MarkdownWrapper as="div" key={key}>
           <FieldLabel>{key.substring(2)}: </FieldLabel>{' '}
           <ExtensionValue>
             {typeof extensions[key] === 'string'

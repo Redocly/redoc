@@ -72,7 +72,7 @@ describe('openapi adapter responses isEvent flag', () => {
     expect(operationItem).toBeDefined();
     expect(webhookItem).toBeDefined();
 
-    const opNodes = collectContentNodes(operationItem?.content?.children as ContentNode[]);
+    const opNodes = collectContentNodes(operationItem?.content?.children);
     const regularResponses = opNodes.find(
       (node): node is ItemContentNode =>
         node.nodeType === nodeTypes.ITEM && node.variant === 'responses',
@@ -92,10 +92,10 @@ describe('openapi adapter responses isEvent flag', () => {
     expect(callbackResponses).toBeDefined();
     expect(callbackResponses?.isEvent).toBe(true);
 
-    const webhookNodes = collectContentNodes(webhookItem?.content?.children as ContentNode[]);
+    const webhookNodes = collectContentNodes(webhookItem?.content?.children);
     const webhookResponses = webhookNodes.find(
       (node): node is ItemContentNode =>
-        node.nodeType === nodeTypes.ITEM && (node as ItemContentNode).variant === 'responses',
+        node.nodeType === nodeTypes.ITEM && node.variant === 'responses',
     );
 
     expect(webhookResponses).toBeDefined();

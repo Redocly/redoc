@@ -13,7 +13,7 @@ import { withoutPathPrefix } from '@redocly/theme/core/utils';
 import { NavigationBadge, TextBadge } from '../common/Badge.js';
 import { useSpecTranslate } from '../../hooks/useTranslate.js';
 import { resolveText } from '../../utils/resolveText.js';
-import { useNavigationUrlNormalizer } from '../../hooks/useNormalizeUrl.js';
+import { useContentLinkNormalizer } from '../../hooks/useNormalizeUrl.js';
 import { specTypeAtom } from '../../jotai/store.js';
 
 const MAX_OPERATIONS = 8;
@@ -102,7 +102,7 @@ type ResolvedSection = { title: string; items: ResolvedEntry[]; isChildTag: bool
 
 export function GroupPanelItem({ node }: { node: GroupItemNode }): ReactElement {
   const translate = useSpecTranslate();
-  const normalizeUrl = useNavigationUrlNormalizer();
+  const normalizeUrl = useContentLinkNormalizer();
 
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
@@ -115,6 +115,7 @@ export function GroupPanelItem({ node }: { node: GroupItemNode }): ReactElement 
   const sections = useMemo<ResolvedSection[]>(() => {
     const out: ResolvedSection[] = [];
     for (const section of node.children) {
+      // oxlint-disable-next-line no-map-spread -- the items are shared content; mutating them would leak `href` into it
       const items: ResolvedEntry[] = (section.items ?? []).map((item) => ({
         ...item,
         // The theme Link re-applies the host's path prefix; hand it a prefix-free path.

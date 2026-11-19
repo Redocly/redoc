@@ -3,7 +3,6 @@ import { render, screen } from '@testing-library/react';
 import { createStore, Provider as JotaiProvider } from 'jotai';
 import { MemoryRouter } from 'react-router';
 
-import type { GlobalStoreAtom } from '../../../jotai/store.js';
 import type { ContainerNode, HeaderNode } from '../../../types/content.js';
 
 import { nodeTypes } from '../../../types/common.js';
@@ -26,7 +25,7 @@ function createGlobalStore() {
       metadata: {},
       basePath: '',
     }),
-  } as GlobalStoreAtom);
+  });
   return store;
 }
 
@@ -77,13 +76,13 @@ describe('HeaderItem', () => {
     expect(text.indexOf('My Operation')).toBeLessThan(text.indexOf('NoPosition'));
   });
 
-  it('renders a Webhook badge on a level-2 webhook header', () => {
-    renderHeader({ level: 2, label: 'My Webhook', isWebhook: true });
+  it('renders a Webhook badge on a level-3 webhook operation header', () => {
+    renderHeader({ level: 3, label: 'My Webhook', isWebhook: true });
     expect(screen.getByText('Webhook')).toBeInTheDocument();
   });
 
   it('does not render a Webhook badge for a non-webhook header', () => {
-    renderHeader({ level: 2, label: 'My Operation', isWebhook: false });
+    renderHeader({ level: 3, label: 'My Operation', isWebhook: false });
     expect(screen.queryByText('Webhook')).not.toBeInTheDocument();
   });
 
@@ -187,6 +186,14 @@ describe('HeaderItem', () => {
 
     // The tag still precedes the heading in document order.
     expect(tag.compareDocumentPosition(heading) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  it('renders a level 6 header as an h6 with the h4 typography', () => {
+    const { container } = renderHeader({ level: 6, label: 'Reply' }, { path: '' });
+
+    const heading = container.querySelector('h6');
+    expect(heading).toHaveTextContent('Reply');
+    expect(heading).toHaveAttribute('data-component-name', 'Typography/H4');
   });
 
   it('does not add a protocol-tag group for headers without a protocolTag', () => {

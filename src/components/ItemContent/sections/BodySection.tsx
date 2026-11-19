@@ -11,6 +11,7 @@ import { schemaEntryAtom } from '../../../jotai/schema.js';
 import { activeMediaTypeAtom } from '../../../jotai/app.js';
 import { SchemaView } from '../../Schema/SchemaView.js';
 import { buildOpenApiSectionSuffix, getDeepLinkId } from '../../../utils/deep-link.js';
+import { accessFilterOf } from '../../../utils/access-filter.js';
 import {
   DeepLinkSectionContext,
   ItemIdContext,
@@ -35,8 +36,7 @@ function BodySectionComponent({ node }: { node: ItemContentNode }): ReactElement
 
   const hasMediaTypes = mediaTypes && mediaTypes.length > 0;
   const hasMultiple = mediaTypes && mediaTypes.length > 1;
-  const isRequestVariant =
-    node.variant === 'querystring-body' || (node.variant === 'body' && !node.isEvent);
+  const { skipReadOnly, skipWriteOnly } = accessFilterOf(node);
 
   const bodySuffix = useMemo(() => buildOpenApiSectionSuffix('request', 'body'), []);
   const deepLink = useDeepLinkUrl(bodySuffix);
@@ -74,8 +74,8 @@ function BodySectionComponent({ node }: { node: ItemContentNode }): ReactElement
             schemaId={activeSchemaId}
             expandByDefault
             level={1}
-            skipReadOnly={isRequestVariant}
-            skipWriteOnly={!isRequestVariant}
+            skipReadOnly={skipReadOnly}
+            skipWriteOnly={skipWriteOnly}
           />
         </DeepLinkSectionContext.Provider>
       )}

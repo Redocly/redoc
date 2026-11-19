@@ -159,6 +159,139 @@ describe('addTagItems', () => {
   });
 });
 
+describe('tag route slugs', () => {
+  function operationTagged(tagName: string, pathName: string): OperationInfo {
+    return {
+      ...petsOperation,
+      pointer: `/paths/${pathName.replaceAll('/', '~1')}/get`,
+      pathName,
+      tags: [tagName],
+    };
+  }
+
+  function childGroups(item: ApiItem): ApiItem[] {
+    return ((item.items as ApiItem[]) ?? []).filter((i) => i.type === 'group');
+  }
+
+  it('gives tags whose names slugify alike their own links, the first tag keeping the plain slug', () => {
+    const context = makeContext({
+      demo数据: makeTagData('demo数据', [operationTagged('demo数据', '/demo-data')]),
+      demo数据备份: makeTagData('demo数据备份', [
+        operationTagged('demo数据备份', '/demo-data-backup'),
+      ]),
+    });
+    const items: ApiItem[] = [];
+
+    openApiContext.run(context, () =>
+      processRootTags(['demo数据', 'demo数据备份'], new Set(), items),
+    );
+
+    expect(items.map((i) => [i.link, i.routeSlug])).toEqual([
+      ['/api/demo', '/api/demo'],
+      ['/api/demo-1', '/api/demo-1'],
+    ]);
+    const [first, second] = items.map((group) =>
+      (group.items as ApiItem[]).filter((i) => i.type === 'link').map((i) => i.link),
+    );
+    expect(first).toHaveLength(1);
+    expect(first[0]).toMatch(/^\/api\/demo\//);
+    expect(second).toHaveLength(1);
+    expect(second[0]).toMatch(/^\/api\/demo-1\//);
+  });
+
+  it('keeps the old route of every page under a tag that got a suffix', () => {
+    const context = makeContext({
+      Pets: makeTagData('Pets', [operationTagged('Pets', '/pets')]),
+      pets: makeTagData('pets', [operationTagged('pets', '/pets-legacy')]),
+    });
+    const items: ApiItem[] = [];
+
+    openApiContext.run(context, () => processRootTags(['Pets', 'pets'], new Set(), items));
+
+    const [kept, moved] = items;
+    const [keptPage] = kept.items as ApiItem[];
+    const [movedPage] = moved.items as ApiItem[];
+    expect(keptPage.previousRouteSlug).toBeUndefined();
+    expect(moved.previousRouteSlug).toBeUndefined();
+    expect(movedPage.previousRouteSlug).toBe(movedPage.link?.replace('/api/pets-1/', '/api/pets/'));
+  });
+
+  it('gives tags that differ only in letter case their own links', () => {
+    const context = makeContext({
+      Pets: makeTagData('Pets', [operationTagged('Pets', '/pets')]),
+      pets: makeTagData('pets', [operationTagged('pets', '/pets-legacy')]),
+    });
+    const items: ApiItem[] = [];
+
+    openApiContext.run(context, () => processRootTags(['Pets', 'pets'], new Set(), items));
+
+    expect(items.map((i) => i.link)).toEqual(['/api/pets', '/api/pets-1']);
+  });
+
+  it('dedupes tags listed in x-tagGroups and keeps one link for a tag listed in two groups', () => {
+    const context = makeContext({
+      Café: makeTagData('Café', [operationTagged('Café', '/cafe')]),
+      Cafe: makeTagData('Cafe', [operationTagged('Cafe', '/cafe-plain')]),
+    });
+    const items: ApiItem[] = [];
+
+    openApiContext.run(context, () =>
+      processTagGroups(
+        [
+          { name: 'Menu', tags: ['Café', 'Cafe'] },
+          { name: 'Favorites', tags: ['Café'] },
+        ],
+        items,
+      ),
+    );
+
+    expect(items.filter((i) => i.type === 'group').map((i) => i.link)).toEqual([
+      '/api/cafe',
+      '/api/cafe-1',
+      '/api/cafe',
+    ]);
+  });
+
+  it('links child tag cards to the deduplicated child pages', () => {
+    const context = makeContext({
+      Animals: makeTagData('Animals', [], {}, ['Café', 'Cafe']),
+      Café: makeTagData('Café', [operationTagged('Café', '/cafe')], { parent: 'Animals' }),
+      Cafe: makeTagData('Cafe', [operationTagged('Cafe', '/cafe-plain')], { parent: 'Animals' }),
+    });
+    const items: ApiItem[] = [];
+
+    openApiContext.run(context, () =>
+      processRootTags(['Animals', 'Café', 'Cafe'], new Set(['Café', 'Cafe']), items),
+    );
+
+    const childLinks = childGroups(items[0]).map((i) => i.link);
+    expect(childLinks).toEqual(['/api/animals/cafe', '/api/animals/cafe-1']);
+    const animalsContentCall = vi
+      .mocked(buildGroupContent)
+      .mock.calls.find(([args]) => args.tagName === 'Animals');
+    expect(animalsContentCall?.[0].childTags?.map((c) => c.slug)).toEqual(childLinks);
+  });
+
+  it('keeps the plain slug for tags that slugify alike under different parents', () => {
+    const context = makeContext({
+      Animals: makeTagData('Animals', [], {}, ['Cats']),
+      Plants: makeTagData('Plants', [], {}, ['cats']),
+      Cats: makeTagData('Cats', [operationTagged('Cats', '/cats')], { parent: 'Animals' }),
+      cats: makeTagData('cats', [operationTagged('cats', '/catnip')], { parent: 'Plants' }),
+    });
+    const items: ApiItem[] = [];
+
+    openApiContext.run(context, () =>
+      processRootTags(['Animals', 'Plants', 'Cats', 'cats'], new Set(['Cats', 'cats']), items),
+    );
+
+    expect(items.flatMap(childGroups).map((i) => i.link)).toEqual([
+      '/api/animals/cats',
+      '/api/plants/cats',
+    ]);
+  });
+});
+
 describe('processTagGroups', () => {
   it('creates a separator and group items for each x-tagGroup', () => {
     const context = makeContext({

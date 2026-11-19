@@ -3,7 +3,7 @@ import type { LowerDocument } from './lowered.js';
 import type { DocumentMatch, ParsedQuery } from './types.js';
 
 import { isDescriptionPlace } from '../indexer/places.js';
-import { containsQueryWord } from '../text-match.js';
+import { containsQueryWord } from '@redocly/theme/core/utils/search-text-match';
 import { SEARCH_SCORE } from './constants.js';
 import { ParameterField, field } from './lowered.js';
 import { bestCoverage, coverage, matchesWords } from './query.js';

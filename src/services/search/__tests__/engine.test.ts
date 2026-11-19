@@ -2,12 +2,10 @@ import { describe, expect, it } from 'vitest';
 
 import type { SearchDocument } from '../types.js';
 
+import { HIGHLIGHTED_TEXT_MAX_LENGTH } from '@redocly/theme/core/utils/search-highlight';
+
 import { SearchEngine } from '../engine/index.js';
-import {
-  HIGHLIGHTED_TEXT_MAX_LENGTH,
-  SEARCH_LIMIT,
-  SHARED_FIELD_COPIES,
-} from '../engine/constants.js';
+import { SEARCH_LIMIT, SHARED_FIELD_COPIES } from '../engine/constants.js';
 
 function makeDocument(overrides: Partial<SearchDocument> & { id: string }): SearchDocument {
   return {

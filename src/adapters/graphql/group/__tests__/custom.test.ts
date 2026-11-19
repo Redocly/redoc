@@ -7,6 +7,7 @@ import { normalizeOptions } from '../../../../options/normalizeOptions.js';
 import { graphqlContext } from '../../buildContext.js';
 import { groupByCustomMenu } from '../custom.js';
 import { normalizeMenuConfig } from '../../utils/normalizeMenu.js';
+import { createUniqueSlugger } from '../../../../utils/unique-slugger.js';
 
 const SCHEMA_SDL = `
   type Query {
@@ -45,6 +46,7 @@ function makeContext(menuConfig?: MenuConfig, sdl: string = SCHEMA_SDL): BuildCo
       downloadUrls: [{ url: 'https://example.com/schema.graphql' }],
       metadata: {},
     }),
+    slugger: createUniqueSlugger(),
   };
 }
 

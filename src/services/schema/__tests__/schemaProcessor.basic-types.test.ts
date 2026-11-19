@@ -36,7 +36,7 @@ describe('schemaProcessor basic types', () => {
     expect(object.type).toBe('object');
     expect(requireProps(object).id.type).toBe('string');
     const array = schemaProcessor({ type: {}, items: { type: {} } } as never, emptyDoc);
-    expect(array.type).toBe('Array of any');
+    expect(array.type).toBe('array of any');
   });
 
   it('should process a simple string property', () => {
@@ -79,7 +79,7 @@ describe('schemaProcessor basic types', () => {
 
   it('should display array of item types', () => {
     const result = schemaProcessor({ type: 'array', items: { type: 'string' } }, emptyDoc);
-    expect(result.type).toBe('Array of strings');
+    expect(result.type).toBe('array of strings');
   });
 
   it('should display array item format', () => {
@@ -87,7 +87,7 @@ describe('schemaProcessor basic types', () => {
       { type: 'array', items: { type: 'string', format: 'uri' } },
       emptyDoc,
     );
-    expect(result.type).toBe('Array of strings, (uri)');
+    expect(result.type).toBe('array of strings, (uri)');
   });
 
   it('should append "or null" for nullable schemas', () => {
@@ -155,7 +155,7 @@ describe('schemaProcessor basic types', () => {
         emptyDoc,
       );
       const props = requireProps(result);
-      expect(props.none.type).toBe('Array of items');
+      expect(props.none.type).toBe('array of items');
       expect(props.closed.type).toBe('object');
       expect(props.closed.properties).toEqual({});
     });
@@ -190,7 +190,7 @@ describe('schemaProcessor basic types', () => {
       );
       expect(props.never.type).toBe(NO_VALUE);
       expect(props.anything.type).toBe('any');
-      expect(props.list.type).toBe('Array of items');
+      expect(props.list.type).toBe('array of items');
       expect(props.choice.type).toBe('string');
     });
 

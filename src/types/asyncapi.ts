@@ -1,12 +1,10 @@
 import type { Node } from '@redocly/markdoc';
 import type { JSONSchema7 } from 'json-schema';
-import type {
-  AsyncApiSecuritySchemeType,
-  ObjectValues,
-} from './common.js';
+import type { AsyncApiSecuritySchemeType, ObjectValues } from './common.js';
 import type { ApiItem, StoreContext } from './store.js';
 import type { SecurityRequirementDetail } from './content.js';
 import type { ApiDocsOptions } from './options.js';
+import type { UniqueSlugger } from '../utils/unique-slugger.js';
 
 export type AsyncApiDefinition = {
   asyncapi: string;
@@ -334,6 +332,7 @@ export type AsyncApiBuildContext = {
   protocol: ProtocolVariant | null;
   channelToOperations: Record<string, string[]>;
   groups: Record<string, ApiItem[]>;
+  tagSlugger: UniqueSlugger;
   items: ApiItem[];
   descriptionItems: ApiItem[];
   channelSummaries: Map<string, string>;

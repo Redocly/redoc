@@ -17,10 +17,7 @@ export async function initializeSearch(
   basePath: string,
   document?: Record<string, unknown>,
 ): Promise<SearchApi> {
-  const indexer = new ApiDocsSearchIndexer(basePath, store.schemaStore, document, {
-    exampleStore: store.exampleStore,
-    graphqlMeta: store.graphqlMeta,
-  });
+  const indexer = new ApiDocsSearchIndexer({ basePath, store, document });
   let deadline = Date.now() + FRAME_BUDGET_MS;
 
   const checkBudget = async (): Promise<void> => {
@@ -29,23 +26,8 @@ export async function initializeSearch(
     deadline = Date.now() + FRAME_BUDGET_MS;
   };
 
-  const addAll = async (list: ApiItem[], ancestors: string[]): Promise<void> => {
-    for (const item of list) {
-      indexer.addItem(item, ancestors);
-      await checkBudget();
-      if (item.items?.length) {
-        // Nav children are typed as plain nav items; the indexer skips
-        // anything without `content`, so the widened cast is safe.
-        await addAll(item.items as ApiItem[], item.label ? [...ancestors, item.label] : ancestors);
-      }
-    }
-  };
-  await addAll(items, []);
-
-  const searchDocuments = indexer.getResult();
-
   const engine = new SearchEngine();
-  for (const searchDocument of searchDocuments) {
+  for (const searchDocument of indexer.documents(items)) {
     engine.addDocument(searchDocument);
     await checkBudget();
   }

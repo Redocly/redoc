@@ -5,7 +5,6 @@ import type { RouteIndex, RouteItem } from '../utils/routing.js';
 import type { SliceContentKind, SpecSliceScope } from '../services/spec-slice/index.js';
 
 import { apiSpecType } from '../types/common.js';
-import { isRecord } from '../adapters/helpers.js';
 import {
   definitionAtom,
   definitionUrlAtom,
@@ -14,13 +13,18 @@ import {
   specTypeAtom,
 } from '../jotai/store.js';
 import { routeIndexAtom } from '../jotai/routes.js';
-import { buildSpecSlice, resolveSpecSliceScope } from '../services/spec-slice/index.js';
+import {
+  buildSpecSlice,
+  describeSliceTarget,
+  resolveSpecSliceScope,
+} from '../services/spec-slice/index.js';
 
 type CopySpecSlice = {
   getText: () => Promise<string>;
   contentKind: SliceContentKind;
   scope: SpecSliceScope;
   specUrl?: string;
+  target?: string;
   title?: string;
 };
 
@@ -41,7 +45,7 @@ function findRouteBySlug(
 export function useCopySpecSlice(pageSlug: string): CopySpecSlice | null {
   const definition = useAtomValue(definitionAtom);
   const definitionUrl = useAtomValue(definitionUrlAtom);
-  const { downloadUrls } = useAtomValue(globalOptionsAtom);
+  const { downloadUrls, schemaDefinitionsTagName } = useAtomValue(globalOptionsAtom);
   const routeIndex = useAtomValue(routeIndexAtom);
   const specType = useAtomValue(specTypeAtom);
   const basePath = useAtomValue(routingBasePathAtom);
@@ -64,13 +68,8 @@ export function useCopySpecSlice(pageSlug: string): CopySpecSlice | null {
 
     const contentKind: SliceContentKind = specType === apiSpecType.GRAPHQL ? 'graphql' : 'yaml';
 
-    const apiTitle = isRecord(definition) && isRecord(definition.info) && definition.info.title;
-    const title =
-      [apiTitle, route?.label].filter((part) => typeof part === 'string' && part).join(' – ') ||
-      undefined;
-
     const getText = async () => {
-      const text = await buildSpecSlice(specType, definition, scope);
+      const text = await buildSpecSlice(specType, definition, scope, { schemaDefinitionsTagName });
       if (text === undefined) {
         throw new Error(`Copy for LLM: no content produced for "${pageSlug}"`);
       }
@@ -82,7 +81,17 @@ export function useCopySpecSlice(pageSlug: string): CopySpecSlice | null {
       contentKind,
       scope,
       specUrl: definitionUrl ?? downloadUrls?.[0]?.url,
-      title,
+      target: describeSliceTarget(scope, definition),
+      title: route?.label,
     };
-  }, [definition, definitionUrl, downloadUrls, routeIndex, specType, basePath, pageSlug]);
+  }, [
+    definition,
+    definitionUrl,
+    downloadUrls,
+    schemaDefinitionsTagName,
+    routeIndex,
+    specType,
+    basePath,
+    pageSlug,
+  ]);
 }

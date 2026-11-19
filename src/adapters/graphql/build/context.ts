@@ -5,6 +5,7 @@ import type { AdapterBuildContextInput } from '../../../types/store.js';
 import type { GraphqlBuildContext as BuildContext } from '../../../types/graphql.js';
 
 import { normalizeMenuConfig } from '../utils/normalizeMenu.js';
+import { createUniqueSlugger } from '../../../utils/unique-slugger.js';
 import { extractInfoFromDirectives } from '../../../utils/graphql-directive-utils.js';
 
 export type CreateBuildContextInputWithDocumentAndSchema = AdapterBuildContextInput & {
@@ -39,5 +40,6 @@ export function createBuildContext({
         }
       : options,
     processContent,
+    slugger: createUniqueSlugger(),
   };
 }

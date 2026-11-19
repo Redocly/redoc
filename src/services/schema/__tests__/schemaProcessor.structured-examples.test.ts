@@ -158,4 +158,25 @@ describe('schemaProcessor structured example values', () => {
     );
     expect((result.properties ?? {})['max']?.example).toBe('55');
   });
+
+  it('keeps a named example description given as a string or parsed into a Markdown tree', () => {
+    const parsed = {
+      $$mdtype: 'Tag',
+      name: 'p',
+      attributes: {},
+      children: ['Sends it to review first.'],
+    };
+    const result = schemaProcessor(
+      {
+        type: 'string',
+        examples: {
+          parsed: { value: 'manual', description: parsed },
+          plain: { value: 'auto', description: 'Review first.' },
+        },
+      },
+      emptyDoc,
+    );
+    expect(result.examples?.parsed?.description).toEqual(parsed);
+    expect(result.examples?.plain?.description).toBe('Review first.');
+  });
 });

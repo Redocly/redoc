@@ -3,7 +3,7 @@ import type { LowerDocument } from './lowered.js';
 import type { DocumentMatch, ParameterHit, ParsedQuery } from './types.js';
 
 import { extractDeepLinkParamFromHash } from '../../../utils/deep-link.js';
-import { MIN_QUERY_WORD_LENGTH } from '../text-match.js';
+import { MIN_QUERY_WORD_LENGTH } from '@redocly/theme/core/utils/search-text-match';
 import { ParameterField, field, parametersMentioning } from './lowered.js';
 import { coversQuery, matchesWords } from './query.js';
 import { scoreParameter } from './score.js';

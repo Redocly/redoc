@@ -25,7 +25,7 @@ const minimalDocument: AsyncApiDefinition = {
   asyncapi: '3.0.0',
   info: { title: 'Test', version: '1.0' },
   channels: {},
-} as AsyncApiDefinition;
+};
 
 const TEST_OPTIONS = { markdownParser: markdocParser } as ApiDocsOptions;
 
@@ -54,7 +54,7 @@ function withBuildContext<T>(
   fn: () => T,
   overrides: Partial<AsyncApiBuildContext> = {},
 ): T {
-  const storeCtx = createStoreContext(document as unknown as Record<string, unknown>);
+  const storeCtx = createStoreContext(document);
   const ctx = {
     document,
     options: { markdownParser: markdocParser } as ApiDocsOptions,
@@ -75,7 +75,7 @@ describe('buildOperationContent (AsyncAPI operation)', () => {
   describe('messageLinks resolution', () => {
     it('uses inline message.title as label and slugifies title into messageKey when no name is present', () => {
       const op = makeOperation({
-        messages: [{ title: 'Request Ride' } as never],
+        messages: [{ title: 'Request Ride' }],
       });
 
       const content = withBuildContext(minimalDocument, () =>
@@ -218,7 +218,7 @@ describe('buildOperationContent (AsyncAPI operation)', () => {
 
       const op = makeOperation({
         channel: { $ref: '#/channels/rides' } as never,
-        messages: [{ payload: { $ref: '#/components/schemas/RideRequest' } } as never],
+        messages: [{ payload: { $ref: '#/components/schemas/RideRequest' } }],
       });
 
       const content = withBuildContext(document, () =>
@@ -253,7 +253,7 @@ describe('buildOperationContent (AsyncAPI operation)', () => {
 
       const op = makeOperation({
         channel: { $ref: '#/channels/analytics' } as never,
-        messages: [{ title: 'AI search completed message' } as never],
+        messages: [{ title: 'AI search completed message' }],
       });
 
       const content = withBuildContext(document, () =>
@@ -273,7 +273,7 @@ describe('buildOperationContent (AsyncAPI operation)', () => {
 
     it('omits a message entry when no key can be resolved (no $ref, no name, no title, no payload match)', () => {
       const op = makeOperation({
-        messages: [{ description: 'no key, no name' } as never],
+        messages: [{ description: 'no key, no name' }],
       });
 
       const content = withBuildContext(minimalDocument, () =>
@@ -291,7 +291,7 @@ describe('buildOperationContent (AsyncAPI operation)', () => {
 
     it('emits channelLink relative to the spec basePath (everything before /operations/, basePath stripped)', () => {
       const op = makeOperation({
-        messages: [{ name: 'requestRide' } as never],
+        messages: [{ name: 'requestRide' }],
       });
 
       const content = withBuildContext(
@@ -312,7 +312,7 @@ describe('buildOperationContent (AsyncAPI operation)', () => {
 
     it('normalizes channelLink to lowercase for camelCase channel slugs', () => {
       const op = makeOperation({
-        messages: [{ name: 'paymentRequested' } as never],
+        messages: [{ name: 'paymentRequested' }],
       });
 
       const content = withBuildContext(
@@ -336,14 +336,14 @@ describe('buildOperationContent (AsyncAPI operation)', () => {
 
   describe('operation bindings (Kafka groupId/clientId schema registration)', () => {
     it('registers groupId and clientId schemas independently, each wrapped under its own property name', () => {
-      const document = { ...minimalDocument } as AsyncApiDefinition;
+      const document = { ...minimalDocument };
       const op = makeOperation({
         bindings: {
           kafka: {
             groupId: { type: 'string', enum: ['ride-request-producer'] },
             clientId: { type: 'string', enum: ['passenger-app'] },
           },
-        } as never,
+        },
       });
 
       const { content, storeCtx } = withBuildContext(document, () => {
@@ -374,7 +374,7 @@ describe('buildOperationContent (AsyncAPI operation)', () => {
     });
 
     it('emits the binding panel but no group/clientId schemas for non-kafka bindings', () => {
-      const document = { ...minimalDocument } as AsyncApiDefinition;
+      const document = { ...minimalDocument };
       const op = makeOperation({
         bindings: { http: { method: 'POST' } } as never,
       });
@@ -398,7 +398,7 @@ describe('buildOperationContent (AsyncAPI operation)', () => {
     });
 
     it('skips schema registration when kafka.groupId is a scalar rather than an object', () => {
-      const document = { ...minimalDocument } as AsyncApiDefinition;
+      const document = { ...minimalDocument };
       const op = makeOperation({
         bindings: {
           kafka: {
@@ -424,7 +424,7 @@ describe('buildOperationContent (AsyncAPI operation)', () => {
     });
 
     it('unwraps a multi-format groupId schema ({ schemaFormat, schema }) instead of storing the wrapper', () => {
-      const document = { ...minimalDocument } as AsyncApiDefinition;
+      const document = { ...minimalDocument };
       const op = makeOperation({
         bindings: {
           kafka: {
@@ -457,7 +457,7 @@ describe('buildOperationContent (AsyncAPI operation)', () => {
     });
 
     it('converts clientId schema to JSON Schema', () => {
-      const document = { ...minimalDocument } as AsyncApiDefinition;
+      const document = { ...minimalDocument };
       const op = makeOperation({
         bindings: {
           kafka: {
@@ -537,6 +537,9 @@ describe('buildOperationContent (AsyncAPI operation)', () => {
 
       expect(JSON.stringify(firstContainer(content).children)).toContain(
         'Messages: Order accepted',
+      );
+      expect(firstContainer(content).children).toContainEqual(
+        expect.objectContaining({ nodeType: nodeTypes.HEADER, label: 'Reply', level: 6 }),
       );
     });
   });

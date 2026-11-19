@@ -70,13 +70,14 @@ describe('PageActions', () => {
     await waitFor(() => expect(copy).toHaveBeenCalledWith('sliced: yaml\n'));
   });
 
-  it('wraps a partial slice with the title and full-spec link when copying', async () => {
+  it('wraps a partial slice with the title, the target and the full-spec link when copying', async () => {
     const copy = vi.spyOn(ClipboardService, 'copyCustom').mockImplementation(() => {});
     renderPageActions(
       makeSlice({
         getText: async () => 'sliced: yaml\n',
-        scope: { kind: 'schema', name: 'Pet' },
-        title: 'Petstore – Pet',
+        scope: { kind: 'operation', pathName: '/pets', httpVerb: 'get', source: 'paths' },
+        target: 'GET /pets',
+        title: 'List pets',
       }),
     );
 
@@ -84,8 +85,9 @@ describe('PageActions', () => {
 
     await waitFor(() =>
       expect(copy).toHaveBeenCalledWith(
-        '# Petstore – Pet\n\n' +
-          'This is a subset of the full specification, which you can find here: https://api.example.com/openapi.yaml, limited to the Pet schema.\n\n' +
+        '# List pets\n\n`GET /pets`\n\n' +
+          '> This is a subset of the full specification, limited to the `GET /pets` operation.\n' +
+          '>\n> You can find the full specification here: https://api.example.com/openapi.yaml\n\n' +
           '```yaml\nsliced: yaml\n```\n',
       ),
     );

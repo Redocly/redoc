@@ -16,8 +16,8 @@ function InfoMetadataItemComponent({ node }: { node: InfoMetadataNode }): ReactE
   }
 
   return (
-    <MarkdownWrapper>
-      <H3>{translate('info.metadata.title', 'Metadata')}</H3>
+    <MarkdownWrapper as="div">
+      <H3 as="h2">{translate('info.metadata.title', 'Metadata')}</H3>
       <table className="md">
         <thead>
           <tr>

@@ -5,6 +5,7 @@ import type { Node } from '@redocly/markdoc';
 
 import { Markdown as MarkdownWrapper } from '@redocly/theme/components/Markdown/Markdown';
 
+import { ARRAY_TYPE_PREFIX } from '../../../types/schema.js';
 import { SchemaDescription } from '../SchemaDescription.js';
 
 const EnumTableWrapper = styled(MarkdownWrapper)`
@@ -25,7 +26,7 @@ export function SchemaEnumDescriptions({
   type,
 }: SchemaEnumDescriptionsProps): ReactElement {
   const entries = Object.entries(values);
-  const prefix = type?.startsWith('Array') ? 'Items ' : '';
+  const prefix = type?.startsWith(ARRAY_TYPE_PREFIX) ? 'Items ' : '';
   const heading = `${prefix}${entries.length === 1 ? 'Value' : 'Enum Value'}`;
 
   return (

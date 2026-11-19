@@ -1,6 +1,4 @@
-import {
-  useSetAtom,
-} from 'jotai';
+import { useSetAtom } from 'jotai';
 import { useEffect, useMemo } from 'react';
 
 import type { ApiItem } from '../types/store.js';
@@ -39,10 +37,7 @@ export function useApiDocsRoutes(
         ...index,
       },
     };
-  }, [
-    apiItems,
-    basePath,
-  ]);
+  }, [apiItems, basePath]);
 
   // Publish to the atom for outside consumers (scroll-spy, sidebar).
   useEffect(() => {

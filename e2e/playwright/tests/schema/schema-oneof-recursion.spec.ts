@@ -30,7 +30,7 @@ test.describe('OneOf/AnyOf Titles', () => {
     await expect(
       page
         .locator('[id="cases/error/path=allowedvalues"]')
-        .getByRole('tab', { name: 'Array of any' }),
+        .getByRole('tab', { name: 'array of any' }),
     ).toBeVisible();
     await expect(
       page.locator('[id="cases/error/path=example_property"]').getByText('Complex'),

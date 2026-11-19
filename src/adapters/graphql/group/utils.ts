@@ -3,8 +3,6 @@ import type { ApiItem } from '../../../types/store.js';
 import type { GraphqlItemVariant } from '../../../types/graphql.js';
 
 import { contentType, nodeTypes, itemVariant } from '../../../types/common.js';
-import { safeSlugify } from '../../../utils/string.js';
-import { joinWithSeparator } from '../../../utils/url.js';
 import { DEFAULT_GROUP_LABELS } from '../utils/constants.js';
 
 import { buildGroupItemsPanelContent } from '../panels/group-items.js';
@@ -41,10 +39,7 @@ export function createGroup({
     : typeGroup
       ? GROUP_LABEL_TRANSLATION_KEYS[typeGroup]
       : 'info.title';
-  const groupSlug = joinWithSeparator(
-    parentPath ?? context.basePath,
-    safeSlugify(groupLabel?.toLowerCase()),
-  );
+  const groupSlug = context.slugger(groupLabel, parentPath ?? context.basePath);
   return {
     type: 'group',
     label: groupLabel,

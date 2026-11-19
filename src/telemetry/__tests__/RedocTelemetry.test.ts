@@ -2,23 +2,38 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 const initMock = vi.fn();
 const sendMock = vi.fn();
+const forceFlushMock = vi.fn();
+const startSpanMock = vi.fn();
+const withTracerMock = vi.fn();
+const cloudEventDataMock = vi.fn();
 
 vi.mock('@redocly/redoc-opentelemetry', () => ({
   Telemetry: class Telemetry {
+    otelClient = {};
+    tracer = { traceStep: () => undefined };
     init(config: unknown): void {
-      initMock(config);
+      initMock.call(this, config);
     }
     send(event: unknown, data?: unknown): void {
-      sendMock(event, data);
+      sendMock.call(this, event, data);
     }
-    updateCloudEventData(): void {}
+    updateCloudEventData(cloudEventData: () => unknown): void {
+      cloudEventDataMock(cloudEventData());
+    }
     forceFlush(): Promise<void> {
+      forceFlushMock.call(this);
       return Promise.resolve();
+    }
+    startSpan(...args: unknown[]): unknown {
+      return startSpanMock.call(this, ...args);
+    }
+    withTracer(tracerName: string): unknown {
+      return withTracerMock.call(this, tracerName);
     }
   },
 }));
 
-import { RedocTelemetry } from '../RedocTelemetry.js';
+import type { RedocTelemetry as RedocTelemetryClass } from '../RedocTelemetry.js';
 import {
   DEFAULT_SERVICE_NAME,
   DEFAULT_TYPE_OF_USAGE,
@@ -30,9 +45,14 @@ import {
 const PAGE_EVENT = 'com.redocly.page.viewed';
 const UI_EVENT = 'com.redocly.sidebar.collapsed';
 
+let RedocTelemetry: typeof RedocTelemetryClass;
+
 describe('RedocTelemetry', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     vi.clearAllMocks();
+    // A fresh module per test: SDK clients are shared for the life of the module, like a page
+    vi.resetModules();
+    ({ RedocTelemetry } = await import('../RedocTelemetry.js'));
   });
 
   describe('constructor', () => {
@@ -123,7 +143,7 @@ describe('RedocTelemetry', () => {
   });
 
   describe('send', () => {
-    it('calls super.send with event and undefined when data is omitted', () => {
+    it('sends event and undefined when data is omitted', () => {
       const telemetry = new RedocTelemetry({
         specType: 'openapi',
         serviceVersion: '1.0.0',
@@ -135,7 +155,7 @@ describe('RedocTelemetry', () => {
       expect(sendMock).toHaveBeenCalledWith(PAGE_EVENT, undefined);
     });
 
-    it('calls super.send with event and data when data is not an array', () => {
+    it('sends event and data when data is not an array', () => {
       const telemetry = new RedocTelemetry({
         specType: 'openapi',
         serviceVersion: '1.0.0',
@@ -147,7 +167,7 @@ describe('RedocTelemetry', () => {
       expect(sendMock).toHaveBeenCalledWith(PAGE_EVENT, data);
     });
 
-    it('enriches each object in array data with specType and calls super.send', () => {
+    it('enriches each object in array data with specType and sends it', () => {
       const telemetry = new RedocTelemetry({
         specType: 'asyncapi',
         serviceVersion: '1.0.0',
@@ -218,6 +238,103 @@ describe('RedocTelemetry', () => {
 
       expect(beforeSend).toHaveBeenCalledWith(UI_EVENT, expect.any(Array));
       expect(sendMock).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('shared SDK client', () => {
+    it('initializes one SDK client for every instance with the same collector, service and opt-out', () => {
+      new RedocTelemetry({ serviceVersion: '1.0.0' });
+      new RedocTelemetry({ serviceVersion: '1.0.0', specType: 'graphql' });
+
+      expect(initMock).toHaveBeenCalledTimes(1);
+      expect(cloudEventDataMock).toHaveBeenCalledWith({
+        source: 'urn:redocly:redoc:ui',
+        origin: 'redocUi',
+        signal: 'log',
+      });
+    });
+
+    it('initializes another SDK client for another collector, service or opt-out', () => {
+      new RedocTelemetry({ serviceVersion: '1.0.0' });
+      new RedocTelemetry({
+        serviceVersion: '1.0.0',
+        collectorUrl: 'https://collector.example.com/v1/traces',
+      });
+      new RedocTelemetry({ serviceVersion: '1.0.0', serviceName: 'other-service' });
+      new RedocTelemetry({
+        serviceVersion: '1.0.0',
+        disabled: !TELEMETRY_DISABLED_BY_DEFAULT,
+      });
+      new RedocTelemetry({ serviceVersion: '2.0.0' });
+
+      expect(initMock).toHaveBeenCalledTimes(5);
+    });
+
+    it('keeps the spec type and counters of each instance', () => {
+      const openapiCounters = vi.fn();
+      const graphqlCounters = vi.fn();
+      const openapi = new RedocTelemetry({
+        serviceVersion: '1.0.0',
+        specType: 'openapi',
+        beforeSend: openapiCounters,
+      });
+      const graphql = new RedocTelemetry({
+        serviceVersion: '1.0.0',
+        specType: 'graphql',
+        beforeSend: graphqlCounters,
+      });
+
+      openapi.send(PAGE_EVENT, [{ id: 'a' }] as never);
+      graphql.send(PAGE_EVENT, [{ id: 'b' }] as never);
+
+      expect(sendMock.mock.calls).toEqual([
+        [PAGE_EVENT, [{ id: 'a', specType: 'openapi' }]],
+        [PAGE_EVENT, [{ id: 'b', specType: 'graphql' }]],
+      ]);
+      expect(openapiCounters).toHaveBeenCalledTimes(1);
+      expect(graphqlCounters).toHaveBeenCalledTimes(1);
+    });
+
+    it('sends each event through the SDK client built for its opt-out', () => {
+      const optedIn = new RedocTelemetry({ serviceVersion: '1.0.0', disabled: false });
+      const optedOut = new RedocTelemetry({ serviceVersion: '1.0.0', disabled: true });
+
+      optedIn.send(PAGE_EVENT);
+      optedOut.send(PAGE_EVENT);
+
+      const clientWith = (disabled: boolean) =>
+        initMock.mock.contexts[
+          initMock.mock.calls.findIndex(([config]) => config.disabled === disabled)
+        ];
+      expect(sendMock.mock.contexts[0]).toBe(clientWith(false));
+      expect(sendMock.mock.contexts[1]).toBe(clientWith(true));
+    });
+
+    it('flushes the SDK client that sends its events', async () => {
+      await new RedocTelemetry({ serviceVersion: '1.0.0' }).forceFlush();
+
+      expect(forceFlushMock).toHaveBeenCalledTimes(1);
+      expect(forceFlushMock.mock.contexts[0]).toBe(initMock.mock.contexts[0]);
+    });
+
+    it('starts spans and tracers on the SDK client that sends its events', () => {
+      const telemetry = new RedocTelemetry({ serviceVersion: '1.0.0' });
+      const sdkClient = initMock.mock.contexts[0] as { otelClient: unknown; tracer: unknown };
+
+      const parentContext = {} as never;
+      const span = {};
+      const scoped = {};
+      startSpanMock.mockReturnValueOnce(span);
+      withTracerMock.mockReturnValueOnce(scoped);
+
+      expect(telemetry.startSpan(PAGE_EVENT, undefined, parentContext)).toBe(span);
+      expect(telemetry.withTracer('scoped')).toBe(scoped);
+
+      expect(startSpanMock).toHaveBeenCalledWith(PAGE_EVENT, undefined, parentContext);
+      expect(startSpanMock.mock.contexts[0]).toBe(sdkClient);
+      expect(withTracerMock.mock.contexts[0]).toBe(sdkClient);
+      expect(telemetry.tracer).toBe(sdkClient.tracer);
+      expect(telemetry.otelClient).toBe(sdkClient.otelClient);
     });
   });
 });

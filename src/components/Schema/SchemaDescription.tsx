@@ -26,10 +26,22 @@ export function SchemaDescription({ value }: SchemaDescriptionProps): ReactEleme
   if (isMarkdocAst(value)) {
     return (
       <Description>
-        <Markdown source={value} />
+        <Markdown key={astKey(value)} source={value} />
       </Description>
     );
   }
 
   return null;
+}
+
+const astKeys = new WeakMap<object, number>();
+let nextAstKey = 0;
+
+function astKey(ast: object): number {
+  let key = astKeys.get(ast);
+  if (key === undefined) {
+    key = nextAstKey++;
+    astKeys.set(ast, key);
+  }
+  return key;
 }

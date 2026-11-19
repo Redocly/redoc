@@ -8,13 +8,8 @@ export type AnalyticsEventType =
 
 export type AnalyticsEvent = {
   eventType: AnalyticsEventType;
-  resource:
-    | 'Redocly_CodeSample'
-    | 'Redocly_Operation';
-  action:
-    | 'LanguageSwitched'
-    | 'CodeSampleCopied'
-    | 'TargetServerSwitched';
+  resource: 'Redocly_CodeSample' | 'Redocly_Operation';
+  action: 'LanguageSwitched' | 'CodeSampleCopied' | 'TargetServerSwitched';
   operationId?: string;
   operationPath: string;
   operationHttpVerb: string;

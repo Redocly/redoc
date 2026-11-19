@@ -1,11 +1,11 @@
 import type { ReactElement } from 'react';
 import type { PropertyType } from '../../../types/schema.js';
 
-import { AccessLabel, DeprecatedBadge, PrimitiveWrapper, Row, SchemaTypeLabel } from '../styled.js';
+import { AccessLabel, DeprecatedBadge, PrimitiveWrapper, Row } from '../styled.js';
 import { SchemaDescription } from '../SchemaDescription.js';
 import { SchemaEnumValues } from './SchemaEnumValues.js';
 import { SchemaEnumDescriptions } from './SchemaEnumDescriptions.js';
-import { SchemaTitleLabel } from './SchemaTitleLabel.js';
+import { PropertyTypeLabel } from './PropertyTypeLabel.js';
 import { Pattern } from './Pattern.js';
 import { renderPropertyBadge } from '../../common/Badge.js';
 import { splitBadgesByPosition } from '../../../utils/split-badges-by-position.js';
@@ -20,8 +20,7 @@ export function PrimitiveRenderer({ property }: { property: PropertyType }): Rea
     <PrimitiveWrapper>
       <Row>
         {beforeBadges.map(renderPropertyBadge)}
-        <SchemaTypeLabel>{property.type}</SchemaTypeLabel>
-        <SchemaTitleLabel title={property.title} schemaName={property.schemaName} />
+        <PropertyTypeLabel property={property} />
         {property.accessMode ? <AccessLabel>{property.accessMode}</AccessLabel> : null}
         {property.isDeprecated ? <DeprecatedBadge>deprecated</DeprecatedBadge> : null}
         <Pattern pattern={property.pattern} />

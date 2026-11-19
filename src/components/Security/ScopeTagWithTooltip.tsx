@@ -5,6 +5,7 @@ import type { ReactElement, ReactNode } from 'react';
 import { Tooltip } from '@redocly/theme/components/Tooltip/Tooltip';
 
 import { getVisibleScopeLabel, isScopeTruncated } from '../../utils/security-scope.js';
+import { SrOnly } from '../common/SrOnly.js';
 import { ScopeTag } from './styled.js';
 
 interface ScopeTagWithTooltipProps {
@@ -72,18 +73,6 @@ const FocusableWrapper = styled.span`
     outline: 1px solid var(--link-color-primary);
     border-radius: var(--border-radius-md);
   }
-`;
-
-const SrOnly = styled.span`
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
-  border: 0;
 `;
 
 const InlineItem = styled.span`

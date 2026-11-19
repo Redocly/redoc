@@ -1,6 +1,4 @@
-import { useEffect, useRef } from 'react';
-
-import type { RefObject } from 'react';
+import { useEffect, useState } from 'react';
 
 import { IS_BROWSER } from '@redocly/theme/core/openapi';
 
@@ -56,27 +54,89 @@ export function createScrollIntentTracker(): (event: Event) => boolean {
   };
 }
 
-/** Ref (`.current`) that flips true once the user scrolls; re-arms whenever
- *  `resetKey` changes (pass `location.key` to re-arm per navigation). */
-export function useUserScrollIntent(resetKey: string): RefObject<boolean> {
-  const scrolledRef = useRef(false);
+/** The router key of the current history entry; `default` when the entry has none (the first
+ *  entry), as React Router reads it. Differs from `location.key` between a navigation's
+ *  history write and the commit of its location. */
+export function currentHistoryKey(): string {
+  const state: unknown = window.history.state;
+  return typeof state === 'object' &&
+    state !== null &&
+    'key' in state &&
+    typeof state.key === 'string'
+    ? state.key
+    : 'default';
+}
+
+/** True once a user gesture has scrolled the page (a gesture that moves nothing does not count);
+ *  false again whenever `resetKey` changes (pass `location.key`). */
+export function useUserScrollIntent(resetKey: string): boolean {
+  const [scrolled, setScrolled] = useState(false);
+  // Keys repeat: Back to the first entry restores its `default` key, so an open gate must
+  // not be remembered per key.
+  const [armedFor, setArmedFor] = useState(resetKey);
+  if (armedFor !== resetKey) {
+    setArmedFor(resetKey);
+    setScrolled(false);
+  }
 
   useEffect(() => {
     if (!IS_BROWSER) return;
-    scrolledRef.current = false;
     const isIntent = createScrollIntentTracker();
+    let armed = false;
+    let armedFrame = 0;
+    let scrollbarHeld = false;
+    let opened = false;
+    let lastScrollY = window.scrollY;
+    // The scroll a gesture causes arrives in the next rendering update; the second frame is slack.
+    const disarmAfterNextFrame = (): void => {
+      cancelAnimationFrame(armedFrame);
+      armedFrame = requestAnimationFrame(() => {
+        armedFrame = requestAnimationFrame(() => {
+          armed = false;
+        });
+      });
+    };
     const onIntent = (event: Event): void => {
-      if (isIntent(event)) scrolledRef.current = true;
+      if (!isIntent(event)) return;
+      // Whether the gesture moved the page is read on the scroll, never here: a passive listener
+      // can run after the compositor already scrolled the page to its edge.
+      armed = true;
+      // A scrollbar drag scrolls for as long as the button is held, with no further intent event.
+      if (event.type === 'mousedown') {
+        scrollbarHeld = true;
+        cancelAnimationFrame(armedFrame);
+      } else if (!scrollbarHeld) {
+        disarmAfterNextFrame();
+      }
+    };
+    const onRelease = (): void => {
+      if (!scrollbarHeld) return;
+      scrollbarHeld = false;
+      disarmAfterNextFrame();
+    };
+    const onScroll = (): void => {
+      const moved = window.scrollY !== lastScrollY;
+      lastScrollY = window.scrollY;
+      if (!armed || opened || !moved) return;
+      // A scroll after the router wrote the next history entry belongs to that location.
+      if (currentHistoryKey() !== resetKey) return;
+      opened = true;
+      setScrolled(true);
     };
     for (const event of USER_SCROLL_INTENT_EVENTS) {
       window.addEventListener(event, onIntent, { passive: true });
     }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('mouseup', onRelease, { passive: true });
     return () => {
       for (const event of USER_SCROLL_INTENT_EVENTS) {
         window.removeEventListener(event, onIntent);
       }
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('mouseup', onRelease);
+      cancelAnimationFrame(armedFrame);
     };
   }, [resetKey]);
 
-  return scrolledRef;
+  return scrolled;
 }

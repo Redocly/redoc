@@ -27,9 +27,9 @@ import {
   itemStoreAtom,
   activeDiscriminatorSelectAtom,
   activeOneOfSelectAtom,
-  buildVariantStateKey,
   buildVariantStoreId,
 } from '../../../jotai/itemStore.js';
+import { buildVariantStateKey } from '../../../utils/variant-state-key.js';
 import { globalOptionsAtom } from '../../../jotai/store.js';
 import { isWithinExpansionLevel } from '../../../utils/expansion.js';
 import { DeepLinkSectionContext, ItemIdContext } from '../../../hooks/useDeepLinkSection.js';
@@ -184,7 +184,7 @@ function OneOfSwitcher({
       ? {
           ...property,
           type: getMergedVariantType(property, opt),
-          description: opt.description,
+          description: undefined,
           switcher: opt.switcher,
           properties: opt.properties,
           items: opt.items,
@@ -248,7 +248,10 @@ function OneOfSwitcher({
           data-testid="one-of-schema"
         />
       </SwitcherWrapper>
-      <SchemaDescription value={opt?.description || property.description} />
+      <SchemaDescription value={property.description} />
+      {opt?.description && opt.description !== property.description ? (
+        <SchemaDescription value={opt.description} />
+      ) : null}
       {mergedProperty ? (
         wrappedVariantBody
       ) : activeOption?.[1] ? (

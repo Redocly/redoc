@@ -18,9 +18,10 @@ import type {
 } from '../../../../types/asyncapi.js';
 import type { ParseMarkdownOptions } from '../../../utils/parseMarkdown.js';
 
-import { combineUrls } from '@redocly/theme/core/openapi';
+import { combineUrls } from '@redocly/theme/core/utils/urls';
 
-import { asString, safeSlugify } from '../../../../utils/string.js';
+import { asString } from '../../../../utils/string.js';
+import type { UniqueSlugger } from '../../../../utils/unique-slugger.js';
 import { normalizeBadges } from '../../../../utils/normalize-badges.js';
 import { normalizePath } from '../../../../utils/url.js';
 import { JsonPointer } from '../../../openapi/utils/JsonPointer.js';
@@ -55,6 +56,7 @@ export function buildMessageReferencesGroups(
   document: AsyncApiDefinition,
   messageKey: string,
   protocol: ProtocolVariant | null | undefined,
+  tagSlugger: UniqueSlugger,
 ): MessageReferencesGroups {
   const groups: MessageReferencesGroups = { exchanges: [], queues: [] };
   if (!document.channels) return groups;
@@ -65,7 +67,7 @@ export function buildMessageReferencesGroups(
     const refLabels = itemLabelsByProtocol(protocol ?? null, refChannel.bindings);
     const protocolSlug = `${refLabels.channel}s`;
     const tagName = refChannel.tags?.map((tag) => asString(tag?.name)).find(Boolean);
-    const tagSlug = tagName ? safeSlugify(tagName).toLowerCase() : undefined;
+    const tagSlug = tagName ? tagSlugger(tagName) : undefined;
     const link = normalizePath(
       tagSlug
         ? combineUrls(tagSlug, protocolSlug, channelKey).toLowerCase()
@@ -106,7 +108,7 @@ function _buildChannelContent(
   const channelChildren: ContentNode[] = [
     {
       nodeType: nodeTypes.HEADER,
-      level: 2,
+      level: 3,
       label: channelTitle,
       badges: normalizeBadges(channel['x-badges']),
       showPageActions: true,
@@ -404,7 +406,12 @@ function _buildChannelContent(
       const referencesByMessageKey: Record<string, MessageReferencesGroups> = {};
       let hasAnyReference = false;
       for (const message of messages) {
-        const groups = buildMessageReferencesGroups(document, message.name, protocol);
+        const groups = buildMessageReferencesGroups(
+          document,
+          message.name,
+          protocol,
+          asyncApiContext.get().tagSlugger,
+        );
         if (groups.exchanges.length > 0 || groups.queues.length > 0) {
           referencesByMessageKey[message.name] = groups;
           hasAnyReference = true;

@@ -29,20 +29,12 @@ bench('query split', async () => {
   } as never);
   const heapBefore = process.memoryUsage().heapUsed;
   const t0 = performance.now();
-  const indexer = new ApiDocsSearchIndexer(
-    '/docs',
-    prepared.store.schemaStore,
-    prepared.document as Record<string, unknown>,
-  );
-  const addAll = (list: any[], ancestors: string[]) => {
-    for (const item of list) {
-      indexer.addItem(item, ancestors);
-      if (item.items?.length)
-        addAll(item.items, item.label ? [...ancestors, item.label] : ancestors);
-    }
-  };
-  addAll(prepared.items as any[], []);
-  const searchDocuments = indexer.getResult();
+  const indexer = new ApiDocsSearchIndexer({
+    basePath: '/docs',
+    store: { schemaStore: prepared.store.schemaStore },
+    document: prepared.document as Record<string, unknown>,
+  });
+  const searchDocuments = indexer.documents(prepared.items);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const engine: any = new SearchEngine();
   for (const document of searchDocuments) engine.addDocument(document);

@@ -23,3 +23,13 @@ export function buildServerEnvValues(
     ]),
   );
 }
+
+/** The entry `buildServerEnvValues` gives the first server, as `[values, name]`; `undefined` without servers. */
+export function firstServerEnv(
+  servers: OpenAPIServer[] | undefined,
+): [Record<string, string>, string] | undefined {
+  const entry = servers?.length
+    ? Object.entries(buildServerEnvValues(servers.slice(0, 1)))[0]
+    : undefined;
+  return entry && [entry[1], entry[0]];
+}

@@ -162,6 +162,65 @@ test('init() called from page JavaScript reports html', async ({ page }) => {
   });
 });
 
+test('init() with a definition object and typeOfUsage vs-code reports vs-code', async ({
+  page,
+}) => {
+  await expectAttribution(page, '/pages/init-imperative.html?case=vs-code', sidebarVisible(page), {
+    specType: 'openapi',
+    typeOfUsage: 'vs-code',
+  });
+});
+
+test('init() after each unmount reuses one telemetry client and reports each render with its spec type', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    const live = new Map<string, Set<unknown>>();
+    const { addEventListener, removeEventListener } = EventTarget.prototype;
+    EventTarget.prototype.addEventListener = function (type, listener, options) {
+      if (this === document) live.set(type, (live.get(type) ?? new Set()).add(listener));
+      return addEventListener.call(this, type, listener, options);
+    };
+    EventTarget.prototype.removeEventListener = function (type, listener, options) {
+      if (this === document) live.get(type)?.delete(listener);
+      return removeEventListener.call(this, type, listener, options);
+    };
+    (window as { __documentListeners?: () => number }).__documentListeners = () => {
+      let count = 0;
+      for (const listeners of live.values()) count += listeners.size;
+      return count;
+    };
+  });
+  const spans = captureSpans(page);
+  const rerender = (kind: 'openapi' | 'asyncapi' | 'graphql') =>
+    page.evaluate(
+      (k) => (window as { __rerender?: (kind: string) => Promise<void> }).__rerender?.(k),
+      kind,
+    );
+  const documentListeners = () =>
+    page.evaluate(() => (window as { __documentListeners?: () => number }).__documentListeners?.());
+
+  await page.goto('/pages/init-imperative.html?case=vs-code-reinit');
+  await page.waitForFunction(() => (window as { __rerender?: unknown }).__rerender);
+  const firstOpenApiRender = await documentListeners();
+  await rerender('asyncapi');
+  await rerender('graphql');
+  await rerender('openapi');
+
+  expect(await documentListeners()).toBe(firstOpenApiRender);
+
+  await flushTelemetry(page);
+  await expect.poll(() => spans()[INITIALIZED]?.length ?? 0, { timeout: FLUSH_SETTLE_MS }).toBe(4);
+  const initialized = spans()[INITIALIZED];
+  expect(initialized.map((a) => a['cloudevents.event_data.initial.spec_type'])).toEqual([
+    'openapi',
+    'asyncapi',
+    'graphql',
+    'openapi',
+  ]);
+  expect(new Set(initialized.map((a) => a['cloudevents.event_session_id'])).size).toBe(1);
+});
+
 test.describe('React embedding', () => {
   test('<RedocStandalone definitionUrl> → openapi, react', async ({ page }) => {
     await expectAttribution(page, '/react/?case=definition-url', reactLoaded(page), {

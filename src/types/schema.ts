@@ -129,7 +129,7 @@ export type BadgeType = {
 
 export type ExampleType = {
   summary?: string;
-  description?: string;
+  description?: string | Node | Node[];
   value?: string;
 };
 
@@ -137,6 +137,9 @@ export type ExternalDocsType = {
   description: string;
   url: string;
 };
+
+/** Starts the type label of every array, so a label that starts with it belongs to an array. */
+export const ARRAY_TYPE_PREFIX = 'array of ';
 
 export const switcherLabel = {
   DISCRIMINATOR: 'Discriminator',

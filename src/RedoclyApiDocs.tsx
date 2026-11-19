@@ -118,11 +118,7 @@ function MarkdownAdapterCheck(): null {
   return null;
 }
 
-const RedoclyApiDocs = compose(
-  withStoreProvider,
-  withRouter,
-  memo,
-)(RedoclyApiDocsComponent);
+const RedoclyApiDocs = compose(withStoreProvider, withRouter, memo)(RedoclyApiDocsComponent);
 
 export { RedoclyApiDocs, RedoclyApiDocsComponent };
 export type { RedoclyApiDocsProps };

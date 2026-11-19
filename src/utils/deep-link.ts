@@ -379,9 +379,10 @@ export function getLegacyHash(hash: string): string {
   return rest;
 }
 
-/** Map a legacy single-page hash (`#section/…`, `#tag/…`, `#operation/…`) to its route URL in
- *  the multi-page engine; `undefined` for a genuine in-page anchor (e.g. a field deep link).
- *  A sub-section tail past the route (`#operation/<id>/callbacks`) becomes the element-id hash. */
+/** Map a legacy single-page hash (`#section/…`, `#tag/…`, `#operation/…`) or a page's previous
+ *  route to its route URL in the multi-page engine; `undefined` for a genuine in-page anchor
+ *  (e.g. a field deep link). A sub-section tail past the route (`#operation/<id>/callbacks`)
+ *  becomes the element-id hash. */
 export function resolveLegacyHashToRoute(
   hash: string,
   basePath: string,
@@ -393,8 +394,13 @@ export function resolveLegacyHashToRoute(
   const direct = normalizePath(joinWithSeparator(basePath, id));
   if (resolveRouteByPathname(routeIndex, direct)) return direct;
 
-  const renamed = routeIndex.allRoutes.find((route) => route.previousPath === direct.toLowerCase());
-  if (renamed) return renamed.path;
+  const directSegments = direct.toLowerCase().split('/');
+  for (let end = directSegments.length; end > 1; end--) {
+    const previousPath = directSegments.slice(0, end).join('/');
+    if (resolveRouteByPathname(routeIndex, previousPath)) break;
+    const moved = routeIndex.allRoutes.find((route) => route.previousPath === previousPath);
+    if (moved) return withSectionHash(moved.path, directSegments.slice(end).join('/'), basePath);
+  }
 
   const legacyHash = getLegacyHash(hash);
   if (!legacyHash) return undefined;
@@ -407,10 +413,25 @@ export function resolveLegacyHashToRoute(
       routeIndex.allRoutes.find((route) => route.previousPath?.endsWith(candidate));
     if (!match) continue;
 
-    const suffix = segments.slice(end).join('/');
-    if (!suffix) return match.path;
-    return `${match.path}#${joinWithSeparator(toElementId(match.path, basePath), suffix)}`;
+    return withSectionHash(match.path, segments.slice(end).join('/'), basePath);
   }
 
   return undefined;
+}
+
+/** The URL that a location matching no route redirects to; `undefined` when nothing moved there. */
+export function resolveUnmatchedUrl(
+  pathname: string,
+  hash: string,
+  basePath: string,
+  routeIndex: RouteIndex,
+): string | undefined {
+  // A hash router hands a legacy fragment (`#tag/…`) over as the path.
+  const legacyHash = hashToElementId(hash) ? hash : `#${toElementId(pathname, basePath) ?? ''}`;
+  return resolveLegacyHashToRoute(legacyHash, basePath, routeIndex);
+}
+
+function withSectionHash(routePath: string, section: string, basePath: string): string {
+  if (!section) return routePath;
+  return `${routePath}#${joinWithSeparator(toElementId(routePath, basePath), section)}`;
 }

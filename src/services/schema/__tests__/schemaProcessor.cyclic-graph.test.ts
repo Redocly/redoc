@@ -341,6 +341,39 @@ describe('schemaProcessor on cyclic schema graphs', () => {
     expect(cat?.properties?.['owner']?.isCircular).toBe(true);
   });
 
+  it('renders array items that close a cycle as a nested recursive row', () => {
+    const doc = makeDocument({
+      Node: {
+        type: 'object',
+        properties: {
+          children: { type: 'array', items: refTo('Node') },
+          grid: { type: 'array', items: { type: 'array', items: refTo('Node') } },
+        },
+      },
+    });
+    const props = processPage(doc, 'Node').properties;
+    expect(props?.['children']?.type).toBe('array of objects');
+    expect(props?.['children']?.items?.[0]?.isCircular).toBe(true);
+    expect(props?.['grid']?.items?.[0]?.items?.[0]?.isCircular).toBe(true);
+  });
+
+  it('renders a cycle through oneOf and nested arrays as a nested recursive row', () => {
+    const doc = makeDocument({
+      Layout: { type: 'array', items: refTo('LayoutItem') },
+      LayoutItem: { oneOf: [refTo('ColumnsLayout')] },
+      ColumnsLayout: {
+        type: 'object',
+        properties: {
+          columns: { type: 'array', items: { type: 'array', items: refTo('LayoutItem') } },
+        },
+      },
+    });
+    const item = processPage(doc, 'Layout').items?.[0];
+    const column = item?.switcher?.options['ColumnsLayout']?.properties?.['columns']?.items?.[0];
+    expect(column?.items?.[0]?.isCircular).toBe(true);
+    expect(column?.items?.[0]?.schemaName).toBe('LayoutItem');
+  });
+
   it('resolves a listed variant on its own when its list entry is a cycle stub', () => {
     const doc = makeDocument({
       Meta: { type: 'object', properties: { createdAt: { type: 'string' } } },

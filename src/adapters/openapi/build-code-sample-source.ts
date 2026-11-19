@@ -21,7 +21,7 @@ import type {
   ServerEntry,
 } from '../../services/code-samples/index.js';
 
-import { isRbacKey, readRbacScope, rbacProp } from '../rbac.js';
+import { isRbacKey, rbacFrom, readRbacScope, rbacProp } from '../rbac.js';
 
 import {
   registerExample,
@@ -76,10 +76,7 @@ export function buildCodeSampleSource(
 ): CodeSampleSource {
   const doc = storeCtx?.document ?? {};
   const requirements = securityRequirements(operationInfo.security);
-  const opServers = buildOperationServers(
-    operationInfo,
-    doc,
-  );
+  const opServers = buildOperationServers(operationInfo, doc);
   const paramsByLocation = buildParametersByLocation(
     operationInfo,
     doc,
@@ -131,6 +128,7 @@ function buildOperationServers(
             )
           : undefined,
     };
+    Object.assign(entry, rbacFrom(s));
     return entry;
   });
 

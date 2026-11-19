@@ -10,6 +10,7 @@ import { SchemaView } from '../../Schema/SchemaView.js';
 import { Markdown } from '../../common/Markdown.js';
 import { DeepLinkAnchor, deepLinkHoverReveal } from '../../common/DeepLinkAnchor.js';
 import { getDeepLinkId } from '../../../utils/deep-link.js';
+import { accessFilterOf } from '../../../utils/access-filter.js';
 import { BodyMimeTypeField } from './BodyMimeTypeField.js';
 import { activeMediaTypeAtom } from '../../../jotai/app.js';
 import { itemStoreAtom, itemStoreFieldAtom } from '../../../jotai/itemStore.js';
@@ -55,6 +56,8 @@ export function ResponsesSection({ node }: { node: ItemContentNode }): ReactElem
     headers,
     headerSchemaId,
   } = responses?.find((r) => r.code === activeCode) ?? responses?.[0] ?? {};
+
+  const { skipReadOnly, skipWriteOnly } = accessFilterOf(node);
 
   const mediaTypes = mediaTypeContent
     ? Object.keys(mediaTypeContent)
@@ -129,8 +132,8 @@ export function ResponsesSection({ node }: { node: ItemContentNode }): ReactElem
               schemaId={activeSchemaId}
               expandByDefault
               level={1}
-              skipReadOnly={Boolean(node.isEvent)}
-              skipWriteOnly={!node.isEvent}
+              skipReadOnly={skipReadOnly}
+              skipWriteOnly={skipWriteOnly}
             />
           )}
         </DeepLinkSectionContext.Provider>

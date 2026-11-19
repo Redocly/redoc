@@ -61,7 +61,7 @@ describe('collectComponentClosure', () => {
     expect(keptNames(closure, 'responses')).toEqual(['List']);
     expect(keptNames(closure, 'headers')).toEqual(['Rate']);
     expect(keptNames(closure, 'schemas')).toEqual(['PageSize']);
-    expect(closure.inlineTargets.size).toBe(0);
+    expect(closure.refTargets.size).toBe(0);
   });
 
   it('decodes JSON-pointer segments in component names', () => {
@@ -83,7 +83,7 @@ describe('collectComponentClosure', () => {
     expect(Object.keys(components.schemas as Record<string, unknown>)).toEqual(['a/b~c', 'Plain']);
   });
 
-  it('skips refs to missing components without keeping or inlining them', () => {
+  it('skips refs to missing components without keeping or recording them', () => {
     const document = deepFreeze({ components: { schemas: { Real: { type: 'object' } } } });
     const seeds = deepFreeze([
       { $ref: '#/components/schemas/Missing' },
@@ -95,7 +95,7 @@ describe('collectComponentClosure', () => {
 
     expect(keptNames(closure, 'schemas')).toEqual(['Real']);
     expect(keptNames(closure, 'widgets')).toEqual([]);
-    expect(closure.inlineTargets.size).toBe(0);
+    expect(closure.refTargets.size).toBe(0);
 
     const missingOnly = collectComponentClosure(document, [
       deepFreeze({ $ref: '#/components/schemas/Missing' }),
@@ -198,7 +198,7 @@ describe('collectComponentClosure', () => {
     expect(keptNames(closure, 'schemas')).toEqual(['ChildA', 'Parent', 'PlainParent']);
   });
 
-  it('records non-component internal refs as inline targets and walks them', () => {
+  it('records a non-component local $ref as a ref target and walks it', () => {
     const sharedThing = {
       type: 'object',
       properties: { pet: { $ref: '#/components/schemas/Pet' } },
@@ -212,8 +212,8 @@ describe('collectComponentClosure', () => {
       deepFreeze({ schema: { $ref: '#/x-shared/Thing' } }),
     ]);
 
-    expect(closure.inlineTargets.size).toBe(1);
-    expect(closure.inlineTargets.get('#/x-shared/Thing')).toBe(sharedThing);
+    expect(closure.refTargets.size).toBe(1);
+    expect(closure.refTargets.get('#/x-shared/Thing')).toBe(sharedThing);
     expect(keptNames(closure, 'schemas')).toEqual(['Pet']);
   });
 
@@ -222,11 +222,11 @@ describe('collectComponentClosure', () => {
 
     const closure = collectComponentClosure(document, [deepFreeze({ $ref: '#/x-missing/Nope' })]);
 
-    expect(closure.inlineTargets.size).toBe(0);
+    expect(closure.refTargets.size).toBe(0);
     expect(closure.keep.size).toBe(0);
   });
 
-  it('retainRef suppresses inlining and walking of non-component refs but not component refs', () => {
+  it('retainRef keeps a non-component $ref out of refTargets and unwalked, but not a component $ref', () => {
     const document = deepFreeze({
       'x-shared': { Thing: { schema: { $ref: '#/components/schemas/Inner' } } },
       components: { schemas: { Pet: { type: 'object' }, Inner: { type: 'object' } } },
@@ -236,11 +236,11 @@ describe('collectComponentClosure', () => {
     ]);
 
     const retained = collectComponentClosure(document, [...seeds], () => true);
-    expect(retained.inlineTargets.size).toBe(0);
+    expect(retained.refTargets.size).toBe(0);
     expect(keptNames(retained, 'schemas')).toEqual(['Pet']);
 
     const unrestricted = collectComponentClosure(document, [...seeds]);
-    expect(unrestricted.inlineTargets.has('#/x-shared/Thing')).toBe(true);
+    expect(unrestricted.refTargets.has('#/x-shared/Thing')).toBe(true);
     expect(keptNames(unrestricted, 'schemas')).toEqual(['Inner', 'Pet']);
   });
 
@@ -254,10 +254,10 @@ describe('collectComponentClosure', () => {
     const closure = collectComponentClosure(document, seeds);
 
     expect(closure.keep.size).toBe(0);
-    expect(closure.inlineTargets.size).toBe(0);
+    expect(closure.refTargets.size).toBe(0);
   });
 
-  it('dedupes repeated component and inline refs', () => {
+  it('dedupes repeated component refs and ref targets', () => {
     const document = deepFreeze({
       'x-defs': { D: { type: 'object' } },
       components: { schemas: { Pet: { type: 'object' } } },
@@ -274,7 +274,17 @@ describe('collectComponentClosure', () => {
     const closure = collectComponentClosure(document, seeds);
 
     expect(keptNames(closure, 'schemas')).toEqual(['Pet']);
-    expect(closure.inlineTargets.size).toBe(1);
+    expect(closure.refTargets.size).toBe(1);
+  });
+
+  it('walks an array too long to spread into a call', () => {
+    const document = deepFreeze({ components: { schemas: { Last: { type: 'string' } } } });
+    const values: unknown[] = Array.from({ length: 1_000_000 }, (_, i) => `v${i}`);
+    values.push({ $ref: '#/components/schemas/Last' });
+
+    const closure = collectComponentClosure(document, [{ enum: values }]);
+
+    expect(keptNames(closure, 'schemas')).toEqual(['Last']);
   });
 
   it('terminates on cyclic and self-referencing schemas', () => {

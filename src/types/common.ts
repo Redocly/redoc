@@ -134,6 +134,30 @@ export const nodeTypes = {
 
 export type NodeTypes = ObjectValues<typeof nodeTypes>;
 
+export const contentNodeVariant = {
+  HEADERS: 'headers',
+  QUERY: 'query',
+  QUERYSTRING: 'querystring',
+  QUERYSTRING_BODY: 'querystring-body',
+  PATH: 'path',
+  PARAMETERS: 'parameters',
+  COOKIES: 'cookies',
+  BODY: 'body',
+  RESPONSES: 'responses',
+  CALLBACK: 'callback',
+  MESSAGES: 'messages',
+  VALUES: 'values',
+  GRAPHQL_FIELDS: 'graphql-fields',
+  GRAPHQL_ARGS: 'graphql-args',
+  RETURN_TYPE: 'return-type',
+  POSSIBLE_TYPES: 'possible-types',
+  IMPLEMENTS: 'implements',
+  IMPLEMENTED_BY: 'implemented-by',
+  REQUIRES_SCOPES: 'requires-scopes',
+} as const;
+
+export type ContentNodeVariant = ObjectValues<typeof contentNodeVariant>;
+
 export const panelKind = {
   LOCATIONS: 'locations',
   GROUP_ITEMS: 'group-items',
@@ -156,7 +180,6 @@ export const panelKind = {
   RESPONSE: 'response',
   GRAPHQL_QUERY: 'graphql-query',
   GRAPHQL_RESPONSE: 'graphql-response',
-  GRAPHQL_VARIABLES: 'graphql-variables',
   GRAPHQL_TYPE_SAMPLE: 'graphql-type-sample',
   MCP_EXAMPLE: 'mcp-example',
 } as const;

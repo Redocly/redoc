@@ -213,7 +213,7 @@ describe('buildApiDocsAgentTools', () => {
 
     expect(getOperationDetail).toHaveBeenCalledWith(
       expect.objectContaining({ method: 'GET', path: '/museum-hours' }),
-      undefined,
+      { item: expect.objectContaining({ httpVerb: 'get' }), signal: undefined },
     );
     expect(result.content[0]?.text).toContain('# GET /museum-hours');
     expect(result.content[0]?.text).toContain('## Parameters');

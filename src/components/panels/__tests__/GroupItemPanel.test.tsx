@@ -29,7 +29,7 @@ vi.mock('@redocly/theme/components/Tag/Tag', () => ({
 }));
 
 vi.mock('../../../hooks/useNormalizeUrl.js', () => ({
-  useNavigationUrlNormalizer: () => mocks.normalizeUrl,
+  useContentLinkNormalizer: () => mocks.normalizeUrl,
 }));
 
 const SPEC_TRANSLATIONS: Record<string, string> = {
@@ -227,7 +227,7 @@ it('renders each item as a link to the normalized href', () => {
   expect(screen.getByText('pets').closest('a')).toHaveAttribute('href', '/pets');
 });
 
-it('passes the relative item link through useNavigationUrlNormalizer when a router basename is present', () => {
+it('passes the relative item link through useContentLinkNormalizer when a router basename is present', () => {
   // Simulate a router basename of '/docs/openapi' by having the normalizer prepend it.
   mocks.normalizeUrl.mockImplementation((href: string) => `/docs/openapi${href}`);
 
@@ -242,7 +242,7 @@ it('passes the relative item link through useNavigationUrlNormalizer when a rout
   expect(screen.getByText('pets').closest('a')).toHaveAttribute('href', '/docs/openapi/pets');
 });
 
-it('also passes child-tag links through useNavigationUrlNormalizer', () => {
+it('also passes child-tag links through useContentLinkNormalizer', () => {
   mocks.normalizeUrl.mockImplementation((href: string) => `/docs/openapi${href}`);
 
   const childTagItem = { ...createItem('users', '/users'), childTag: true };

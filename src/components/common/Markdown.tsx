@@ -2,6 +2,7 @@ import { memo, useMemo } from 'react';
 
 import type { ReactElement } from 'react';
 
+import { isMarkdocAst } from '../../adapters/utils/markdoc.js';
 import { useMarkdownAdapter } from '../../contexts/markdownAdapter.js';
 
 export type MarkdownProps = {
@@ -22,11 +23,10 @@ function MarkdownComponent({ source }: MarkdownProps): ReactElement {
   return <>{parsed === UNRENDERABLE ? null : adapter.render(parsed)}</>;
 }
 
-// A number or boolean renders as text; an object that is not a Markdoc tree renders nothing.
 function toMarkdownSource(source: unknown): unknown {
   if (typeof source === 'number' || typeof source === 'boolean') return String(source);
-  if (typeof source !== 'object' || source === null || Array.isArray(source)) return source;
-  return '$$mdtype' in source ? source : UNRENDERABLE;
+  if (typeof source !== 'object' || source === null) return source;
+  return isMarkdocAst(source) ? source : UNRENDERABLE;
 }
 
 export const Markdown = memo(MarkdownComponent);

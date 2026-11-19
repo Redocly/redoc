@@ -1,9 +1,10 @@
-import { combineUrls } from '@redocly/theme/core/openapi';
+import { combineUrls } from '@redocly/theme/core/utils/urls';
 
 import type { ApiItem } from '../../../types/store.js';
 
 import { contentType, nodeTypes } from '../../../types/common.js';
-import { asString, safeSlugify } from '../../../utils/string.js';
+import { asString } from '../../../utils/string.js';
+import { keepPreviousRoutes } from '../../../utils/unique-slugger.js';
 import {
   buildMarkdownSectionItem,
   extractMarkdownSections,
@@ -37,7 +38,7 @@ export function buildNavigationItems(): ApiItem[] {
     const protocolSlug = `${labels.channel}s`;
 
     for (const tagName of tagNames) {
-      const tagSlug = safeSlugify(tagName).toLowerCase();
+      const tagSlug = context.tagSlugger(tagName);
 
       if (!context.groups[tagName]) {
         context.groups[tagName] = [];
@@ -76,7 +77,7 @@ export function buildNavigationItems(): ApiItem[] {
     for (const section of extractMarkdownSections(
       tag?.description,
       context.options,
-      safeSlugify(group).toLowerCase(),
+      context.tagSlugger(group),
     )) {
       context.groups[group].push(
         buildMarkdownSectionItem({
@@ -91,7 +92,7 @@ export function buildNavigationItems(): ApiItem[] {
   const navItems = [
     ...Object.keys(context.groups).map((tagName) => {
       const group = context.groups[tagName];
-      const tagLink = combineUrls(basePath, safeSlugify(tagName)).toLowerCase();
+      const tagLink = combineUrls(basePath, context.tagSlugger(tagName)).toLowerCase();
       const tagComponent = tagsComponents[tagName];
       const markdownSanitize = context.options;
       const externalDocs = tagComponent?.externalDocs;
@@ -158,6 +159,15 @@ export function buildNavigationItems(): ApiItem[] {
     }),
     ...context.items,
   ];
+  keepPreviousRoutes(
+    navItems,
+    new Map(
+      [...context.tagSlugger.moved].map(([slug, plainSlug]) => [
+        combineUrls(basePath, slug).toLowerCase(),
+        combineUrls(basePath, plainSlug).toLowerCase(),
+      ]),
+    ),
+  );
 
   if (document['x-tagGroups'] && document['x-tagGroups'].length > 0) {
     const groupedNavItems: ApiItem[] = [];

@@ -359,7 +359,7 @@ const SchemaBlock = styled.div`
   margin-top: var(--spacing-lg);
 `;
 
-const SchemaLabel = styled.h4`
+const SchemaLabel = styled.h5`
   font-size: var(--font-size-md, 16px);
   font-weight: var(--font-weight-bold, 700);
   color: var(--text-color-primary, #333);

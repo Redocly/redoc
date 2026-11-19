@@ -14,7 +14,7 @@ That opens http://localhost:5173.
 ## Use it in your app
 
 ```bash
-npm install redoc react react-dom styled-components
+npm install redoc react react-dom styled-components react-router @redocly/config
 ```
 
 ```tsx

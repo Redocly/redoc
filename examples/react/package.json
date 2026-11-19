@@ -8,8 +8,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@redocly/config": "^0.75.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
+    "react-router": "^8.3.0",
     "redoc": "^3.0.0",
     "styled-components": "^6.5.3"
   },

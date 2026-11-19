@@ -5,6 +5,7 @@ import type { ApiItem, ApiItemContent } from '../../../types/store.js';
 
 import { nodeTypes, contentType } from '../../../types/common.js';
 import { ApiDocsSearchIndexer } from '../indexer/index.js';
+import { collected } from './collected.js';
 
 const SCHEMA_STORE = {
   'components/schemas/Pet': {
@@ -34,13 +35,13 @@ const HEADING_SECTION = '## Details\n\nSection **text**.\n\nSecond paragraph.';
 
 describe('formatDescription option', () => {
   it('overrides description serialization for field rows', () => {
-    const indexer = new ApiDocsSearchIndexer(
-      '/api',
-      SCHEMA_STORE,
-      {},
-      {
+    const indexer = collected(
+      new ApiDocsSearchIndexer({
+        basePath: '/api',
+        store: { schemaStore: SCHEMA_STORE },
+        document: {},
         formatDescription: () => 'FORMATTED',
-      },
+      }),
     );
     indexer.addItem(ITEM);
     const params = indexer.getResult().flatMap((doc) => doc.parameters ?? []);
@@ -48,9 +49,9 @@ describe('formatDescription option', () => {
   });
 
   it('overrides description serialization for description heading rows', () => {
-    const indexer = new ApiDocsSearchIndexer('/api', undefined, undefined, {
-      formatDescription: () => 'FORMATTED',
-    });
+    const indexer = collected(
+      new ApiDocsSearchIndexer({ basePath: '/api', formatDescription: () => 'FORMATTED' }),
+    );
     indexer.addItem({
       ...ITEM,
       content: {
@@ -63,7 +64,13 @@ describe('formatDescription option', () => {
   });
 
   it('defaults to plain text', () => {
-    const indexer = new ApiDocsSearchIndexer('/api', SCHEMA_STORE, {});
+    const indexer = collected(
+      new ApiDocsSearchIndexer({
+        basePath: '/api',
+        store: { schemaStore: SCHEMA_STORE },
+        document: {},
+      }),
+    );
     indexer.addItem(ITEM);
     const params = indexer.getResult().flatMap((doc) => doc.parameters ?? []);
     expect(params.find((p) => p.name === 'name')?.description).toBe('Pet name');

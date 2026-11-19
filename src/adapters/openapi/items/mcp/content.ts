@@ -38,7 +38,7 @@ function _buildMcpItemContent(
         children: [
           {
             nodeType: nodeTypes.HEADER,
-            level: 2,
+            level: 3,
             label: title,
             showPageActions: true,
           },

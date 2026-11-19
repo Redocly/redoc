@@ -1,10 +1,4 @@
-import {
-  memo,
-  useMemo,
-  useLayoutEffect,
-  type ComponentType,
-  type FC,
-} from 'react';
+import { memo, useMemo, useLayoutEffect, type ComponentType, type FC } from 'react';
 import { createStore, Provider, useStore, getDefaultStore } from 'jotai';
 
 import type { ApiItem, ApiStore } from '../types/store.js';
@@ -42,7 +36,7 @@ function buildGlobalStoreOptions(options: RawApiDocsOptions, basePath: string): 
 
 /**
  * Keep `appStore` mounted for the store's lifetime so `atomWithStorage` loads
- * the saved cookie/session state before anything reads or writes through it.
+ * the saved state before anything reads or writes through it.
  * One permanent subscription per store — `sub()` stacks a new listener on
  * every call and we never unsubscribe, so dedupe by store.
  */
@@ -58,7 +52,7 @@ function ensureAppStoreMounted(jotaiStore: ReturnType<typeof createStore>): void
 
 /**
  * Seed one environment per global server. Without the seeds, a saved environment name
- * (cookie) can't resolve to a server in a fresh session and the switcher resets to the
+ * can't resolve to a server in a fresh session and the switcher resets to the
  * first server.
  */
 function seedServerEnvironments(

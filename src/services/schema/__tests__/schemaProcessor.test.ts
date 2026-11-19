@@ -469,7 +469,7 @@ describe('schemaProcessor constraints', () => {
       { type: 'array', items: { type: 'string' }, minItems: 1, maxItems: 10 },
       emptyDoc,
     );
-    expect(result.type).toBe('Array of strings, [ 1 .. 10 ] items');
+    expect(result.type).toBe('array of strings, [ 1 .. 10 ] items');
   });
 
   it('should humanize non-empty array (minItems: 1)', () => {
@@ -477,7 +477,7 @@ describe('schemaProcessor constraints', () => {
       { type: 'array', items: { type: 'string' }, minItems: 1 },
       emptyDoc,
     );
-    expect(result.type).toBe('Array of strings, non-empty');
+    expect(result.type).toBe('array of strings, non-empty');
   });
 
   it('should humanize non-empty object (minProperties: 1)', () => {
@@ -539,7 +539,7 @@ describe('schemaProcessor constraints', () => {
       { type: 'array', items: { type: 'string' }, uniqueItems: true },
       emptyDoc,
     );
-    expect(result.type).toBe('Array of strings, unique');
+    expect(result.type).toBe('array of strings, unique');
   });
 });
 
@@ -896,7 +896,7 @@ describe('schemaProcessor arrays', () => {
 
     // Example rolls up, but the array keeps its own type.
     expect(result.example).toEqual([{ id: '123' }]);
-    expect(result.type).toBe('Array of objects');
+    expect(result.type).toBe('array of objects');
   });
 });
 
@@ -5056,6 +5056,29 @@ describe('schemaProcessor dialectId', () => {
     const fallback = schemaProcessor(schema, makeDocument({}), { dialectId: 'unit-test-unknown' });
     const defaultResult = schemaProcessor(schema, makeDocument({}));
     expect(fallback).toEqual(defaultResult);
+  });
+});
+
+describe('schemaProcessor cache', () => {
+  it('keeps one tree per root pointer, so alternating roots do not evict each other', () => {
+    const schema = { oneOf: [{ type: 'string' }, { type: 'number' }] };
+    const doc = makeDocument({});
+    const foo = schemaProcessor(schema, doc, { rootJsonPointer: '#/components/schemas/Foo' });
+    const bar = schemaProcessor(schema, doc, { rootJsonPointer: '#/components/schemas/Bar' });
+    expect(schemaProcessor(schema, doc, { rootJsonPointer: '#/components/schemas/Foo' })).toBe(foo);
+    expect(schemaProcessor(schema, doc, { rootJsonPointer: '#/components/schemas/Bar' })).toBe(bar);
+  });
+
+  it('does not reuse a tree built with another sortRequiredPropsFirst', () => {
+    const schema = {
+      type: 'object',
+      required: ['alpha'],
+      properties: { zeta: { type: 'string' }, alpha: { type: 'string' } },
+    };
+    const unsorted = schemaProcessor(schema, emptyDoc);
+    const sorted = schemaProcessor(schema, emptyDoc, { sortRequiredPropsFirst: true });
+    expect(Object.keys(requireProps(unsorted))).toEqual(['zeta', 'alpha']);
+    expect(Object.keys(requireProps(sorted))).toEqual(['alpha', 'zeta']);
   });
 });
 

@@ -12,16 +12,18 @@ import { nodeTypes, panelKind } from '../../../../../types/common.js';
 import { createStoreContext } from '../../../../helpers.js';
 import { asyncApiContext } from '../../../buildContext.js';
 import { buildChannelContent, buildMessageReferencesGroups } from '../content.js';
+import { createUniqueSlugger } from '../../../../../utils/unique-slugger.js';
+import { createBuildContext } from '../../../build/context.js';
 import type { MarkdownSanitizeOptions } from '../../../../utils/markdoc.js';
 
 const baseDoc: AsyncApiDefinition = {
   asyncapi: '3.0.0',
   info: { title: 'Test', version: '1.0' },
   channels: {},
-} as AsyncApiDefinition;
+};
 
 function doc(channels: NonNullable<AsyncApiDefinition['channels']>): AsyncApiDefinition {
-  return { ...baseDoc, channels } as AsyncApiDefinition;
+  return { ...baseDoc, channels };
 }
 
 describe('buildMessageReferencesGroups (AsyncAPI channel references)', () => {
@@ -43,6 +45,7 @@ describe('buildMessageReferencesGroups (AsyncAPI channel references)', () => {
       }),
       'msg',
       'amqp',
+      createUniqueSlugger(),
     );
 
     expect(groups.exchanges.map((r) => r.key)).toEqual(['firstExchange']);
@@ -60,9 +63,38 @@ describe('buildMessageReferencesGroups (AsyncAPI channel references)', () => {
       }),
       'requestRide',
       'amqp',
+      createUniqueSlugger(),
     );
 
     expect(groups.queues[0].link).toBe('/ride-sharing/queues/ridequeue');
+  });
+
+  it('links each channel under the slug its tag got in the build, suffix included', () => {
+    const document = doc({
+      petsQueue: {
+        messages: { adopted: { name: 'adopted' } },
+        bindings: { amqp: { is: 'queue' } },
+        tags: [{ name: 'Pets' }],
+      },
+      legacyQueue: {
+        messages: { adopted: { name: 'adopted' } },
+        bindings: { amqp: { is: 'queue' } },
+        tags: [{ name: 'pets' }],
+      },
+    });
+    const { tagSlugger } = createBuildContext({
+      document,
+      options: {} as ApiDocsOptions,
+      basePath: '/',
+      storeCtx: createStoreContext(document),
+    });
+
+    const groups = buildMessageReferencesGroups(document, 'adopted', 'amqp', tagSlugger);
+
+    expect(groups.queues.map((r) => r.link)).toEqual([
+      '/pets/queues/petsqueue',
+      '/pets-1/queues/legacyqueue',
+    ]);
   });
 
   it('omits the tag segment when the channel has no tags', () => {
@@ -75,6 +107,7 @@ describe('buildMessageReferencesGroups (AsyncAPI channel references)', () => {
       }),
       'requestRide',
       'amqp',
+      createUniqueSlugger(),
     );
 
     expect(groups.queues[0].link).toBe('/queues/ridequeue');
@@ -108,6 +141,7 @@ describe('buildMessageReferencesGroups (AsyncAPI channel references)', () => {
       }),
       'msg',
       'amqp',
+      createUniqueSlugger(),
     );
 
     expect(groups.queues.map((r) => r.label)).toEqual([
@@ -129,6 +163,7 @@ describe('buildMessageReferencesGroups (AsyncAPI channel references)', () => {
       } as unknown as NonNullable<AsyncApiDefinition['channels']>),
       'requestRide',
       'amqp',
+      createUniqueSlugger(),
     );
 
     expect(groups.queues[0].link).toBe('/ride-sharing/queues/ridequeue');
@@ -145,6 +180,7 @@ describe('buildMessageReferencesGroups (AsyncAPI channel references)', () => {
       } as unknown as NonNullable<AsyncApiDefinition['channels']>),
       'requestRide',
       'amqp',
+      createUniqueSlugger(),
     );
 
     expect(groups.queues[0].link).toBe('/queues/ridequeue');
@@ -169,6 +205,7 @@ describe('buildMessageReferencesGroups (AsyncAPI channel references)', () => {
       } as unknown as NonNullable<AsyncApiDefinition['channels']>),
       'msg',
       'amqp',
+      createUniqueSlugger(),
     );
 
     expect(groups.queues.map((r) => r.label)).toEqual(['undefinedFields', 'nonStringFields']);
@@ -187,6 +224,7 @@ describe('buildMessageReferencesGroups (AsyncAPI channel references)', () => {
       } as unknown as NonNullable<AsyncApiDefinition['channels']>),
       'msg',
       'amqp',
+      createUniqueSlugger(),
     );
 
     expect(groups.queues.map((r) => r.label)).toEqual(['Real queue']);
@@ -196,7 +234,7 @@ describe('buildMessageReferencesGroups (AsyncAPI channel references)', () => {
 function withBuildContext<T>(
   document: AsyncApiDefinition,
   fn: () => T,
-  storeCtx = createStoreContext(document as unknown as Record<string, unknown>),
+  storeCtx = createStoreContext(document),
 ): T {
   const ctx = {
     document,
@@ -209,6 +247,7 @@ function withBuildContext<T>(
     items: [],
     descriptionItems: [],
     channelSummaries: new Map(),
+    tagSlugger: createUniqueSlugger(),
   } as unknown as AsyncApiBuildContext;
   return asyncApiContext.run(ctx, fn);
 }
@@ -256,7 +295,7 @@ function findPanelChild<T>(
 ): T | undefined {
   for (const node of content.children) {
     if (node.nodeType !== nodeTypes.CONTAINER) continue;
-    for (const panel of (node as ContainerNode).panels ?? []) {
+    for (const panel of node.panels ?? []) {
       for (const child of panel.children ?? []) {
         if ((child as { kind?: string }).kind === kind) return child as T;
       }
@@ -343,7 +382,7 @@ describe('buildChannelContent — message examples', () => {
       },
     } as unknown as AsyncApiChannel;
     const document = doc({ orders: channel });
-    const storeCtx = createStoreContext(document as unknown as Record<string, unknown>);
+    const storeCtx = createStoreContext(document);
 
     withBuildContext(
       document,

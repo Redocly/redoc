@@ -2,7 +2,6 @@ import { buildASTSchema } from 'graphql';
 
 import type { DocumentNode } from 'graphql';
 import type { ApiDocAdapterProps, ApiItem, ApiStore } from '../../types/store.js';
-import type { ParseMarkdownOptions } from '../utils/parseMarkdown.js';
 
 import { createBuildContext } from './build/context.js';
 import { populateGraphqlStore } from './store.js';
@@ -11,6 +10,7 @@ import { groupByDefault } from './group/default.js';
 import { groupByCustomMenu } from './group/custom.js';
 import { buildOverviewItem } from './items/overview/item.js';
 import { graphqlContext } from './buildContext.js';
+import { keepPreviousRoutes } from '../../utils/unique-slugger.js';
 
 export function processGraphqlDocument({
   document,
@@ -23,7 +23,7 @@ export function processGraphqlDocument({
 } {
   const schema = buildASTSchema(document);
   const store: ApiStore = processContent
-    ? populateGraphqlStore(schema, options as ParseMarkdownOptions)
+    ? populateGraphqlStore(schema, options)
     : { schemaStore: {}, exampleStore: {}, securitySchemeStore: {} };
   const context = createBuildContext({
     document,
@@ -58,6 +58,7 @@ function buildGraphqlItems(): ApiItem[] {
   } else {
     result.push(...groupByDefault());
   }
+  keepPreviousRoutes(result, context.slugger.moved);
 
   return result;
 }

@@ -8,7 +8,11 @@ import type { GlobalStoreAtom } from '../../jotai/store.js';
 
 import { globalStoreAtom } from '../../jotai/store.js';
 import { normalizeOptions } from '../../options/normalizeOptions.js';
-import { useNavigationUrlNormalizer, useNormalizeUrl } from '../useNormalizeUrl.js';
+import {
+  useContentLinkNormalizer,
+  useNavigationUrlNormalizer,
+  useNormalizeUrl,
+} from '../useNormalizeUrl.js';
 
 function createWrapper(basePath: string) {
   const store = createStore();
@@ -80,6 +84,15 @@ describe('useNavigationUrlNormalizer', () => {
       const { result } = renderNormalizer('/');
       expect(result.current('/menu/list')).toBe('/menu/list');
     });
+  });
+});
+
+describe('useContentLinkNormalizer', () => {
+  it('prepends basePath even when the link starts with the same segment', () => {
+    const { result } = renderHook(() => useContentLinkNormalizer(), {
+      wrapper: createWrapper('/payments'),
+    });
+    expect(result.current('/payments/createpayment')).toBe('/payments/payments/createpayment');
   });
 });
 

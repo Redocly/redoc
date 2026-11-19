@@ -12,7 +12,7 @@ export function buildInterfaceContent(
 ): ApiItemContent {
   const schemaId = `types/${interfaceType.name}`;
   const containerChildren: ContentNode[] = [
-    { nodeType: nodeTypes.HEADER, level: 2, label: interfaceType.name, showPageActions: true },
+    { nodeType: nodeTypes.HEADER, level: 3, label: interfaceType.name, showPageActions: true },
   ];
 
   const descriptionContent = parseMarkdown(interfaceType.description, markdownOptions);
