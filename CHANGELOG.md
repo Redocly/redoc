@@ -1,5 +1,39 @@
 # Redoc
 
+## 3.2.0
+
+### Minor Changes
+
+- d5a3266: Added the `--schema-nested-level-0-color` to `--schema-nested-level-8-color` CSS variables to set the colors of nested schema levels in Redoc.
+
+### Patch Changes
+
+- d5a3266: Fixed an issue where the schema panel did not show the allowed values of an array in a `oneOf` or `anyOf` option.
+- d5a3266: Fixed an issue where descriptions of array items, such as referenced response objects, were not displayed.
+- d5a3266: Fixed an issue where the page crashed when the browser blocked cookies and site data.
+- d5a3266: Updated **Copy** to begin with the page title and operation (for example, `GET /pets`) and clarify that the copied API description covers a subset of the full specification.
+- d5a3266: Fixed **Copy** in OpenAPI docs on parent tag pages (`parent`), the schema definitions page (`schemaDefinitionsTagName`), and tag pages with schemas or `x-mcp` entities.
+- d5a3266: Fixed page freezes when using **Copy**, **Open in Claude**, or **Open in ChatGPT** on OpenAPI or AsyncAPI documentation with repeated local `$ref` references outside `components`.
+- d5a3266: Fixed an issue where Redoc showed the names of schema properties nested ten or more levels deep in the color of a different nesting level.
+- d5a3266: Fixed an issue where request samples selected the first server from a previously opened API instead of the current API’s first server.
+- d5a3266: Fixed an issue in API docs where tags, groups, or items whose names differ only in letter case or in characters that URLs leave out, such as `demo数据` and `demo数据备份`, shared one URL and showed the wrong content. Old links to the pages that moved to a new URL still work.
+- 38d6bf6: Fixed an issue where webhook and callback response schemas showed readOnly properties and hid writeOnly ones.
+- d5a3266: Fixed an issue where search for webhook and callback responses returned `readOnly` properties and missed `writeOnly` ones.
+- d5a3266: Fixed an issue where response samples in GraphQL docs did not show the operation's field name under `data`, so they did not match the response from a GraphQL server.
+- d5a3266: Fixed skipped heading levels on API item pages. Operation, schema, channel, and GraphQL type titles use `h3` headings beneath the `h2` page or group heading, so custom CSS that targeted these titles as `h2` must target `h3` instead.
+- d5a3266: Fixed anonymous telemetry for API descriptions that fail to load: a YAML syntax error is reported as a parse failure whatever the description URL, and the event includes the first line of the error message with quoted text, URLs and file paths removed.
+- d5a3266: Changed array type labels in schemas to lowercase (`array of strings`), to match the other type names, such as `string` and `object`.
+- d5a3266: Removed the `redoc.appStore` cookie. Redoc saves user preferences in the browser's local storage instead.
+- d5a3266: Fixed an issue where the page crashed when an array schema had an empty `items` key.
+- d5a3266: Fixed an issue where the `description` of a `oneOf` or `anyOf` schema was hidden when the selected option had its own description; both are shown.
+- d5a3266: Fixed an empty overview page for OpenAPI descriptions without `info`.
+- d5a3266: Fixed an issue where the schema panel did not show the `Recursive` label for a schema that referenced itself through array items, for example `children: Node[]`.
+- d5a3266: Fixed an issue where the `description` of an object, array or discriminator schema was not shown, for example in request and response bodies and AsyncAPI message payloads.
+- d5a3266: Fixed an issue where Redoc went blank when the layout around the API documentation, such as the sidebar shell or the logo, failed to render.
+  Redoc displays an error page with a **Reload page** button instead.
+- d5a3266: Fixed an issue where links in the list of operations on a tag page led to a page that doesn't exist when the tag had the same name as `basePath`, for example a `Payments` tag with `basePath` set to `/payments`.
+- d5a3266: Fixed an issue where each `init()` call or remount of Redoc on the same page created a new telemetry client that stayed in memory with its page event listeners.
+
 ## 3.1.0
 
 ### Minor Changes
