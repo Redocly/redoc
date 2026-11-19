@@ -8,6 +8,7 @@ import { graphqlContext } from '../../buildContext.js';
 import { groupByCustomMenu } from '../custom.js';
 import { normalizeMenuConfig } from '../../utils/normalizeMenu.js';
 import { createUniqueSlugger } from '../../../../utils/unique-slugger.js';
+import { createBuildContext } from '../../build/context.js';
 
 const SCHEMA_SDL = `
   type Query {
@@ -254,5 +255,32 @@ describe('groupByCustomMenu', () => {
 
     const groupALabels = (groupA?.items ?? []).map((i) => i.label);
     expect(groupALabels).toContain('getUser');
+  });
+
+  it('keeps the plain slug of a group named like a suffixed collision', () => {
+    const context = createBuildContext({
+      document: parseGraphQL(SCHEMA_SDL),
+      basePath: '/test-api',
+      options: normalizeOptions({
+        specType: 'graphql',
+        downloadUrls: [],
+        metadata: {},
+        menu: {
+          groups: [
+            { name: 'Pets', queries: { includeByName: ['getUser'] } },
+            { name: 'pets', queries: { includeByName: ['getPost'] } },
+            { name: 'Pets 1', queries: { includeByName: ['listUsers'] } },
+          ],
+        },
+      }),
+    });
+
+    const result = graphqlContext.run(context, () => groupByCustomMenu());
+    const links = Object.fromEntries(result.map((g) => [g.label, g.link]));
+    expect(links).toMatchObject({
+      Pets: '/test-api/pets',
+      pets: '/test-api/pets-2',
+      'Pets 1': '/test-api/pets-1',
+    });
   });
 });

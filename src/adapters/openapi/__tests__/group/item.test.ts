@@ -228,6 +228,24 @@ describe('tag route slugs', () => {
     expect(items.map((i) => i.link)).toEqual(['/api/pets', '/api/pets-1']);
   });
 
+  it('keeps the link of a later tag whose plain slug equals a suffixed slug', () => {
+    const context = makeContext({
+      Pets: makeTagData('Pets', [operationTagged('Pets', '/pets')]),
+      pets: makeTagData('pets', [operationTagged('pets', '/pets-legacy')]),
+      'Pets 1': makeTagData('Pets 1', [operationTagged('Pets 1', '/pets-one')]),
+    });
+    const items: ApiItem[] = [];
+
+    openApiContext.run(context, () =>
+      processRootTags(['Pets', 'pets', 'Pets 1'], new Set(), items),
+    );
+
+    expect(items.map((i) => i.link)).toEqual(['/api/pets', '/api/pets-2', '/api/pets-1']);
+    const [, moved, kept] = items.map((group) => (group.items as ApiItem[])[0]);
+    expect(kept.previousRouteSlug).toBeUndefined();
+    expect(moved.previousRouteSlug).toBe(moved.link?.replace('/api/pets-2/', '/api/pets/'));
+  });
+
   it('dedupes tags listed in x-tagGroups and keeps one link for a tag listed in two groups', () => {
     const context = makeContext({
       Café: makeTagData('Café', [operationTagged('Café', '/cafe')]),

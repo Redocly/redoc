@@ -11,6 +11,7 @@ import { createStoreContext } from '../../../../helpers.js';
 import { asyncApiContext } from '../../../buildContext.js';
 import { buildTaggedChannelItem, buildUntaggedChannelItem } from '../item.js';
 import { createUniqueSlugger } from '../../../../../utils/unique-slugger.js';
+import { createBuildContext } from '../../../build/context.js';
 
 const baseDoc: AsyncApiDefinition = {
   asyncapi: '3.0.0',
@@ -110,5 +111,43 @@ describe('buildTaggedChannelItem — label fallback', () => {
     );
 
     expect(item.label).toBe('Ride requests channel');
+  });
+});
+
+describe('buildTaggedChannelItem — tag slug collisions', () => {
+  it('keeps a tag whose name already ends in a suffix on its own slug', () => {
+    const document: AsyncApiDefinition = {
+      ...baseDoc,
+      channels: {
+        dogs: { tags: [{ name: 'Pets' }] },
+        cats: { tags: [{ name: 'pets' }] },
+        birds: { tags: [{ name: 'Pets 1' }] },
+      },
+    };
+    const ctx = createBuildContext({
+      document,
+      options: {} as ApiDocsOptions,
+      basePath: '/asyncapi',
+      storeCtx: createStoreContext(document),
+      processContent: false,
+    });
+
+    const links = asyncApiContext.run(ctx, () =>
+      Object.entries(document.channels ?? {}).map(
+        ([channelId, channel]) =>
+          buildTaggedChannelItem({
+            channelId,
+            channel,
+            operationIds: [],
+            tagName: String(channel.tags?.[0]?.name),
+          }).link,
+      ),
+    );
+
+    expect(links).toEqual([
+      '/asyncapi/pets/channels/dogs',
+      '/asyncapi/pets-2/channels/cats',
+      '/asyncapi/pets-1/channels/birds',
+    ]);
   });
 });
