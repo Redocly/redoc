@@ -36,12 +36,14 @@ export function createBuildContext({
 }
 
 function createChannelTagSlugger(document: AsyncApiDefinition): UniqueSlugger {
-  const tagSlugger = createUniqueSlugger();
+  const tagNames: string[] = [];
   for (const channel of Object.values(document.channels ?? {})) {
     for (const tag of channel?.tags ?? []) {
       const tagName = asString(tag?.name);
-      if (tagName) tagSlugger(tagName);
+      if (tagName) tagNames.push(tagName);
     }
   }
+  const tagSlugger = createUniqueSlugger(tagNames);
+  for (const tagName of tagNames) tagSlugger(tagName);
   return tagSlugger;
 }

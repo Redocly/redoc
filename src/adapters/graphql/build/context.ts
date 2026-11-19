@@ -23,11 +23,16 @@ export function createBuildContext({
 }: CreateBuildContextInputWithDocumentAndSchema): BuildContext {
   const schema = prebuiltSchema ?? buildASTSchema(document);
   const schemaInfo = extractInfoFromDirectives(schema);
+  const menuConfig = normalizeMenuConfig(options?.menu, schema);
+  const groupNames = [
+    ...(menuConfig?.groups ?? []).map((group) => group.name),
+    menuConfig?.otherItemsGroupName || 'Other',
+  ];
 
   return {
     basePath,
     schema,
-    menuConfig: normalizeMenuConfig(options?.menu, schema),
+    menuConfig,
     options: schemaInfo
       ? {
           ...options,
@@ -40,6 +45,6 @@ export function createBuildContext({
         }
       : options,
     processContent,
-    slugger: createUniqueSlugger(),
+    slugger: createUniqueSlugger(groupNames),
   };
 }

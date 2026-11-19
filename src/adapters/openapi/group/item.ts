@@ -45,7 +45,7 @@ export function processTagGroups(
   result: ApiItem[],
 ): void {
   const context = openApiContext.get();
-  const slugger = createUniqueSlugger();
+  const slugger = createUniqueSlugger(context.tagsMap.keys());
 
   for (const group of xTagGroups) {
     if (!isRecord(group)) continue;
@@ -73,7 +73,7 @@ export function processRootTags(
 ): void {
   const context = openApiContext.get();
   const processedTags = new Set<string>();
-  const slugger = createUniqueSlugger();
+  const slugger = createUniqueSlugger(context.tagsMap.keys());
 
   for (const tagName of tagOrder) {
     if (!childTagNames.has(tagName)) {
