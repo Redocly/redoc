@@ -113,7 +113,7 @@ describe('buildInterfaceContent', () => {
 
     expect(container.children[0]).toMatchObject({
       nodeType: nodeTypes.HEADER,
-      level: 2,
+      level: 3,
       label: 'Node',
     });
 

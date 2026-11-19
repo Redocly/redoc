@@ -35,7 +35,6 @@ type DirectPanelKind =
   | typeof panelKind.RESPONSE
   | typeof panelKind.GRAPHQL_QUERY
   | typeof panelKind.GRAPHQL_RESPONSE
-  | typeof panelKind.GRAPHQL_VARIABLES
   | typeof panelKind.GRAPHQL_TYPE_SAMPLE
   | typeof panelKind.REFERENCES
   | typeof panelKind.LOCATIONS
@@ -65,7 +64,6 @@ const EXAMPLE_ITEM_KINDS: PanelItem['kind'][] = [
   panelKind.RESPONSE,
   panelKind.GRAPHQL_QUERY,
   panelKind.GRAPHQL_RESPONSE,
-  panelKind.GRAPHQL_VARIABLES,
   panelKind.GRAPHQL_TYPE_SAMPLE,
 ];
 
@@ -83,7 +81,6 @@ const PANEL_COMPONENT_BY_KIND: DirectPanelComponentByKind = {
   [panelKind.RESPONSE]: ExamplesPanelItem,
   [panelKind.GRAPHQL_QUERY]: ExamplesPanelItem,
   [panelKind.GRAPHQL_RESPONSE]: ExamplesPanelItem,
-  [panelKind.GRAPHQL_VARIABLES]: ExamplesPanelItem,
   [panelKind.GRAPHQL_TYPE_SAMPLE]: ExamplesPanelItem,
   [panelKind.REFERENCES]: ReferencesPanelItem,
   [panelKind.LOCATIONS]: LocationsPanelItem,
@@ -156,8 +153,6 @@ function resolvePanelComponent(node: PanelNode): ReactElement | null {
         return renderKind(node, panelKind.GRAPHQL_QUERY);
       case panelKind.GRAPHQL_RESPONSE:
         return renderKind(node, panelKind.GRAPHQL_RESPONSE);
-      case panelKind.GRAPHQL_VARIABLES:
-        return renderKind(node, panelKind.GRAPHQL_VARIABLES);
       case panelKind.GRAPHQL_TYPE_SAMPLE:
         return renderKind(node, panelKind.GRAPHQL_TYPE_SAMPLE);
       case panelKind.REFERENCES:

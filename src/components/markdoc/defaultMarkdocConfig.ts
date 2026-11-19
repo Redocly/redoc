@@ -8,7 +8,11 @@ import { visibility } from '@redocly/theme/markdoc/tags/visibility';
 import { MARKDOWN_CLASS_NAME } from '@redocly/theme/core/constants';
 
 import { safeSlugify } from '../../utils/string.js';
-import { HEADING_SCOPE_VARIABLE, scopedHeadingAttributes } from '../../adapters/utils/markdoc.js';
+import {
+  HEADING_SCOPE_VARIABLE,
+  collectInnerText,
+  scopedHeadingAttributes,
+} from '../../adapters/utils/markdoc.js';
 import type { HeadingScope } from '../../adapters/utils/markdoc.js';
 import { mcpTagSchemas } from './tags/mcp-tag-schemas.js';
 import { schemaDefinitionTag } from './tags/schema-definition-tag.js';
@@ -34,16 +38,6 @@ export const apiDocsMarkdocTags: Record<string, MarkdocTagSchema> = {
   visibility: visibility.schema,
   ...mcpTagSchemas,
 };
-
-function collectInnerText(nodes: RenderableTreeNode[]): string {
-  return nodes
-    .map((child) => {
-      if (typeof child === 'string') return child;
-      if (markdoc.Tag.isTag(child)) return collectInnerText(child.children);
-      return '';
-    })
-    .join('');
-}
 
 // Mark header cells with their text so the theme's stacked mobile table layout can label them.
 function injectThLabels(children: RenderableTreeNode[]): RenderableTreeNode[] {

@@ -2,7 +2,7 @@ import type { OpenAPIDiscriminator } from '../../types/openapi.js';
 import type { SchemaEntry } from '../../types/store.js';
 import type { SchemaNode } from '../../types/schema.js';
 
-import { buildVariantStateKey } from '../../jotai/itemStore.js';
+import { buildVariantStateKey } from '../../utils/variant-state-key.js';
 import { appendVariantSuffix } from '../../utils/deep-link.js';
 import { deriveVariantLabel } from '../schema/variant-label.js';
 import { resolveStorePointer } from '../../utils/refPointer.js';

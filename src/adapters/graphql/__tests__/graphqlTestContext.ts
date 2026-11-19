@@ -3,6 +3,7 @@ import type { GraphqlBuildContext as BuildContext } from '../../../types/graphql
 import type { RawApiDocsOptions } from '../../../types/options.js';
 
 import { normalizeOptions } from '../../../options/normalizeOptions.js';
+import { createUniqueSlugger } from '../../../utils/unique-slugger.js';
 
 export function graphqlTestContext(
   schema: GraphQLSchema,
@@ -19,5 +20,6 @@ export function graphqlTestContext(
       ...optionOverrides,
     }),
     processContent: true,
+    slugger: createUniqueSlugger(),
   };
 }

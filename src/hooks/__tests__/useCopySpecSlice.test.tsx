@@ -54,11 +54,13 @@ function renderCopySpecSlice({
   groups,
   rootPage,
   pageSlug,
+  schemaDefinitionsTagName,
 }: {
   specType: ApiSpecType;
   definition: GlobalStoreAtom['definition'];
   definitionUrl?: string | null;
   downloadUrls?: { url: string }[];
+  schemaDefinitionsTagName?: string;
   routes: RouteItem[];
   groups?: TagWithItems[];
   rootPage?: RouteItem;
@@ -68,7 +70,13 @@ function renderCopySpecSlice({
   store.set(globalStoreAtom, {
     items: [],
     store: { schemaStore: {}, exampleStore: {}, securitySchemeStore: {} },
-    options: normalizeOptions({ specType, downloadUrls, metadata: {}, basePath: '' }),
+    options: normalizeOptions({
+      specType,
+      downloadUrls,
+      metadata: {},
+      basePath: '',
+      schemaDefinitionsTagName,
+    }),
     definition,
     definitionUrl: definitionUrl ?? undefined,
   });
@@ -232,7 +240,7 @@ describe('useCopySpecSlice — GraphQL', () => {
 });
 
 describe('useCopySpecSlice — title', () => {
-  it('joins the API title and the page label', () => {
+  it('titles the copy with the page label', () => {
     const route = makeRoute('pets', { itemVariant: itemVariant.SCHEMA, meta: { name: 'Pet' } });
     route.label = 'Pet';
     const { result } = renderCopySpecSlice({
@@ -242,7 +250,7 @@ describe('useCopySpecSlice — title', () => {
       pageSlug: 'pets',
     });
 
-    expect(expectDefined(result.current).title).toBe('Petstore – Pet');
+    expect(expectDefined(result.current).title).toBe('Pet');
   });
 });
 
@@ -270,5 +278,22 @@ describe('useCopySpecSlice — OpenAPI regression', () => {
     const slice = expectDefined(result.current);
     expect(slice.contentKind).toBe('yaml');
     await expect(slice.getText()).resolves.toMatch(/^openapi: 3\.1\.0\n/);
+  });
+
+  it('copies the schemas of the schema definitions tag page set in the options', async () => {
+    const { result } = renderCopySpecSlice({
+      specType: 'openapi',
+      definition: {
+        openapi: '3.1.0',
+        info: { title: 'Pets', version: '1.0.0' },
+        paths: {},
+        components: { schemas: { Pet: { type: 'object' } } },
+      },
+      schemaDefinitionsTagName: 'Schemas',
+      routes: [makeRoute('schemas', { contentType: contentType.GROUP, meta: { name: 'Schemas' } })],
+      pageSlug: 'schemas',
+    });
+
+    await expect(expectDefined(result.current).getText()).resolves.toMatch(/\n {4}Pet:\n/);
   });
 });

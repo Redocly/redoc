@@ -201,7 +201,7 @@ function _buildOperationContent(
       containerChildren.push(
         {
           nodeType: nodeTypes.HEADER,
-          level: 4,
+          level: 6,
           label: 'Reply',
           labelTranslationKey: 'reply',
           deepLinkSuffix: 'reply',

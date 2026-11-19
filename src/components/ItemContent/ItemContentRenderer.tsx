@@ -7,7 +7,6 @@ import type { ItemContentNode } from '../../types/content.js';
 import { ParametersSection } from './sections/ParametersSection.js';
 import { BodySection } from './sections/BodySection.js';
 import { ResponsesSection } from './sections/ResponsesSection.js';
-import { FieldsSection } from './sections/FieldsSection.js';
 import { ValuesSection } from './sections/ValuesSection.js';
 import { MessagesSection } from './sections/MessagesSection.js';
 import { CallbacksSection } from './sections/CallbacksSection.js';
@@ -66,11 +65,6 @@ function SectionContent({ itemNode }: { itemNode: ItemContentNode }): ReactEleme
       return <BodySection node={itemNode} />;
     case 'responses':
       return <ResponsesSection node={itemNode} />;
-    case 'fields':
-    case 'properties':
-      return <FieldsSection node={itemNode} />;
-    case 'arguments':
-      return <GraphQLArgsSection node={itemNode} />;
     case 'values':
       return <ValuesSection node={itemNode} />;
     case 'messages':

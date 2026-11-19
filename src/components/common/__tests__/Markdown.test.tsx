@@ -50,12 +50,17 @@ it.each([
   expect(adapter.parse).toHaveBeenCalledWith(expected);
 });
 
-it('renders nothing for an object that is not a Markdoc tree', () => {
+it.each([
+  ['an object', { not: 'an AST' }],
+  ['a list of plain values', ['first', 2]],
+  ['a list mixing a Markdoc node with a plain value', [{ $$mdtype: 'Node' }, 'text']],
+  ['an empty list', []],
+])('renders nothing for %s that is not a Markdoc tree', (_, source) => {
   const adapter: MarkdownAdapter = { parse: vi.fn(), render: vi.fn(() => null) };
 
   const { container } = render(
     <MarkdownAdapterProvider value={adapter}>
-      <Markdown source={{ not: 'an AST' }} />
+      <Markdown source={source} />
     </MarkdownAdapterProvider>,
   );
 

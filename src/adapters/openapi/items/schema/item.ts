@@ -1,36 +1,13 @@
-import { isRbacKey, readRbacScope, rbacProp } from '../../../rbac.js';
+import { readRbacScope, rbacProp } from '../../../rbac.js';
 
 import type { ApiItem, GroupItem } from '../../../../types/store.js';
-import type { OpenAPIDefinition } from '../../../../types/openapi.js';
 
 import { isRecord } from '../../../../utils/is-record.js';
 import { encodeBackSlashes, safeSlugify } from '../../../../utils/string.js';
 import { joinWithSeparator, normalizePath, toRelativePath } from '../../../../utils/url.js';
 import { buildSchemaDefinitionContent } from './content.js';
 import { openApiContext } from '../../buildContext.js';
-
-export function getSchemaNamesForTag(
-  tagName: string,
-  document: OpenAPIDefinition,
-  schemaDefinitionsTagName: string | undefined,
-): string[] {
-  const schemas = document.components?.schemas;
-  if (!schemas) return [];
-
-  const defaultTags = schemaDefinitionsTagName ? [schemaDefinitionsTagName] : [];
-  const names: string[] = [];
-
-  for (const [schemaName, schema] of Object.entries<unknown>(schemas)) {
-    if (isRbacKey(schemaName) || !isRecord(schema)) continue;
-    const xTags: unknown = schema['x-tags'];
-    const schemaTags = Array.isArray(xTags) && xTags.length ? xTags : defaultTags;
-    if (schemaTags.includes(tagName)) {
-      names.push(schemaName);
-    }
-  }
-
-  return names;
-}
+import { getSchemaNamesForTags } from '../../utils/schema-tags.js';
 
 export function addSchemaDefinitionItems({
   tagName,
@@ -44,7 +21,11 @@ export function addSchemaDefinitionItems({
   groupItems?: GroupItem[];
 }): void {
   const { document, options, processContent, basePath } = openApiContext.get();
-  const schemaNames = getSchemaNamesForTag(tagName, document, options.schemaDefinitionsTagName);
+  const schemaNames = getSchemaNamesForTags(
+    new Set([tagName]),
+    document,
+    options.schemaDefinitionsTagName,
+  );
   const sectionRbac = readRbacScope(document.components?.schemas);
 
   for (const schemaName of schemaNames) {

@@ -1,6 +1,9 @@
 import type { ParsedQuery } from './types.js';
 
-import { MIN_QUERY_WORD_LENGTH, containsQueryWord } from '../text-match.js';
+import {
+  MIN_QUERY_WORD_LENGTH,
+  containsQueryWord,
+} from '@redocly/theme/core/utils/search-text-match';
 
 // A short word is kept when a longer one anchors the query (`Doc 1`); a query of only
 // short words matches nothing.

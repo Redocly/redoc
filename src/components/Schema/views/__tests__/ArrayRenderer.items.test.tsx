@@ -102,7 +102,7 @@ describe('ArrayRenderer — documented primitive items row', () => {
 
     // the middle array keeps its own row instead of being skipped
     expect(container.textContent?.includes('matrix.\u200B[i]')).toBe(true);
-    expect(getByText('Array of strings, <= 10 items')).toBeInTheDocument();
+    expect(getByText('array of strings, <= 10 items')).toBeInTheDocument();
     // the documented inner items render one level deeper
     expect(container.textContent?.includes('matrix.\u200B[i].\u200B[i]')).toBe(true);
     expect(getByText('string, <= 64 characters')).toBeInTheDocument();

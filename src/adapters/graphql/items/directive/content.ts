@@ -10,7 +10,7 @@ export function buildDirectiveContent(
   markdownOptions: ParseMarkdownOptions,
 ): ApiItemContent {
   const containerChildren: ContentNode[] = [
-    { nodeType: nodeTypes.HEADER, level: 2, label: `@${directive.name}`, showPageActions: true },
+    { nodeType: nodeTypes.HEADER, level: 3, label: `@${directive.name}`, showPageActions: true },
   ];
 
   const descriptionContent = parseMarkdown(directive.description, markdownOptions);

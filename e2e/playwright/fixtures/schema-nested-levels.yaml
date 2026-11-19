@@ -1,0 +1,73 @@
+openapi: 3.1.0
+info:
+  title: Schema nested levels
+  version: 1.0.0
+tags:
+  - name: Levels
+paths:
+  /levels:
+    post:
+      tags: [Levels]
+      operationId: nestedLevels
+      summary: Nested levels
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                field0:
+                  type: string
+                level1:
+                  type: object
+                  properties:
+                    field1:
+                      type: string
+                    level2:
+                      type: object
+                      properties:
+                        field2:
+                          type: string
+                        level3:
+                          type: object
+                          properties:
+                            field3:
+                              type: string
+                            level4:
+                              type: object
+                              properties:
+                                field4:
+                                  type: string
+                                level5:
+                                  type: object
+                                  properties:
+                                    field5:
+                                      type: string
+                                    level6:
+                                      type: object
+                                      properties:
+                                        field6:
+                                          type: string
+                                        level7:
+                                          type: object
+                                          properties:
+                                            field7:
+                                              type: string
+                                            level8:
+                                              type: object
+                                              properties:
+                                                field8:
+                                                  type: string
+                                                level9:
+                                                  type: object
+                                                  properties:
+                                                    field9:
+                                                      type: string
+                                                    level10:
+                                                      type: object
+                                                      properties:
+                                                        field10:
+                                                          type: string
+      responses:
+        '204':
+          description: No content

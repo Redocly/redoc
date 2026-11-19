@@ -33,7 +33,7 @@ vi.mock('../../../../../jotai/itemStore.js', () => ({
 }));
 
 vi.mock('../../../../../hooks/useNormalizeUrl.js', () => ({
-  useNavigationUrlNormalizer: () => mocks.normalizeUrl,
+  useContentLinkNormalizer: () => mocks.normalizeUrl,
 }));
 
 vi.mock('@redocly/theme/components/Panel/Panel', () => ({

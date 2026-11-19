@@ -159,7 +159,7 @@ export class ApiDocsPage {
   }
 
   async isChannelVisible(channelName: string) {
-    const element = this.page.locator(`[data-section-id] h2:has-text("${channelName}")`);
+    const element = this.page.locator(`[data-section-id] h3:has-text("${channelName}")`);
     return await element.isVisible();
   }
 
@@ -176,7 +176,7 @@ export class ApiDocsPage {
   }
 
   async waitForChannelLoad(channelName: string) {
-    await this.page.waitForSelector(`[data-section-id] h2:has-text("${channelName}")`, {
+    await this.page.waitForSelector(`[data-section-id] h3:has-text("${channelName}")`, {
       state: 'visible',
     });
   }

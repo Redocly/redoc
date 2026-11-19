@@ -6,9 +6,7 @@ import type {
   securitySchemeType,
   panelKind,
 } from '../../types/common.js';
-import type {
-  OAuthFlowsData,
-} from '../../types/store.js';
+import type { OAuthFlowsData } from '../../types/store.js';
 
 type ServerVariable = {
   default?: string;
@@ -46,7 +44,6 @@ export type SecuritySchemeEntry = {
   bearerFormat?: string;
   openIdConnectUrl?: string;
   flows?: OAuthFlowsData;
-
 };
 
 /** One AND-group: all schemes in the array must be satisfied together */
@@ -107,5 +104,4 @@ export type CodeSampleSource = {
 
   /** OpenAPI operation `summary` — the human-readable operation name */
   summary?: string;
-
 };

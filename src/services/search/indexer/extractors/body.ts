@@ -7,6 +7,7 @@ import {
   CALLBACKS_SECTION,
   makeDeepLink,
 } from '../../../../utils/deep-link.js';
+import { accessFilterOf } from '../../../../utils/access-filter.js';
 import { makeParam } from '../param.js';
 import { fieldsPlaceOf, REQUEST_BODY_PLACE, scopedPlace } from '../places.js';
 import { addRow, describe } from './context.js';
@@ -19,6 +20,7 @@ export const bodyExtractor: Extractor = {
     if (!ctx.hasSchemas) return;
     const place = scopedPlace(fieldsPlaceOf(node.variant), ctx.scope.callbackId);
     const isResponse = node.variant === 'responses';
+    const accessFilter = accessFilterOf(node);
 
     if (node.mediaTypeSchemas) {
       const entries = Object.entries(node.mediaTypeSchemas).filter(
@@ -34,6 +36,7 @@ export const bodyExtractor: Extractor = {
             mediaType,
             hasMultipleMediaTypes: entries.length > 1,
             isResponse,
+            accessFilter,
           },
           ctx.scope,
         );
@@ -46,6 +49,7 @@ export const bodyExtractor: Extractor = {
           paramsMap: ctx.paramsMap,
           slug: ctx.slug,
           isResponse,
+          accessFilter,
           visited: ctx.visited,
         },
         ctx.scope,

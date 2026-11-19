@@ -4,6 +4,7 @@ import type { OperationParameter } from '@redocly/theme/core/openapi';
 import type { SchemaEntry } from '../../../types/store.js';
 import type { DiscriminatorObject, SchemaNode } from '../../../types/schema.js';
 import type { AsyncMessageSubsection, DescriptionFormatter, WalkScope } from './context.js';
+import type { AccessFilter } from '../../../utils/access-filter.js';
 
 import { schemaKind } from '../../../types/common.js';
 import { appendArraySuffix, appendVariantSuffix } from '../../../utils/deep-link.js';
@@ -32,6 +33,7 @@ type SchemaWalkContext = {
   mediaType: string | undefined;
   deepLinkContentType: string | undefined;
   isResponse: boolean;
+  accessFilter: AccessFilter;
   /** `t=` of field anchors; defaults to `request`/`response` from `isResponse`. */
   linkType: string | undefined;
   paramsMap: Record<string, OperationParameter>;
@@ -48,6 +50,8 @@ export type SchemaFieldsArgs = {
   mediaType?: string;
   hasMultipleMediaTypes?: boolean;
   isResponse?: boolean;
+  /** Defaults to the regular direction: a response hides writeOnly, a request hides readOnly. */
+  accessFilter?: AccessFilter;
   linkType?: string;
   visited?: Set<string>;
 };
@@ -85,6 +89,7 @@ export class SchemaWalker {
       mediaType,
       hasMultipleMediaTypes = false,
       isResponse = false,
+      accessFilter = { skipReadOnly: !isResponse, skipWriteOnly: isResponse },
       linkType,
       visited = new Set(),
     }: Omit<SchemaFieldsArgs, 'schemaId'>,
@@ -98,6 +103,7 @@ export class SchemaWalker {
         mediaType,
         deepLinkContentType: hasMultipleMediaTypes ? mediaType : undefined,
         isResponse,
+        accessFilter,
         linkType,
         paramsMap,
         visited,
@@ -316,7 +322,9 @@ export class SchemaWalker {
 
       const skipRecurse = this.#shouldSkipAllOfRecurse(resolved, visited);
       const effective = this.resolveEffectiveSchema(resolved);
-      if (!this.#isIndexableProperty(resolved, effective, isResponse, scope.pathOnly)) continue;
+      if (!this.#isIndexableProperty(resolved, effective, ctx.accessFilter, scope.pathOnly)) {
+        continue;
+      }
       const isFreeFormMap = resolved.additionalProperties !== undefined && !resolved.properties;
 
       const isDiscriminatorRow = name === frame.discriminatorPropertyName;
@@ -385,14 +393,14 @@ export class SchemaWalker {
   #isIndexableProperty(
     resolved: SchemaNode,
     effective: SchemaNode,
-    isResponse: boolean,
+    accessFilter: AccessFilter,
     pathOnly?: boolean,
   ): boolean {
     if (hasRbacScope(resolved) || hasRbacScope(effective)) return false;
     // Schema pages render both readOnly and writeOnly fields.
     const respectsDirection = !pathOnly;
-    if (respectsDirection && effective.readOnly && !isResponse) return false;
-    if (respectsDirection && effective.writeOnly && isResponse) return false;
+    if (respectsDirection && effective.readOnly && accessFilter.skipReadOnly) return false;
+    if (respectsDirection && effective.writeOnly && accessFilter.skipWriteOnly) return false;
     return true;
   }
 

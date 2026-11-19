@@ -68,7 +68,7 @@ describe('PropertyFieldRow example rendering', () => {
 
   it('should render array example pretty-printed with JSON highlighting', () => {
     const { getByTestId } = renderPropertyFieldRow({
-      type: 'Array of strings',
+      type: 'array of strings',
       example: ['79f943e212cce7de21c054a8'],
     });
 

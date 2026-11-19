@@ -52,7 +52,7 @@ describe('buildOperationContent — deprecation rendering', () => {
   it('emits a warning admonition with markdown-parsed reason right after the header', () => {
     const children = buildContent('oldSearch');
 
-    expect(children[0]).toMatchObject({ nodeType: nodeTypes.HEADER, level: 2 });
+    expect(children[0]).toMatchObject({ nodeType: nodeTypes.HEADER, level: 3 });
     expect(children[1]).toMatchObject({
       nodeType: nodeTypes.ADMONITION,
       admonitionType: 'warning',
@@ -89,8 +89,7 @@ describe('buildOperationContent — arguments', () => {
   it('references the operation whose store entry carries the argument deprecation reasons', () => {
     const children = buildContent('getBook');
     const argsNode = children.find(
-      (c): c is ItemContentNode =>
-        c.nodeType === nodeTypes.ITEM && (c as ItemContentNode).variant === 'graphql-args',
+      (c): c is ItemContentNode => c.nodeType === nodeTypes.ITEM && c.variant === 'graphql-args',
     );
     expect(argsNode).toMatchObject({
       graphqlTypeName: 'Query',

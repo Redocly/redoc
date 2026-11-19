@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import { useAtomValue } from 'jotai';
 
 import type { ReactElement } from 'react';
@@ -15,9 +16,10 @@ import {
 import { globalOptionsAtom } from '../../../jotai/store.js';
 import { appendArraySuffix } from '../../../utils/deep-link.js';
 import { isWithinExpansionLevel } from '../../../utils/expansion.js';
-import { PropertyRenderer } from './PropertyRenderer.js';
+import { PropertyRenderer, printsOwnDescription } from './PropertyRenderer.js';
 import { ObjectRenderer } from './ObjectRenderer.js';
 import { PropertyFieldRow } from './PropertyFieldRow.js';
+import { SchemaDescription } from '../SchemaDescription.js';
 
 type ArrayRendererProps = {
   property: PropertyType;
@@ -51,14 +53,19 @@ export function ArrayRenderer({
   const firstItem = items[0];
   if (!isTuple && items.length === 1 && firstItem && firstItem.switcher) {
     const switcherContent = (
-      <PropertyRenderer
-        property={firstItem}
-        level={level + 1}
-        fieldParentsName={updatedParentsName}
-        skipReadOnly={skipReadOnly}
-        skipWriteOnly={skipWriteOnly}
-        onOneOfChange={onOneOfChange}
-      />
+      <>
+        {printsOwnDescription(firstItem) ? null : (
+          <SchemaDescription value={firstItem.description} />
+        )}
+        <PropertyRenderer
+          property={firstItem}
+          level={level + 1}
+          fieldParentsName={updatedParentsName}
+          skipReadOnly={skipReadOnly}
+          skipWriteOnly={skipWriteOnly}
+          onOneOfChange={onOneOfChange}
+        />
+      </>
     );
 
     if (!isFirstLevel) {
@@ -68,7 +75,7 @@ export function ArrayRenderer({
     return (
       <ArrayWrapper>
         <ArrayLabel>
-          <ArrayLabelValue>Array [</ArrayLabelValue>
+          <ArrayLabelValue>array [</ArrayLabelValue>
           <ArrayLine />
         </ArrayLabel>
         {switcherContent}
@@ -82,14 +89,17 @@ export function ArrayRenderer({
 
   if (!isTuple && items.length === 1 && firstItem && firstItem.properties) {
     const objectContent = (
-      <ObjectRenderer
-        property={firstItem}
-        level={level}
-        fieldParentsName={updatedParentsName}
-        skipReadOnly={skipReadOnly}
-        skipWriteOnly={skipWriteOnly}
-        onOneOfChange={onOneOfChange}
-      />
+      <>
+        <SchemaDescription value={firstItem.description} />
+        <ObjectRenderer
+          property={firstItem}
+          level={level}
+          fieldParentsName={updatedParentsName}
+          skipReadOnly={skipReadOnly}
+          skipWriteOnly={skipWriteOnly}
+          onOneOfChange={onOneOfChange}
+        />
+      </>
     );
 
     if (!isFirstLevel) {
@@ -99,7 +109,7 @@ export function ArrayRenderer({
     return (
       <ArrayWrapper>
         <ArrayLabel>
-          <ArrayLabelValue>Array [</ArrayLabelValue>
+          <ArrayLabelValue>array [</ArrayLabelValue>
           <ArrayLine />
         </ArrayLabel>
         {objectContent}
@@ -158,19 +168,21 @@ export function ArrayRenderer({
   return (
     <ArrayWrapper>
       <ArrayLabel>
-        <ArrayLabelValue>Array [</ArrayLabelValue>
+        <ArrayLabelValue>array [</ArrayLabelValue>
         <ArrayLine />
       </ArrayLabel>
       {items.map((item, index) => (
-        <PropertyRenderer
-          key={index}
-          property={item}
-          level={level + 1}
-          fieldParentsName={updatedParentsName}
-          skipReadOnly={skipReadOnly}
-          skipWriteOnly={skipWriteOnly}
-          onOneOfChange={onOneOfChange}
-        />
+        <Fragment key={index}>
+          {printsOwnDescription(item) ? null : <SchemaDescription value={item.description} />}
+          <PropertyRenderer
+            property={item}
+            level={level + 1}
+            fieldParentsName={updatedParentsName}
+            skipReadOnly={skipReadOnly}
+            skipWriteOnly={skipWriteOnly}
+            onOneOfChange={onOneOfChange}
+          />
+        </Fragment>
       ))}
       <ArrayClosingLabel className="array-closing-label">
         <ArrayLine />

@@ -63,7 +63,6 @@ const ItemPageWrapper = styled.div`
   &[data-item-kind^='channel'] {
     padding-top: calc(var(--spacing-unit) * 16);
     padding-bottom: 0;
-
   }
 
   &[data-item-kind='channel'],

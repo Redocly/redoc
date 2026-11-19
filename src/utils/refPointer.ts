@@ -4,6 +4,16 @@ export function encodeJsonPointerSegment(segment: string): string {
   return segment.replace(/~/g, '~0').replace(/\//g, '~1');
 }
 
+export function decodeJsonPointerSegment(segment: string): string {
+  return segment.replace(/~1/g, '/').replace(/~0/g, '~');
+}
+
+/** The decoded segments of a local JSON pointer (`#/a~1b/c` → `['a/b', 'c']`), or undefined when `ref` is not one. */
+export function localRefPath(ref: string): string[] | undefined {
+  if (!ref.startsWith('#/')) return undefined;
+  return ref.slice('#/'.length).split('/').map(decodeJsonPointerSegment);
+}
+
 export function refPointerToStoreId(ref: string | undefined): string | undefined {
   if (!ref) return undefined;
   // Accept `#/x`, `/x`, and `x` — store ids carry neither the `#` nor a leading slash.
@@ -22,7 +32,7 @@ export function resolveStorePointer(
     if (!isRecord(root)) continue;
     let node: Record<string, unknown> | unknown[] = root;
     for (const segment of segments.slice(split)) {
-      const key = segment.replace(/~1/g, '/').replace(/~0/g, '~');
+      const key = decodeJsonPointerSegment(segment);
       const next: unknown = Array.isArray(node) ? node[Number(key)] : node[key];
       if (!isRecord(next) && !Array.isArray(next)) return undefined;
       node = next;

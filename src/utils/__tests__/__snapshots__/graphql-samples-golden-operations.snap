@@ -7,301 +7,7 @@
     },
     "response": {
       "data": {
-        "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
-        "name": "Example String",
-        "balance": 40,
-        "isActive": true,
-        "createdAt": "Example Custom Scalar",
-        "status": "ACTIVE",
-        "pet": {
-          "__typename": "Dog"
-        },
-        "matrix": [
-          [
-            40
-          ]
-        ],
-        "friends": {
-          "__typename": "FriendsConnection"
-        }
-      }
-    }
-  },
-  "query.user@depth2": {
-    "querySingleLine": "query user($id: ID!) {\n  user(id: $id) {\n    id\n    name\n    balance\n    isActive\n    createdAt\n    status\n    pet {\n      name\n      barkVolume\n    }\n    matrix\n    friends(\n      # Arguments Here\n    ) {\n      edges {\n        node {\n          id\n          name\n          balance\n          isActive\n          createdAt\n          status\n          pet {\n            __typename\n            # ...DogFragment\n          }\n          matrix\n          friends(\n            # Arguments Here\n          ) {\n            __typename\n            # ...FriendsConnectionFragment\n          }\n        }\n        cursor\n      }\n      nodes {\n        id\n        name\n        balance\n        isActive\n        createdAt\n        status\n        pet {\n          __typename\n          # ...DogFragment\n        }\n        matrix\n        friends(\n          # Arguments Here\n        ) {\n          __typename\n          # ...FriendsConnectionFragment\n        }\n      }\n      pageInfo {\n        hasNextPage\n        endCursor\n      }\n      totalCount\n    }\n  }\n}",
-    "queryMultiline": "query user(\n  $id: ID!\n) {\n  user(\n    id: $id\n  ) {\n    id\n    name\n    balance\n    isActive\n    createdAt\n    status\n    pet {\n      name\n      barkVolume\n    }\n    matrix\n    friends(\n      # Arguments Here\n    ) {\n      edges {\n        node {\n          id\n          name\n          balance\n          isActive\n          createdAt\n          status\n          pet {\n            __typename\n            # ...DogFragment\n          }\n          matrix\n          friends(\n            # Arguments Here\n          ) {\n            __typename\n            # ...FriendsConnectionFragment\n          }\n        }\n        cursor\n      }\n      nodes {\n        id\n        name\n        balance\n        isActive\n        createdAt\n        status\n        pet {\n          __typename\n          # ...DogFragment\n        }\n        matrix\n        friends(\n          # Arguments Here\n        ) {\n          __typename\n          # ...FriendsConnectionFragment\n        }\n      }\n      pageInfo {\n        hasNextPage\n        endCursor\n      }\n      totalCount\n    }\n  }\n}",
-    "variables": {
-      "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4"
-    },
-    "response": {
-      "data": {
-        "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
-        "name": "Example String",
-        "balance": 40,
-        "isActive": true,
-        "createdAt": "Example Custom Scalar",
-        "status": "ACTIVE",
-        "pet": {
-          "name": "Example String",
-          "barkVolume": 40
-        },
-        "matrix": [
-          [
-            40
-          ]
-        ],
-        "friends": {
-          "edges": [
-            {
-              "node": {
-                "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
-                "name": "Example String",
-                "balance": 40,
-                "isActive": true,
-                "createdAt": "Example Custom Scalar",
-                "status": "ACTIVE",
-                "pet": {
-                  "__typename": "Dog"
-                },
-                "matrix": [
-                  [
-                    40
-                  ]
-                ],
-                "friends": {
-                  "__typename": "FriendsConnection"
-                }
-              },
-              "cursor": "Example String"
-            }
-          ],
-          "nodes": [
-            {
-              "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
-              "name": "Example String",
-              "balance": 40,
-              "isActive": true,
-              "createdAt": "Example Custom Scalar",
-              "status": "ACTIVE",
-              "pet": {
-                "__typename": "Dog"
-              },
-              "matrix": [
-                [
-                  40
-                ]
-              ],
-              "friends": {
-                "__typename": "FriendsConnection"
-              }
-            }
-          ],
-          "pageInfo": {
-            "hasNextPage": true,
-            "endCursor": "Example String"
-          },
-          "totalCount": 40
-        }
-      }
-    }
-  },
-  "query.user@depth3": {
-    "querySingleLine": "query user($id: ID!) {\n  user(id: $id) {\n    id\n    name\n    balance\n    isActive\n    createdAt\n    status\n    pet {\n      name\n      barkVolume\n    }\n    matrix\n    friends(\n      # Arguments Here\n    ) {\n      edges {\n        node {\n          id\n          name\n          balance\n          isActive\n          createdAt\n          status\n          pet {\n            name\n            barkVolume\n          }\n          matrix\n          friends(\n            # Arguments Here\n          ) {\n            edges {\n              node {\n                id\n                name\n                balance\n                isActive\n                createdAt\n                status\n                pet {\n                  __typename\n                  # ...DogFragment\n                }\n                matrix\n                friends(\n                  # Arguments Here\n                ) {\n                  __typename\n                  # ...FriendsConnectionFragment\n                }\n              }\n              cursor\n            }\n            nodes {\n              id\n              name\n              balance\n              isActive\n              createdAt\n              status\n              pet {\n                __typename\n                # ...DogFragment\n              }\n              matrix\n              friends(\n                # Arguments Here\n              ) {\n                __typename\n                # ...FriendsConnectionFragment\n              }\n            }\n            pageInfo {\n              hasNextPage\n              endCursor\n            }\n            totalCount\n          }\n        }\n        cursor\n      }\n      nodes {\n        id\n        name\n        balance\n        isActive\n        createdAt\n        status\n        pet {\n          name\n          barkVolume\n        }\n        matrix\n        friends(\n          # Arguments Here\n        ) {\n          edges {\n            node {\n              id\n              name\n              balance\n              isActive\n              createdAt\n              status\n              pet {\n                __typename\n                # ...DogFragment\n              }\n              matrix\n              friends(\n                # Arguments Here\n              ) {\n                __typename\n                # ...FriendsConnectionFragment\n              }\n            }\n            cursor\n          }\n          nodes {\n            id\n            name\n            balance\n            isActive\n            createdAt\n            status\n            pet {\n              __typename\n              # ...DogFragment\n            }\n            matrix\n            friends(\n              # Arguments Here\n            ) {\n              __typename\n              # ...FriendsConnectionFragment\n            }\n          }\n          pageInfo {\n            hasNextPage\n            endCursor\n          }\n          totalCount\n        }\n      }\n      pageInfo {\n        hasNextPage\n        endCursor\n      }\n      totalCount\n    }\n  }\n}",
-    "queryMultiline": "query user(\n  $id: ID!\n) {\n  user(\n    id: $id\n  ) {\n    id\n    name\n    balance\n    isActive\n    createdAt\n    status\n    pet {\n      name\n      barkVolume\n    }\n    matrix\n    friends(\n      # Arguments Here\n    ) {\n      edges {\n        node {\n          id\n          name\n          balance\n          isActive\n          createdAt\n          status\n          pet {\n            name\n            barkVolume\n          }\n          matrix\n          friends(\n            # Arguments Here\n          ) {\n            edges {\n              node {\n                id\n                name\n                balance\n                isActive\n                createdAt\n                status\n                pet {\n                  __typename\n                  # ...DogFragment\n                }\n                matrix\n                friends(\n                  # Arguments Here\n                ) {\n                  __typename\n                  # ...FriendsConnectionFragment\n                }\n              }\n              cursor\n            }\n            nodes {\n              id\n              name\n              balance\n              isActive\n              createdAt\n              status\n              pet {\n                __typename\n                # ...DogFragment\n              }\n              matrix\n              friends(\n                # Arguments Here\n              ) {\n                __typename\n                # ...FriendsConnectionFragment\n              }\n            }\n            pageInfo {\n              hasNextPage\n              endCursor\n            }\n            totalCount\n          }\n        }\n        cursor\n      }\n      nodes {\n        id\n        name\n        balance\n        isActive\n        createdAt\n        status\n        pet {\n          name\n          barkVolume\n        }\n        matrix\n        friends(\n          # Arguments Here\n        ) {\n          edges {\n            node {\n              id\n              name\n              balance\n              isActive\n              createdAt\n              status\n              pet {\n                __typename\n                # ...DogFragment\n              }\n              matrix\n              friends(\n                # Arguments Here\n              ) {\n                __typename\n                # ...FriendsConnectionFragment\n              }\n            }\n            cursor\n          }\n          nodes {\n            id\n            name\n            balance\n            isActive\n            createdAt\n            status\n            pet {\n              __typename\n              # ...DogFragment\n            }\n            matrix\n            friends(\n              # Arguments Here\n            ) {\n              __typename\n              # ...FriendsConnectionFragment\n            }\n          }\n          pageInfo {\n            hasNextPage\n            endCursor\n          }\n          totalCount\n        }\n      }\n      pageInfo {\n        hasNextPage\n        endCursor\n      }\n      totalCount\n    }\n  }\n}",
-    "variables": {
-      "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4"
-    },
-    "response": {
-      "data": {
-        "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
-        "name": "Example String",
-        "balance": 40,
-        "isActive": true,
-        "createdAt": "Example Custom Scalar",
-        "status": "ACTIVE",
-        "pet": {
-          "name": "Example String",
-          "barkVolume": 40
-        },
-        "matrix": [
-          [
-            40
-          ]
-        ],
-        "friends": {
-          "edges": [
-            {
-              "node": {
-                "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
-                "name": "Example String",
-                "balance": 40,
-                "isActive": true,
-                "createdAt": "Example Custom Scalar",
-                "status": "ACTIVE",
-                "pet": {
-                  "name": "Example String",
-                  "barkVolume": 40
-                },
-                "matrix": [
-                  [
-                    40
-                  ]
-                ],
-                "friends": {
-                  "edges": [
-                    {
-                      "node": {
-                        "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
-                        "name": "Example String",
-                        "balance": 40,
-                        "isActive": true,
-                        "createdAt": "Example Custom Scalar",
-                        "status": "ACTIVE",
-                        "pet": {
-                          "__typename": "Dog"
-                        },
-                        "matrix": [
-                          [
-                            40
-                          ]
-                        ],
-                        "friends": {
-                          "__typename": "FriendsConnection"
-                        }
-                      },
-                      "cursor": "Example String"
-                    }
-                  ],
-                  "nodes": [
-                    {
-                      "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
-                      "name": "Example String",
-                      "balance": 40,
-                      "isActive": true,
-                      "createdAt": "Example Custom Scalar",
-                      "status": "ACTIVE",
-                      "pet": {
-                        "__typename": "Dog"
-                      },
-                      "matrix": [
-                        [
-                          40
-                        ]
-                      ],
-                      "friends": {
-                        "__typename": "FriendsConnection"
-                      }
-                    }
-                  ],
-                  "pageInfo": {
-                    "hasNextPage": true,
-                    "endCursor": "Example String"
-                  },
-                  "totalCount": 40
-                }
-              },
-              "cursor": "Example String"
-            }
-          ],
-          "nodes": [
-            {
-              "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
-              "name": "Example String",
-              "balance": 40,
-              "isActive": true,
-              "createdAt": "Example Custom Scalar",
-              "status": "ACTIVE",
-              "pet": {
-                "name": "Example String",
-                "barkVolume": 40
-              },
-              "matrix": [
-                [
-                  40
-                ]
-              ],
-              "friends": {
-                "edges": [
-                  {
-                    "node": {
-                      "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
-                      "name": "Example String",
-                      "balance": 40,
-                      "isActive": true,
-                      "createdAt": "Example Custom Scalar",
-                      "status": "ACTIVE",
-                      "pet": {
-                        "__typename": "Dog"
-                      },
-                      "matrix": [
-                        [
-                          40
-                        ]
-                      ],
-                      "friends": {
-                        "__typename": "FriendsConnection"
-                      }
-                    },
-                    "cursor": "Example String"
-                  }
-                ],
-                "nodes": [
-                  {
-                    "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
-                    "name": "Example String",
-                    "balance": 40,
-                    "isActive": true,
-                    "createdAt": "Example Custom Scalar",
-                    "status": "ACTIVE",
-                    "pet": {
-                      "__typename": "Dog"
-                    },
-                    "matrix": [
-                      [
-                        40
-                      ]
-                    ],
-                    "friends": {
-                      "__typename": "FriendsConnection"
-                    }
-                  }
-                ],
-                "pageInfo": {
-                  "hasNextPage": true,
-                  "endCursor": "Example String"
-                },
-                "totalCount": 40
-              }
-            }
-          ],
-          "pageInfo": {
-            "hasNextPage": true,
-            "endCursor": "Example String"
-          },
-          "totalCount": 40
-        }
-      }
-    }
-  },
-  "query.users@depth1": {
-    "querySingleLine": "query users($filter: UserFilter, $first: Int, $after: String, $before: String, $last: Int) {\n  users(filter: $filter, first: $first, after: $after, before: $before, last: $last) {\n    id\n    name\n    balance\n    isActive\n    createdAt\n    status\n    pet {\n      __typename\n      # ...DogFragment\n    }\n    matrix\n    friends(\n      # Arguments Here\n    ) {\n      __typename\n      # ...FriendsConnectionFragment\n    }\n  }\n}",
-    "queryMultiline": "query users(\n  $filter: UserFilter\n  $first: Int\n  $after: String\n  $before: String\n  $last: Int\n) {\n  users(\n    filter: $filter\n    first: $first\n    after: $after\n    before: $before\n    last: $last\n  ) {\n    id\n    name\n    balance\n    isActive\n    createdAt\n    status\n    pet {\n      __typename\n      # ...DogFragment\n    }\n    matrix\n    friends(\n      # Arguments Here\n    ) {\n      __typename\n      # ...FriendsConnectionFragment\n    }\n  }\n}",
-    "variables": {
-      "filter": {
-        "name": "Example String",
-        "statuses": [
-          "ACTIVE"
-        ],
-        "joinedAfter": "Example Custom Scalar"
-      },
-      "first": 40,
-      "after": "Example String",
-      "before": "Example String",
-      "last": 40
-    },
-    "response": {
-      "data": [
-        {
+        "user": {
           "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
           "name": "Example String",
           "balance": 40,
@@ -320,28 +26,18 @@
             "__typename": "FriendsConnection"
           }
         }
-      ]
+      }
     }
   },
-  "query.users@depth2": {
-    "querySingleLine": "query users($filter: UserFilter, $first: Int, $after: String, $before: String, $last: Int) {\n  users(filter: $filter, first: $first, after: $after, before: $before, last: $last) {\n    id\n    name\n    balance\n    isActive\n    createdAt\n    status\n    pet {\n      name\n      barkVolume\n    }\n    matrix\n    friends(\n      # Arguments Here\n    ) {\n      edges {\n        node {\n          id\n          name\n          balance\n          isActive\n          createdAt\n          status\n          pet {\n            __typename\n            # ...DogFragment\n          }\n          matrix\n          friends(\n            # Arguments Here\n          ) {\n            __typename\n            # ...FriendsConnectionFragment\n          }\n        }\n        cursor\n      }\n      nodes {\n        id\n        name\n        balance\n        isActive\n        createdAt\n        status\n        pet {\n          __typename\n          # ...DogFragment\n        }\n        matrix\n        friends(\n          # Arguments Here\n        ) {\n          __typename\n          # ...FriendsConnectionFragment\n        }\n      }\n      pageInfo {\n        hasNextPage\n        endCursor\n      }\n      totalCount\n    }\n  }\n}",
-    "queryMultiline": "query users(\n  $filter: UserFilter\n  $first: Int\n  $after: String\n  $before: String\n  $last: Int\n) {\n  users(\n    filter: $filter\n    first: $first\n    after: $after\n    before: $before\n    last: $last\n  ) {\n    id\n    name\n    balance\n    isActive\n    createdAt\n    status\n    pet {\n      name\n      barkVolume\n    }\n    matrix\n    friends(\n      # Arguments Here\n    ) {\n      edges {\n        node {\n          id\n          name\n          balance\n          isActive\n          createdAt\n          status\n          pet {\n            __typename\n            # ...DogFragment\n          }\n          matrix\n          friends(\n            # Arguments Here\n          ) {\n            __typename\n            # ...FriendsConnectionFragment\n          }\n        }\n        cursor\n      }\n      nodes {\n        id\n        name\n        balance\n        isActive\n        createdAt\n        status\n        pet {\n          __typename\n          # ...DogFragment\n        }\n        matrix\n        friends(\n          # Arguments Here\n        ) {\n          __typename\n          # ...FriendsConnectionFragment\n        }\n      }\n      pageInfo {\n        hasNextPage\n        endCursor\n      }\n      totalCount\n    }\n  }\n}",
+  "query.user@depth2": {
+    "querySingleLine": "query user($id: ID!) {\n  user(id: $id) {\n    id\n    name\n    balance\n    isActive\n    createdAt\n    status\n    pet {\n      name\n      barkVolume\n    }\n    matrix\n    friends(\n      # Arguments Here\n    ) {\n      edges {\n        node {\n          id\n          name\n          balance\n          isActive\n          createdAt\n          status\n          pet {\n            __typename\n            # ...DogFragment\n          }\n          matrix\n          friends(\n            # Arguments Here\n          ) {\n            __typename\n            # ...FriendsConnectionFragment\n          }\n        }\n        cursor\n      }\n      nodes {\n        id\n        name\n        balance\n        isActive\n        createdAt\n        status\n        pet {\n          __typename\n          # ...DogFragment\n        }\n        matrix\n        friends(\n          # Arguments Here\n        ) {\n          __typename\n          # ...FriendsConnectionFragment\n        }\n      }\n      pageInfo {\n        hasNextPage\n        endCursor\n      }\n      totalCount\n    }\n  }\n}",
+    "queryMultiline": "query user(\n  $id: ID!\n) {\n  user(\n    id: $id\n  ) {\n    id\n    name\n    balance\n    isActive\n    createdAt\n    status\n    pet {\n      name\n      barkVolume\n    }\n    matrix\n    friends(\n      # Arguments Here\n    ) {\n      edges {\n        node {\n          id\n          name\n          balance\n          isActive\n          createdAt\n          status\n          pet {\n            __typename\n            # ...DogFragment\n          }\n          matrix\n          friends(\n            # Arguments Here\n          ) {\n            __typename\n            # ...FriendsConnectionFragment\n          }\n        }\n        cursor\n      }\n      nodes {\n        id\n        name\n        balance\n        isActive\n        createdAt\n        status\n        pet {\n          __typename\n          # ...DogFragment\n        }\n        matrix\n        friends(\n          # Arguments Here\n        ) {\n          __typename\n          # ...FriendsConnectionFragment\n        }\n      }\n      pageInfo {\n        hasNextPage\n        endCursor\n      }\n      totalCount\n    }\n  }\n}",
     "variables": {
-      "filter": {
-        "name": "Example String",
-        "statuses": [
-          "ACTIVE"
-        ],
-        "joinedAfter": "Example Custom Scalar"
-      },
-      "first": 40,
-      "after": "Example String",
-      "before": "Example String",
-      "last": 40
+      "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4"
     },
     "response": {
-      "data": [
-        {
+      "data": {
+        "user": {
           "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
           "name": "Example String",
           "balance": 40,
@@ -410,28 +106,18 @@
             "totalCount": 40
           }
         }
-      ]
+      }
     }
   },
-  "query.users@depth3": {
-    "querySingleLine": "query users($filter: UserFilter, $first: Int, $after: String, $before: String, $last: Int) {\n  users(filter: $filter, first: $first, after: $after, before: $before, last: $last) {\n    id\n    name\n    balance\n    isActive\n    createdAt\n    status\n    pet {\n      name\n      barkVolume\n    }\n    matrix\n    friends(\n      # Arguments Here\n    ) {\n      edges {\n        node {\n          id\n          name\n          balance\n          isActive\n          createdAt\n          status\n          pet {\n            name\n            barkVolume\n          }\n          matrix\n          friends(\n            # Arguments Here\n          ) {\n            edges {\n              node {\n                id\n                name\n                balance\n                isActive\n                createdAt\n                status\n                pet {\n                  __typename\n                  # ...DogFragment\n                }\n                matrix\n                friends(\n                  # Arguments Here\n                ) {\n                  __typename\n                  # ...FriendsConnectionFragment\n                }\n              }\n              cursor\n            }\n            nodes {\n              id\n              name\n              balance\n              isActive\n              createdAt\n              status\n              pet {\n                __typename\n                # ...DogFragment\n              }\n              matrix\n              friends(\n                # Arguments Here\n              ) {\n                __typename\n                # ...FriendsConnectionFragment\n              }\n            }\n            pageInfo {\n              hasNextPage\n              endCursor\n            }\n            totalCount\n          }\n        }\n        cursor\n      }\n      nodes {\n        id\n        name\n        balance\n        isActive\n        createdAt\n        status\n        pet {\n          name\n          barkVolume\n        }\n        matrix\n        friends(\n          # Arguments Here\n        ) {\n          edges {\n            node {\n              id\n              name\n              balance\n              isActive\n              createdAt\n              status\n              pet {\n                __typename\n                # ...DogFragment\n              }\n              matrix\n              friends(\n                # Arguments Here\n              ) {\n                __typename\n                # ...FriendsConnectionFragment\n              }\n            }\n            cursor\n          }\n          nodes {\n            id\n            name\n            balance\n            isActive\n            createdAt\n            status\n            pet {\n              __typename\n              # ...DogFragment\n            }\n            matrix\n            friends(\n              # Arguments Here\n            ) {\n              __typename\n              # ...FriendsConnectionFragment\n            }\n          }\n          pageInfo {\n            hasNextPage\n            endCursor\n          }\n          totalCount\n        }\n      }\n      pageInfo {\n        hasNextPage\n        endCursor\n      }\n      totalCount\n    }\n  }\n}",
-    "queryMultiline": "query users(\n  $filter: UserFilter\n  $first: Int\n  $after: String\n  $before: String\n  $last: Int\n) {\n  users(\n    filter: $filter\n    first: $first\n    after: $after\n    before: $before\n    last: $last\n  ) {\n    id\n    name\n    balance\n    isActive\n    createdAt\n    status\n    pet {\n      name\n      barkVolume\n    }\n    matrix\n    friends(\n      # Arguments Here\n    ) {\n      edges {\n        node {\n          id\n          name\n          balance\n          isActive\n          createdAt\n          status\n          pet {\n            name\n            barkVolume\n          }\n          matrix\n          friends(\n            # Arguments Here\n          ) {\n            edges {\n              node {\n                id\n                name\n                balance\n                isActive\n                createdAt\n                status\n                pet {\n                  __typename\n                  # ...DogFragment\n                }\n                matrix\n                friends(\n                  # Arguments Here\n                ) {\n                  __typename\n                  # ...FriendsConnectionFragment\n                }\n              }\n              cursor\n            }\n            nodes {\n              id\n              name\n              balance\n              isActive\n              createdAt\n              status\n              pet {\n                __typename\n                # ...DogFragment\n              }\n              matrix\n              friends(\n                # Arguments Here\n              ) {\n                __typename\n                # ...FriendsConnectionFragment\n              }\n            }\n            pageInfo {\n              hasNextPage\n              endCursor\n            }\n            totalCount\n          }\n        }\n        cursor\n      }\n      nodes {\n        id\n        name\n        balance\n        isActive\n        createdAt\n        status\n        pet {\n          name\n          barkVolume\n        }\n        matrix\n        friends(\n          # Arguments Here\n        ) {\n          edges {\n            node {\n              id\n              name\n              balance\n              isActive\n              createdAt\n              status\n              pet {\n                __typename\n                # ...DogFragment\n              }\n              matrix\n              friends(\n                # Arguments Here\n              ) {\n                __typename\n                # ...FriendsConnectionFragment\n              }\n            }\n            cursor\n          }\n          nodes {\n            id\n            name\n            balance\n            isActive\n            createdAt\n            status\n            pet {\n              __typename\n              # ...DogFragment\n            }\n            matrix\n            friends(\n              # Arguments Here\n            ) {\n              __typename\n              # ...FriendsConnectionFragment\n            }\n          }\n          pageInfo {\n            hasNextPage\n            endCursor\n          }\n          totalCount\n        }\n      }\n      pageInfo {\n        hasNextPage\n        endCursor\n      }\n      totalCount\n    }\n  }\n}",
+  "query.user@depth3": {
+    "querySingleLine": "query user($id: ID!) {\n  user(id: $id) {\n    id\n    name\n    balance\n    isActive\n    createdAt\n    status\n    pet {\n      name\n      barkVolume\n    }\n    matrix\n    friends(\n      # Arguments Here\n    ) {\n      edges {\n        node {\n          id\n          name\n          balance\n          isActive\n          createdAt\n          status\n          pet {\n            name\n            barkVolume\n          }\n          matrix\n          friends(\n            # Arguments Here\n          ) {\n            edges {\n              node {\n                id\n                name\n                balance\n                isActive\n                createdAt\n                status\n                pet {\n                  __typename\n                  # ...DogFragment\n                }\n                matrix\n                friends(\n                  # Arguments Here\n                ) {\n                  __typename\n                  # ...FriendsConnectionFragment\n                }\n              }\n              cursor\n            }\n            nodes {\n              id\n              name\n              balance\n              isActive\n              createdAt\n              status\n              pet {\n                __typename\n                # ...DogFragment\n              }\n              matrix\n              friends(\n                # Arguments Here\n              ) {\n                __typename\n                # ...FriendsConnectionFragment\n              }\n            }\n            pageInfo {\n              hasNextPage\n              endCursor\n            }\n            totalCount\n          }\n        }\n        cursor\n      }\n      nodes {\n        id\n        name\n        balance\n        isActive\n        createdAt\n        status\n        pet {\n          name\n          barkVolume\n        }\n        matrix\n        friends(\n          # Arguments Here\n        ) {\n          edges {\n            node {\n              id\n              name\n              balance\n              isActive\n              createdAt\n              status\n              pet {\n                __typename\n                # ...DogFragment\n              }\n              matrix\n              friends(\n                # Arguments Here\n              ) {\n                __typename\n                # ...FriendsConnectionFragment\n              }\n            }\n            cursor\n          }\n          nodes {\n            id\n            name\n            balance\n            isActive\n            createdAt\n            status\n            pet {\n              __typename\n              # ...DogFragment\n            }\n            matrix\n            friends(\n              # Arguments Here\n            ) {\n              __typename\n              # ...FriendsConnectionFragment\n            }\n          }\n          pageInfo {\n            hasNextPage\n            endCursor\n          }\n          totalCount\n        }\n      }\n      pageInfo {\n        hasNextPage\n        endCursor\n      }\n      totalCount\n    }\n  }\n}",
+    "queryMultiline": "query user(\n  $id: ID!\n) {\n  user(\n    id: $id\n  ) {\n    id\n    name\n    balance\n    isActive\n    createdAt\n    status\n    pet {\n      name\n      barkVolume\n    }\n    matrix\n    friends(\n      # Arguments Here\n    ) {\n      edges {\n        node {\n          id\n          name\n          balance\n          isActive\n          createdAt\n          status\n          pet {\n            name\n            barkVolume\n          }\n          matrix\n          friends(\n            # Arguments Here\n          ) {\n            edges {\n              node {\n                id\n                name\n                balance\n                isActive\n                createdAt\n                status\n                pet {\n                  __typename\n                  # ...DogFragment\n                }\n                matrix\n                friends(\n                  # Arguments Here\n                ) {\n                  __typename\n                  # ...FriendsConnectionFragment\n                }\n              }\n              cursor\n            }\n            nodes {\n              id\n              name\n              balance\n              isActive\n              createdAt\n              status\n              pet {\n                __typename\n                # ...DogFragment\n              }\n              matrix\n              friends(\n                # Arguments Here\n              ) {\n                __typename\n                # ...FriendsConnectionFragment\n              }\n            }\n            pageInfo {\n              hasNextPage\n              endCursor\n            }\n            totalCount\n          }\n        }\n        cursor\n      }\n      nodes {\n        id\n        name\n        balance\n        isActive\n        createdAt\n        status\n        pet {\n          name\n          barkVolume\n        }\n        matrix\n        friends(\n          # Arguments Here\n        ) {\n          edges {\n            node {\n              id\n              name\n              balance\n              isActive\n              createdAt\n              status\n              pet {\n                __typename\n                # ...DogFragment\n              }\n              matrix\n              friends(\n                # Arguments Here\n              ) {\n                __typename\n                # ...FriendsConnectionFragment\n              }\n            }\n            cursor\n          }\n          nodes {\n            id\n            name\n            balance\n            isActive\n            createdAt\n            status\n            pet {\n              __typename\n              # ...DogFragment\n            }\n            matrix\n            friends(\n              # Arguments Here\n            ) {\n              __typename\n              # ...FriendsConnectionFragment\n            }\n          }\n          pageInfo {\n            hasNextPage\n            endCursor\n          }\n          totalCount\n        }\n      }\n      pageInfo {\n        hasNextPage\n        endCursor\n      }\n      totalCount\n    }\n  }\n}",
     "variables": {
-      "filter": {
-        "name": "Example String",
-        "statuses": [
-          "ACTIVE"
-        ],
-        "joinedAfter": "Example Custom Scalar"
-      },
-      "first": 40,
-      "after": "Example String",
-      "before": "Example String",
-      "last": 40
+      "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4"
     },
     "response": {
-      "data": [
-        {
+      "data": {
+        "user": {
           "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
           "name": "Example String",
           "balance": 40,
@@ -600,7 +286,333 @@
             "totalCount": 40
           }
         }
-      ]
+      }
+    }
+  },
+  "query.users@depth1": {
+    "querySingleLine": "query users($filter: UserFilter, $first: Int, $after: String, $before: String, $last: Int) {\n  users(filter: $filter, first: $first, after: $after, before: $before, last: $last) {\n    id\n    name\n    balance\n    isActive\n    createdAt\n    status\n    pet {\n      __typename\n      # ...DogFragment\n    }\n    matrix\n    friends(\n      # Arguments Here\n    ) {\n      __typename\n      # ...FriendsConnectionFragment\n    }\n  }\n}",
+    "queryMultiline": "query users(\n  $filter: UserFilter\n  $first: Int\n  $after: String\n  $before: String\n  $last: Int\n) {\n  users(\n    filter: $filter\n    first: $first\n    after: $after\n    before: $before\n    last: $last\n  ) {\n    id\n    name\n    balance\n    isActive\n    createdAt\n    status\n    pet {\n      __typename\n      # ...DogFragment\n    }\n    matrix\n    friends(\n      # Arguments Here\n    ) {\n      __typename\n      # ...FriendsConnectionFragment\n    }\n  }\n}",
+    "variables": {
+      "filter": {
+        "name": "Example String",
+        "statuses": [
+          "ACTIVE"
+        ],
+        "joinedAfter": "Example Custom Scalar"
+      },
+      "first": 40,
+      "after": "Example String",
+      "before": "Example String",
+      "last": 40
+    },
+    "response": {
+      "data": {
+        "users": [
+          {
+            "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
+            "name": "Example String",
+            "balance": 40,
+            "isActive": true,
+            "createdAt": "Example Custom Scalar",
+            "status": "ACTIVE",
+            "pet": {
+              "__typename": "Dog"
+            },
+            "matrix": [
+              [
+                40
+              ]
+            ],
+            "friends": {
+              "__typename": "FriendsConnection"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "query.users@depth2": {
+    "querySingleLine": "query users($filter: UserFilter, $first: Int, $after: String, $before: String, $last: Int) {\n  users(filter: $filter, first: $first, after: $after, before: $before, last: $last) {\n    id\n    name\n    balance\n    isActive\n    createdAt\n    status\n    pet {\n      name\n      barkVolume\n    }\n    matrix\n    friends(\n      # Arguments Here\n    ) {\n      edges {\n        node {\n          id\n          name\n          balance\n          isActive\n          createdAt\n          status\n          pet {\n            __typename\n            # ...DogFragment\n          }\n          matrix\n          friends(\n            # Arguments Here\n          ) {\n            __typename\n            # ...FriendsConnectionFragment\n          }\n        }\n        cursor\n      }\n      nodes {\n        id\n        name\n        balance\n        isActive\n        createdAt\n        status\n        pet {\n          __typename\n          # ...DogFragment\n        }\n        matrix\n        friends(\n          # Arguments Here\n        ) {\n          __typename\n          # ...FriendsConnectionFragment\n        }\n      }\n      pageInfo {\n        hasNextPage\n        endCursor\n      }\n      totalCount\n    }\n  }\n}",
+    "queryMultiline": "query users(\n  $filter: UserFilter\n  $first: Int\n  $after: String\n  $before: String\n  $last: Int\n) {\n  users(\n    filter: $filter\n    first: $first\n    after: $after\n    before: $before\n    last: $last\n  ) {\n    id\n    name\n    balance\n    isActive\n    createdAt\n    status\n    pet {\n      name\n      barkVolume\n    }\n    matrix\n    friends(\n      # Arguments Here\n    ) {\n      edges {\n        node {\n          id\n          name\n          balance\n          isActive\n          createdAt\n          status\n          pet {\n            __typename\n            # ...DogFragment\n          }\n          matrix\n          friends(\n            # Arguments Here\n          ) {\n            __typename\n            # ...FriendsConnectionFragment\n          }\n        }\n        cursor\n      }\n      nodes {\n        id\n        name\n        balance\n        isActive\n        createdAt\n        status\n        pet {\n          __typename\n          # ...DogFragment\n        }\n        matrix\n        friends(\n          # Arguments Here\n        ) {\n          __typename\n          # ...FriendsConnectionFragment\n        }\n      }\n      pageInfo {\n        hasNextPage\n        endCursor\n      }\n      totalCount\n    }\n  }\n}",
+    "variables": {
+      "filter": {
+        "name": "Example String",
+        "statuses": [
+          "ACTIVE"
+        ],
+        "joinedAfter": "Example Custom Scalar"
+      },
+      "first": 40,
+      "after": "Example String",
+      "before": "Example String",
+      "last": 40
+    },
+    "response": {
+      "data": {
+        "users": [
+          {
+            "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
+            "name": "Example String",
+            "balance": 40,
+            "isActive": true,
+            "createdAt": "Example Custom Scalar",
+            "status": "ACTIVE",
+            "pet": {
+              "name": "Example String",
+              "barkVolume": 40
+            },
+            "matrix": [
+              [
+                40
+              ]
+            ],
+            "friends": {
+              "edges": [
+                {
+                  "node": {
+                    "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
+                    "name": "Example String",
+                    "balance": 40,
+                    "isActive": true,
+                    "createdAt": "Example Custom Scalar",
+                    "status": "ACTIVE",
+                    "pet": {
+                      "__typename": "Dog"
+                    },
+                    "matrix": [
+                      [
+                        40
+                      ]
+                    ],
+                    "friends": {
+                      "__typename": "FriendsConnection"
+                    }
+                  },
+                  "cursor": "Example String"
+                }
+              ],
+              "nodes": [
+                {
+                  "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
+                  "name": "Example String",
+                  "balance": 40,
+                  "isActive": true,
+                  "createdAt": "Example Custom Scalar",
+                  "status": "ACTIVE",
+                  "pet": {
+                    "__typename": "Dog"
+                  },
+                  "matrix": [
+                    [
+                      40
+                    ]
+                  ],
+                  "friends": {
+                    "__typename": "FriendsConnection"
+                  }
+                }
+              ],
+              "pageInfo": {
+                "hasNextPage": true,
+                "endCursor": "Example String"
+              },
+              "totalCount": 40
+            }
+          }
+        ]
+      }
+    }
+  },
+  "query.users@depth3": {
+    "querySingleLine": "query users($filter: UserFilter, $first: Int, $after: String, $before: String, $last: Int) {\n  users(filter: $filter, first: $first, after: $after, before: $before, last: $last) {\n    id\n    name\n    balance\n    isActive\n    createdAt\n    status\n    pet {\n      name\n      barkVolume\n    }\n    matrix\n    friends(\n      # Arguments Here\n    ) {\n      edges {\n        node {\n          id\n          name\n          balance\n          isActive\n          createdAt\n          status\n          pet {\n            name\n            barkVolume\n          }\n          matrix\n          friends(\n            # Arguments Here\n          ) {\n            edges {\n              node {\n                id\n                name\n                balance\n                isActive\n                createdAt\n                status\n                pet {\n                  __typename\n                  # ...DogFragment\n                }\n                matrix\n                friends(\n                  # Arguments Here\n                ) {\n                  __typename\n                  # ...FriendsConnectionFragment\n                }\n              }\n              cursor\n            }\n            nodes {\n              id\n              name\n              balance\n              isActive\n              createdAt\n              status\n              pet {\n                __typename\n                # ...DogFragment\n              }\n              matrix\n              friends(\n                # Arguments Here\n              ) {\n                __typename\n                # ...FriendsConnectionFragment\n              }\n            }\n            pageInfo {\n              hasNextPage\n              endCursor\n            }\n            totalCount\n          }\n        }\n        cursor\n      }\n      nodes {\n        id\n        name\n        balance\n        isActive\n        createdAt\n        status\n        pet {\n          name\n          barkVolume\n        }\n        matrix\n        friends(\n          # Arguments Here\n        ) {\n          edges {\n            node {\n              id\n              name\n              balance\n              isActive\n              createdAt\n              status\n              pet {\n                __typename\n                # ...DogFragment\n              }\n              matrix\n              friends(\n                # Arguments Here\n              ) {\n                __typename\n                # ...FriendsConnectionFragment\n              }\n            }\n            cursor\n          }\n          nodes {\n            id\n            name\n            balance\n            isActive\n            createdAt\n            status\n            pet {\n              __typename\n              # ...DogFragment\n            }\n            matrix\n            friends(\n              # Arguments Here\n            ) {\n              __typename\n              # ...FriendsConnectionFragment\n            }\n          }\n          pageInfo {\n            hasNextPage\n            endCursor\n          }\n          totalCount\n        }\n      }\n      pageInfo {\n        hasNextPage\n        endCursor\n      }\n      totalCount\n    }\n  }\n}",
+    "queryMultiline": "query users(\n  $filter: UserFilter\n  $first: Int\n  $after: String\n  $before: String\n  $last: Int\n) {\n  users(\n    filter: $filter\n    first: $first\n    after: $after\n    before: $before\n    last: $last\n  ) {\n    id\n    name\n    balance\n    isActive\n    createdAt\n    status\n    pet {\n      name\n      barkVolume\n    }\n    matrix\n    friends(\n      # Arguments Here\n    ) {\n      edges {\n        node {\n          id\n          name\n          balance\n          isActive\n          createdAt\n          status\n          pet {\n            name\n            barkVolume\n          }\n          matrix\n          friends(\n            # Arguments Here\n          ) {\n            edges {\n              node {\n                id\n                name\n                balance\n                isActive\n                createdAt\n                status\n                pet {\n                  __typename\n                  # ...DogFragment\n                }\n                matrix\n                friends(\n                  # Arguments Here\n                ) {\n                  __typename\n                  # ...FriendsConnectionFragment\n                }\n              }\n              cursor\n            }\n            nodes {\n              id\n              name\n              balance\n              isActive\n              createdAt\n              status\n              pet {\n                __typename\n                # ...DogFragment\n              }\n              matrix\n              friends(\n                # Arguments Here\n              ) {\n                __typename\n                # ...FriendsConnectionFragment\n              }\n            }\n            pageInfo {\n              hasNextPage\n              endCursor\n            }\n            totalCount\n          }\n        }\n        cursor\n      }\n      nodes {\n        id\n        name\n        balance\n        isActive\n        createdAt\n        status\n        pet {\n          name\n          barkVolume\n        }\n        matrix\n        friends(\n          # Arguments Here\n        ) {\n          edges {\n            node {\n              id\n              name\n              balance\n              isActive\n              createdAt\n              status\n              pet {\n                __typename\n                # ...DogFragment\n              }\n              matrix\n              friends(\n                # Arguments Here\n              ) {\n                __typename\n                # ...FriendsConnectionFragment\n              }\n            }\n            cursor\n          }\n          nodes {\n            id\n            name\n            balance\n            isActive\n            createdAt\n            status\n            pet {\n              __typename\n              # ...DogFragment\n            }\n            matrix\n            friends(\n              # Arguments Here\n            ) {\n              __typename\n              # ...FriendsConnectionFragment\n            }\n          }\n          pageInfo {\n            hasNextPage\n            endCursor\n          }\n          totalCount\n        }\n      }\n      pageInfo {\n        hasNextPage\n        endCursor\n      }\n      totalCount\n    }\n  }\n}",
+    "variables": {
+      "filter": {
+        "name": "Example String",
+        "statuses": [
+          "ACTIVE"
+        ],
+        "joinedAfter": "Example Custom Scalar"
+      },
+      "first": 40,
+      "after": "Example String",
+      "before": "Example String",
+      "last": 40
+    },
+    "response": {
+      "data": {
+        "users": [
+          {
+            "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
+            "name": "Example String",
+            "balance": 40,
+            "isActive": true,
+            "createdAt": "Example Custom Scalar",
+            "status": "ACTIVE",
+            "pet": {
+              "name": "Example String",
+              "barkVolume": 40
+            },
+            "matrix": [
+              [
+                40
+              ]
+            ],
+            "friends": {
+              "edges": [
+                {
+                  "node": {
+                    "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
+                    "name": "Example String",
+                    "balance": 40,
+                    "isActive": true,
+                    "createdAt": "Example Custom Scalar",
+                    "status": "ACTIVE",
+                    "pet": {
+                      "name": "Example String",
+                      "barkVolume": 40
+                    },
+                    "matrix": [
+                      [
+                        40
+                      ]
+                    ],
+                    "friends": {
+                      "edges": [
+                        {
+                          "node": {
+                            "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
+                            "name": "Example String",
+                            "balance": 40,
+                            "isActive": true,
+                            "createdAt": "Example Custom Scalar",
+                            "status": "ACTIVE",
+                            "pet": {
+                              "__typename": "Dog"
+                            },
+                            "matrix": [
+                              [
+                                40
+                              ]
+                            ],
+                            "friends": {
+                              "__typename": "FriendsConnection"
+                            }
+                          },
+                          "cursor": "Example String"
+                        }
+                      ],
+                      "nodes": [
+                        {
+                          "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
+                          "name": "Example String",
+                          "balance": 40,
+                          "isActive": true,
+                          "createdAt": "Example Custom Scalar",
+                          "status": "ACTIVE",
+                          "pet": {
+                            "__typename": "Dog"
+                          },
+                          "matrix": [
+                            [
+                              40
+                            ]
+                          ],
+                          "friends": {
+                            "__typename": "FriendsConnection"
+                          }
+                        }
+                      ],
+                      "pageInfo": {
+                        "hasNextPage": true,
+                        "endCursor": "Example String"
+                      },
+                      "totalCount": 40
+                    }
+                  },
+                  "cursor": "Example String"
+                }
+              ],
+              "nodes": [
+                {
+                  "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
+                  "name": "Example String",
+                  "balance": 40,
+                  "isActive": true,
+                  "createdAt": "Example Custom Scalar",
+                  "status": "ACTIVE",
+                  "pet": {
+                    "name": "Example String",
+                    "barkVolume": 40
+                  },
+                  "matrix": [
+                    [
+                      40
+                    ]
+                  ],
+                  "friends": {
+                    "edges": [
+                      {
+                        "node": {
+                          "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
+                          "name": "Example String",
+                          "balance": 40,
+                          "isActive": true,
+                          "createdAt": "Example Custom Scalar",
+                          "status": "ACTIVE",
+                          "pet": {
+                            "__typename": "Dog"
+                          },
+                          "matrix": [
+                            [
+                              40
+                            ]
+                          ],
+                          "friends": {
+                            "__typename": "FriendsConnection"
+                          }
+                        },
+                        "cursor": "Example String"
+                      }
+                    ],
+                    "nodes": [
+                      {
+                        "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
+                        "name": "Example String",
+                        "balance": 40,
+                        "isActive": true,
+                        "createdAt": "Example Custom Scalar",
+                        "status": "ACTIVE",
+                        "pet": {
+                          "__typename": "Dog"
+                        },
+                        "matrix": [
+                          [
+                            40
+                          ]
+                        ],
+                        "friends": {
+                          "__typename": "FriendsConnection"
+                        }
+                      }
+                    ],
+                    "pageInfo": {
+                      "hasNextPage": true,
+                      "endCursor": "Example String"
+                    },
+                    "totalCount": 40
+                  }
+                }
+              ],
+              "pageInfo": {
+                "hasNextPage": true,
+                "endCursor": "Example String"
+              },
+              "totalCount": 40
+            }
+          }
+        ]
+      }
     }
   },
   "query.pet@depth1": {
@@ -611,8 +623,10 @@
     },
     "response": {
       "data": {
-        "name": "Example String",
-        "barkVolume": 40
+        "pet": {
+          "name": "Example String",
+          "barkVolume": 40
+        }
       }
     }
   },
@@ -624,8 +638,10 @@
     },
     "response": {
       "data": {
-        "name": "Example String",
-        "barkVolume": 40
+        "pet": {
+          "name": "Example String",
+          "barkVolume": 40
+        }
       }
     }
   },
@@ -637,8 +653,10 @@
     },
     "response": {
       "data": {
-        "name": "Example String",
-        "barkVolume": 40
+        "pet": {
+          "name": "Example String",
+          "barkVolume": 40
+        }
       }
     }
   },
@@ -647,7 +665,9 @@
     "queryMultiline": "query status {\n  status\n}",
     "variables": {},
     "response": {
-      "data": "ACTIVE"
+      "data": {
+        "status": "ACTIVE"
+      }
     }
   },
   "query.status@depth2": {
@@ -655,7 +675,9 @@
     "queryMultiline": "query status {\n  status\n}",
     "variables": {},
     "response": {
-      "data": "ACTIVE"
+      "data": {
+        "status": "ACTIVE"
+      }
     }
   },
   "query.status@depth3": {
@@ -663,7 +685,9 @@
     "queryMultiline": "query status {\n  status\n}",
     "variables": {},
     "response": {
-      "data": "ACTIVE"
+      "data": {
+        "status": "ACTIVE"
+      }
     }
   },
   "mutation.updateUser@depth1": {
@@ -683,22 +707,24 @@
     },
     "response": {
       "data": {
-        "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
-        "name": "Example String",
-        "balance": 40,
-        "isActive": true,
-        "createdAt": "Example Custom Scalar",
-        "status": "ACTIVE",
-        "pet": {
-          "__typename": "Dog"
-        },
-        "matrix": [
-          [
-            40
-          ]
-        ],
-        "friends": {
-          "__typename": "FriendsConnection"
+        "updateUser": {
+          "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
+          "name": "Example String",
+          "balance": 40,
+          "isActive": true,
+          "createdAt": "Example Custom Scalar",
+          "status": "ACTIVE",
+          "pet": {
+            "__typename": "Dog"
+          },
+          "matrix": [
+            [
+              40
+            ]
+          ],
+          "friends": {
+            "__typename": "FriendsConnection"
+          }
         }
       }
     }
@@ -720,25 +746,49 @@
     },
     "response": {
       "data": {
-        "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
-        "name": "Example String",
-        "balance": 40,
-        "isActive": true,
-        "createdAt": "Example Custom Scalar",
-        "status": "ACTIVE",
-        "pet": {
+        "updateUser": {
+          "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
           "name": "Example String",
-          "barkVolume": 40
-        },
-        "matrix": [
-          [
-            40
-          ]
-        ],
-        "friends": {
-          "edges": [
-            {
-              "node": {
+          "balance": 40,
+          "isActive": true,
+          "createdAt": "Example Custom Scalar",
+          "status": "ACTIVE",
+          "pet": {
+            "name": "Example String",
+            "barkVolume": 40
+          },
+          "matrix": [
+            [
+              40
+            ]
+          ],
+          "friends": {
+            "edges": [
+              {
+                "node": {
+                  "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
+                  "name": "Example String",
+                  "balance": 40,
+                  "isActive": true,
+                  "createdAt": "Example Custom Scalar",
+                  "status": "ACTIVE",
+                  "pet": {
+                    "__typename": "Dog"
+                  },
+                  "matrix": [
+                    [
+                      40
+                    ]
+                  ],
+                  "friends": {
+                    "__typename": "FriendsConnection"
+                  }
+                },
+                "cursor": "Example String"
+              }
+            ],
+            "nodes": [
+              {
                 "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
                 "name": "Example String",
                 "balance": 40,
@@ -756,36 +806,14 @@
                 "friends": {
                   "__typename": "FriendsConnection"
                 }
-              },
-              "cursor": "Example String"
-            }
-          ],
-          "nodes": [
-            {
-              "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
-              "name": "Example String",
-              "balance": 40,
-              "isActive": true,
-              "createdAt": "Example Custom Scalar",
-              "status": "ACTIVE",
-              "pet": {
-                "__typename": "Dog"
-              },
-              "matrix": [
-                [
-                  40
-                ]
-              ],
-              "friends": {
-                "__typename": "FriendsConnection"
               }
-            }
-          ],
-          "pageInfo": {
-            "hasNextPage": true,
-            "endCursor": "Example String"
-          },
-          "totalCount": 40
+            ],
+            "pageInfo": {
+              "hasNextPage": true,
+              "endCursor": "Example String"
+            },
+            "totalCount": 40
+          }
         }
       }
     }
@@ -807,25 +835,99 @@
     },
     "response": {
       "data": {
-        "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
-        "name": "Example String",
-        "balance": 40,
-        "isActive": true,
-        "createdAt": "Example Custom Scalar",
-        "status": "ACTIVE",
-        "pet": {
+        "updateUser": {
+          "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
           "name": "Example String",
-          "barkVolume": 40
-        },
-        "matrix": [
-          [
-            40
-          ]
-        ],
-        "friends": {
-          "edges": [
-            {
-              "node": {
+          "balance": 40,
+          "isActive": true,
+          "createdAt": "Example Custom Scalar",
+          "status": "ACTIVE",
+          "pet": {
+            "name": "Example String",
+            "barkVolume": 40
+          },
+          "matrix": [
+            [
+              40
+            ]
+          ],
+          "friends": {
+            "edges": [
+              {
+                "node": {
+                  "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
+                  "name": "Example String",
+                  "balance": 40,
+                  "isActive": true,
+                  "createdAt": "Example Custom Scalar",
+                  "status": "ACTIVE",
+                  "pet": {
+                    "name": "Example String",
+                    "barkVolume": 40
+                  },
+                  "matrix": [
+                    [
+                      40
+                    ]
+                  ],
+                  "friends": {
+                    "edges": [
+                      {
+                        "node": {
+                          "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
+                          "name": "Example String",
+                          "balance": 40,
+                          "isActive": true,
+                          "createdAt": "Example Custom Scalar",
+                          "status": "ACTIVE",
+                          "pet": {
+                            "__typename": "Dog"
+                          },
+                          "matrix": [
+                            [
+                              40
+                            ]
+                          ],
+                          "friends": {
+                            "__typename": "FriendsConnection"
+                          }
+                        },
+                        "cursor": "Example String"
+                      }
+                    ],
+                    "nodes": [
+                      {
+                        "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
+                        "name": "Example String",
+                        "balance": 40,
+                        "isActive": true,
+                        "createdAt": "Example Custom Scalar",
+                        "status": "ACTIVE",
+                        "pet": {
+                          "__typename": "Dog"
+                        },
+                        "matrix": [
+                          [
+                            40
+                          ]
+                        ],
+                        "friends": {
+                          "__typename": "FriendsConnection"
+                        }
+                      }
+                    ],
+                    "pageInfo": {
+                      "hasNextPage": true,
+                      "endCursor": "Example String"
+                    },
+                    "totalCount": 40
+                  }
+                },
+                "cursor": "Example String"
+              }
+            ],
+            "nodes": [
+              {
                 "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
                 "name": "Example String",
                 "balance": 40,
@@ -893,86 +995,14 @@
                   },
                   "totalCount": 40
                 }
-              },
-              "cursor": "Example String"
-            }
-          ],
-          "nodes": [
-            {
-              "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
-              "name": "Example String",
-              "balance": 40,
-              "isActive": true,
-              "createdAt": "Example Custom Scalar",
-              "status": "ACTIVE",
-              "pet": {
-                "name": "Example String",
-                "barkVolume": 40
-              },
-              "matrix": [
-                [
-                  40
-                ]
-              ],
-              "friends": {
-                "edges": [
-                  {
-                    "node": {
-                      "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
-                      "name": "Example String",
-                      "balance": 40,
-                      "isActive": true,
-                      "createdAt": "Example Custom Scalar",
-                      "status": "ACTIVE",
-                      "pet": {
-                        "__typename": "Dog"
-                      },
-                      "matrix": [
-                        [
-                          40
-                        ]
-                      ],
-                      "friends": {
-                        "__typename": "FriendsConnection"
-                      }
-                    },
-                    "cursor": "Example String"
-                  }
-                ],
-                "nodes": [
-                  {
-                    "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
-                    "name": "Example String",
-                    "balance": 40,
-                    "isActive": true,
-                    "createdAt": "Example Custom Scalar",
-                    "status": "ACTIVE",
-                    "pet": {
-                      "__typename": "Dog"
-                    },
-                    "matrix": [
-                      [
-                        40
-                      ]
-                    ],
-                    "friends": {
-                      "__typename": "FriendsConnection"
-                    }
-                  }
-                ],
-                "pageInfo": {
-                  "hasNextPage": true,
-                  "endCursor": "Example String"
-                },
-                "totalCount": 40
               }
-            }
-          ],
-          "pageInfo": {
-            "hasNextPage": true,
-            "endCursor": "Example String"
-          },
-          "totalCount": 40
+            ],
+            "pageInfo": {
+              "hasNextPage": true,
+              "endCursor": "Example String"
+            },
+            "totalCount": 40
+          }
         }
       }
     }
@@ -985,22 +1015,24 @@
     },
     "response": {
       "data": {
-        "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
-        "name": "Example String",
-        "balance": 40,
-        "isActive": true,
-        "createdAt": "Example Custom Scalar",
-        "status": "ACTIVE",
-        "pet": {
-          "__typename": "Dog"
-        },
-        "matrix": [
-          [
-            40
-          ]
-        ],
-        "friends": {
-          "__typename": "FriendsConnection"
+        "userChanged": {
+          "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
+          "name": "Example String",
+          "balance": 40,
+          "isActive": true,
+          "createdAt": "Example Custom Scalar",
+          "status": "ACTIVE",
+          "pet": {
+            "__typename": "Dog"
+          },
+          "matrix": [
+            [
+              40
+            ]
+          ],
+          "friends": {
+            "__typename": "FriendsConnection"
+          }
         }
       }
     }
@@ -1013,25 +1045,49 @@
     },
     "response": {
       "data": {
-        "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
-        "name": "Example String",
-        "balance": 40,
-        "isActive": true,
-        "createdAt": "Example Custom Scalar",
-        "status": "ACTIVE",
-        "pet": {
+        "userChanged": {
+          "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
           "name": "Example String",
-          "barkVolume": 40
-        },
-        "matrix": [
-          [
-            40
-          ]
-        ],
-        "friends": {
-          "edges": [
-            {
-              "node": {
+          "balance": 40,
+          "isActive": true,
+          "createdAt": "Example Custom Scalar",
+          "status": "ACTIVE",
+          "pet": {
+            "name": "Example String",
+            "barkVolume": 40
+          },
+          "matrix": [
+            [
+              40
+            ]
+          ],
+          "friends": {
+            "edges": [
+              {
+                "node": {
+                  "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
+                  "name": "Example String",
+                  "balance": 40,
+                  "isActive": true,
+                  "createdAt": "Example Custom Scalar",
+                  "status": "ACTIVE",
+                  "pet": {
+                    "__typename": "Dog"
+                  },
+                  "matrix": [
+                    [
+                      40
+                    ]
+                  ],
+                  "friends": {
+                    "__typename": "FriendsConnection"
+                  }
+                },
+                "cursor": "Example String"
+              }
+            ],
+            "nodes": [
+              {
                 "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
                 "name": "Example String",
                 "balance": 40,
@@ -1049,36 +1105,14 @@
                 "friends": {
                   "__typename": "FriendsConnection"
                 }
-              },
-              "cursor": "Example String"
-            }
-          ],
-          "nodes": [
-            {
-              "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
-              "name": "Example String",
-              "balance": 40,
-              "isActive": true,
-              "createdAt": "Example Custom Scalar",
-              "status": "ACTIVE",
-              "pet": {
-                "__typename": "Dog"
-              },
-              "matrix": [
-                [
-                  40
-                ]
-              ],
-              "friends": {
-                "__typename": "FriendsConnection"
               }
-            }
-          ],
-          "pageInfo": {
-            "hasNextPage": true,
-            "endCursor": "Example String"
-          },
-          "totalCount": 40
+            ],
+            "pageInfo": {
+              "hasNextPage": true,
+              "endCursor": "Example String"
+            },
+            "totalCount": 40
+          }
         }
       }
     }
@@ -1091,25 +1125,99 @@
     },
     "response": {
       "data": {
-        "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
-        "name": "Example String",
-        "balance": 40,
-        "isActive": true,
-        "createdAt": "Example Custom Scalar",
-        "status": "ACTIVE",
-        "pet": {
+        "userChanged": {
+          "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
           "name": "Example String",
-          "barkVolume": 40
-        },
-        "matrix": [
-          [
-            40
-          ]
-        ],
-        "friends": {
-          "edges": [
-            {
-              "node": {
+          "balance": 40,
+          "isActive": true,
+          "createdAt": "Example Custom Scalar",
+          "status": "ACTIVE",
+          "pet": {
+            "name": "Example String",
+            "barkVolume": 40
+          },
+          "matrix": [
+            [
+              40
+            ]
+          ],
+          "friends": {
+            "edges": [
+              {
+                "node": {
+                  "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
+                  "name": "Example String",
+                  "balance": 40,
+                  "isActive": true,
+                  "createdAt": "Example Custom Scalar",
+                  "status": "ACTIVE",
+                  "pet": {
+                    "name": "Example String",
+                    "barkVolume": 40
+                  },
+                  "matrix": [
+                    [
+                      40
+                    ]
+                  ],
+                  "friends": {
+                    "edges": [
+                      {
+                        "node": {
+                          "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
+                          "name": "Example String",
+                          "balance": 40,
+                          "isActive": true,
+                          "createdAt": "Example Custom Scalar",
+                          "status": "ACTIVE",
+                          "pet": {
+                            "__typename": "Dog"
+                          },
+                          "matrix": [
+                            [
+                              40
+                            ]
+                          ],
+                          "friends": {
+                            "__typename": "FriendsConnection"
+                          }
+                        },
+                        "cursor": "Example String"
+                      }
+                    ],
+                    "nodes": [
+                      {
+                        "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
+                        "name": "Example String",
+                        "balance": 40,
+                        "isActive": true,
+                        "createdAt": "Example Custom Scalar",
+                        "status": "ACTIVE",
+                        "pet": {
+                          "__typename": "Dog"
+                        },
+                        "matrix": [
+                          [
+                            40
+                          ]
+                        ],
+                        "friends": {
+                          "__typename": "FriendsConnection"
+                        }
+                      }
+                    ],
+                    "pageInfo": {
+                      "hasNextPage": true,
+                      "endCursor": "Example String"
+                    },
+                    "totalCount": 40
+                  }
+                },
+                "cursor": "Example String"
+              }
+            ],
+            "nodes": [
+              {
                 "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
                 "name": "Example String",
                 "balance": 40,
@@ -1177,86 +1285,14 @@
                   },
                   "totalCount": 40
                 }
-              },
-              "cursor": "Example String"
-            }
-          ],
-          "nodes": [
-            {
-              "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
-              "name": "Example String",
-              "balance": 40,
-              "isActive": true,
-              "createdAt": "Example Custom Scalar",
-              "status": "ACTIVE",
-              "pet": {
-                "name": "Example String",
-                "barkVolume": 40
-              },
-              "matrix": [
-                [
-                  40
-                ]
-              ],
-              "friends": {
-                "edges": [
-                  {
-                    "node": {
-                      "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
-                      "name": "Example String",
-                      "balance": 40,
-                      "isActive": true,
-                      "createdAt": "Example Custom Scalar",
-                      "status": "ACTIVE",
-                      "pet": {
-                        "__typename": "Dog"
-                      },
-                      "matrix": [
-                        [
-                          40
-                        ]
-                      ],
-                      "friends": {
-                        "__typename": "FriendsConnection"
-                      }
-                    },
-                    "cursor": "Example String"
-                  }
-                ],
-                "nodes": [
-                  {
-                    "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
-                    "name": "Example String",
-                    "balance": 40,
-                    "isActive": true,
-                    "createdAt": "Example Custom Scalar",
-                    "status": "ACTIVE",
-                    "pet": {
-                      "__typename": "Dog"
-                    },
-                    "matrix": [
-                      [
-                        40
-                      ]
-                    ],
-                    "friends": {
-                      "__typename": "FriendsConnection"
-                    }
-                  }
-                ],
-                "pageInfo": {
-                  "hasNextPage": true,
-                  "endCursor": "Example String"
-                },
-                "totalCount": 40
               }
-            }
-          ],
-          "pageInfo": {
-            "hasNextPage": true,
-            "endCursor": "Example String"
-          },
-          "totalCount": 40
+            ],
+            "pageInfo": {
+              "hasNextPage": true,
+              "endCursor": "Example String"
+            },
+            "totalCount": 40
+          }
         }
       }
     }

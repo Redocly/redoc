@@ -13,7 +13,6 @@ import { contentType } from '../../../../types/common.js';
 import { buildVariantStoreId, itemStoreAtom } from '../../../../jotai/itemStore.js';
 import { globalStoreAtom } from '../../../../jotai/store.js';
 import { normalizeOptions } from '../../../../options/normalizeOptions.js';
-import { LEVEL_COLORS } from '../../utils.js';
 import { DeepLinkSectionContext, ItemIdContext } from '../../../../hooks/useDeepLinkSection.js';
 import { switcherLabel } from '../../../../types/schema.js';
 import { appendVariantSuffix } from '../../../../utils/deep-link.js';
@@ -1741,7 +1740,10 @@ describe('OneOfSwitcher variant nesting chrome', () => {
 
     const nested = container.querySelector('[data-schema-nested-open="true"] > div');
     expect(nested).toBeTruthy();
-    expect(nested).toHaveStyleRule('border-left', `1px solid ${LEVEL_COLORS[1]}`);
+    expect(nested).toHaveStyleRule(
+      '--schema-nested-level-color',
+      'var(--schema-nested-level-1-color, var(--color-blueberry-7))',
+    );
   });
 });
 

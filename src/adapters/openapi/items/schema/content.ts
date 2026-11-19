@@ -23,7 +23,7 @@ function _buildSchemaDefinitionContent(
       children: [
         {
           nodeType: nodeTypes.HEADER,
-          level: 2,
+          level: 3,
           label,
           showPageActions: true,
         },

@@ -53,7 +53,7 @@ const AddressTag = styled(Tag)`
     overflow-wrap: anywhere;
   }
 
-  & span {
+  & ${ContentWrapper} > span {
     font-weight: var(--font-weight-semibold);
   }
 `;

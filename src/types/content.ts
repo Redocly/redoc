@@ -2,7 +2,7 @@ import type { AdmonitionProps } from '@redocly/theme/components/Admonition/Admon
 import type { Node } from '@redocly/markdoc';
 import type { OpenAPIResponse } from './openapi.js';
 import type { CodeSampleSource } from '../services/code-samples/index.js';
-import type { BadgeData, ServerData, nodeTypes, panelKind } from './common.js';
+import type { BadgeData, ContentNodeVariant, ServerData, nodeTypes, panelKind } from './common.js';
 import type { GroupItem, ApiItemContent, SecuritySchemeEntry } from './store.js';
 import type { AsyncAPISchema, BrokerData } from './asyncapi.js';
 import type { BadgeType, ExampleType } from './schema.js';
@@ -70,7 +70,6 @@ export type HeaderNode = {
   graphqlArgs?: { name: string }[];
   graphqlDeprecated?: boolean;
   graphqlOperationType?: 'query' | 'mutation' | 'subscription';
-
 };
 
 export type EmptyMessageNode = {
@@ -97,36 +96,17 @@ export type ParameterData = {
 export type ItemContentNode = {
   nodeType: typeof nodeTypes.ITEM;
 
-  variant:
-    | 'headers'
-    | 'query'
-    | 'querystring'
-    | 'querystring-body'
-    | 'path'
-    | 'parameters'
-    | 'cookies'
-    | 'body'
-    | 'properties'
-    | 'arguments'
-    | 'fields'
-    | 'responses'
-    | 'callback'
-    | 'messages'
-    | 'values'
-    | 'graphql-fields'
-    | 'graphql-args'
-    | 'return-type'
-    | 'possible-types'
-    | 'implements'
-    | 'implemented-by'
-    | 'requires-scopes';
+  variant: ContentNodeVariant;
   label?: string;
   labelTranslationKey?: string;
   schemaId?: string;
   exampleIds?: string[];
   parameters?: ParameterData[];
   required?: boolean;
-  /** Webhook/callback body: the server sends it, so readOnly stays and writeOnly is dropped. */
+  /**
+   * Webhook/callback `body` or `responses` node, sent the opposite way to a regular operation: a
+   * body keeps readOnly and drops writeOnly, responses keep writeOnly and drop readOnly.
+   */
   isEvent?: boolean;
   mediaTypes?: string[];
   mediaTypeSchemas?: Record<string, MediaTypeContent>;
@@ -449,6 +429,7 @@ export type ResponseExamplesPanelItem = BaseExamplePanelItem & {
   /** Webhook response: the client sends it, so samples drop readOnly like a request. */
   isEvent?: boolean;
   hideHeaderTitle?: boolean;
+  panelLabel?: string;
 };
 
 export type GraphQLQueryPanelItem = BaseExamplePanelItem & {
@@ -458,11 +439,6 @@ export type GraphQLQueryPanelItem = BaseExamplePanelItem & {
 
 export type GraphQLResponsePanelItem = BaseExamplePanelItem & {
   kind: typeof panelKind.GRAPHQL_RESPONSE;
-  graphqlOperationData?: GraphQLOperationData;
-};
-
-export type GraphQLVariablesPanelItem = BaseExamplePanelItem & {
-  kind: typeof panelKind.GRAPHQL_VARIABLES;
   graphqlOperationData?: GraphQLOperationData;
 };
 
@@ -494,7 +470,6 @@ export type ExamplePanelItem =
   | CallbackPayloadPanelItem
   | GraphQLQueryPanelItem
   | GraphQLResponsePanelItem
-  | GraphQLVariablesPanelItem
   | GraphQLTypeSamplePanelItem;
 
 export type ReferencesPanelItem = {
@@ -602,7 +577,6 @@ export type ExamplesNode = MultiChildPanelBase<
   | typeof panelKind.CALLBACK_PAYLOAD
   | typeof panelKind.GRAPHQL_QUERY
   | typeof panelKind.GRAPHQL_RESPONSE
-  | typeof panelKind.GRAPHQL_VARIABLES
   | typeof panelKind.GRAPHQL_TYPE_SAMPLE
 >;
 

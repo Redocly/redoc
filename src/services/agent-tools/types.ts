@@ -47,7 +47,7 @@ export type ApiDocsAgentToolsParams = {
   /** Full reference text for one operation; without it `get_api_operation` returns the summary. */
   getOperationDetail?: (
     operation: ApiOperationSummary,
-    options?: { signal?: AbortSignal },
+    options: { item: ApiItem; signal?: AbortSignal },
   ) => Promise<string | undefined>;
 };
 

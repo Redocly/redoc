@@ -86,7 +86,6 @@ describe('operation servers: [] falls through to document servers', () => {
 
     // content.ts — operation panel servers
     expect(node?.servers?.map((s) => s.url)).toEqual([DOCUMENT_SERVER]);
-
   });
 });
 
@@ -161,7 +160,6 @@ describe('servers without a url', () => {
     expect(urlsFor('/path-level')).toEqual([PATH_SERVER]);
     expect(urlsFor('/path-level-invalid')).toEqual([DOCUMENT_SERVER]);
     expect(urlsFor('/path-level-empty-operation')).toEqual([PATH_SERVER]);
-
   });
 
   it('renders like a document without servers when no server has a url', async () => {

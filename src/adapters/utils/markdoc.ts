@@ -1,4 +1,4 @@
-import type { Node } from '@redocly/markdoc';
+import type { Node, RenderableTreeNode } from '@redocly/markdoc';
 import type { ContentNode, OverviewSectionWrapperNode } from '../../types/content.js';
 import type { ApiItem } from '../../types/store.js';
 import type { ApiDocsOptions } from '../../types/options.js';
@@ -14,6 +14,7 @@ import { isPlainText } from './isPlainText.js';
 import { joinWithSeparator, normalizePath } from '../../utils/url.js';
 import { buildDeepLinkUrl } from '../../utils/deep-link.js';
 import { getDOMPurify } from './dompurify.js';
+import { type RbacScope, rbacProp } from '../rbac.js';
 
 export type { MarkdownHeading };
 export type MarkdownSanitizeOptions = {
@@ -344,11 +345,14 @@ export function buildMarkdownSectionItem({
   heading,
   basePath,
   withContent = true,
+  rbac,
 }: {
   heading: MarkdownHeading;
   basePath: string;
   /** `false` builds the navigation entry only: `content` is null. */
   withContent?: boolean;
+  /** The access scope of the section and of each section under it. */
+  rbac?: RbacScope;
 }): ApiItem {
   const hasChildren = heading.items.length > 0;
   const slug = joinWithSeparator(basePath, heading.id).toLowerCase();
@@ -359,6 +363,7 @@ export function buildMarkdownSectionItem({
           heading: child,
           basePath,
           withContent,
+          rbac,
         }),
       )
     : [];
@@ -371,6 +376,7 @@ export function buildMarkdownSectionItem({
     previousRouteSlug: toPreviousRouteSlug(heading, basePath),
     items: hasChildren ? childItems : undefined,
     content: withContent ? buildSectionContent(heading) : null,
+    ...rbacProp(rbac),
   };
 }
 
@@ -433,13 +439,34 @@ function buildSectionItemWithChildren(
   return { item, children: collectedChildren };
 }
 
+const LINE_BREAKING_TAG_NAMES = new Set([
+  'br',
+  'hr',
+  'p',
+  'li',
+  'h1',
+  'h2',
+  'h3',
+  'h4',
+  'h5',
+  'h6',
+  'pre',
+  'blockquote',
+  'tr',
+  'th',
+  'td',
+  'div',
+]);
+
 const HTML_TAG =
-  /<\/?(?:a|b|i|em|strong|code|pre|br|hr|p|span|div|small|sup|sub|img|ul|ol|li|dl|dt|dd|table|thead|tbody|tr|td|th|blockquote|h[1-6])(?:\s[^>]*)?\/?>/gi;
+  /<\/?(a|b|i|em|strong|code|pre|br|hr|p|span|div|small|sup|sub|img|ul|ol|li|dl|dt|dd|table|thead|tbody|tr|td|th|blockquote|h[1-6])(?:\s[^>]*)?\/?>/gi;
 
 function stripMarkdown(text: string): string {
   return text
     .replace(/```[^\n]*(?:\n([\s\S]*?))?```/g, '$1')
-    .replace(HTML_TAG, '')
+    .replace(HTML_TAG, (_tag, name: string) =>
+      LINE_BREAKING_TAG_NAMES.has(name.toLowerCase()) ? ' ' : '',
+    )
     .replace(/!?\[(?<!\[[^\]()]*?\[)([^\]]*)\]\([^)]*\)/g, '$1')
     .replace(/^[ \t]*(?:[-*+]|\d+[.)])[ \t]+/gm, '')
     .replace(/^[ \t]*#{1,6}[ \t]+/gm, '')
@@ -453,19 +480,7 @@ function stripMarkdown(text: string): string {
     .trim();
 }
 
-export function extractFullText(ast: Node | Node[] | string): string {
-  if (typeof ast === 'string') {
-    return stripMarkdown(ast);
-  }
-  if (Array.isArray(ast)) {
-    return ast
-      .map((n) => collectTextContent(n))
-      .filter(Boolean)
-      .join(' ')
-      .trim();
-  }
-  return collectTextContent(ast).trim();
-}
+export { collectMarkdownPlainText as extractFullText };
 
 export function extractFirstParagraphText(
   ast: Node | Node[] | string,
@@ -484,7 +499,7 @@ export function extractFirstParagraphText(
 
   if (!firstNode) return undefined;
 
-  const text = collectTextContent(firstNode);
+  const text = collectTextContent(firstNode, { spaced: true });
   return text ? text.substring(0, maxLength) : undefined;
 }
 
@@ -524,12 +539,22 @@ function isRawHtmlCode(node: Node): boolean {
   );
 }
 
-export function collectTextContent(node: Node): string {
+function isLineBreakingHtml(node: Node): boolean {
+  return (
+    node.type === 'tag' && node.tag === 'html' && LINE_BREAKING_TAG_NAMES.has(node.attributes.name)
+  );
+}
+
+export function collectTextContent(node: Node, { spaced = false } = {}): string {
   const parts: string[] = [];
 
   function walk(current: Node): void {
     if (isForAgentsOnly(current)) return;
     if (isRawHtmlCode(current)) return;
+    const breaksLine = spaced && isLineBreakingHtml(current);
+    if (spaced && (current.type === 'softbreak' || current.type === 'hardbreak' || breaksLine)) {
+      parts.push(' ');
+    }
     if (typeof current.attributes?.content === 'string') {
       parts.push(current.attributes.content);
     }
@@ -537,10 +562,26 @@ export function collectTextContent(node: Node): string {
     for (const child of current.children ?? []) {
       walk(child);
     }
+    if (spaced && ((current.inline === false && current.type !== 'text') || breaksLine)) {
+      parts.push(' ');
+    }
   }
 
   walk(node);
-  return parts.join('');
+  return spaced ? parts.join('').replace(/\s+/g, ' ').trim() : parts.join('');
+}
+
+export function collectInnerText(nodes: RenderableTreeNode[], { spaced = false } = {}): string {
+  const text = nodes
+    .map((child) => {
+      if (typeof child === 'string') return child;
+      if ((child as { $$mdtype?: unknown } | null)?.$$mdtype !== 'Tag') return '';
+      const tag = child as { name: string; children: RenderableTreeNode[] };
+      const inner = collectInnerText(tag.children, { spaced });
+      return spaced && LINE_BREAKING_TAG_NAMES.has(tag.name) ? ` ${inner} ` : inner;
+    })
+    .join('');
+  return spaced ? text.replace(/\s+/g, ' ').trim() : text;
 }
 
 export function collectMarkdownPlainText(ast: Node | Node[] | string): string {
@@ -549,9 +590,9 @@ export function collectMarkdownPlainText(ast: Node | Node[] | string): string {
   }
   const roots = Array.isArray(ast) ? ast : [ast];
   return roots
-    .map((node) => collectTextContent(node))
-    .join('')
-    .trim();
+    .map((node) => collectTextContent(node, { spaced: true }))
+    .filter(Boolean)
+    .join(' ');
 }
 
 function unescapeHTMLChars(str: string): string {

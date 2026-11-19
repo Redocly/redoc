@@ -13,7 +13,8 @@ import { Markdown } from '../common/Markdown.js';
 import { getDeepLinkId } from '../../utils/deep-link.js';
 import { DeepLinkSectionContext, useDeepLinkUrl } from '../../hooks/useDeepLinkSection.js';
 import { McpSection, McpSubRow, McpTitle, McpTitleWrapper } from './styled.js';
-import { buildMcpExamplePanel, buildPromptArgumentsSchema, useMcpDescriptionAst } from './utils.js';
+import { buildPromptArgumentsSchema } from '../../utils/mcp-prompt-arguments-schema.js';
+import { buildMcpExamplePanel, useMcpDescriptionAst } from './utils.js';
 
 interface McpPromptProps {
   name: string;

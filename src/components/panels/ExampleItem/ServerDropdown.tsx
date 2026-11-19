@@ -9,6 +9,7 @@ import { DropdownMenuItem } from '@redocly/theme/components/Dropdown/DropdownMen
 import { CopyButton } from '@redocly/theme/components/Buttons/CopyButton';
 
 import { environmentAtom, savedEnvironmentNameAtom } from '../../../jotai/app.js';
+import { useDisplayedEnvironment } from '../../../hooks/useDisplayedEnvironment.js';
 import { resolveServerUrl } from '../../../services/code-samples/normalize-servers.js';
 import { replaceServerVariables } from '../../../services/code-samples/server-variables.js';
 import { getServerEnvName } from '../../../utils/environments.js';
@@ -65,6 +66,7 @@ export function ServerDropdown({ servers, method, path }: ServerDropdownProps): 
   const { events } = useAtomValue(globalOptionsAtom);
   const telemetry = useTelemetry();
   const activeEnv = environment[0];
+  const displayedServer = useDisplayedEnvironment()[0].server;
   const savedEnvName = useAtomValue(savedEnvironmentNameAtom);
   const isAdditionalOperation = ![
     'get',
@@ -100,13 +102,13 @@ export function ServerDropdown({ servers, method, path }: ServerDropdownProps): 
   const activeServerUrl = useMemo(() => {
     const match = resolvedServers.find(
       (s) =>
-        s.url === activeEnv.server ||
-        s.resolvedUrl === activeEnv.server ||
-        s.envUrl === activeEnv.server,
+        s.url === displayedServer ||
+        s.resolvedUrl === displayedServer ||
+        s.envUrl === displayedServer,
     );
     if (match) return match.resolvedUrl;
     return resolvedServers[0]?.resolvedUrl ?? '';
-  }, [activeEnv.server, resolvedServers]);
+  }, [displayedServer, resolvedServers]);
 
   useEffect(() => {
     if (!activeEnv.server && resolvedServers.length > 0) {

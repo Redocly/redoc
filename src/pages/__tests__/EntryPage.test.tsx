@@ -543,6 +543,16 @@ describe('EntryPage', () => {
     expect(screen.queryByTestId('three-panel-layout')).not.toBeInTheDocument();
   });
 
+  it('renders nothing instead of the 404 page for the old path of a moved page', () => {
+    const routeIndex = makeFlatRouteIndex([
+      makeRoute('/pets'),
+      makeRoute('/pets-1/getpet', { previousPath: '/pets/getpet' }),
+    ]);
+    const { container } = renderEntry(routeIndex, '/pets/getpet#pets/getpet/responses');
+
+    expect(container).toBeEmptyDOMElement();
+  });
+
   it('matches the route case-insensitively (index keys are lowercase, the typed URL may not be)', () => {
     const routes = [makeRoute('/'), makeRoute('/pets/list-pet')];
     const routeIndex = makeFlatRouteIndex(routes);

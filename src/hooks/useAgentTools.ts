@@ -27,7 +27,7 @@ export function useAgentTools(items: ApiItem[]): void {
         items,
         store,
         getOperationDetail: definition
-          ? createSpecSliceOperationDetail({ items, specType, definition })
+          ? createSpecSliceOperationDetail({ specType, definition })
           : undefined,
       }),
       controller.signal,

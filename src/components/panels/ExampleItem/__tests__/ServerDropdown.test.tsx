@@ -1,5 +1,7 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { render, fireEvent, screen } from '@testing-library/react';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { act, render, fireEvent, screen, within } from '@testing-library/react';
+import { hydrateRoot } from 'react-dom/client';
+import { renderToString } from 'react-dom/server';
 import { Provider, createStore } from 'jotai';
 import '@testing-library/jest-dom/vitest';
 
@@ -7,6 +9,7 @@ import type { ServerEntry } from '../ServerDropdown.js';
 
 import { ServerDropdown } from '../ServerDropdown.js';
 import { appStore, environmentAtom } from '../../../../jotai/app.js';
+import { writeAppState } from '../../../../utils/app-state-storage.js';
 
 const SERVERS: ServerEntry[] = [
   { url: 'https://rest.test.example.com', description: 'Test env' },
@@ -27,7 +30,7 @@ function openMenu() {
 }
 
 beforeEach(() => {
-  document.cookie = 'redoc.appStore=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+  writeAppState('redoc.appStore', null);
   sessionStorage.clear();
 });
 
@@ -50,6 +53,36 @@ describe('ServerDropdown', () => {
 
     const [, envName] = store.get(environmentAtom);
     expect(envName).toBe(seededName);
+  });
+
+  it('hydrates with the server render selection, then marks the server the reader saved', async () => {
+    const html = renderToString(
+      <Provider store={createStore()}>
+        <ServerDropdown servers={SERVERS} method="get" path="/pets" />
+      </Provider>,
+    );
+    const saved = createStore();
+    saved.set(environmentAtom, {
+      environment: 'Prod env',
+      environments: { 'Prod env': { server: 'https://rest.prod.example.com' } },
+    });
+    const container = document.createElement('div');
+    container.innerHTML = html;
+    const onRecoverableError = vi.fn();
+
+    await act(async () => {
+      hydrateRoot(
+        container,
+        <Provider store={saved}>
+          <ServerDropdown servers={SERVERS} method="get" path="/pets" />
+        </Provider>,
+        { onRecoverableError },
+      );
+    });
+
+    expect(onRecoverableError).not.toHaveBeenCalled();
+    const prodItem = within(container).getByText('Prod env').closest('[role="menuitem"]');
+    expect(prodItem?.querySelector('[data-testid="panel-item-checkmark"]')).not.toBeNull();
   });
 
   it('renders a static path when there are no servers', () => {
@@ -117,5 +150,4 @@ describe('ServerDropdown', () => {
     // …while the persisted name stays untouched for the api it belongs to.
     expect(store.get(appStore).environment).toBe('Other api env');
   });
-
 });

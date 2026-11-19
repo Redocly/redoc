@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { sanitizeErrorDetails } from '../sanitizeError.js';
+import { sanitizeErrorDetails, sanitizeLoadFailureMessage } from '../sanitizeError.js';
 
 describe('sanitizeErrorDetails', () => {
   it('keeps known error classes and maps the rest to other', () => {
@@ -37,5 +37,31 @@ describe('sanitizeErrorDetails', () => {
     const error = new Error('plain');
     error.stack = '';
     expect(sanitizeErrorDetails(error, null)).not.toHaveProperty('stack');
+  });
+});
+
+describe('sanitizeLoadFailureMessage', () => {
+  it.each([
+    [
+      'bad indentation of a mapping entry in "https://docs.example.com/openapi.yaml" (4:11)\n 3 | info:',
+      'bad indentation of a mapping entry in <text>',
+    ],
+    [`Unexpected token 'o', "openapi: 3"... is not valid JSON`, 'Unexpected token <text>, <text>'],
+    [`Unexpected token 'x', "x{"title":"... is not valid JSON`, 'Unexpected token <text>, <text>'],
+    [
+      `Expected ':' after property name in JSON at position 5 (line 1 column 6)`,
+      'Expected <text> after property name in JSON at position 5 (line 1 column 6)',
+    ],
+    [
+      'JSON Parse error: Unexpected identifier "openapi"',
+      'JSON Parse error: Unexpected identifier <text>',
+    ],
+    ['Failed to load https://docs.example.com/v3/api-docs: 500', 'Failed to load <path> 500'],
+  ])('keeps the error kind of %j and drops its content', (message, expected) => {
+    expect(sanitizeLoadFailureMessage(message)).toBe(expected);
+  });
+
+  it('caps the length at 120 characters', () => {
+    expect(sanitizeLoadFailureMessage('m'.repeat(500))).toHaveLength(120);
   });
 });

@@ -9,16 +9,9 @@ import type {
 import { JsonSchemaDialectId, jsonSchemaDialect } from './dialects/jsonSchema.js';
 import { GraphqlSchemaDialectId } from './dialects/graphqlSchema.js';
 
-const processedRootCache = new WeakMap<
-  SchemaNode,
-  {
-    dialectId: string;
-    rootJsonPointer: string;
-    sortRequiredPropsFirst?: boolean;
-    result: PropertyType;
-  }
->();
+const processedRootCache = new WeakMap<SchemaNode, Map<string, PropertyType>>();
 
+/** The property tree of `schema`; trees without an `exampleSerializer` are cached per schema, dialect, root pointer and sort order. */
 export function schemaProcessor(
   schema: SchemaNode,
   document: Document,
@@ -37,30 +30,20 @@ export function schemaProcessor(
       dialect = jsonSchemaDialect;
   }
 
-  const effectiveRootJsonPointer = options?.rootJsonPointer ?? '#';
-
   if (options?.exampleSerializer) {
     return dialect.process(schema, document, options);
   }
 
-  const cached = processedRootCache.get(schema);
-
-  if (
-    cached?.dialectId === dialect.id &&
-    cached?.rootJsonPointer === effectiveRootJsonPointer &&
-    cached?.sortRequiredPropsFirst === options?.sortRequiredPropsFirst
-  ) {
-    return cached.result;
-  }
+  const key = `${dialect.id}|${options?.rootJsonPointer ?? '#'}|${options?.sortRequiredPropsFirst ?? false}`;
+  let trees = processedRootCache.get(schema);
+  const cached = trees?.get(key);
+  if (cached) return cached;
 
   const result = dialect.process(schema, document, options);
-
-  processedRootCache.set(schema, {
-    dialectId: dialect.id,
-    rootJsonPointer: effectiveRootJsonPointer,
-    sortRequiredPropsFirst: options?.sortRequiredPropsFirst,
-    result,
-  });
-
+  if (!trees) {
+    trees = new Map();
+    processedRootCache.set(schema, trees);
+  }
+  trees.set(key, result);
   return result;
 }

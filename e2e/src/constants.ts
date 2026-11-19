@@ -52,6 +52,15 @@ export const specs: SpecEntry[] = [
       --link-hover-text-color: var(--color-primary-100);
     }`,
   },
+  { basePath: '/schema-nested-levels', type: 'openapi' },
+  {
+    basePath: '/theme-schema-nested-levels',
+    type: 'openapi',
+    fixture: 'schema-nested-levels',
+    css: `html:root {
+      --schema-nested-level-1-color: rgb(1, 2, 3);
+    }`,
+  },
   {
     basePath: '/theme-middle-panel',
     type: 'openapi',

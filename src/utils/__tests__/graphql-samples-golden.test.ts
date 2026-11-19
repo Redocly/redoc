@@ -44,7 +44,7 @@ function generateOperationSamples(store: ApiStore, { type, name }: OperationRef,
     querySingleLine: generateOperationExample(type, operation, lookup, depth, false),
     queryMultiline: generateOperationExample(type, operation, lookup, depth, true),
     variables: generateOperationVariablesExample(operation.args ?? [], lookup, depth),
-    response: generateOperationResponseExample(operation.type.display, lookup, depth),
+    response: generateOperationResponseExample(operation, lookup, depth),
   };
 }
 

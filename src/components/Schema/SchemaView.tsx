@@ -1,8 +1,8 @@
-import { memo, useContext } from 'react';
+import { memo, useContext, useMemo } from 'react';
 import { useAtomValue } from 'jotai';
 
 import type { ReactElement } from 'react';
-import type { PropertyType, SchemaNode, Document, OneOfChangeParams } from '../../types/schema.js';
+import type { SchemaNode, Document, OneOfChangeParams } from '../../types/schema.js';
 import type { OpenAPISchema } from '../../types/openapi.js';
 import type { AsyncAPISchema } from '../../types/asyncapi.js';
 import type { PropertyRendererProps } from './views/PropertyRenderer.js';
@@ -12,7 +12,8 @@ import { schemaEntryAtom } from '../../jotai/schema.js';
 import { globalOptionsAtom } from '../../jotai/store.js';
 import { useSchemaDocument } from './hooks/useSchemaDocument.js';
 import { buildSchemaFieldSuffix } from './hooks/useSchemaFieldDeepLink.js';
-import { PropertyRenderer } from './views/PropertyRenderer.js';
+import { PropertyRenderer, printsOwnDescription } from './views/PropertyRenderer.js';
+import { SchemaDescription } from './SchemaDescription.js';
 import { processSchema } from '../../services/schema/index.js';
 import { DeepLinkSectionContext } from '../../hooks/useDeepLinkSection.js';
 import { useExpandableSection } from '../../hooks/useExpandableSection.js';
@@ -34,7 +35,6 @@ export interface SchemaViewProps extends Partial<SharedRendererProps> {
   exampleSerializer?: (value: unknown) => string;
 }
 
-const processedSchemaMap = new WeakMap<SchemaNode, PropertyType>();
 // The `true` schema allows any value, like an empty one.
 const ANY_SCHEMA: SchemaNode = {};
 
@@ -61,23 +61,17 @@ function SchemaViewComponent({
   let resolvedSchema: SchemaNode | undefined;
   if (rawSchema === true) resolvedSchema = ANY_SCHEMA;
   else if (isSchemaNode(rawSchema)) resolvedSchema = rawSchema;
-  let property: PropertyType | undefined;
-  if (resolvedSchema) {
-    // The shared cache is keyed only by schema identity, so it can't be used
-    // when a custom example serializer changes the output.
-    if (!exampleSerializer && processedSchemaMap.has(resolvedSchema)) {
-      property = processedSchemaMap.get(resolvedSchema);
-    } else {
-      property = processSchema(resolvedSchema, document as Document, {
-        rootJsonPointer: resolvedRootPointer,
-        exampleSerializer,
-        sortRequiredPropsFirst,
-      }) as PropertyType | undefined;
-      if (property && !exampleSerializer) {
-        processedSchemaMap.set(resolvedSchema, property);
-      }
-    }
-  }
+  const property = useMemo(
+    () =>
+      resolvedSchema
+        ? processSchema(resolvedSchema, document as Document, {
+            rootJsonPointer: resolvedRootPointer,
+            exampleSerializer,
+            sortRequiredPropsFirst,
+          })
+        : undefined,
+    [resolvedSchema, document, resolvedRootPointer, exampleSerializer, sortRequiredPropsFirst],
+  );
 
   useExpandableSection(expandableSectionKey, Boolean(property?.isExpandable));
 
@@ -86,14 +80,17 @@ function SchemaViewComponent({
   }
 
   return (
-    <PropertyRenderer
-      property={property}
-      level={level}
-      expandByDefault={expandByDefault}
-      skipReadOnly={skipReadOnly}
-      skipWriteOnly={skipWriteOnly}
-      onOneOfChange={onOneOfChange}
-    />
+    <>
+      {printsOwnDescription(property) ? null : <SchemaDescription value={property.description} />}
+      <PropertyRenderer
+        property={property}
+        level={level}
+        expandByDefault={expandByDefault}
+        skipReadOnly={skipReadOnly}
+        skipWriteOnly={skipWriteOnly}
+        onOneOfChange={onOneOfChange}
+      />
+    </>
   );
 }
 

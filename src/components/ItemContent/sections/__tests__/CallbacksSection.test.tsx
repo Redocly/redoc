@@ -29,6 +29,7 @@ function callbackNode(): ItemContentNode {
       callbackName: 'jobCompleted',
       callbackId: CALLBACK_ID,
       contentChildren: [
+        { nodeType: nodeTypes.ITEM, variant: 'query', label: 'Query', parameters: [] },
         {
           nodeType: nodeTypes.ITEM,
           variant: 'body',
@@ -90,6 +91,20 @@ describe('CallbacksSection', () => {
       );
     });
     expect(await screen.findByText('Callback Request')).toBeInTheDocument();
+  });
+
+  it('renders the callback request title one level below the Callbacks section title', async () => {
+    renderCallbacksSection(`#${CALLBACK_SCOPE}`);
+
+    expect(
+      await screen.findByRole('heading', { level: 5, name: /Callback Request/ }),
+    ).toBeInTheDocument();
+  });
+
+  it('renders the callback section labels one level below the callback request title', async () => {
+    renderCallbacksSection(`#${CALLBACK_SCOPE}`);
+
+    expect(await screen.findByRole('heading', { level: 6, name: 'Query' })).toBeInTheDocument();
   });
 
   it('leaves a same-named callback on another operation alone', async () => {

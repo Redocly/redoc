@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import { JsonViewer } from '@redocly/theme/components/JsonViewer/JsonViewer';
 import { linkCss } from '@redocly/theme/components/Markdown/styles/links';
 
-import { LEVEL_COLORS } from './utils.js';
+import { cycleColorsByLevel } from './utils.js';
 
 export const PropertyList = styled.div`
   display: flex;
@@ -327,21 +327,14 @@ export const NestedWrapper = styled.div`
 `;
 
 export const StyledNested = styled.div<{ $level: number }>`
+  --schema-nested-level-color: ${({ $level }) => cycleColorsByLevel($level)};
   padding-left: var(--schema-nested-offset);
-  border-left: 1px solid
-    ${({ $level }) => LEVEL_COLORS[$level % LEVEL_COLORS.length] || 'var(--border-color-primary)'};
+  border-left: 1px solid var(--schema-nested-level-color);
   margin: -10px 0 0 9px;
 
-  ${({ $level }) => {
-    const color = LEVEL_COLORS[$level % LEVEL_COLORS.length];
-    return color
-      ? `
-      .schema-name {
-        color: ${color};
-      }
-    `
-      : '';
-  }}
+  .schema-name {
+    color: var(--schema-nested-level-color);
+  }
 `;
 
 export const ArrayWrapper = styled.div`

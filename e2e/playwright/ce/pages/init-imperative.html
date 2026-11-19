@@ -14,6 +14,40 @@
 
       window.__events = [];
 
+      const PREVIEW = {
+        openapi: '3.1.0',
+        info: { title: 'Preview', version: '1.0.0' },
+        paths: { '/items': { get: { responses: { 200: { description: 'OK' } } } } },
+      };
+      const PREVIEWS = {
+        openapi: PREVIEW,
+        asyncapi: {
+          asyncapi: '3.0.0',
+          info: { title: 'Preview events', version: '1.0.0' },
+          channels: {
+            orders: {
+              address: 'orders',
+              messages: {
+                orderPlaced: {
+                  payload: { type: 'object', properties: { id: { type: 'string' } } },
+                },
+              },
+            },
+          },
+          operations: {
+            onOrderPlaced: { action: 'receive', channel: { $ref: '#/channels/orders' } },
+          },
+        },
+        graphql: 'type Query {\n  items: [Item]\n}\n\ntype Item {\n  id: ID!\n}\n',
+      };
+      const VS_CODE_OPTIONS = { router: 'hash', typeOfUsage: 'vs-code' };
+
+      async function rendered() {
+        while (!document.querySelector('.menu-content')) {
+          await new Promise((resolve) => setTimeout(resolve, 20));
+        }
+      }
+
       const CASES = {
         events: () =>
           init('/fixtures/code-samples.yaml', {
@@ -23,6 +57,19 @@
               targetServerSwitch: (event) => window.__events.push(event),
             },
           }),
+
+        'vs-code': () => init(PREVIEW, VS_CODE_OPTIONS, document.querySelector('redoc')),
+
+        'vs-code-reinit': async () => {
+          const element = document.querySelector('redoc');
+          let root = init(PREVIEW, VS_CODE_OPTIONS, element);
+          await rendered();
+          window.__rerender = async (kind = 'openapi') => {
+            root.unmount();
+            root = init(PREVIEWS[kind], VS_CODE_OPTIONS, element);
+            await rendered();
+          };
+        },
 
         'bad-definition': () => init('/fixtures/broken.yaml'),
         malformed: () => init('/fixtures/malformed.yaml'),

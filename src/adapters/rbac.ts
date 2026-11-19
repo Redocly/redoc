@@ -16,6 +16,10 @@ export function rbacProp(_scope: RbacScope | undefined): RbacProp {
   return {};
 }
 
+export function rbacFrom(_source: unknown): RbacProp {
+  return {};
+}
+
 export function isRbacKey(_key: string): boolean {
   return false;
 }

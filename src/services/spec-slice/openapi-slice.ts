@@ -1,14 +1,19 @@
 import { isRecord } from '../../adapters/helpers.js';
 import { resolvePathItemRef } from '../../adapters/openapi/utils/resolvePathItemRef.js';
 import { JsonPointer } from '../../adapters/openapi/utils/JsonPointer.js';
+import { isNonNavTag } from '../../adapters/openapi/utils/helpers.js';
+import { mcpEntities } from '../../adapters/openapi/utils/mcp.js';
+import { SUPPORTED_MCP_TYPES } from '../../adapters/openapi/constants.js';
+import { getSchemaNamesForTags } from '../../adapters/openapi/utils/schema-tags.js';
 import { isOperationName } from '../../utils/http-methods.js';
 import { encodeJsonPointerSegment } from '../../utils/refPointer.js';
 import { DEFAULT_WEBHOOKS_TAG_NAME } from '../../constants/openapi.js';
 import { collectComponentClosure, buildComponentsFromClosure } from './component-closure.js';
 import { cloneStrip } from './clone-strip.js';
-import { trimInfoDescription } from './trim-description.js';
+import { describeSubsetInInfo } from './subset-description.js';
 
 import type { SpecSliceScope } from './types.js';
+import type { OpenAPIDefinition } from '../../types/openapi.js';
 
 const SLICE_ROOT_FIELDS = [
   'openapi',
@@ -39,6 +44,14 @@ type KeptPathItem = {
   operations: LocatedOperation[];
 };
 
+type OpenApiDocument = Record<string, unknown> & OpenAPIDefinition;
+
+export type OpenApiSliceOptions = {
+  schemaDefinitionsTagName?: string;
+  /** Leave out components more than this many `$ref` hops from the page's own part. */
+  maxRefDepth?: number;
+};
+
 export function operationScopeFromPointer(
   pointer: string,
   isWebhook: boolean | undefined,
@@ -53,29 +66,36 @@ export function operationScopeFromPointer(
   };
 }
 
+function isOpenApiDocument(document: Record<string, unknown>): document is OpenApiDocument {
+  return typeof document.openapi === 'string';
+}
+
 export function extractOpenApiSlice(
   document: Record<string, unknown>,
   scope: SpecSliceScope,
+  options: OpenApiSliceOptions = {},
 ): { document: Record<string, unknown> } | undefined {
-  if (typeof document.openapi !== 'string') return undefined;
+  if (!isOpenApiDocument(document)) return undefined;
 
   if (scope.kind === 'document') {
-    return {
-      document: cloneStrip(document, new Map()) as Record<string, unknown>,
-    };
+    return { document: cloneStrip(document, new Map()) };
   }
 
-  const built = buildDraft(document, scope);
+  const built = buildDraft(document, scope, options);
   if (!built) return undefined;
   const { draft, extraSeeds = [] } = built;
 
-  const closure = collectComponentClosure(document, [draft, ...extraSeeds]);
+  const closure = collectComponentClosure(
+    document,
+    [draft, ...extraSeeds],
+    undefined,
+    options.maxRefDepth,
+  );
   const components = buildComponentsFromClosure(document, closure.keep);
   if (components) draft.components = components;
+  describeSubsetInInfo(draft, scope, closure.truncated ? options.maxRefDepth : undefined);
 
-  return {
-    document: cloneStrip(draft, closure.inlineTargets) as Record<string, unknown>,
-  };
+  return { document: cloneStrip(draft, closure.refTargets) };
 }
 
 type BuiltDraft = {
@@ -84,23 +104,19 @@ type BuiltDraft = {
 };
 
 function buildDraft(
-  document: Record<string, unknown>,
+  document: OpenApiDocument,
   scope: Exclude<SpecSliceScope, { kind: 'document' }>,
+  options: OpenApiSliceOptions,
 ): BuiltDraft | undefined {
   const draft: Record<string, unknown> = {};
   for (const field of SLICE_ROOT_FIELDS) {
     if (document[field] !== undefined) draft[field] = document[field];
   }
-  trimInfoDescription(draft);
-
   if (scope.kind === 'schema') {
     const schemas = isRecord(document.components) ? document.components.schemas : undefined;
     if (!isRecord(schemas) || !(scope.name in schemas)) return undefined;
     draft.paths = {};
-    const seedRef = {
-      $ref: `#/components/schemas/${encodeJsonPointerSegment(scope.name)}`,
-    };
-    return { draft, extraSeeds: [seedRef] };
+    return { draft, extraSeeds: [schemaRef(scope.name)] };
   }
 
   const webhooksKey = document['x-webhooks'] ? 'x-webhooks' : 'webhooks';
@@ -108,6 +124,9 @@ function buildDraft(
 
   let keptPaths: Map<string, KeptPathItem>;
   let keptWebhooks: Map<string, KeptPathItem>;
+  let schemaSeeds: unknown[] = [];
+  let mcp: Record<string, unknown> | undefined;
+  const keptTagNames = new Set<string>();
 
   if (scope.kind === 'operation') {
     keptPaths = new Map();
@@ -117,14 +136,19 @@ function buildDraft(
     if (!kept) return undefined;
     (scope.source === 'webhooks' ? keptWebhooks : keptPaths).set(scope.pathName, kept);
   } else if (scope.kind === 'tag') {
-    keptPaths = collectTaggedOperations(document, document.paths, scope.tagName, false);
-    keptWebhooks = collectTaggedOperations(document, webhooksMap, scope.tagName, true);
-    if (keptPaths.size === 0 && keptWebhooks.size === 0) return undefined;
+    const tagNames = tagWithDescendants(document, scope.tagName);
+    for (const tagName of tagNames) keptTagNames.add(tagName);
+    keptPaths = collectTaggedOperations(document, document.paths, tagNames, false);
+    keptWebhooks = collectTaggedOperations(document, webhooksMap, tagNames, true);
+    schemaSeeds = getSchemaNamesForTags(tagNames, document, options.schemaDefinitionsTagName).map(
+      schemaRef,
+    );
+    mcp = mcpEntitiesOfTags(document, tagNames);
+    if (!keptPaths.size && !keptWebhooks.size && !schemaSeeds.length && !mcp) return undefined;
   } else {
     return undefined;
   }
 
-  const keptTagNames = new Set<string>();
   for (const kept of [...keptPaths.values(), ...keptWebhooks.values()]) {
     for (const { operation } of kept.operations) {
       const tags = operation.tags;
@@ -143,8 +167,46 @@ function buildDraft(
 
   draft.paths = materializePathMap(keptPaths);
   if (keptWebhooks.size) draft[webhooksKey] = materializePathMap(keptWebhooks);
+  if (mcp) draft['x-mcp'] = mcp;
 
-  return { draft };
+  return { draft, extraSeeds: schemaSeeds };
+}
+
+function schemaRef(name: string): { $ref: string } {
+  return { $ref: `#/components/schemas/${encodeJsonPointerSegment(name)}` };
+}
+
+const MCP_COLLECTION_TYPES: ReadonlySet<string> = new Set<string>(SUPPORTED_MCP_TYPES);
+
+/**
+ * `x-mcp` with its server fields and, of its collections, only the entities listed under
+ * `tagNames`; `undefined` when none are listed.
+ */
+function mcpEntitiesOfTags(
+  document: OpenApiDocument,
+  tagNames: ReadonlySet<string>,
+): Record<string, unknown> | undefined {
+  const kept = mcpEntities(document).filter((entity) =>
+    entity.tags.some((tag) => tagNames.has(tag)),
+  );
+  const mcp = document['x-mcp'];
+  if (!kept.length || !isRecord(mcp)) return undefined;
+
+  const slice: Record<string, unknown> = Object.fromEntries(
+    Object.entries(mcp).filter(([key]) => !MCP_COLLECTION_TYPES.has(key)),
+  );
+  for (const collectionType of SUPPORTED_MCP_TYPES) {
+    const entities: unknown = mcp[collectionType];
+    if (!Array.isArray(entities)) continue;
+    const names = new Set(
+      kept.filter((entity) => entity.collectionType === collectionType).map(({ name }) => name),
+    );
+    const keptEntities = entities.filter(
+      (entity) => isRecord(entity) && typeof entity.name === 'string' && names.has(entity.name),
+    );
+    if (keptEntities.length) slice[collectionType] = keptEntities;
+  }
+  return slice;
 }
 
 function resolvePathItem(
@@ -197,20 +259,20 @@ function locateOperationInMap(
 
 function operationMatchesTag(
   operation: Record<string, unknown>,
-  tagName: string,
+  tagNames: ReadonlySet<string>,
   isWebhook: boolean,
 ): boolean {
-  const tags =
+  const tags: unknown[] =
     Array.isArray(operation.tags) && operation.tags.length > 0
       ? operation.tags
       : [isWebhook ? DEFAULT_WEBHOOKS_TAG_NAME : ''];
-  return tags.includes(tagName);
+  return tags.some((tag) => typeof tag === 'string' && tagNames.has(tag));
 }
 
 function collectTaggedOperations(
   document: Record<string, unknown>,
   rootMap: unknown,
-  tagName: string,
+  tagNames: ReadonlySet<string>,
   isWebhook: boolean,
 ): Map<string, KeptPathItem> {
   const kept = new Map<string, KeptPathItem>();
@@ -223,14 +285,14 @@ function collectTaggedOperations(
     const operations: LocatedOperation[] = [];
     for (const [key, value] of Object.entries(pathItem)) {
       if (!isOperationName(key) || !isRecord(value)) continue;
-      if (operationMatchesTag(value, tagName, isWebhook)) {
+      if (operationMatchesTag(value, tagNames, isWebhook)) {
         operations.push({ operation: value, verbKey: key, isAdditional: false });
       }
     }
     if (isRecord(pathItem.additionalOperations)) {
       for (const [verb, value] of Object.entries(pathItem.additionalOperations)) {
         if (!isRecord(value)) continue;
-        if (operationMatchesTag(value, tagName, isWebhook)) {
+        if (operationMatchesTag(value, tagNames, isWebhook)) {
           operations.push({ operation: value, verbKey: verb, isAdditional: true });
         }
       }
@@ -259,6 +321,25 @@ function materializePathMap(kept: Map<string, KeptPathItem>): Record<string, unk
     result[pathName] = materialized;
   }
   return result;
+}
+
+/** The tag and every tag nested under it through `parent`, as the navigation nests them. */
+function tagWithDescendants(document: Record<string, unknown>, tagName: string): Set<string> {
+  const childrenOf = new Map<string, string[]>();
+  for (const tag of Array.isArray(document.tags) ? document.tags : []) {
+    if (!isRecord(tag) || typeof tag.name !== 'string' || typeof tag.parent !== 'string') continue;
+    if (isNonNavTag(tag)) continue;
+    const children = childrenOf.get(tag.parent);
+    if (children) children.push(tag.name);
+    else childrenOf.set(tag.parent, [tag.name]);
+  }
+
+  const names = new Set([tagName]);
+  // A Set iterator also visits the names added during the loop, so this walks the whole subtree.
+  for (const name of names) {
+    for (const child of childrenOf.get(name) ?? []) names.add(child);
+  }
+  return names;
 }
 
 function buildTagsWithAncestors(

@@ -16,8 +16,8 @@ const MIN_VISIBLE_DELTA_MS = 1000;
 /**
  * Sends the `page.time` summary of the current page load on every hide, on `pagehide` and on
  * unmount (a host navigating away from the API docs keeps the tab visible).
- * Counters are cumulative and a snapshot that adds nothing is skipped; consumers keep the
- * largest snapshot per session.
+ * Counters are cumulative for one mount and a snapshot that adds nothing is skipped. A session can
+ * hold several mounts, so the largest snapshot of a session is the time of one mount, not its total.
  */
 export function useSessionSummaryTelemetry(): void {
   const telemetry = useTelemetry();

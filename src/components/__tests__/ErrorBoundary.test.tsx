@@ -5,7 +5,6 @@ import '@testing-library/jest-dom/vitest';
 
 import type { ReactNode } from 'react';
 import type { RouteItem } from '../../utils/routing.js';
-import type { ApiItemContent } from '../../types/store.js';
 import type { MarkdownAdapter } from '../../contexts/markdownAdapter.js';
 
 import { contentType } from '../../types/common.js';
@@ -13,6 +12,7 @@ import { RedoclyApiDocsComponent } from '../../RedoclyApiDocs.js';
 import { ErrorBoundary } from '../ErrorBoundary.js';
 import { TelemetryContext } from '../../contexts/telemetry.js';
 import { getPageUri } from '../../telemetry/page.js';
+import { RedocTelemetry as RedocTelemetryClass } from '../../telemetry/RedocTelemetry.js';
 
 import type { RedocTelemetry } from '../../telemetry/RedocTelemetry.js';
 
@@ -66,7 +66,7 @@ function createRoute(path: string): RouteItem {
     content: {
       contentType: contentType.GROUP,
       children: [],
-    } as ApiItemContent,
+    },
   };
 }
 
@@ -131,6 +131,38 @@ describe('ErrorBoundary', () => {
       details: { message: 'child crashed', name: 'Error', stackFrames: expect.any(Number) },
     });
     expect(payload.details.stack).toEqual(expect.stringContaining('ThrowingChild'));
+  });
+
+  it('a root boundary shows the error page and reports errorBoundaryCatch.root through its own telemetry', () => {
+    const contextSend = vi.fn();
+    const ownSend = vi
+      .spyOn(RedocTelemetryClass.prototype, 'sendErrorMessage')
+      .mockImplementation(() => undefined);
+    const flush = vi.spyOn(RedocTelemetryClass.prototype, 'forceFlush').mockResolvedValue();
+
+    render(
+      <TelemetryContext.Provider
+        value={{ sendErrorMessage: contextSend } as unknown as RedocTelemetry}
+      >
+        <ErrorBoundary scope="root" telemetryConfig={{ typeOfUsage: 'html' }}>
+          <ThrowingChild />
+        </ErrorBoundary>
+      </TelemetryContext.Provider>,
+    );
+
+    expect(
+      screen.getByText('Something went wrong rendering the API documentation.'),
+    ).toBeInTheDocument();
+    expect(contextSend).not.toHaveBeenCalled();
+    expect(ownSend).toHaveBeenCalledTimes(1);
+    expect(ownSend.mock.calls[0][0][0]).toMatchObject({
+      id: 'errorBoundaryCatch.root',
+      object: 'error',
+      typeOfUsage: 'html',
+    });
+    expect(flush).toHaveBeenCalledTimes(1);
+    ownSend.mockRestore();
+    flush.mockRestore();
   });
 
   it('still shows the fallback when the telemetry send throws', () => {

@@ -11,7 +11,7 @@ export function buildUnionContent(
 ): ApiItemContent {
   const possibleTypes = union.getTypes();
   const containerChildren: ContentNode[] = [
-    { nodeType: nodeTypes.HEADER, level: 2, label: union.name, showPageActions: true },
+    { nodeType: nodeTypes.HEADER, level: 3, label: union.name, showPageActions: true },
   ];
 
   const descriptionContent = parseMarkdown(union.description, markdownOptions);

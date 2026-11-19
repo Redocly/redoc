@@ -2,19 +2,14 @@ import { atom } from 'jotai';
 import { atomWithStorage, createJSONStorage } from 'jotai/utils';
 import { LayoutVariant } from '@redocly/config';
 
-import type { AsyncLocalStorage } from 'node:async_hooks';
-
-import { getCookie, removeCookie, setCookie } from '../utils/cookies.js';
+import { firstServerEnv } from '../services/code-samples/server-env.js';
+import { readAppState, writeAppState } from '../utils/app-state-storage.js';
 import { mergeEnvData, IS_BROWSER } from '../utils/environments.js';
 import { keepReadingSectionAnchored } from '../utils/scroll-anchoring.js';
 import { safeJsonParse } from '../utils/string.js';
-import { fromSessionStorage, toSessionStorage } from '../utils/session-storage.js';
+import { getWebStorage, writeWebStorage } from '../utils/web-storage.js';
 import { DEFAULT_LAYOUT } from '../options/constants.js';
-import { globalOptionsAtom } from './store.js';
-
-declare global {
-  var redoclyCookieStorage: AsyncLocalStorage<string> | undefined;
-}
+import { globalOptionsAtom, storeAtom } from './store.js';
 
 export type TabType<T extends object = object> = {
   title: string;
@@ -54,37 +49,37 @@ const defaultAppStoreValue: AppStore = {
 /** Raw `light` | `dark`; localStorage so it survives on `file://`, where cookies are dropped. */
 export const COLOR_MODE_STORAGE_KEY = 'redoc.colorMode';
 
-// environments → sessionStorage, colorMode → localStorage, everything else → cookie (SSR-readable)
+const sessionKey = (ctx: string) => 'redoc.' + ctx;
+
+// environments → sessionStorage, colorMode → localStorage, everything else → readAppState
 const customStorage = {
   getItem: (ctx: string) => {
-    const cookieValue = safeJsonParse<object>(
-      getCookie(ctx, globalThis.redoclyCookieStorage?.getStore?.()),
+    const persistedValue = safeJsonParse<object>(readAppState(ctx) ?? '');
+    const sessionValue = safeJsonParse<object>(
+      getWebStorage('sessionStorage')?.getItem(sessionKey(ctx)) ?? '',
     );
-    const sessionValue = safeJsonParse<object>(fromSessionStorage(ctx));
     const stored = {
       ...defaultAppStoreValue,
       ...sessionValue,
-      ...cookieValue,
+      ...persistedValue,
     };
     if (!IS_BROWSER) return stored;
 
-    const colorMode = window.localStorage.getItem(COLOR_MODE_STORAGE_KEY) || stored.colorMode;
-    if (colorMode) window.localStorage.setItem(COLOR_MODE_STORAGE_KEY, colorMode);
+    const colorMode =
+      getWebStorage('localStorage')?.getItem(COLOR_MODE_STORAGE_KEY) || stored.colorMode;
+    if (colorMode) writeWebStorage('localStorage', COLOR_MODE_STORAGE_KEY, colorMode);
     return { ...stored, colorMode };
   },
   setItem: (ctx: string, value: AppStore) => {
-    const { environments, colorMode, ...cookieValue } = value;
-    const sessionValue = { environments };
-    setCookie(ctx, JSON.stringify(cookieValue));
-    toSessionStorage(ctx, JSON.stringify(sessionValue));
-    if (IS_BROWSER && colorMode) {
-      window.localStorage.setItem(COLOR_MODE_STORAGE_KEY, colorMode);
-    }
+    const { environments, colorMode, ...persistedValue } = value;
+    writeAppState(ctx, JSON.stringify(persistedValue));
+    writeWebStorage('sessionStorage', sessionKey(ctx), JSON.stringify({ environments }));
+    if (colorMode) writeWebStorage('localStorage', COLOR_MODE_STORAGE_KEY, colorMode);
   },
   removeItem: (ctx: string) => {
-    removeCookie(ctx);
-    sessionStorage.removeItem(ctx);
-    localStorage.removeItem(COLOR_MODE_STORAGE_KEY);
+    writeAppState(ctx, null);
+    writeWebStorage('sessionStorage', sessionKey(ctx), null);
+    writeWebStorage('localStorage', COLOR_MODE_STORAGE_KEY, null);
   },
 };
 
@@ -113,9 +108,12 @@ export const environmentAtom = atom<
     const serverKeyedName = Object.keys(envs).find(
       (name) => envs[name]?.['server'] === selectedEnvironment,
     );
+    const firstServerEnvName = firstServerEnv(get(storeAtom).servers)?.[1];
+    const defaultEnvName =
+      firstServerEnvName && envs[firstServerEnvName] ? firstServerEnvName : Object.keys(envs)[0];
     const envName = envs[selectedEnvironment]
       ? selectedEnvironment
-      : (serverKeyedName ?? Object.keys(envs)[0]);
+      : (serverKeyedName ?? defaultEnvName);
     let env = envs[envName] || {};
     // Selection by URL with a user-provided env keyed by that URL: the seeded
     // entry (keyed by server name) holds the `server` field — merge it in.
@@ -132,6 +130,11 @@ export const environmentAtom = atom<
       environments: mergeEnvData(state.environments || {}, environments),
     });
   },
+);
+
+/** The environment of the store's first server with its variable defaults; `[{}, '']` without servers. */
+export const serverRenderEnvironmentAtom = atom<[Record<string, string>, string]>(
+  (get) => firstServerEnv(get(storeAtom).servers) ?? [{}, ''],
 );
 
 export const savedEnvironmentNameAtom = atom((get) => get(appStore).environment);
@@ -179,7 +182,10 @@ const appSessionStore = atomWithStorage<AppSessionStore>(
     collapsedSidebar: false,
     unsupportedFeatureScreen: false,
   },
-  IS_BROWSER ? createJSONStorage<AppSessionStore>(() => sessionStorage) : undefined,
+  IS_BROWSER
+    ? // jotai reads a missing storage as empty, but its types leave out undefined.
+      createJSONStorage<AppSessionStore>(() => getWebStorage('sessionStorage') as Storage)
+    : undefined,
 );
 
 /** Mobile sidebar drawer — open state is per-view, never persisted. */

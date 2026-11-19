@@ -16,7 +16,7 @@ import { ListIcon } from '../../../../icons/ListIcon/ListIcon.js';
 import { visitedChannelsAtom } from '../../../../jotai/app.js';
 import { itemStoreFieldAtom } from '../../../../jotai/itemStore.js';
 import { ItemIdContext } from '../../../../hooks/useDeepLinkSection.js';
-import { useNavigationUrlNormalizer } from '../../../../hooks/useNormalizeUrl.js';
+import { useContentLinkNormalizer } from '../../../../hooks/useNormalizeUrl.js';
 import { RESOURCES, useTelemetry } from '../../../../telemetry/index.js';
 import { markNavigationCauseAtom } from '../../../../jotai/telemetry.js';
 
@@ -76,7 +76,7 @@ export function MessageReferencesPanelItem({
       (visitedChannels ?? []).some((path) => path.endsWith(key.toLowerCase())),
     [visitedChannels],
   );
-  const normalizeUrl = useNavigationUrlNormalizer();
+  const normalizeUrl = useContentLinkNormalizer();
   const telemetry = useTelemetry();
   const markNavigationCause = useSetAtom(markNavigationCauseAtom);
   const activeMessageKey = useAtomValue(

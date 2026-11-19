@@ -11,6 +11,7 @@ import { addTagItems } from './group/item.js';
 import { openApiContext } from './buildContext.js';
 import { toSidebarLogo } from '../../utils/logo.js';
 import { serversWithUrl } from './utils/operation.js';
+import { rbacFrom } from '../rbac.js';
 
 function yieldToMainThread(): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, 0));
@@ -21,12 +22,10 @@ function yieldToMainThread(): Promise<void> {
  * client. Descriptions already parsed to markdown AST are dropped, like everywhere
  * else server display names are derived.
  */
-function buildGlobalServers(
-  document: OpenAPIDefinition,
-): ServerData[] {
+function buildGlobalServers(document: OpenAPIDefinition): ServerData[] {
   let merged: OpenAPIServer[] = serversWithUrl(document.servers);
   return merged.map((s) => {
-    const server: ServerData = { url: s.url };
+    const server: ServerData = Object.assign({ url: s.url }, rbacFrom(s));
     if (s.name) server.name = s.name;
     if (typeof s.description === 'string' && s.description) server.description = s.description;
     if (s.variables && Object.keys(s.variables).length > 0) server.variables = s.variables;
@@ -53,9 +52,7 @@ export async function processOpenApiDocument({
 
   const context = createBuildContext({ document, options, basePath, storeCtx, processContent });
 
-  const globalServers = buildGlobalServers(
-    document,
-  );
+  const globalServers = buildGlobalServers(document);
   const logo = toSidebarLogo(document.info?.['x-logo'], document.info?.contact?.url);
 
   return openApiContext.run(context, () => ({

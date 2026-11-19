@@ -45,7 +45,7 @@ function ViewNestedComponent({
   if (isNestedArray) {
     return (
       <>
-        <LabelValue>Array [</LabelValue>
+        <LabelValue>array [</LabelValue>
         <Wrapper $isArrayInsideArray={isNestedArray} className="view-nested-wrapper">
           <StyledNested $color={color}>{children}</StyledNested>
         </Wrapper>

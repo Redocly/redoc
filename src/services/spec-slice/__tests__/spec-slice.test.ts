@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { load } from 'js-yaml';
 
-import { buildSpecSlice } from '../index.js';
+import { buildSpecSlice, describeSliceTarget } from '../index.js';
+import { apiSpecType } from '../../../types/common.js';
 import { isRecord, resolveJsonPointer } from '../../../adapters/helpers.js';
 
 import type { SpecSliceScope } from '../types.js';
@@ -393,7 +394,7 @@ describe('buildSpecSlice — OpenAPI', () => {
     expectNoDanglingRefs(doc);
   });
 
-  it('inlines non-component internal refs', async () => {
+  it('keeps a non-component internal $ref and adds its target at the same address', async () => {
     const doc = expectDefined(
       await extractOpenApi({
         kind: 'operation',
@@ -407,12 +408,91 @@ describe('buildSpecSlice — OpenAPI', () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       any
     >;
-    const schema = response.content['application/json'].schema;
-    expect(schema.$ref).toBeUndefined();
-    expect(schema.type).toBe('object');
+    expect(response.content['application/json'].schema).toEqual({ $ref: '#/x-shared/Thing' });
+    expect(doc['x-shared']).toEqual({
+      Thing: { type: 'object', properties: { id: { type: 'string' } } },
+    });
     expect((doc.components as Record<string, Record<string, unknown>>).links.NextLink).toEqual({
       operationRef: '#/paths/~1pruned/get',
     });
+    expectNoDanglingRefs(doc);
+  });
+
+  it('includes a local $ref target once in the YAML however often it is referenced', async () => {
+    const document = deepFreeze({
+      openapi: '3.1.0',
+      info: { title: 'Repro', version: '1' },
+      paths: {
+        '/x': {
+          get: {
+            responses: {
+              '200': {
+                description: 'OK',
+                content: { 'application/json': { schema: { $ref: '#/x-defs/d0' } } },
+              },
+            },
+          },
+        },
+      },
+      'x-defs': {
+        d0: {
+          type: 'object',
+          properties: {
+            a: { $ref: '#/x-defs/d1', description: 'First use' },
+            b: { $ref: '#/x-defs/d1', description: 'Second use' },
+          },
+        },
+        d1: {
+          type: 'object',
+          properties: { a: { $ref: '#/x-defs/d2' }, b: { $ref: '#/x-defs/d2' } },
+        },
+        d2: { type: 'string' },
+      },
+    });
+    const scope: SpecSliceScope = {
+      kind: 'operation',
+      pathName: '/x',
+      httpVerb: 'get',
+      source: 'paths',
+    };
+
+    const text = await buildSpecSlice(apiSpecType.OPENAPI, document, scope);
+
+    expect(text).toBe(`openapi: 3.1.0
+info:
+  title: Repro
+  version: '1'
+  description: This is a subset of the full specification, limited to the \`GET /x\` operation.
+paths:
+  /x:
+    get:
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/x-defs/d0'
+x-defs:
+  d0:
+    type: object
+    properties:
+      a:
+        $ref: '#/x-defs/d1'
+        description: First use
+      b:
+        $ref: '#/x-defs/d1'
+        description: Second use
+  d1:
+    type: object
+    properties:
+      a:
+        $ref: '#/x-defs/d2'
+      b:
+        $ref: '#/x-defs/d2'
+  d2:
+    type: string
+`);
   });
 
   it('extracts a single schema with its variants', async () => {
@@ -551,5 +631,32 @@ describe('buildSpecSlice — unsupported inputs', () => {
     await expect(
       buildSpecSlice('asyncapi', makeAsyncApiFixture(), { kind: 'schema', name: 'Light' }),
     ).resolves.toBeUndefined();
+  });
+});
+
+describe('describeSliceTarget', () => {
+  it('names an operation as it is called and a channel by its address, and nothing else', () => {
+    const asyncapi = {
+      asyncapi: '3.0.0',
+      channels: { adopted: { address: 'pets.adopted' } },
+      operations: { onAdopted: { action: 'receive', channel: { $ref: '#/channels/adopted' } } },
+    };
+
+    expect(
+      describeSliceTarget(
+        { kind: 'operation', pathName: '/pets', httpVerb: 'get', source: 'paths' },
+        {},
+      ),
+    ).toBe('GET /pets');
+    expect(
+      describeSliceTarget({ kind: 'graphql-operation', operationType: 'query', name: 'books' }, ''),
+    ).toBe('query books');
+    expect(
+      describeSliceTarget({ kind: 'async-operation', operationId: 'onAdopted' }, asyncapi),
+    ).toBe('RECEIVE pets.adopted');
+    expect(describeSliceTarget({ kind: 'channel', channelId: 'adopted' }, asyncapi)).toBe(
+      'pets.adopted',
+    );
+    expect(describeSliceTarget({ kind: 'tag', tagName: 'pets' }, {})).toBeUndefined();
   });
 });

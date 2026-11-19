@@ -1,8 +1,9 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { createStore } from 'jotai';
 
-import { languageAtom } from '../app.js';
+import { activeMimeNameAtom, appStore, collapsedSidebarAtom, languageAtom } from '../app.js';
 import { globalStoreAtom } from '../store.js';
+import { writeAppState } from '../../utils/app-state-storage.js';
 import { normalizeOptions } from '../../options/normalizeOptions.js';
 
 import type { RawApiDocsOptions } from '../../types/options.js';
@@ -24,8 +25,8 @@ function setupStore(codeSamples: RawApiDocsOptions['codeSamples']) {
 }
 
 beforeEach(() => {
-  // appStore is cookie-backed, so a persisted `language` would leak between tests.
-  document.cookie = 'redoc.appStore=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+  // A persisted `language` would leak between tests.
+  writeAppState('redoc.appStore', null);
   sessionStorage.clear();
 });
 
@@ -53,5 +54,33 @@ describe('languageAtom', () => {
       { key: 'kuku', lang: 'Node.js', title: 'kuku', order: 0 },
       { key: 'javascript', lang: 'JavaScript', title: 'JavaScript', order: 1 },
     ]);
+  });
+});
+
+describe('blocked site storage', () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('keeps the app state in memory when the browser denies storage access', () => {
+    const denied = () => {
+      throw new DOMException('Access is denied for this document.', 'SecurityError');
+    };
+    vi.spyOn(window, 'localStorage', 'get').mockImplementation(denied);
+    vi.spyOn(window, 'sessionStorage', 'get').mockImplementation(denied);
+
+    const store = createStore();
+    store.sub(appStore, () => undefined);
+    store.sub(collapsedSidebarAtom, () => undefined);
+    store.set(appStore, { ...store.get(appStore), colorMode: 'dark', environments: { Prod: {} } });
+    store.set(activeMimeNameAtom, 'application/xml');
+    store.set(collapsedSidebarAtom, true);
+
+    expect(store.get(appStore)).toMatchObject({
+      colorMode: 'dark',
+      activeMimeName: 'application/xml',
+      environments: { Prod: {} },
+    });
+    expect(store.get(collapsedSidebarAtom)).toBe(true);
   });
 });

@@ -5,11 +5,8 @@ import { MemoryRouter } from 'react-router';
 import '@testing-library/jest-dom/vitest';
 
 import type { ItemContentNode } from '../../../../types/content.js';
-import type { ApiStore } from '../../../../types/store.js';
 
-import { globalStoreAtom } from '../../../../jotai/store.js';
-import { nodeTypes, schemaKind } from '../../../../types/common.js';
-import { normalizeOptions } from '../../../../options/normalizeOptions.js';
+import { nodeTypes } from '../../../../types/common.js';
 import { ItemIdContext } from '../../../../hooks/useDeepLinkSection.js';
 import { ResponsesSection } from '../ResponsesSection.js';
 
@@ -31,38 +28,9 @@ vi.mock('../../../Schema/SchemaView.js', () => ({
 }));
 
 function renderResponses(node: Partial<ItemContentNode>) {
-  const jotaiStore = createStore();
-  const store: ApiStore = {
-    schemaStore: {
-      'schema-1': {
-        id: 'schema-1',
-        kind: schemaKind.JSON_SCHEMA,
-        data: {
-          type: 'object',
-          properties: {
-            id: { type: 'string', readOnly: true },
-            secret: { type: 'string', writeOnly: true },
-          },
-        },
-      },
-    },
-    exampleStore: {},
-    securitySchemeStore: {},
-  };
-  jotaiStore.set(globalStoreAtom, {
-    items: [],
-    store,
-    options: normalizeOptions({
-      specType: 'openapi',
-      downloadUrls: [],
-      metadata: {},
-      basePath: '',
-    }),
-  });
-
   render(
     <MemoryRouter initialEntries={[{ pathname: '/webhooks/new-event' }]}>
-      <JotaiProvider store={jotaiStore}>
+      <JotaiProvider store={createStore()}>
         <ItemIdContext.Provider value="webhooks/new-event">
           <ResponsesSection
             node={

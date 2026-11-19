@@ -11,7 +11,7 @@ test.describe('Expand all button — GraphQL', () => {
     await page.goto('/other/queries/search');
     await apiDocs.waitForPageLoad();
 
-    toggle = page.locator('h5:text-is("Arguments") ~ [data-testid="schema-expand-all-button"]');
+    toggle = page.locator('h4:text-is("Arguments") ~ [data-testid="schema-expand-all-button"]');
     fieldToggle = page.locator('[id$="&arg=type"]').getByRole('button', { name: /return type/i });
   });
 
@@ -39,7 +39,7 @@ test.describe('Expand all button — GraphQL', () => {
 
   test('return type — a deep link reopens fields closed by Collapse all', async ({ page }) => {
     const returnTypeToggle = page.locator(
-      'h5:text-is("Return type") ~ [data-testid="schema-expand-all-button"]',
+      'h4:text-is("Return type") ~ [data-testid="schema-expand-all-button"]',
     );
     const cursorHash = 'other/queries/search/t=field&path=searchresultitemconnection.edges.cursor';
     const cursorField = page.locator(`[id="${cursorHash}"]`);

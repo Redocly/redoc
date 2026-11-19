@@ -57,20 +57,23 @@ export function ObjectRenderer({
           ))}
         </ConstraintsRow>
       )}
-      {entries.map(([name, prop], index) => (
-        <PropertyFieldRow
-          key={name}
-          name={name}
-          property={prop}
-          level={level}
-          expandByDefault={expand}
-          isFirst={!hasHeaderRow && index === 0}
-          fieldParentsName={level > 1 ? fieldParentsName : variantMarkersOnly(fieldParentsName)}
-          skipReadOnly={skipReadOnly}
-          skipWriteOnly={skipWriteOnly}
-          onOneOfChange={onOneOfChange}
-        />
-      ))}
+      {entries.map(([name, prop], index) => {
+        const parentsName = level > 1 ? fieldParentsName : variantMarkersOnly(fieldParentsName);
+        return (
+          <PropertyFieldRow
+            key={name}
+            name={name}
+            property={prop}
+            level={level}
+            expandByDefault={expand}
+            isFirst={!hasHeaderRow && index === 0}
+            fieldParentsName={parentsName}
+            skipReadOnly={skipReadOnly}
+            skipWriteOnly={skipWriteOnly}
+            onOneOfChange={onOneOfChange}
+          />
+        );
+      })}
     </PropertyList>
   );
 }

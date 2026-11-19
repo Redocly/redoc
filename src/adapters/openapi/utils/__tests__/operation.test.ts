@@ -19,7 +19,6 @@ function makeOperation(overrides?: Partial<OperationInfo>): OperationInfo {
 }
 
 describe('getOperationData', () => {
-
   it('derives the slug from the operationId when present', () => {
     const data = getOperationData(makeOperation({ operationId: 'getPets' }), '/docs/openapi');
     expect(data.slug).toBe('/docs/openapi/getpets');

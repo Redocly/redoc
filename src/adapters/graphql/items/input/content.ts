@@ -11,7 +11,7 @@ export function buildInputContent(
 ): ApiItemContent {
   const schemaId = `types/${input.name}`;
   const containerChildren: ContentNode[] = [
-    { nodeType: nodeTypes.HEADER, level: 2, label: input.name, showPageActions: true },
+    { nodeType: nodeTypes.HEADER, level: 3, label: input.name, showPageActions: true },
   ];
 
   const descriptionContent = parseMarkdown(input.description, markdownOptions);

@@ -1,4 +1,4 @@
-import { expect, type Page } from '@playwright/test';
+import { expect, type Locator, type Page } from '@playwright/test';
 
 const EXPAND_SETTLE_CAP_MS = 3000;
 const STEP_TIMEOUT_MS = 5000;
@@ -8,6 +8,7 @@ export async function clickThroughMenu(page: Page, ...paths: string[]): Promise<
   // the sidebar re-syncs expansion to the active item (useMenuItemExpanded), so scroll-spy can
   // collapse a group we just opened and detach the child mid-click — retry the whole path,
   // a single step cannot reopen its parent
+  let clicked: Locator | undefined;
   await expect(async () => {
     for (const [index, path] of paths.entries()) {
       const element = page
@@ -45,6 +46,13 @@ export async function clickThroughMenu(page: Page, ...paths: string[]): Promise<
       } else {
         await element.click({ timeout: STEP_TIMEOUT_MS });
       }
+      clicked = element;
     }
   }).toPass({ timeout: PATH_TIMEOUT_MS });
+
+  // the URL changes before the route renders; a click on another group before that render
+  // leaves the clicked group expanded, since expansion re-syncs only when the active item changes
+  if (clicked && (await clicked.evaluate((label) => label.closest('a') !== null))) {
+    await expect(clicked).toHaveAttribute('data-active', 'true', { timeout: STEP_TIMEOUT_MS });
+  }
 }

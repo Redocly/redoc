@@ -6,9 +6,7 @@ import type { ParseMarkdownOptions } from '../../utils/parseMarkdown.js';
 import { DEFAULT_TAG_SLUG } from '../../../constants/openapi.js';
 import { asString, encodeBackSlashes } from '../../../utils/string.js';
 import { isRecord } from '../../../utils/is-record.js';
-import {
-  extractSummaryText,
-} from '../../utils/markdoc.js';
+import { extractSummaryText } from '../../utils/markdoc.js';
 import { normalizePath, joinWithSeparator } from '../../../utils/url.js';
 import { reportError } from '../../../telemetry/reportError.js';
 import { sanitizeItemId } from './helpers.js';

@@ -1,5 +1,11 @@
 import { createEmptyRedoclyConfig } from '@redocly/openapi-core/lib/bundle-oas';
-import { BaseResolver, bundle, detectSpec, type Document } from '@redocly/openapi-core';
+import {
+  BaseResolver,
+  bundle,
+  detectSpec,
+  YamlParseError,
+  type Document,
+} from '@redocly/openapi-core';
 
 import type { RedocConfig } from '@redocly/config';
 import type { OpenAPIDefinition, ParsedDocument } from '../types/openapi.js';
@@ -66,7 +72,7 @@ export async function loadAndBundleDefinition(
     const stage =
       lastStatus !== undefined && lastStatus >= 400
         ? 'fetch'
-        : /yaml|json|parse|unexpected token/i.test(message)
+        : error instanceof YamlParseError
           ? 'parse'
           : 'bundle';
     const unbundled =

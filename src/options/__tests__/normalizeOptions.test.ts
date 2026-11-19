@@ -131,7 +131,6 @@ describe('normalizeOptions', () => {
       expect(fromString).toEqual(new Set(['foo', 'bar', 'baz']));
       expect(fromArray).toEqual(new Set(['a', 'b']));
     });
-
   });
 
   describe('common defaults for non-OpenAPI', () => {
@@ -215,7 +214,6 @@ describe('normalizeOptions', () => {
         expect(normalize(value).showBuiltInDirectives).toBe(false);
       }
     });
-
   });
 
   describe('AsyncAPI', () => {

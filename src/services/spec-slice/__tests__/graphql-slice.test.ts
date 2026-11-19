@@ -147,7 +147,9 @@ describe('extractGraphqlSlice — operation scope', () => {
     expect(slice).not.toContain('directive @auth');
     expect(slice).toContain('"""Root query type"""');
     expect(slice).toContain('"""List the menu"""');
-    expect(slice).toContain('"""Cafe schema"""');
+    expect(slice).toContain(
+      '"This is a subset of the full specification, limited to the `menu` query."',
+    );
   });
 
   it('slices a mutation with its custom root name from the schema block', () => {
@@ -435,8 +437,8 @@ describe('buildSpecSlice — graphql', () => {
   });
 });
 
-describe('schema description trimming', () => {
-  it('trims a long schema description in an operation slice', () => {
+describe('schema description', () => {
+  it('says an operation slice is a subset in place of the description of the whole schema', () => {
     const sdl = `"""${'z'.repeat(150)}"""\nschema {\n  query: Q\n}\ntype Q {\n  a: Int\n}\n`;
 
     const slice = extractGraphqlSlice(sdl, {
@@ -445,7 +447,21 @@ describe('schema description trimming', () => {
       name: 'a',
     });
 
-    expect(slice).toContain(`${'z'.repeat(100)} ... trimmed`);
-    expect(slice).not.toContain('z'.repeat(101));
+    expect(slice).toContain(
+      '"This is a subset of the full specification, limited to the `a` query."',
+    );
+    expect(slice).not.toContain('z');
+  });
+});
+
+describe('maxRefDepth', () => {
+  it('keeps only the seed definitions at depth 0', () => {
+    const slice = extractGraphqlSlice(
+      'type Query {\n  a: A\n  b: Int\n}\ntype A {\n  c: Int\n}\n',
+      { kind: 'graphql-operation', operationType: 'query', name: 'a' },
+      0,
+    );
+
+    expect(slice).toBe('type Query {\n  a: A\n}');
   });
 });

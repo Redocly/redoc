@@ -1,7 +1,7 @@
 import { isRecord, resolveJsonPointer } from '../../adapters/helpers.js';
 import { collectComponentClosure, buildComponentsFromClosure } from './component-closure.js';
 import { cloneStrip } from './clone-strip.js';
-import { trimInfoDescription } from './trim-description.js';
+import { describeSubsetInInfo } from './subset-description.js';
 import { parsePointerTokens } from './openapi-slice.js';
 
 import type { SpecSliceScope } from './types.js';
@@ -25,13 +25,12 @@ export function scopeFromAsyncApiPointer(pointer: string): SpecSliceScope | unde
 export function extractAsyncApiSlice(
   document: Record<string, unknown>,
   scope: SpecSliceScope,
+  maxRefDepth?: number,
 ): { document: Record<string, unknown> } | undefined {
   if (!isAsyncApi3(document)) return undefined;
 
   if (scope.kind === 'document') {
-    return {
-      document: cloneStrip(document, new Map()) as Record<string, unknown>,
-    };
+    return { document: cloneStrip(document, new Map()) };
   }
 
   const selection = selectChannelsAndOperations(document, scope);
@@ -42,8 +41,6 @@ export function extractAsyncApiSlice(
   for (const field of SLICE_ROOT_FIELDS) {
     if (document[field] !== undefined) draft[field] = document[field];
   }
-  trimInfoDescription(draft);
-
   const channels = isRecord(document.channels) ? document.channels : {};
   const operations = isRecord(document.operations) ? document.operations : {};
 
@@ -66,13 +63,32 @@ export function extractAsyncApiSlice(
     return false;
   };
 
-  const closure = collectComponentClosure(document, [draft], retainRef);
+  const closure = collectComponentClosure(document, [draft], retainRef, maxRefDepth);
   const components = buildComponentsFromClosure(document, closure.keep);
   if (components) draft.components = components;
+  describeSubsetInInfo(draft, scope, closure.truncated ? maxRefDepth : undefined);
 
-  return {
-    document: cloneStrip(draft, closure.inlineTargets) as Record<string, unknown>,
+  return { document: cloneStrip(draft, closure.refTargets) };
+}
+
+export function asyncApiSliceTarget(
+  document: unknown,
+  scope: Extract<SpecSliceScope, { kind: 'channel' | 'async-operation' }>,
+): string | undefined {
+  if (!isRecord(document)) return undefined;
+  const channels = isRecord(document.channels) ? document.channels : {};
+  const addressOf = (channelId: string | undefined): string | undefined => {
+    const channel = channelId === undefined ? undefined : channels[channelId];
+    return isRecord(channel) && typeof channel.address === 'string' ? channel.address : undefined;
   };
+  if (scope.kind === 'channel') return addressOf(scope.channelId);
+  const operation = isRecord(document.operations)
+    ? document.operations[scope.operationId]
+    : undefined;
+  if (!isRecord(operation) || typeof operation.action !== 'string') return undefined;
+  const address = addressOf(channelRefTarget(operation));
+  const action = operation.action.toUpperCase();
+  return address === undefined ? action : `${action} ${address}`;
 }
 
 type Selection = { keptChannels: Set<string>; keptOperations: Set<string> };

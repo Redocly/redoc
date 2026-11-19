@@ -7,8 +7,12 @@ import {
   GROUP_DEPTH,
   MAX_NESTING_TAGS_LEVEL,
 } from '../../../constants/openapi.js';
-import { encodeBackSlashes, safeSlugify } from '../../../utils/string.js';
-import { joinWithSeparator, toRelativePath } from '../../../utils/url.js';
+import { toRelativePath } from '../../../utils/url.js';
+import {
+  createUniqueSlugger,
+  keepPreviousRoutes,
+  type UniqueSlugger,
+} from '../../../utils/unique-slugger.js';
 import { extractMarkdownSections, buildMarkdownSectionItem } from '../../utils/markdoc.js';
 import { buildGroupContent } from './content.js';
 import { addOperationItems } from '../items/operation/item.js';
@@ -16,6 +20,7 @@ import { addSchemaDefinitionItems } from '../items/schema/item.js';
 import { addMcpItems, type McpGroupItems } from '../items/mcp/item.js';
 import { openApiContext } from '../buildContext.js';
 import { documentTags } from '../build/context.js';
+import { isNonNavTag } from '../utils/helpers.js';
 import { isRecord } from '../../../utils/is-record.js';
 
 export function addTagItems(document: OpenAPIDefinition, result: ApiItem[]): void {
@@ -40,6 +45,7 @@ export function processTagGroups(
   result: ApiItem[],
 ): void {
   const context = openApiContext.get();
+  const slugger = createUniqueSlugger();
 
   for (const group of xTagGroups) {
     if (!isRecord(group)) continue;
@@ -53,10 +59,11 @@ export function processTagGroups(
     for (const tagName of Array.isArray(group.tags) ? group.tags : []) {
       const tagData = context.tagsMap.get(tagName);
       if (tagData) {
-        addSingleTagItem(tagName, tagData, result, [], undefined, readRbacScope(group));
+        addSingleTagItem(tagName, tagData, result, [], slugger, undefined, readRbacScope(group));
       }
     }
   }
+  keepPreviousRoutes(result, slugger.moved);
 }
 
 export function processRootTags(
@@ -66,23 +73,17 @@ export function processRootTags(
 ): void {
   const context = openApiContext.get();
   const processedTags = new Set<string>();
+  const slugger = createUniqueSlugger();
 
   for (const tagName of tagOrder) {
     if (!childTagNames.has(tagName)) {
       const tagData = context.tagsMap.get(tagName);
       if (tagData) {
-        addTagWithChildren(tagName, tagData, result, processedTags);
+        addTagWithChildren(tagName, tagData, result, processedTags, slugger);
       }
     }
   }
-}
-
-function isNonNavTag(tag: { kind?: string }): boolean {
-  return tag.kind === 'badge' || tag.kind === 'audience';
-}
-
-function buildTagSlug(basePath: string, tagName: string): string {
-  return joinWithSeparator(basePath, encodeBackSlashes(safeSlugify(tagName).toLowerCase()));
+  keepPreviousRoutes(result, slugger.moved);
 }
 
 function getChildTagNames(tagsMap: Map<string, TagData>): Set<string> {
@@ -123,6 +124,7 @@ function addTagWithChildren(
   tagData: TagData,
   result: ApiItem[],
   processedTags: Set<string>,
+  slugger: UniqueSlugger,
   depth: number = GROUP_DEPTH,
   parentSlug?: string,
   parentRbac?: RbacScope,
@@ -136,7 +138,7 @@ function addTagWithChildren(
   }
   processedTags.add(tagName);
 
-  const tagSlug = buildTagSlug(parentSlug ?? context.basePath, tagName);
+  const tagSlug = slugger(tagName, parentSlug ?? context.basePath);
   const effectiveTagRbac = readRbacScope(tagData.tag) ?? parentRbac;
 
   const childItems: ApiItem[] = [];
@@ -148,6 +150,7 @@ function addTagWithChildren(
         childData,
         childItems,
         processedTags,
+        slugger,
         depth + 1,
         tagSlug,
         effectiveTagRbac,
@@ -155,7 +158,7 @@ function addTagWithChildren(
     }
   }
 
-  addSingleTagItem(tagName, tagData, result, childItems, tagSlug, parentRbac);
+  addSingleTagItem(tagName, tagData, result, childItems, slugger, tagSlug, parentRbac);
 }
 
 function computeBreadcrumbs(tagName: string): BreadcrumbItem[] {
@@ -180,6 +183,7 @@ function addSingleTagItem(
   tagData: TagData,
   result: ApiItem[],
   childItems: ApiItem[],
+  slugger: UniqueSlugger,
   tagSlug?: string,
   parentRbac?: RbacScope,
 ): void {
@@ -193,7 +197,7 @@ function addSingleTagItem(
   }
 
   if (!tagSlug) {
-    tagSlug = buildTagSlug(context.basePath, tagName);
+    tagSlug = slugger(tagName, context.basePath);
   }
   const displayName = tag.summary || tag['x-displayName'] || tagName;
   const tagItems: ApiItem[] = [];
@@ -222,6 +226,7 @@ function addSingleTagItem(
           heading: section,
           basePath: context.basePath,
           withContent: context.processContent,
+          rbac: effectiveTagRbac,
         }),
       );
     }
@@ -248,7 +253,7 @@ function addSingleTagItem(
     return {
       displayName: childTag?.summary || childTag?.['x-displayName'] || childName,
       summary: childTag?.summary,
-      slug: buildTagSlug(tagSlug, childName),
+      slug: slugger(childName, tagSlug),
     };
   });
 

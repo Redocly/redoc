@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import markdoc from '@redocly/markdoc';
+import { htmlTags } from '@redocly/markdoc/html';
 import type { Node } from '@redocly/markdoc';
 
 import {
@@ -95,6 +96,69 @@ describe('extractFullText / collectMarkdownPlainText with string input', () => {
   });
 });
 
+describe('extractFullText with a parsed document', () => {
+  const description = [
+    'The **gadgets** live in the shelter.',
+    '',
+    'Snorfle gadgets are the oldest kind.',
+    '',
+    '- blivet gadgets',
+    '- wobbit gadgets',
+  ].join('\n');
+  const expected =
+    'The gadgets live in the shelter. Snorfle gadgets are the oldest kind. blivet gadgets wobbit gadgets';
+
+  it('separates the top-level blocks of a bare document with spaces', () => {
+    expect(extractFullText(markdoc.parse(description))).toBe(expected);
+  });
+
+  it('separates the top-level blocks of a document inside a list with spaces', () => {
+    expect(extractFullText([markdoc.parse(description)])).toBe(expected);
+  });
+
+  it('separates the cells of a table row with spaces', () => {
+    const table = ['| Name | Kind |', '| --- | --- |', '| blivet | gadget |'].join('\n');
+    expect(extractFullText(markdoc.parse(table))).toBe('Name Kind blivet gadget');
+  });
+});
+
+describe('extractFullText with inline formatting', () => {
+  const description = [
+    '- Use `blorpId`s and re**flum**ed [docs](/x) in <b>snor</b>kelq.',
+    '',
+    '<p>Use the <b>zindle</b> API</p>',
+  ].join('\n');
+  const expected = 'Use blorpIds and reflumed docs in snorkelq. Use the zindle API';
+
+  it('keeps formatted words whole with the compact parser', () => {
+    expect(extractFullText(markdocParser(description) as Node[])).toBe(expected);
+  });
+
+  it('keeps formatted words whole in a compacted document inside a list', () => {
+    const document = markdoc.parse(description, { html: htmlTags() });
+    expect(extractFullText([markdoc.compact(document)])).toBe(expected);
+  });
+
+  it('keeps formatted words whole in a full parse', () => {
+    expect(extractFullText(markdoc.parse(description, { html: htmlTags() }))).toBe(expected);
+  });
+
+  it('separates block HTML elements and line breaks with spaces', () => {
+    const html = '<div><p>Ends here</p><p>quorvant starts<br>zindle</p></div>';
+    expect(extractFullText(markdocParser(html) as Node[])).toBe('Ends here quorvant starts zindle');
+  });
+
+  it('turns soft and hard line breaks into spaces', () => {
+    const text = 'The window starts\nquorvant and ends  \nzindle.';
+    expect(extractFullText(markdocParser(text) as Node[])).toBe(
+      'The window starts quorvant and ends zindle.',
+    );
+    expect(extractFullText([markdoc.parse(text)])).toBe(
+      'The window starts quorvant and ends zindle.',
+    );
+  });
+});
+
 describe('extractFullText with a visibility tag', () => {
   it('leaves agents-only content out of the indexed text', () => {
     const description = [
@@ -153,11 +217,16 @@ describe('extractContentUntilFirstHeading', () => {
     expect(parseMarkdown).toHaveBeenCalledTimes(1);
   });
 
-  it('keeps a multi-paragraph plain intro as a string (matches the host regex behavior)', () => {
+  it('parses a multi-paragraph intro, so the paragraph break survives', () => {
+    const first = makeParagraphNode('first');
+    const second = makeParagraphNode('second');
+    const heading = makeHeadingNode('Heading', 1);
+    vi.mocked(parseMarkdown).mockReturnValue([first, second, heading]);
+
     const result = extractContentUntilFirstHeading('first\n\nsecond\n\n# Heading');
 
-    expect(result).toBe('first\n\nsecond');
-    expect(parseMarkdown).not.toHaveBeenCalled();
+    expect(result).toEqual([first, second]);
+    expect(parseMarkdown).toHaveBeenCalledTimes(1);
   });
 
   // A pre-parsed or parser-cached document is shared: section extraction reads it next.
@@ -314,6 +383,12 @@ describe('extractMarkdownSections', () => {
     expect(result).toHaveLength(1);
     expect(result[0].name).toBe('Main');
     expect(result[0].items[0].name).toBe('Sub');
+  });
+
+  it('keeps the slug of a heading with a line break', () => {
+    vi.mocked(parseMarkdown).mockReturnValue(markdocParser('# foo<br>bar'));
+    const [section] = extractMarkdownSections('...');
+    expect(section?.id).toBe('section/foobar');
   });
 
   it('uses operationId as prefix in section ids', () => {

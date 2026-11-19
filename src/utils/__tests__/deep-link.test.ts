@@ -545,6 +545,38 @@ describe('resolveLegacyHashToRoute', () => {
     });
   });
 
+  describe('old paths of pages under a tag that got a suffix', () => {
+    it('keeps the section of a link to the old path', () => {
+      const index = buildRouteIndex(
+        [
+          makeRoute('/docs/pets'),
+          { ...makeRoute('/docs/pets-1/getpet'), previousPath: '/docs/pets/getpet' },
+        ],
+        [],
+        '/docs',
+      );
+
+      expect(resolveLegacyHashToRoute('#pets/getpet/responses/200', '/docs', index)).toBe(
+        '/docs/pets-1/getpet#pets-1/getpet/responses/200',
+      );
+    });
+
+    it('leaves a section on a page that still has the old path', () => {
+      const index = buildRouteIndex(
+        [
+          makeRoute('/docs/pets/getpet'),
+          { ...makeRoute('/docs/pets-1/getpet'), previousPath: '/docs/pets/getpet' },
+        ],
+        [],
+        '/docs',
+      );
+
+      expect(
+        resolveLegacyHashToRoute('#pets/getpet/responses/200', '/docs', index),
+      ).toBeUndefined();
+    });
+  });
+
   it('returns undefined for a hash that matches no route', () => {
     expect(resolveLegacyHashToRoute('#does/not/exist', '/docs', routeIndex)).toBeUndefined();
     expect(resolveLegacyHashToRoute('#operation/unknownOp', '/docs', routeIndex)).toBeUndefined();

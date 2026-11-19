@@ -1,17 +1,9 @@
 import { hasRbacScope, rbacProp, readRbacScope } from '../../../adapters/rbac.js';
 
 import type { OperationParameter } from '@redocly/theme/core/openapi';
-import type { ApiItem, ExampleEntry, SchemaEntry } from '../../../types/store.js';
+import type { ApiItem, ApiStore, ExampleEntry, SchemaEntry } from '../../../types/store.js';
 import type { GraphqlStoreMeta } from '../../../types/graphql-store.js';
-import type {
-  ContentNode,
-  ItemContentNode,
-  MarkdocNode,
-  ContainerNode,
-  InfoMetadataNode,
-  OverviewSectionWrapperNode,
-  SecurityNode,
-} from '../../../types/content.js';
+import type { ContentNode } from '../../../types/content.js';
 import type { SearchDocument } from '../types.js';
 import type { DescriptionFormatter } from './context.js';
 import type { ExtractContext } from './extractors/index.js';
@@ -37,15 +29,19 @@ import {
 } from './extractors/index.js';
 
 export type SearchIndexerOptions = {
+  basePath: string;
+  /**
+   * Schema rows need `schemaStore` and `document`; example rows (the example selector labels)
+   * need `exampleStore`; GraphQL operation arguments resolve through the root types
+   * `graphqlMeta` names. Rows whose input is missing are skipped.
+   */
+  store?: Partial<Pick<ApiStore, 'schemaStore' | 'exampleStore' | 'graphqlMeta'>>;
+  /** The bundled description. */
+  document?: Record<string, unknown>;
   formatDescription?: DescriptionFormatter;
-  /** Enables example rows (the example selector labels); without it they are skipped. */
-  exampleStore?: Record<string, ExampleEntry>;
-  /** GraphQL operation arguments resolve through the root types it names. */
-  graphqlMeta?: GraphqlStoreMeta;
 };
 
 export class ApiDocsSearchIndexer {
-  #documents: SearchDocument[] = [];
   #basePath: string;
   #schemaStore: Record<string, SchemaEntry> | undefined;
   #document: Record<string, unknown> | undefined;
@@ -54,48 +50,62 @@ export class ApiDocsSearchIndexer {
   #graphqlMeta: GraphqlStoreMeta | undefined;
   #walker: SchemaWalker;
 
-  constructor(
-    basePath: string,
-    schemaStore?: Record<string, SchemaEntry>,
-    document?: Record<string, unknown>,
-    options: SearchIndexerOptions = {},
-  ) {
+  constructor({ basePath, store, document, formatDescription }: SearchIndexerOptions) {
     this.#basePath = basePath;
-    this.#schemaStore = schemaStore;
+    this.#schemaStore = store?.schemaStore;
     this.#document = document;
-    this.#formatDescription = options.formatDescription ?? extractFullText;
-    this.#exampleStore = options.exampleStore;
-    this.#graphqlMeta = options.graphqlMeta;
+    this.#formatDescription = formatDescription ?? extractFullText;
+    this.#exampleStore = store?.exampleStore;
+    this.#graphqlMeta = store?.graphqlMeta;
     this.#walker = new SchemaWalker({
-      schemaStore,
+      schemaStore: this.#schemaStore,
       document,
       formatDescription: this.#formatDescription,
     });
   }
 
-  addItem(item: ApiItem, ancestors: string[] = []): void {
-    if (!item.link || !item.content) return;
+  /**
+   * One document per overview, group and operation of the tree, depth first; its `path` holds
+   * the labels of its ancestors. An item that fails to index is logged and skipped.
+   */
+  *documents(items: readonly ApiItem[]): Generator<SearchDocument> {
+    yield* this.#walk(items, []);
+  }
+
+  *#walk(items: readonly ApiItem[], ancestors: string[]): Generator<SearchDocument> {
+    for (const item of items) {
+      const doc = this.#toDocument(item, ancestors);
+      if (doc) yield doc;
+      if (item.items?.length) {
+        // Nav children are typed as plain nav items; one without `content` yields no document.
+        yield* this.#walk(
+          item.items as ApiItem[],
+          item.label ? [...ancestors, item.label] : ancestors,
+        );
+      }
+    }
+  }
+
+  #toDocument(item: ApiItem, ancestors: string[]): SearchDocument | undefined {
+    if (!item.link || !item.content) return undefined;
 
     try {
       switch (item.content.contentType) {
         case contentType.OVERVIEW:
-          this.#addDocument(item, this.#basePath, ancestors);
-          break;
+          return this.#buildDocument(item, this.#basePath, ancestors);
         case contentType.GROUP:
         case contentType.ITEM:
-          this.#addDocument(item, item.link, ancestors);
-          break;
+          return this.#buildDocument(item, item.link, ancestors);
+        default:
+          return undefined;
       }
     } catch (e) {
       console.error(
         `Cannot add item to api-docs search indexer [${item.label}, ${item.link}]:`,
         (e as Error).message,
       );
+      return undefined;
     }
-  }
-
-  getResult(): SearchDocument[] {
-    return this.#documents;
   }
 
   #context(slug: string, isOverview: boolean): ExtractContext {
@@ -114,8 +124,8 @@ export class ApiDocsSearchIndexer {
     };
   }
 
-  #addDocument(item: ApiItem, url: string, ancestors: string[] = []): void {
-    if (!item.content) return;
+  #buildDocument(item: ApiItem, url: string, ancestors: string[]): SearchDocument | undefined {
+    if (!item.content) return undefined;
 
     const slug = toElementId(url, this.#basePath) ?? '';
 
@@ -128,7 +138,7 @@ export class ApiDocsSearchIndexer {
     const isSchemaDefinition =
       item.content.itemVariant === itemVariant.SCHEMA && typeof schemaName === 'string';
     if (isSchemaDefinition) {
-      const page = extractSchemaPageFields(schemaName as string, this.#schemaStore, ctx);
+      const page = extractSchemaPageFields(schemaName, this.#schemaStore, ctx);
       parameters = [...parameters, ...page.parameters];
       if (page.description) {
         text = [text, page.description].filter(Boolean).join(' ');
@@ -153,10 +163,10 @@ export class ApiDocsSearchIndexer {
       path: ancestors,
       kind: kindOfContent(item.content),
       deprecated: item.content.meta?.deprecated,
-      ...('httpVerb' in item && item.httpVerb ? { httpMethod: item.httpVerb as string } : {}),
+      ...('httpVerb' in item && item.httpVerb ? { httpMethod: item.httpVerb } : {}),
       ...(httpPath ? { httpPath: httpPath as string } : {}),
       ...('badges' in item && Array.isArray(item.badges) && item.badges.length
-        ? { badges: item.badges as SearchDocument['badges'] }
+        ? { badges: item.badges }
         : {}),
       ...('isAdditionalOperation' in item && item.isAdditionalOperation
         ? { isAdditionalOperation: true }
@@ -166,14 +176,14 @@ export class ApiDocsSearchIndexer {
       ...(parameters.length && { parameters }),
     };
 
-    this.#documents.push(doc);
+    return doc;
   }
 
   #extractParameters(children: ContentNode[], ctx: ExtractContext): OperationParameter[] {
     const visit = (nodes: ContentNode[], scoped: ExtractContext): void => {
       for (const node of nodes) {
         if (node.nodeType === nodeTypes.ITEM) {
-          const itemNode = node as ItemContentNode;
+          const itemNode = node;
           if (hasRbacScope(itemNode)) continue;
           if (itemNode.variant === 'callback' && itemNode.callback) {
             extractCallback(itemNode.callback, scoped, visit);
@@ -181,13 +191,13 @@ export class ApiDocsSearchIndexer {
           }
           for (const extractor of extractorsFor(itemNode)) extractor.extract(itemNode, scoped);
         } else if (node.nodeType === nodeTypes.MARKDOC) {
-          extractHeadingSections((node as MarkdocNode).content, scoped);
+          extractHeadingSections(node.content, scoped);
         } else if (node.nodeType === nodeTypes.SECURITY) {
-          extractSecurityRows(node as SecurityNode, scoped);
+          extractSecurityRows(node, scoped);
         } else if (node.nodeType === nodeTypes.INFO_METADATA) {
-          extractInfoMetadataRows(node as InfoMetadataNode, scoped);
+          extractInfoMetadataRows(node, scoped);
         } else if (node.nodeType === nodeTypes.CONTAINER) {
-          const container = node as ContainerNode;
+          const container = node;
           if (hasRbacScope(container)) continue;
           extractMessageBindingFields(container, scoped);
           visit(container.children, scoped);
@@ -195,7 +205,7 @@ export class ApiDocsSearchIndexer {
           extractServerFields(container, scoped);
           extractPanelRows(container, scoped);
         } else if (node.nodeType === nodeTypes.OVERVIEW_SECTION_WRAPPER) {
-          visit((node as OverviewSectionWrapperNode).children, scoped);
+          visit(node.children, scoped);
         }
       }
     };

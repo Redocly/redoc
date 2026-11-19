@@ -329,9 +329,11 @@ export function generateOperationVariablesExample(
 }
 
 export function generateOperationResponseExample(
-  typeDisplay: string,
+  operation: GraphqlStoreFieldData,
   lookup: GraphqlTypeLookup,
   expandLevel: number,
 ): object {
-  return { data: getTypeExample(typeDisplay, lookup, expandLevel) };
+  return {
+    data: { [operation.name]: getTypeExample(operation.type.display, lookup, expandLevel) },
+  };
 }

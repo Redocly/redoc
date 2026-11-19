@@ -38,7 +38,7 @@ import {
 import { type ParseMarkdownOptions, parseMarkdown } from '../../../utils/parseMarkdown.js';
 import type { CodeSampleSource } from '../../../../services/code-samples/index.js';
 
-import { isRbacKey, readRbacScope, rbacProp } from '../../../rbac.js';
+import { isRbacKey, rbacFrom, readRbacScope, rbacProp } from '../../../rbac.js';
 
 import {
   registerExample,
@@ -101,7 +101,7 @@ function _buildItemContent(operationInfo: OperationInfo, pageSlug: string): ApiI
   const headerChildren: ContentNode[] = [
     {
       nodeType: nodeTypes.HEADER,
-      level: 2,
+      level: 3,
       label: operationName,
       badges: operationInfo['x-badges'],
       isWebhook,
@@ -578,7 +578,12 @@ function buildCallbackPayloadPanels(
           variables?: Record<string, { default?: string }>;
         }[]
       | undefined,
-  ).map(({ url, name, description, variables }) => ({ url, name, description, variables }));
+  ).map((s) =>
+    Object.assign(
+      { url: s.url, name: s.name, description: s.description, variables: s.variables },
+      rbacFrom(s),
+    ),
+  );
 
   opPanels.push({
     children: [
@@ -750,7 +755,9 @@ function resolveOpenApiExamplesMap(
     const value = resolveOpenApiExampleValue(example);
     result[name] = {
       ...(typeof example.summary === 'string' && { summary: example.summary }),
-      ...(typeof example.description === 'string' && { description: example.description }),
+      ...(example.description !== undefined && {
+        description: pickRenderableDescription(example.description),
+      }),
       ...(value !== undefined && {
         value: typeof value === 'string' ? value : JSON.stringify(value),
       }),
@@ -1222,11 +1229,5 @@ function buildCodeSampleSourceFromContext(
   if (!storeCtx) {
     throw new Error('OpenAPI store context is not initialized');
   }
-  return buildCodeSampleSource(
-    operationInfo,
-    storeCtx,
-    ignoreNamedSchemas,
-    isWebhook,
-    href,
-  );
+  return buildCodeSampleSource(operationInfo, storeCtx, ignoreNamedSchemas, isWebhook, href);
 }

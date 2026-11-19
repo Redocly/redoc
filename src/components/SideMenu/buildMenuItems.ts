@@ -78,21 +78,16 @@ function buildState(
     type: item.type,
     label,
     link,
-    httpVerb: 'httpVerb' in item ? (item.httpVerb as string | undefined) : undefined,
-    isAdditionalOperation:
-      'isAdditionalOperation' in item
-        ? (item.isAdditionalOperation as boolean | undefined)
-        : undefined,
-    badges: 'badges' in item ? (item.badges as ItemBadge[] | undefined) : undefined,
-    deprecated: 'deprecated' in item ? (item.deprecated as boolean | undefined) : undefined,
-    separatorLine:
-      'separatorLine' in item ? (item.separatorLine as boolean | undefined) : undefined,
-    linePosition:
-      'linePosition' in item ? (item.linePosition as MenuItemState['linePosition']) : undefined,
-    expanded: 'expanded' in item ? (item.expanded as string | undefined) : undefined,
-    icon: 'icon' in item ? (item.icon as string | undefined) : undefined,
-    srcSet: 'srcSet' in item ? (item.srcSet as string | undefined) : undefined,
-    variant: 'variant' in item ? (item.variant as MenuItemState['variant']) : undefined,
+    httpVerb: 'httpVerb' in item ? item.httpVerb : undefined,
+    isAdditionalOperation: 'isAdditionalOperation' in item ? item.isAdditionalOperation : undefined,
+    badges: 'badges' in item ? item.badges : undefined,
+    deprecated: 'deprecated' in item ? item.deprecated : undefined,
+    separatorLine: 'separatorLine' in item ? item.separatorLine : undefined,
+    linePosition: 'linePosition' in item ? item.linePosition : undefined,
+    expanded: 'expanded' in item ? item.expanded : undefined,
+    icon: 'icon' in item ? item.icon : undefined,
+    srcSet: 'srcSet' in item ? item.srcSet : undefined,
+    variant: 'variant' in item ? item.variant : undefined,
     active,
     hasActiveSubItem,
     modified: true,

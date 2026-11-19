@@ -89,15 +89,9 @@ function flatten(items: ApiItem[]): ApiItem[] {
 type IndexedField = { name: string; place: string; deepLink: string };
 
 function indexFields(items: ApiItem[], store: ApiStore): IndexedField[] {
-  const indexer = new ApiDocsSearchIndexer(BASE_PATH, store.schemaStore, undefined, {
-    graphqlMeta: store.graphqlMeta,
-  });
-  for (const item of flatten(items)) {
-    indexer.addItem(item);
-  }
+  const indexer = new ApiDocsSearchIndexer({ basePath: BASE_PATH, store });
 
-  return indexer
-    .getResult()
+  return [...indexer.documents(items)]
     .flatMap((doc) => doc.parameters ?? [])
     .filter((param) => param.deepLink)
     .map((param) => ({
@@ -137,12 +131,11 @@ describe('GraphQL search results deep-link to the field', () => {
 
   it('gives every indexed GraphQL field a deep link', () => {
     const { items: freshItems, store: freshStore } = buildDocs();
-    const indexer = new ApiDocsSearchIndexer(BASE_PATH, freshStore.schemaStore);
-    for (const item of flatten(freshItems)) {
-      indexer.addItem(item);
-    }
-    const withoutDeepLink = indexer
-      .getResult()
+    const indexer = new ApiDocsSearchIndexer({
+      basePath: BASE_PATH,
+      store: { schemaStore: freshStore.schemaStore },
+    });
+    const withoutDeepLink = [...indexer.documents(freshItems)]
       .flatMap((doc) => doc.parameters ?? [])
       .filter((param) => !param.deepLink)
       .map((param) => `${param.place}:${param.name}`);

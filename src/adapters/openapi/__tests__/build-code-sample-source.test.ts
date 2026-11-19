@@ -136,7 +136,6 @@ describe('buildCodeSampleSource', () => {
 
       expect(source.parameters.query[0]?.example).toEqual({ status: 'open' });
     });
-
   });
 
   describe('security', () => {
@@ -230,5 +229,4 @@ describe('buildCodeSampleSource', () => {
       expect(source.requestBody).toBeUndefined();
     });
   });
-
 });

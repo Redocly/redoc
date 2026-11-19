@@ -232,7 +232,7 @@ test.describe('Navigation (GraphQL)', () => {
     await expect(page).toHaveURL('/other/objects/gpgsignature');
     await apiDocs.waitForPageLoad();
 
-    const heading = page.getByRole('heading', { name: 'GpgSignature', level: 2 });
+    const heading = page.getByRole('heading', { name: 'GpgSignature', level: 3 });
     await expect(heading).toBeVisible();
   });
 });

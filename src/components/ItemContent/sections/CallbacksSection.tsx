@@ -161,21 +161,13 @@ function CallbackOperationItem({
               {callbackRequestLabel}
             </DetailTitle>
             {contentChildren
-              .filter(
-                (child) =>
-                  child.nodeType === nodeTypes.ITEM &&
-                  (child as ItemContentNode).variant !== 'responses',
-              )
+              .filter((child) => child.nodeType === nodeTypes.ITEM && child.variant !== 'responses')
               .map((child, idx) => (
                 <ItemContentRenderer key={idx} node={child as ItemContentNode} />
               ))}
 
             {contentChildren
-              .filter(
-                (child) =>
-                  child.nodeType === nodeTypes.ITEM &&
-                  (child as ItemContentNode).variant === 'responses',
-              )
+              .filter((child) => child.nodeType === nodeTypes.ITEM && child.variant === 'responses')
               .map((child, idx) => (
                 <div key={`resp-${idx}`}>
                   <DetailTitle id={getDeepLinkId(cbResponseDeepLink)}>
@@ -387,7 +379,7 @@ const ExtensionEntry = styled.div`
   padding: var(--spacing-xxs) 0;
 `;
 
-const DetailTitle = styled.h4`
+const DetailTitle = styled.h5`
   position: relative;
   font-size: var(--h4-font-size);
   font-weight: var(--h4-font-weight);

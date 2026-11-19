@@ -92,12 +92,7 @@ function buildOperationItem(
 ): ApiItem {
   const { processContent } = openApiContext.get();
 
-  const {
-    slug,
-    badges,
-    httpPath,
-    ...rest
-  } = getOperationData(operation, basePath);
+  const { slug, badges, httpPath, ...rest } = getOperationData(operation, basePath);
 
   const item: ApiItem = {
     ...rest,

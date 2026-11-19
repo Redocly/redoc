@@ -1,6 +1,7 @@
 import { afterEach, describe, it, expect, vi } from 'vitest';
 
 import { loadAndBundleDefinition } from '../loadAndBundleSpec.js';
+import { DefinitionLoadError } from '../definitionLoadError.js';
 import { prepareApiDocs } from '../../RedocStandalone.js';
 import { collectReportedErrors } from '../../telemetry/reportError.js';
 
@@ -114,6 +115,22 @@ describe('loadAndBundleDefinition', () => {
       expect(String(fetchMock.mock.calls[0][0])).toBe(
         `${window.location.origin}/docs/sub/openapi.yaml`,
       );
+    });
+
+    it.each([
+      ['a YAML syntax error', 'parse', 'openapi: 3.1.0\ninfo:\n  title: T\n   version: 1\n'],
+      ['an unsupported document', 'bundle', 'foo: 1\n'],
+    ])('reports %s at any URL as stage %s', async (_, stage, body) => {
+      vi.stubGlobal(
+        'fetch',
+        vi.fn(async () => new Response(body, { status: 200 })),
+      );
+
+      for (const url of ['openapi.yaml', 'v3/api-docs']) {
+        const error = await loadAndBundleDefinition(url).catch((e: unknown) => e);
+        expect(error).toBeInstanceOf(DefinitionLoadError);
+        expect(error).toMatchObject({ stage, httpStatus: 200 });
+      }
     });
 
     it('resolves a relative $ref in an inline spec against the page', async () => {

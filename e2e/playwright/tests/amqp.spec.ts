@@ -21,7 +21,7 @@ test.describe('AsyncAPI AMQP rendering', () => {
       await apiDocs.waitForPageLoad();
 
       await expect(
-        page.getByRole('heading', { level: 2, name: 'Order Placed Exchange' }),
+        page.getByRole('heading', { level: 3, name: 'Order Placed Exchange' }),
       ).toBeVisible();
       await expect(page.locator('text=/^Exchange$/').first()).toBeVisible();
     });
@@ -31,7 +31,7 @@ test.describe('AsyncAPI AMQP rendering', () => {
       await apiDocs.waitForPageLoad();
 
       await expect(
-        page.getByRole('heading', { level: 2, name: 'Fulfillment Queue' }),
+        page.getByRole('heading', { level: 3, name: 'Fulfillment Queue' }),
       ).toBeVisible();
       await expect(page.locator('text=/^Queue$/').first()).toBeVisible();
     });
@@ -88,7 +88,7 @@ test.describe('AsyncAPI AMQP rendering', () => {
 
       await panel.getByRole('link', { name: 'Analytics Queue' }).click();
 
-      await expect(page.getByRole('heading', { level: 2, name: 'Analytics Queue' })).toBeVisible();
+      await expect(page.getByRole('heading', { level: 3, name: 'Analytics Queue' })).toBeVisible();
       expect(page.url()).toContain(`${BASE}/orders/queues/analyticsqueue`);
     });
   });

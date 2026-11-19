@@ -29,7 +29,7 @@ export function GraphQLResponseItem({ node }: { node: GraphQLResponsePanelItem }
 
   const responseData = useMemo(() => {
     if (!operation) return null;
-    return generateOperationResponseExample(operation.type.display, lookup, jsonSamplesDepth);
+    return generateOperationResponseExample(operation, lookup, jsonSamplesDepth);
   }, [operation, lookup, jsonSamplesDepth]);
 
   if (!responseData) return <></>;

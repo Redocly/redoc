@@ -4,35 +4,8 @@ import type { OpenAPIDefinition } from '../../../../../types/openapi.js';
 
 import { processOpenApiDocument } from '../../../index.js';
 import { collectAllItems } from '../../../../__tests__/utils.js';
-import { getSchemaNamesForTag } from '../item.js';
 import { normalizeOptions } from '../../../../../options/normalizeOptions.js';
 import { markdocParser } from '../../../../../components/markdoc/markdocParser.js';
-
-describe('getSchemaNamesForTag', () => {
-  const doc = {
-    openapi: '3.0.0',
-    info: { title: 'T', version: '1' },
-    components: {
-      schemas: {
-        Alpha: { type: 'string' },
-        Beta: { type: 'object', 'x-tags': ['Other'] },
-        Gamma: { type: 'number', 'x-tags': ['Schemas', 'Other'] },
-      },
-    },
-  } as unknown as OpenAPIDefinition;
-
-  it('puts untagged schemas into schemaDefinitionsTagName and lists x-tagged schemas under matching tags', () => {
-    expect(getSchemaNamesForTag('Schemas', doc, 'Schemas')).toEqual(['Alpha', 'Gamma']);
-  });
-
-  it('respects x-tags for other tags', () => {
-    expect(getSchemaNamesForTag('Other', doc, 'Schemas')).toEqual(['Beta', 'Gamma']);
-  });
-
-  it('when schemaDefinitionsTagName is unset, only explicit x-tags assign schemas to tags', () => {
-    expect(getSchemaNamesForTag('Schemas', doc, undefined)).toEqual(['Gamma']);
-  });
-});
 
 describe('buildOpenApiItems with schemaDefinitionsTagName', () => {
   it('creates schema sidebar links and item content', async () => {

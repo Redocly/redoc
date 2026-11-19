@@ -23,7 +23,7 @@ export function buildOperationContent(
   const children: ContentNode[] = [
     {
       nodeType: nodeTypes.HEADER,
-      level: 2,
+      level: 3,
       label: operation.name,
       showPageActions: true,
       graphqlReturnType: operation.type.toString(),

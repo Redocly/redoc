@@ -11,16 +11,16 @@ import type { PropertyShellOptions } from './propertyBuilder.js';
 import { encodeJsonPointerSegment } from '../../utils/refPointer.js';
 import { isSchemaNode, switcherLabel } from '../../types/schema.js';
 import {
+  arrayItemsHaveOwnRow,
   buildPropertyShell,
   detectJsonSchemaType,
   getAccessMode,
   getDiscriminatorObject,
   getDocumentedPrimitiveArrayItems,
   getEnum,
+  getPromotedPrimitiveArrayItems,
   humanizeConstraints,
   isPrimitiveLikeSchema,
-  isStructuredArrayItems,
-  primitiveArrayItemsHaveOwnInfo,
   promotePrimitiveArrayMetadata,
   schemaHasType,
   schemaType,
@@ -461,11 +461,17 @@ function buildObjectProperties(
     );
   }
 
-  if (ctx.sortRequiredPropsFirst) {
-    return sortPropertiesByDeprecated(sortPropertiesByRequired(result, requiredList));
-  }
+  return sortProperties(result, requiredList, ctx);
+}
 
-  return sortPropertiesByDeprecated(result);
+function sortProperties(
+  properties: Record<string, PropertyType>,
+  requiredOrder: string[],
+  ctx: SchemaTreeContext,
+): Record<string, PropertyType> {
+  return sortPropertiesByDeprecated(
+    ctx.sortRequiredPropsFirst ? sortPropertiesByRequired(properties, requiredOrder) : properties,
+  );
 }
 
 function sortPropertiesByDeprecated(
@@ -543,14 +549,8 @@ function buildArrayItems(
     );
     return items;
   }
-  if (isSchemaNode(schema.items)) {
-    if (
-      isStructuredArrayItems(schema.items) ||
-      !isPrimitiveLikeSchema(schema.items, schemaType(schema.items)) ||
-      primitiveArrayItemsHaveOwnInfo(schema.items)
-    ) {
-      return [buildPropertyForNode(schema.items, itemCtx, {}, `${parentPointer}/items`)];
-    }
+  if (isSchemaNode(schema.items) && arrayItemsHaveOwnRow(schema.items)) {
+    return [buildPropertyForNode(schema.items, itemCtx, {}, `${parentPointer}/items`)];
   }
   return [];
 }
@@ -1165,15 +1165,15 @@ function buildSwitcherOption(
   const constraints = humanizeConstraints(schema);
   if (constraints.length) option.constraints = constraints;
 
-  const enumVal = getEnum(schema);
+  const type = schemaType(schema);
+  const promotedItems = getPromotedPrimitiveArrayItems(schema, type);
+  const enumVal = getEnum(schema) ?? (promotedItems && getEnum(promotedItems));
   if (enumVal) option.enum = enumVal;
 
   if (optionRef && ctx.activeRefs.has(optionRef)) {
     option.isCircular = true;
     return option;
   }
-
-  const type = schemaType(schema);
 
   if (optionRef) ctx.activeRefs.add(optionRef);
   try {

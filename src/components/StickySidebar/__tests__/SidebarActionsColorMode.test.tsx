@@ -4,7 +4,6 @@ import { Provider as JotaiProvider } from 'jotai';
 import '@testing-library/jest-dom/vitest';
 
 import { SidebarActions } from '../SidebarActions.js';
-import { removeCookie } from '../../../utils/cookies.js';
 
 vi.mock('@redocly/theme/components/SidebarActions/SidebarActions', () => ({
   SidebarActions: () => <div data-testid="theme-sidebar-actions" />,
@@ -21,7 +20,6 @@ function renderSidebarActions() {
 
 beforeEach(() => {
   document.documentElement.className = '';
-  removeCookie('redoc.appStore');
   window.sessionStorage.clear();
   window.localStorage.clear();
 });

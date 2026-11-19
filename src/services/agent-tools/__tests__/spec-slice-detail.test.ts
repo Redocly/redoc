@@ -67,22 +67,22 @@ function findItem(items: ApiItem[], label: string): ApiItem | undefined {
 async function getOperation(
   spec: Record<string, unknown> | string,
   label: string,
-  { matchItems = true }: { matchItems?: boolean } = {},
+  resolveDocUrl: (link: string) => string = (link) => link,
 ): Promise<string> {
   const hostDefinition = structuredClone(spec);
   const { items, store } = await prepareApiDocs({ spec, basePath: '/' });
   const tool = buildApiDocsAgentTools({
     items,
     store,
+    resolveDocUrl,
     getOperationDetail: createSpecSliceOperationDetail({
-      items: matchItems ? items : [],
       specType: store.specType ?? 'openapi',
       definition: hostDefinition,
     }),
   }).find((t) => t.name === 'get_api_operation');
   if (!tool) throw new Error('no get_api_operation tool');
 
-  const result = await tool.execute({ url: findItem(items, label)?.link }, {});
+  const result = await tool.execute({ url: resolveDocUrl(findItem(items, label)?.link ?? '') }, {});
   return result.content[0].text;
 }
 
@@ -96,14 +96,16 @@ describe('get_api_operation with spec-slice detail', () => {
     expect(text).toContain('visitDate');
   });
 
-  it('falls back to the operation summary when no item matches the URL', async () => {
-    const text = await getOperation(definition, 'Buy a ticket', { matchItems: false });
+  it('returns the slice when the host rewrites documentation URLs', async () => {
+    const text = await getOperation(
+      definition,
+      'Buy a ticket',
+      (link) => 'https://docs.museum.example/reference' + link,
+    );
 
-    expect(JSON.parse(text.slice(text.indexOf('{')))).toMatchObject({
-      method: 'POST',
-      path: '/tickets',
-      title: 'Buy a ticket',
-    });
+    expect(text).toContain('Documentation: https://docs.museum.example/reference/');
+    expect(text).toContain('/tickets:');
+    expect(text).toContain('TicketRequest:');
   });
 
   it('never carries stored credentials of the security schemes', async () => {

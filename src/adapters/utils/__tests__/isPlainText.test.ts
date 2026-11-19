@@ -9,8 +9,6 @@ describe('isPlainText', () => {
       ['whitelist punctuation', "It's fine: read, write; ask (or not)! Really? See a/b."],
       ['hyphenated words', 'A re-usable, built-in helper'],
       ['single soft line break', 'first line\nsecond line'],
-      ['multi-paragraph text', 'first paragraph\n\nsecond paragraph'],
-      ['list-like dash lines', 'intro\n- item one\n- item two'],
       ['digits and slashes', 'Supports 3 formats: a/b, c/d and e/f'],
     ])('accepts %s', (_name, value) => {
       expect(isPlainText(value)).toBe(true);
@@ -27,6 +25,10 @@ describe('isPlainText', () => {
       ['html entity', 'a &amp; b'],
       ['link', '[link](https://example.com)'],
       ['markdoc tag', 'before {% tag %} after'],
+      ['blank line between paragraphs', 'first paragraph\n\nsecond paragraph'],
+      ['blank line with CRLF endings', 'first paragraph\r\n\r\nsecond paragraph'],
+      ['dash list lines', 'intro\n- item one\n- item two'],
+      ['indented numbered list lines', '  1. first\n  2) second'],
       // Non-ASCII text is conservatively parsed.
       ['cyrillic', 'Опис ресурсу для документації'],
       ['cjk', '説明テキストです'],

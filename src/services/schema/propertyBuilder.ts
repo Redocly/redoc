@@ -7,7 +7,8 @@ import type {
   AccessMode,
 } from '../../types/schema.js';
 
-import { isSchemaNode, isStructuredExample } from '../../types/schema.js';
+import { pickRenderableDescription } from '../../adapters/helpers.js';
+import { ARRAY_TYPE_PREFIX, isSchemaNode, isStructuredExample } from '../../types/schema.js';
 import { normalizeBadges } from '../../utils/normalize-badges.js';
 
 const INTERNAL_EXTENSIONS = new Set([
@@ -97,21 +98,17 @@ export function isPrimitiveLikeSchema(schema: SchemaNode, type: string | string[
     if (!hasNoStructure) return false;
   }
 
-  if (
-    schemaHasType(type, 'array') &&
-    schema.items !== undefined &&
-    typeof schema.items !== 'boolean'
-  ) {
-    if (!Array.isArray(schema.items)) {
-      if (isStructuredArrayItems(schema.items)) return false;
-      const itemsPrimitive = isPrimitiveLikeSchema(schema.items, schemaType(schema.items));
-      // primitive items with their own documentation render as a nested items row
-      if (itemsPrimitive && primitiveArrayItemsHaveOwnInfo(schema.items)) return false;
-      return itemsPrimitive;
-    }
+  if (schemaHasType(type, 'array') && isSchemaNode(schema.items)) {
+    return !arrayItemsHaveOwnRow(schema.items);
   }
 
   return true;
+}
+
+/** Items rendered as a nested `[i]` row instead of being flattened into the array row. */
+export function arrayItemsHaveOwnRow(items: SchemaNode): boolean {
+  if (items['x-circular-ref'] || isStructuredArrayItems(items)) return true;
+  return !isPrimitiveLikeSchema(items, schemaType(items)) || primitiveArrayItemsHaveOwnInfo(items);
 }
 
 /**
@@ -259,18 +256,18 @@ export function buildDisplayType(
         // documented primitive items show their format on the nested items row
         displayFormat = getDocumentedPrimitiveArrayItems(schema, type) ? '' : items.format || '';
       }
-      typePrefix = 'Array of ';
+      typePrefix = ARRAY_TYPE_PREFIX;
     } else if (
       Array.isArray(schema.prefixItems) ||
       Array.isArray(schema.items) ||
       // items: false permits no items, so no item type is advertised
       schema.items === false
     ) {
-      displayType = 'Array of items';
+      displayType = `${ARRAY_TYPE_PREFIX}items`;
     } else {
       // no items schema means any items are accepted
       displayType = 'any';
-      typePrefix = 'Array of ';
+      typePrefix = ARRAY_TYPE_PREFIX;
     }
     if (Array.isArray(type)) {
       const rest = type.filter((t) => t !== 'array');
@@ -306,6 +303,15 @@ export function getDocumentedPrimitiveArrayItems(
 ): SchemaNode | undefined {
   const items = getPrimitiveArrayItemsSchema(schema, type);
   return items && primitiveArrayItemsHaveOwnInfo(items) ? items : undefined;
+}
+
+/** Trivial primitive items whose metadata is promoted onto the array row. */
+export function getPromotedPrimitiveArrayItems(
+  schema: SchemaNode,
+  type: string | string[],
+): SchemaNode | undefined {
+  const items = getPrimitiveArrayItemsSchema(schema, type);
+  return items && !primitiveArrayItemsHaveOwnInfo(items) ? items : undefined;
 }
 
 function buildTypeString(schema: SchemaNode, type: string | string[]): string {
@@ -348,10 +354,11 @@ function extractNamedExamples(
     if (!rawExample || typeof rawExample !== 'object' || Array.isArray(rawExample)) continue;
     const example = rawExample as Record<string, unknown>;
     const value = example.value;
+    const description = pickRenderableDescription(example.description);
 
     const normalized: ExampleType = {
       ...(typeof example.summary === 'string' && { summary: example.summary }),
-      ...(typeof example.description === 'string' && { description: example.description }),
+      ...(description !== undefined && { description }),
       ...(value !== undefined && { value: serialize(value) }),
     };
 
@@ -483,9 +490,8 @@ export function promotePrimitiveArrayMetadata(
   type: string | string[],
   exampleSerializer?: (value: unknown) => string,
 ): void {
-  const items = getPrimitiveArrayItemsSchema(schema, type);
-  // documented primitive items render as a nested items row instead of being promoted
-  if (!items || primitiveArrayItemsHaveOwnInfo(items)) return;
+  const items = getPromotedPrimitiveArrayItems(schema, type);
+  if (!items) return;
 
   if (!property.enum) property.enum = getEnum(items);
   if (property.example === undefined && items.example !== undefined) {

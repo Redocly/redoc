@@ -3,7 +3,6 @@ export const SHARED_FIELD_COPIES = 3;
 // FlexSearch keeps 100 hits per field by default. Four fields give a smaller pool than
 // the eight fields before, so the engine asks for more and then cuts at SEARCH_LIMIT.
 export const SEARCH_CANDIDATE_LIMIT = 500;
-export { HIGHLIGHTED_TEXT_MAX_LENGTH } from '../highlight.js';
 // `all` joins every searchable value of a document, so a multi-word query matches
 // across the title, the description and the parameters. `paramNames` and `title`
 // stay separate to keep an exact match on them ahead of a match in the blob.

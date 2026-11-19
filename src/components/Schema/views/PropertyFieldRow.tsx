@@ -11,7 +11,6 @@ import {
   NameWrapper,
   ParentPrefix,
   PropertyName,
-  SchemaTypeLabel,
   RequiredLabel,
   DeprecatedBadge,
   AccessLabel,
@@ -37,7 +36,7 @@ import { getExtensionsForDisplay } from '../../../utils/extract-extensions.js';
 import { splitBadgesByPosition } from '../../../utils/split-badges-by-position.js';
 import { globalOptionsAtom } from '../../../jotai/store.js';
 import { PropertyRenderer } from './PropertyRenderer.js';
-import { SchemaTitleLabel } from './SchemaTitleLabel.js';
+import { PropertyTypeLabel } from './PropertyTypeLabel.js';
 import { CollapsibleNestedFields } from './CollapsibleNestedFields.js';
 import { useSchemaFieldDeepLink } from '../hooks/useSchemaFieldDeepLink.js';
 import { useSpecTranslate } from '../../../hooks/useTranslate.js';
@@ -168,8 +167,7 @@ export function PropertyFieldRow({
             {name}
           </PropertyName>
         </NameWrapper>
-        <SchemaTypeLabel>{property.type}</SchemaTypeLabel>
-        <SchemaTitleLabel title={property.title} schemaName={property.schemaName} />
+        <PropertyTypeLabel property={property} />
         <Pattern pattern={property.pattern} />
         {property.accessMode ? <AccessLabel>{property.accessMode}</AccessLabel> : null}
         {property.isRequired ? (
@@ -194,7 +192,9 @@ export function PropertyFieldRow({
         {afterBadges.map(renderPropertyBadge)}
       </Row>
 
-      {!hasSwitcher && <SchemaDescription value={property.description} />}
+      {hasSwitcher && property.switcher?.type !== 'discriminator' ? null : (
+        <SchemaDescription value={property.description} />
+      )}
 
       <VendorExtensions extensions={extensionsRecord} />
 

@@ -7,12 +7,14 @@
     },
     "response": {
       "data": {
-        "body": "Example String",
-        "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
-        "key": "Example String",
-        "name": "Example String",
-        "resourcePath": "Example Custom Scalar",
-        "url": "Example Custom Scalar"
+        "codeOfConduct": {
+          "body": "Example String",
+          "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4",
+          "key": "Example String",
+          "name": "Example String",
+          "resourcePath": "Example Custom Scalar",
+          "url": "Example Custom Scalar"
+        }
       }
     }
   },
@@ -22,20 +24,22 @@
     "variables": {},
     "response": {
       "data": {
-        "gitHubServicesSha": "Example Custom Scalar",
-        "gitIpAddresses": [
-          "Example String"
-        ],
-        "hookIpAddresses": [
-          "Example String"
-        ],
-        "importerIpAddresses": [
-          "Example String"
-        ],
-        "isPasswordAuthenticationVerifiable": true,
-        "pagesIpAddresses": [
-          "Example String"
-        ]
+        "meta": {
+          "gitHubServicesSha": "Example Custom Scalar",
+          "gitIpAddresses": [
+            "Example String"
+          ],
+          "hookIpAddresses": [
+            "Example String"
+          ],
+          "importerIpAddresses": [
+            "Example String"
+          ],
+          "isPasswordAuthenticationVerifiable": true,
+          "pagesIpAddresses": [
+            "Example String"
+          ]
+        }
       }
     }
   },
@@ -47,7 +51,9 @@
     },
     "response": {
       "data": {
-        "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4"
+        "node": {
+          "id": "9cfb1c81-4c79-452f-b1f5-8ee6571276b4"
+        }
       }
     }
   },
@@ -59,12 +65,14 @@
     },
     "response": {
       "data": {
-        "cost": 40,
-        "limit": 40,
-        "nodeCount": 40,
-        "remaining": 40,
-        "resetAt": "Example Custom Scalar",
-        "used": 40
+        "rateLimit": {
+          "cost": 40,
+          "limit": 40,
+          "nodeCount": 40,
+          "remaining": 40,
+          "resetAt": "Example Custom Scalar",
+          "used": 40
+        }
       }
     }
   },
@@ -80,15 +88,17 @@
     },
     "response": {
       "data": {
-        "clientMutationId": "Example String",
-        "commentEdge": {
-          "__typename": "IssueCommentEdge"
-        },
-        "subject": {
-          "__typename": "Node"
-        },
-        "timelineEdge": {
-          "__typename": "IssueTimelineItemEdge"
+        "addComment": {
+          "clientMutationId": "Example String",
+          "commentEdge": {
+            "__typename": "IssueCommentEdge"
+          },
+          "subject": {
+            "__typename": "Node"
+          },
+          "timelineEdge": {
+            "__typename": "IssueTimelineItemEdge"
+          }
         }
       }
     }
@@ -104,9 +114,11 @@
     },
     "response": {
       "data": {
-        "clientMutationId": "Example String",
-        "repository": {
-          "__typename": "Repository"
+        "deleteIssue": {
+          "clientMutationId": "Example String",
+          "repository": {
+            "__typename": "Repository"
+          }
         }
       }
     }

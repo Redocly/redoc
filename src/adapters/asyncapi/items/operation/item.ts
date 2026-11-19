@@ -6,7 +6,7 @@ import type {
 } from '../../../../types/asyncapi.js';
 import type { ApiDocsOptions } from '../../../../types/options.js';
 
-import { combineUrls } from '@redocly/theme/core/openapi';
+import { combineUrls } from '@redocly/theme/core/utils/urls';
 
 import { asString } from '../../../../utils/string.js';
 import { normalizeBadges } from '../../../../utils/normalize-badges.js';

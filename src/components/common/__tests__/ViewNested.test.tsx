@@ -80,7 +80,7 @@ it('should render Array label and always show children when isNestedArray is tru
       <span>array item</span>
     </ViewNested>,
   );
-  expect(screen.getByText('Array [')).toBeInTheDocument();
+  expect(screen.getByText('array [')).toBeInTheDocument();
   expect(screen.getByText('array item')).toBeInTheDocument();
   expect(screen.queryByRole('button')).toBeNull();
 });

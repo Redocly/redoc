@@ -9,10 +9,10 @@ import { SECTION_ATTR } from '../constants/openapi.js';
 import {
   hashToElementId,
   resolveLegacyHashToRoute,
+  resolveUnmatchedUrl,
   stripArrayMarkers,
   stripCallbacksSegment,
 } from '../utils/deep-link.js';
-import { toElementId } from '../utils/url.js';
 import {
   USER_SCROLL_INTENT_EVENTS,
   WHEEL_INTENT_THRESHOLD_PX,
@@ -51,11 +51,11 @@ export function useApiDocsScroll({
     if (!IS_BROWSER) return;
     const { hash, pathname } = location;
     const elementId = hash ? hashToElementId(hash) : '';
-    // A hash router hands a legacy fragment (`#tag/…`) over as the path, which matches no route.
-    const legacyHash = elementId || activeSlug ? hash : `#${toElementId(pathname, basePath) ?? ''}`;
 
-    if (legacyHash && !(elementId && findElementByHashId(elementId))) {
-      const targetRoute = resolveLegacyHashToRoute(legacyHash, basePath, routeIndex);
+    if (!(elementId && findElementByHashId(elementId))) {
+      const targetRoute = activeSlug
+        ? resolveLegacyHashToRoute(hash, basePath, routeIndex)
+        : resolveUnmatchedUrl(pathname, hash, basePath, routeIndex);
       if (targetRoute && targetRoute !== pathname + hash) {
         navigate(targetRoute, { replace: true });
         return;

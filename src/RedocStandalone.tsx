@@ -12,6 +12,7 @@ import { Loading } from '@redocly/theme/components/Loaders/Loading';
 
 import { RedoclyApiDocsStandalone } from './RedoclyApiDocsStandalone.js';
 import { buildItems } from './adapters/build.js';
+import { ErrorBoundary } from './components/ErrorBoundary.js';
 import { markdocParser } from './components/markdoc/markdocParser.js';
 import { TypeOfUsageContext } from './telemetry/TypeOfUsageContext.js';
 import { reportDefinitionLoadFailed } from './telemetry/index.js';
@@ -191,6 +192,7 @@ const RedocStandalone = ({
         reportDefinitionLoadFailed(err, {
           source: spec !== undefined ? 'inline' : 'url',
           durationMs: Math.round(performance.now() - startedAt),
+          specUrl,
           telemetryConfig,
         });
       });
@@ -220,18 +222,20 @@ const RedocStandalone = ({
   }
 
   return (
-    <RedoclyApiDocsStandalone
-      items={prepared.items}
-      store={prepared.store}
-      basePath={basePath}
-      options={prepared.options}
-      logo={logo ?? logoFromSpec(prepared.document)}
-      markdownAdapter={markdownAdapter}
-      telemetryConfig={telemetryConfig}
-      spec={prepared.document}
-      specUrl={specUrl}
-      buildTimings={prepared.timings}
-    />
+    <ErrorBoundary scope="root" telemetryConfig={telemetryConfig}>
+      <RedoclyApiDocsStandalone
+        items={prepared.items}
+        store={prepared.store}
+        basePath={basePath}
+        options={prepared.options}
+        logo={logo ?? logoFromSpec(prepared.document)}
+        markdownAdapter={markdownAdapter}
+        telemetryConfig={telemetryConfig}
+        spec={prepared.document}
+        specUrl={specUrl}
+        buildTimings={prepared.timings}
+      />
+    </ErrorBoundary>
   );
 };
 

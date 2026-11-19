@@ -24,6 +24,7 @@ import { resolvePathItemRef } from '../utils/resolvePathItemRef.js';
 import { parameterList, pickOperationServers } from '../utils/operation.js';
 import { securityRequirements } from '../utils/security.js';
 import { mcpEntities } from '../utils/mcp.js';
+import { isNonNavTag } from '../utils/helpers.js';
 import { HTTP_METHODS, isOperationName } from '../../../utils/http-methods.js';
 import { normalizeBadges } from '../../../utils/normalize-badges.js';
 import { isRbacKey, readRbacScope, rbacProp } from '../../rbac.js';
@@ -35,10 +36,6 @@ type BuildContextWithDocument = AdapterBuildContextInput & {
   storeCtx: StoreContext;
   processContent?: boolean;
 };
-
-function isNonNavTag(tag: OpenAPITag): boolean {
-  return tag.kind === 'badge' || tag.kind === 'audience';
-}
 
 /** The `document.tags` entries that are objects with a string `name`. */
 export function documentTags(document: OpenAPIDefinition): OpenAPITag[] {

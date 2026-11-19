@@ -11,6 +11,7 @@ import type {
 
 import { nodeTypes, contentType } from '../../../types/common.js';
 import { ApiDocsSearchIndexer } from '../indexer/index.js';
+import { collected } from './collected.js';
 
 function textNode(text: string): Node {
   return {
@@ -120,9 +121,34 @@ const EMPTY_DOC = {};
 describe('ApiDocsSearchIndexer', () => {
   const BASE_PATH = '/api/base';
 
-  describe('addItem', () => {
+  describe('documents', () => {
+    it('walks nested items depth first and records the labels of their ancestors', () => {
+      const indexer = new ApiDocsSearchIndexer({ basePath: BASE_PATH });
+      const operation = makeItem({
+        label: 'List pets',
+        link: '/api/pets/list',
+        content: makeContent(contentType.ITEM),
+      });
+      const tag = makeItem({
+        label: 'Pets',
+        link: '/api/pets',
+        content: makeContent(contentType.GROUP),
+        items: [operation],
+      });
+      const navGroup = { type: 'group', label: 'Animals', items: [tag] } as unknown as ApiItem;
+
+      const docs = [...indexer.documents([navGroup])];
+
+      expect(docs.map((doc) => [doc.title, doc.path])).toEqual([
+        ['Pets', ['Animals']],
+        ['List pets', ['Animals', 'Pets']],
+      ]);
+    });
+  });
+
+  describe('item documents', () => {
     it('uses basePath as URL for OVERVIEW content type', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+      const indexer = collected(new ApiDocsSearchIndexer({ basePath: BASE_PATH }));
       indexer.addItem(
         makeItem({
           link: '/api/overview',
@@ -137,7 +163,7 @@ describe('ApiDocsSearchIndexer', () => {
     });
 
     it('uses item.link as URL for GROUP content type', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+      const indexer = collected(new ApiDocsSearchIndexer({ basePath: BASE_PATH }));
       indexer.addItem(
         makeItem({
           link: '/api/pets',
@@ -151,7 +177,7 @@ describe('ApiDocsSearchIndexer', () => {
     });
 
     it('uses item.link as URL for ITEM content type', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+      const indexer = collected(new ApiDocsSearchIndexer({ basePath: BASE_PATH }));
       indexer.addItem(
         makeItem({
           link: '/api/pets/list',
@@ -165,7 +191,7 @@ describe('ApiDocsSearchIndexer', () => {
     });
 
     it('skips items with no link', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+      const indexer = collected(new ApiDocsSearchIndexer({ basePath: BASE_PATH }));
       indexer.addItem(
         makeItem({
           link: undefined as unknown as string,
@@ -177,14 +203,14 @@ describe('ApiDocsSearchIndexer', () => {
     });
 
     it('skips items with null content', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+      const indexer = collected(new ApiDocsSearchIndexer({ basePath: BASE_PATH }));
       indexer.addItem(makeItem({ link: '/api/test', content: null }));
 
       expect(indexer.getResult()).toHaveLength(0);
     });
 
     it('uses item.label as the document title', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+      const indexer = collected(new ApiDocsSearchIndexer({ basePath: BASE_PATH }));
       indexer.addItem(
         makeItem({
           label: 'List Pets',
@@ -196,7 +222,7 @@ describe('ApiDocsSearchIndexer', () => {
     });
 
     it('falls back to empty string when label is missing', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+      const indexer = collected(new ApiDocsSearchIndexer({ basePath: BASE_PATH }));
       indexer.addItem(
         makeItem({
           label: undefined,
@@ -208,7 +234,7 @@ describe('ApiDocsSearchIndexer', () => {
     });
 
     it('propagates the deprecated flag from item meta', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+      const indexer = collected(new ApiDocsSearchIndexer({ basePath: BASE_PATH }));
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [], { deprecated: true }),
@@ -219,14 +245,14 @@ describe('ApiDocsSearchIndexer', () => {
     });
 
     it('sets path to empty array on every document', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+      const indexer = collected(new ApiDocsSearchIndexer({ basePath: BASE_PATH }));
       indexer.addItem(makeItem({ content: makeContent(contentType.ITEM) }));
 
       expect(indexer.getResult()[0].path).toEqual([]);
     });
 
     it('maps httpVerb to httpMethod on the document', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+      const indexer = collected(new ApiDocsSearchIndexer({ basePath: BASE_PATH }));
       const item = makeItem({ content: makeContent(contentType.ITEM) });
       (item as Record<string, unknown>).httpVerb = 'get';
 
@@ -236,14 +262,14 @@ describe('ApiDocsSearchIndexer', () => {
     });
 
     it('omits httpMethod when httpVerb is not present', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+      const indexer = collected(new ApiDocsSearchIndexer({ basePath: BASE_PATH }));
       indexer.addItem(makeItem({ content: makeContent(contentType.ITEM) }));
 
       expect(indexer.getResult()[0].httpMethod).toBeUndefined();
     });
 
     it('maps httpPath from the item to the document', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+      const indexer = collected(new ApiDocsSearchIndexer({ basePath: BASE_PATH }));
       const item = makeItem({ content: makeContent(contentType.ITEM) });
       (item as Record<string, unknown>).httpPath = '/transactions';
 
@@ -253,14 +279,14 @@ describe('ApiDocsSearchIndexer', () => {
     });
 
     it('omits httpPath when not present on the item', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+      const indexer = collected(new ApiDocsSearchIndexer({ basePath: BASE_PATH }));
       indexer.addItem(makeItem({ content: makeContent(contentType.ITEM) }));
 
       expect(indexer.getResult()[0].httpPath).toBeUndefined();
     });
 
     it('maps the AsyncAPI channel address to httpPath', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+      const indexer = collected(new ApiDocsSearchIndexer({ basePath: BASE_PATH }));
       const item = makeItem({
         content: makeContent(contentType.ITEM, [
           {
@@ -284,7 +310,7 @@ describe('ApiDocsSearchIndexer', () => {
     });
 
     it('propagates badges from the item', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+      const indexer = collected(new ApiDocsSearchIndexer({ basePath: BASE_PATH }));
       const badges = [{ name: 'Experimental', color: 'orange' }];
       const item = makeItem({ content: makeContent(contentType.ITEM) });
       (item as Record<string, unknown>).badges = badges;
@@ -295,14 +321,14 @@ describe('ApiDocsSearchIndexer', () => {
     });
 
     it('omits badges when not present on the item', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+      const indexer = collected(new ApiDocsSearchIndexer({ basePath: BASE_PATH }));
       indexer.addItem(makeItem({ content: makeContent(contentType.ITEM) }));
 
       expect(indexer.getResult()[0].badges).toBeUndefined();
     });
 
     it('propagates isAdditionalOperation from the item', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+      const indexer = collected(new ApiDocsSearchIndexer({ basePath: BASE_PATH }));
       const item = makeItem({ content: makeContent(contentType.ITEM) });
       (item as Record<string, unknown>).isAdditionalOperation = true;
 
@@ -312,14 +338,14 @@ describe('ApiDocsSearchIndexer', () => {
     });
 
     it('omits isAdditionalOperation when not set on the item', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+      const indexer = collected(new ApiDocsSearchIndexer({ basePath: BASE_PATH }));
       indexer.addItem(makeItem({ content: makeContent(contentType.ITEM) }));
 
       expect(indexer.getResult()[0].isAdditionalOperation).toBeUndefined();
     });
 
     it('accumulates multiple items', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+      const indexer = collected(new ApiDocsSearchIndexer({ basePath: BASE_PATH }));
       indexer.addItem(makeItem({ link: '/api/a', content: makeContent(contentType.ITEM) }));
       indexer.addItem(makeItem({ link: '/api/b', content: makeContent(contentType.ITEM) }));
 
@@ -329,7 +355,7 @@ describe('ApiDocsSearchIndexer', () => {
 
   describe('text extraction', () => {
     it('extracts text from a MarkdocNode', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+      const indexer = collected(new ApiDocsSearchIndexer({ basePath: BASE_PATH }));
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [makeMarkdocNode('Hello world')]),
@@ -340,7 +366,7 @@ describe('ApiDocsSearchIndexer', () => {
     });
 
     it('extracts text from nested MarkdocNodes inside a ContainerNode', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+      const indexer = collected(new ApiDocsSearchIndexer({ basePath: BASE_PATH }));
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -353,7 +379,7 @@ describe('ApiDocsSearchIndexer', () => {
     });
 
     it('extracts text from nested MarkdocNodes inside an OverviewSectionWrapperNode', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+      const indexer = collected(new ApiDocsSearchIndexer({ basePath: BASE_PATH }));
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -366,7 +392,7 @@ describe('ApiDocsSearchIndexer', () => {
     });
 
     it('joins text from multiple MarkdocNodes with a space', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+      const indexer = collected(new ApiDocsSearchIndexer({ basePath: BASE_PATH }));
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -380,7 +406,7 @@ describe('ApiDocsSearchIndexer', () => {
     });
 
     it('returns empty string when no MarkdocNodes are present', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+      const indexer = collected(new ApiDocsSearchIndexer({ basePath: BASE_PATH }));
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [makeItemContentNode([])]),
@@ -391,7 +417,7 @@ describe('ApiDocsSearchIndexer', () => {
     });
 
     it('excludes MarkdocNodes that contain only inline code from text', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+      const indexer = collected(new ApiDocsSearchIndexer({ basePath: BASE_PATH }));
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -407,7 +433,7 @@ describe('ApiDocsSearchIndexer', () => {
     });
 
     it('keeps MarkdocNodes that mix inline code with text', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+      const indexer = collected(new ApiDocsSearchIndexer({ basePath: BASE_PATH }));
       const mixedNode: MarkdocNode = {
         nodeType: nodeTypes.MARKDOC,
         content: {
@@ -428,7 +454,7 @@ describe('ApiDocsSearchIndexer', () => {
 
   describe('parameter extraction', () => {
     it('extracts parameters with a string description from an ItemContentNode', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+      const indexer = collected(new ApiDocsSearchIndexer({ basePath: BASE_PATH }));
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -455,7 +481,7 @@ describe('ApiDocsSearchIndexer', () => {
     });
 
     it('extracts parameters with an AST description', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+      const indexer = collected(new ApiDocsSearchIndexer({ basePath: BASE_PATH }));
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -476,7 +502,7 @@ describe('ApiDocsSearchIndexer', () => {
     });
 
     it('indexes a formatted AST description as plain text, without markdown syntax', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+      const indexer = collected(new ApiDocsSearchIndexer({ basePath: BASE_PATH }));
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -506,7 +532,7 @@ describe('ApiDocsSearchIndexer', () => {
     });
 
     it('handles missing description gracefully', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+      const indexer = collected(new ApiDocsSearchIndexer({ basePath: BASE_PATH }));
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -520,7 +546,7 @@ describe('ApiDocsSearchIndexer', () => {
     });
 
     it('omits parameters key when the node has no parameters', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+      const indexer = collected(new ApiDocsSearchIndexer({ basePath: BASE_PATH }));
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [makeItemContentNode([])]),
@@ -531,7 +557,7 @@ describe('ApiDocsSearchIndexer', () => {
     });
 
     it('collects parameters from ItemContentNodes inside a ContainerNode', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+      const indexer = collected(new ApiDocsSearchIndexer({ basePath: BASE_PATH }));
       const container: ContainerNode = {
         nodeType: nodeTypes.CONTAINER,
         children: [
@@ -558,7 +584,13 @@ describe('ApiDocsSearchIndexer', () => {
           required: ['name'],
         }),
       };
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, schemaStore, EMPTY_DOC);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: { schemaStore: schemaStore },
+          document: EMPTY_DOC,
+        }),
+      );
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -598,7 +630,13 @@ describe('ApiDocsSearchIndexer', () => {
           },
         }),
       };
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, schemaStore, EMPTY_DOC);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: { schemaStore: schemaStore },
+          document: EMPTY_DOC,
+        }),
+      );
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -631,7 +669,13 @@ describe('ApiDocsSearchIndexer', () => {
           },
         }),
       };
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, schemaStore, EMPTY_DOC);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: { schemaStore: schemaStore },
+          document: EMPTY_DOC,
+        }),
+      );
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -652,7 +696,13 @@ describe('ApiDocsSearchIndexer', () => {
     });
 
     it('indexes the response description with a deep link to the response section', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, {}, EMPTY_DOC);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: { schemaStore: {} },
+          document: EMPTY_DOC,
+        }),
+      );
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -675,7 +725,7 @@ describe('ApiDocsSearchIndexer', () => {
     });
 
     it('keeps the full item slug when the docs are served at the root', () => {
-      const indexer = new ApiDocsSearchIndexer('/');
+      const indexer = collected(new ApiDocsSearchIndexer({ basePath: '/' }));
       indexer.addItem(
         makeItem({
           link: '/rides/topics/ride-matches',
@@ -695,7 +745,7 @@ describe('ApiDocsSearchIndexer', () => {
     });
 
     it('indexes the response description even without a schema store and document', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+      const indexer = collected(new ApiDocsSearchIndexer({ basePath: BASE_PATH }));
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -716,7 +766,13 @@ describe('ApiDocsSearchIndexer', () => {
     });
 
     it('indexes response summary and Markdoc description together', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, {}, EMPTY_DOC);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: { schemaStore: {} },
+          document: EMPTY_DOC,
+        }),
+      );
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -751,7 +807,13 @@ describe('ApiDocsSearchIndexer', () => {
           },
         }),
       };
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, schemaStore, EMPTY_DOC);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: { schemaStore: schemaStore },
+          document: EMPTY_DOC,
+        }),
+      );
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -786,7 +848,13 @@ describe('ApiDocsSearchIndexer', () => {
           },
         }),
       };
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, schemaStore, EMPTY_DOC);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: { schemaStore: schemaStore },
+          document: EMPTY_DOC,
+        }),
+      );
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -820,7 +888,13 @@ describe('ApiDocsSearchIndexer', () => {
           },
         }),
       };
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, schemaStore, EMPTY_DOC);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: { schemaStore: schemaStore },
+          document: EMPTY_DOC,
+        }),
+      );
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -850,7 +924,13 @@ describe('ApiDocsSearchIndexer', () => {
           },
         }),
       };
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, schemaStore, EMPTY_DOC);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: { schemaStore: schemaStore },
+          document: EMPTY_DOC,
+        }),
+      );
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -877,7 +957,13 @@ describe('ApiDocsSearchIndexer', () => {
           },
         }),
       };
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, schemaStore, EMPTY_DOC);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: { schemaStore: schemaStore },
+          document: EMPTY_DOC,
+        }),
+      );
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -900,7 +986,13 @@ describe('ApiDocsSearchIndexer', () => {
           },
         }),
       };
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, schemaStore, EMPTY_DOC);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: { schemaStore: schemaStore },
+          document: EMPTY_DOC,
+        }),
+      );
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -926,7 +1018,13 @@ describe('ApiDocsSearchIndexer', () => {
           },
         }),
       };
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, schemaStore, EMPTY_DOC);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: { schemaStore: schemaStore },
+          document: EMPTY_DOC,
+        }),
+      );
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -949,7 +1047,13 @@ describe('ApiDocsSearchIndexer', () => {
           ],
         }),
       };
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, schemaStore, EMPTY_DOC);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: { schemaStore: schemaStore },
+          document: EMPTY_DOC,
+        }),
+      );
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -977,7 +1081,13 @@ describe('ApiDocsSearchIndexer', () => {
           ],
         }),
       };
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, schemaStore, EMPTY_DOC);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: { schemaStore: schemaStore },
+          document: EMPTY_DOC,
+        }),
+      );
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -997,7 +1107,7 @@ describe('ApiDocsSearchIndexer', () => {
     });
 
     it('skips schema extraction when no schemaStore is provided', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+      const indexer = collected(new ApiDocsSearchIndexer({ basePath: BASE_PATH }));
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -1027,7 +1137,13 @@ describe('ApiDocsSearchIndexer', () => {
       const schemaStore: Record<string, SchemaEntry> = {
         'components/schemas/TreeNode': makeSchemaEntry(document.components.schemas.TreeNode),
       };
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, schemaStore, document);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: { schemaStore: schemaStore },
+          document: document,
+        }),
+      );
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -1050,7 +1166,13 @@ describe('ApiDocsSearchIndexer', () => {
           },
         }),
       };
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, schemaStore, EMPTY_DOC);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: { schemaStore: schemaStore },
+          document: EMPTY_DOC,
+        }),
+      );
       const itemNode = makeItemContentNode(
         [{ name: 'eventId', schemaId: 'id', description: 'Event ID', required: true }],
         { variant: 'body', schemaId: 'body-schema' },
@@ -1099,7 +1221,13 @@ describe('ApiDocsSearchIndexer', () => {
           },
         }),
       };
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, schemaStore, document);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: { schemaStore: schemaStore },
+          document: document,
+        }),
+      );
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -1124,12 +1252,19 @@ describe('ApiDocsSearchIndexer', () => {
     });
 
     it('extracts GraphQL fields from the store', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, {
-        ...graphqlTypeEntry('Book', [
-          { name: 'title', type: 'String!', description: textNode('Book title') },
-          { name: 'pageCount', type: 'Int', description: textNode('Number of pages') },
-        ]),
-      });
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: {
+            schemaStore: {
+              ...graphqlTypeEntry('Book', [
+                { name: 'title', type: 'String!', description: textNode('Book title') },
+                { name: 'pageCount', type: 'Int', description: textNode('Number of pages') },
+              ]),
+            },
+          },
+        }),
+      );
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -1154,22 +1289,25 @@ describe('ApiDocsSearchIndexer', () => {
     });
 
     it('extracts GraphQL arguments from the store', () => {
-      const indexer = new ApiDocsSearchIndexer(
-        BASE_PATH,
-        {
-          ...graphqlTypeEntry('Query', [
-            {
-              name: 'books',
-              type: '[Book!]!',
-              args: [
-                { name: 'id', type: 'ID!', description: textNode('Book identifier') },
-                { name: 'limit', type: 'Int', description: textNode('Max results') },
-              ],
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: {
+            schemaStore: {
+              ...graphqlTypeEntry('Query', [
+                {
+                  name: 'books',
+                  type: '[Book!]!',
+                  args: [
+                    { name: 'id', type: 'ID!', description: textNode('Book identifier') },
+                    { name: 'limit', type: 'Int', description: textNode('Max results') },
+                  ],
+                },
+              ]),
             },
-          ]),
-        },
-        undefined,
-        { graphqlMeta: { rootTypes: { query: 'Query' } } },
+            graphqlMeta: { rootTypes: { query: 'Query' } },
+          },
+        }),
       );
       indexer.addItem(
         makeItem({
@@ -1199,16 +1337,25 @@ describe('ApiDocsSearchIndexer', () => {
     });
 
     it('extracts nested args within GraphQL fields', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, {
-        ...graphqlTypeEntry('User', [
-          {
-            name: 'avatarUrl',
-            type: 'URI!',
-            description: textNode('Avatar URL'),
-            args: [{ name: 'size', type: 'Int', description: textNode('Image size in pixels') }],
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: {
+            schemaStore: {
+              ...graphqlTypeEntry('User', [
+                {
+                  name: 'avatarUrl',
+                  type: 'URI!',
+                  description: textNode('Avatar URL'),
+                  args: [
+                    { name: 'size', type: 'Int', description: textNode('Image size in pixels') },
+                  ],
+                },
+              ]),
+            },
           },
-        ]),
-      });
+        }),
+      );
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -1234,16 +1381,25 @@ describe('ApiDocsSearchIndexer', () => {
     });
 
     it('indexes return type fields without their arguments', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, {
-        ...graphqlTypeEntry('User', [
-          {
-            name: 'avatarUrl',
-            type: 'URI!',
-            description: textNode('Avatar URL'),
-            args: [{ name: 'size', type: 'Int', description: textNode('Image size in pixels') }],
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: {
+            schemaStore: {
+              ...graphqlTypeEntry('User', [
+                {
+                  name: 'avatarUrl',
+                  type: 'URI!',
+                  description: textNode('Avatar URL'),
+                  args: [
+                    { name: 'size', type: 'Int', description: textNode('Image size in pixels') },
+                  ],
+                },
+              ]),
+            },
           },
-        ]),
-      });
+        }),
+      );
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -1262,9 +1418,16 @@ describe('ApiDocsSearchIndexer', () => {
     });
 
     it('handles GraphQL fields with no description', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, {
-        ...graphqlTypeEntry('Book', [{ name: 'id', type: 'ID!' }]),
-      });
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: {
+            schemaStore: {
+              ...graphqlTypeEntry('Book', [{ name: 'id', type: 'ID!' }]),
+            },
+          },
+        }),
+      );
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -1278,7 +1441,7 @@ describe('ApiDocsSearchIndexer', () => {
     });
 
     it('indexes no GraphQL rows without a schema store', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+      const indexer = collected(new ApiDocsSearchIndexer({ basePath: BASE_PATH }));
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -1302,7 +1465,13 @@ describe('ApiDocsSearchIndexer', () => {
           },
         }),
       };
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, schemaStore, EMPTY_DOC);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: { schemaStore: schemaStore },
+          document: EMPTY_DOC,
+        }),
+      );
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -1328,7 +1497,13 @@ describe('ApiDocsSearchIndexer', () => {
           },
         }),
       };
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, schemaStore, EMPTY_DOC);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: { schemaStore: schemaStore },
+          document: EMPTY_DOC,
+        }),
+      );
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -1356,7 +1531,13 @@ describe('ApiDocsSearchIndexer', () => {
           },
         }),
       };
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, schemaStore, EMPTY_DOC);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: { schemaStore: schemaStore },
+          document: EMPTY_DOC,
+        }),
+      );
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -1374,6 +1555,51 @@ describe('ApiDocsSearchIndexer', () => {
       expect(names).not.toContain('password');
     });
 
+    describe('webhook and callback (event) direction', () => {
+      const schemaStore: Record<string, SchemaEntry> = {
+        'event-schema': makeSchemaEntry({
+          type: 'object',
+          properties: {
+            id: { type: 'string', readOnly: true },
+            secret: { type: 'string', writeOnly: true },
+          },
+        }),
+      };
+
+      function indexedNames(node: Partial<ItemContentNode>): string[] {
+        const indexer = collected(
+          new ApiDocsSearchIndexer({
+            basePath: BASE_PATH,
+            store: { schemaStore },
+            document: EMPTY_DOC,
+          }),
+        );
+        indexer.addItem(
+          makeItem({
+            content: makeContent(contentType.ITEM, [makeItemContentNode([], node)]),
+          }),
+        );
+        const [doc] = indexer.getResult();
+        return (doc.parameters ?? []).map((p) => p.name);
+      }
+
+      it('indexes readOnly and skips writeOnly fields in an event request body', () => {
+        const names = indexedNames({ variant: 'body', schemaId: 'event-schema', isEvent: true });
+        expect(names).toContain('id');
+        expect(names).not.toContain('secret');
+      });
+
+      it('indexes writeOnly and skips readOnly fields in event responses', () => {
+        const names = indexedNames({
+          variant: 'responses',
+          isEvent: true,
+          responses: [{ code: '200', schemaId: 'event-schema' }],
+        });
+        expect(names).toContain('secret');
+        expect(names).not.toContain('id');
+      });
+    });
+
     it('deduplicates parameters with same name+place+path+description', () => {
       const schemaStore: Record<string, SchemaEntry> = {
         'dup-schema': makeSchemaEntry({
@@ -1383,7 +1609,13 @@ describe('ApiDocsSearchIndexer', () => {
           },
         }),
       };
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, schemaStore, EMPTY_DOC);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: { schemaStore: schemaStore },
+          document: EMPTY_DOC,
+        }),
+      );
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -1427,7 +1659,13 @@ describe('ApiDocsSearchIndexer', () => {
           ],
         }),
       };
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, schemaStore, document);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: { schemaStore: schemaStore },
+          document: document,
+        }),
+      );
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -1447,7 +1685,7 @@ describe('ApiDocsSearchIndexer', () => {
     });
 
     it('maps parameter place names correctly', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH);
+      const indexer = collected(new ApiDocsSearchIndexer({ basePath: BASE_PATH }));
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -1480,7 +1718,13 @@ describe('ApiDocsSearchIndexer', () => {
           },
         }),
       };
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, schemaStore, EMPTY_DOC);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: { schemaStore: schemaStore },
+          document: EMPTY_DOC,
+        }),
+      );
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -1509,7 +1753,13 @@ describe('ApiDocsSearchIndexer', () => {
           required: ['passengerId'],
         }),
       };
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, schemaStore, EMPTY_DOC);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: { schemaStore: schemaStore },
+          document: EMPTY_DOC,
+        }),
+      );
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -1564,7 +1814,13 @@ describe('ApiDocsSearchIndexer', () => {
           properties: { type: { type: 'string' } },
         }),
       };
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, schemaStore, EMPTY_DOC);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: { schemaStore: schemaStore },
+          document: EMPTY_DOC,
+        }),
+      );
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -1625,7 +1881,13 @@ describe('ApiDocsSearchIndexer', () => {
           ],
         },
       };
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, {}, document);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: { schemaStore: {} },
+          document: document,
+        }),
+      );
       const mcpItem = (label: string, link: string, httpVerb: string, name: string) =>
         ({
           type: 'link',
@@ -1693,7 +1955,13 @@ describe('ApiDocsSearchIndexer', () => {
           },
         }),
       };
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, schemaStore, EMPTY_DOC);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: { schemaStore: schemaStore },
+          document: EMPTY_DOC,
+        }),
+      );
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -1739,7 +2007,13 @@ describe('ApiDocsSearchIndexer', () => {
           },
         }),
       };
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, schemaStore, EMPTY_DOC);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: { schemaStore: schemaStore },
+          document: EMPTY_DOC,
+        }),
+      );
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -1775,7 +2049,13 @@ describe('ApiDocsSearchIndexer', () => {
           },
         }),
       };
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, schemaStore, EMPTY_DOC);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: { schemaStore: schemaStore },
+          document: EMPTY_DOC,
+        }),
+      );
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -1823,7 +2103,13 @@ describe('ApiDocsSearchIndexer', () => {
           },
         }),
       };
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, schemaStore, document);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: { schemaStore: schemaStore },
+          document: document,
+        }),
+      );
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -1871,7 +2157,13 @@ describe('ApiDocsSearchIndexer', () => {
           $ref: '#/components/schemas/Pet',
         }),
       };
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, schemaStore, document);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: { schemaStore: schemaStore },
+          document: document,
+        }),
+      );
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -1928,7 +2220,13 @@ describe('ApiDocsSearchIndexer', () => {
       const schemaStore: Record<string, SchemaEntry> = {
         menuItem: makeSchemaEntry({ $ref: '#/components/schemas/MenuItem' }),
       };
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, schemaStore, document);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: { schemaStore: schemaStore },
+          document: document,
+        }),
+      );
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -1961,7 +2259,13 @@ describe('ApiDocsSearchIndexer', () => {
           ],
         }),
       };
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, schemaStore, EMPTY_DOC);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: { schemaStore: schemaStore },
+          document: EMPTY_DOC,
+        }),
+      );
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -2002,7 +2306,13 @@ describe('ApiDocsSearchIndexer', () => {
       const schemaStore: Record<string, SchemaEntry> = {
         pet: makeSchemaEntry({ $ref: '#/components/schemas/Pet' }),
       };
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, schemaStore, document);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: { schemaStore: schemaStore },
+          document: document,
+        }),
+      );
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -2052,7 +2362,13 @@ describe('ApiDocsSearchIndexer', () => {
       const schemaStore: Record<string, SchemaEntry> = {
         pet: makeSchemaEntry({ $ref: '#/components/schemas/Pet' }),
       };
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, schemaStore, document);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: { schemaStore: schemaStore },
+          document: document,
+        }),
+      );
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -2081,7 +2397,13 @@ describe('ApiDocsSearchIndexer', () => {
           },
         }),
       };
-      const indexer = new ApiDocsSearchIndexer('/docs/openapi/petstore', schemaStore, EMPTY_DOC);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: '/docs/openapi/petstore',
+          store: { schemaStore: schemaStore },
+          document: EMPTY_DOC,
+        }),
+      );
       indexer.addItem(
         makeItem({
           link: '/docs/openapi/petstore/pet/addpet',
@@ -2142,7 +2464,13 @@ describe('ApiDocsSearchIndexer', () => {
           $ref: '#/components/schemas/ActualSchema',
         }),
       };
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, schemaStore, document);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: { schemaStore: schemaStore },
+          document: document,
+        }),
+      );
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -2171,7 +2499,9 @@ describe('ApiDocsSearchIndexer', () => {
     }
 
     it('indexes each heading with the text under it and a deep link to its anchor', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, undefined, EMPTY_DOC);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({ basePath: BASE_PATH, document: EMPTY_DOC }),
+      );
       indexer.addItem(
         makeItem({
           link: '/api/base/pets/get',
@@ -2206,7 +2536,9 @@ describe('ApiDocsSearchIndexer', () => {
     });
 
     it('falls back to the render-time section/<slug> anchor when a heading has no resolved id', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, undefined, EMPTY_DOC);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({ basePath: BASE_PATH, document: EMPTY_DOC }),
+      );
       indexer.addItem(
         makeItem({
           link: '/api/base/pets/get',
@@ -2226,7 +2558,9 @@ describe('ApiDocsSearchIndexer', () => {
     });
 
     it('skips headings with no text', () => {
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, undefined, EMPTY_DOC);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({ basePath: BASE_PATH, document: EMPTY_DOC }),
+      );
       indexer.addItem(
         makeItem({
           content: makeContent(contentType.ITEM, [
@@ -2263,7 +2597,13 @@ describe('ApiDocsSearchIndexer', () => {
           },
         }),
       };
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, schemaStore, EMPTY_DOC);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: { schemaStore: schemaStore },
+          document: EMPTY_DOC,
+        }),
+      );
       const responses = [
         { code: '2XX', headerSchemaId: 'headers-schema' },
       ] as unknown as ItemContentNode['responses'];
@@ -2297,7 +2637,13 @@ describe('ApiDocsSearchIndexer', () => {
           properties: { shared: { type: 'string' }, xmlOnly: { type: 'string' } },
         }),
       };
-      const indexer = new ApiDocsSearchIndexer(BASE_PATH, schemaStore, EMPTY_DOC);
+      const indexer = collected(
+        new ApiDocsSearchIndexer({
+          basePath: BASE_PATH,
+          store: { schemaStore: schemaStore },
+          document: EMPTY_DOC,
+        }),
+      );
       indexer.addItem(
         makeItem({
           link: '/api/base/pets/post',

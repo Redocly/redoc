@@ -1,4 +1,4 @@
-import { collectOperations, filterOperations, findOperation } from './operations.js';
+import { collectOperationEntries, filterOperations, findOperation } from './operations.js';
 import { agentErrorResult, agentJsonResult, agentTextResult } from './results.js';
 import { summarizeSecurity } from './security.js';
 
@@ -7,10 +7,7 @@ import type { AgentTool, ApiDocsAgentToolsParams } from './types.js';
 export { agentTextResult } from './results.js';
 export { registerAgentTools } from './webmcp.js';
 export { createSpecSliceOperationDetail } from './spec-slice-detail.js';
-export type {
-  AgentTool,
-  ApiDocsAgentToolsParams,
-} from './types.js';
+export type { AgentTool, ApiDocsAgentToolsParams } from './types.js';
 
 const DEFAULT_OPERATION_LIMIT = 100;
 const MAX_OPERATION_LIMIT = 500;
@@ -31,7 +28,9 @@ export function buildApiDocsAgentTools({
   resolveDocUrl,
   getOperationDetail,
 }: ApiDocsAgentToolsParams): AgentTool[] {
-  const operations = collectOperations(items, resolveDocUrl);
+  const entries = collectOperationEntries(items, resolveDocUrl);
+  const operations = entries.map((entry) => entry.summary);
+  const itemOf = new Map(entries.map((entry) => [entry.summary, entry.item]));
 
   return [
     {
@@ -92,14 +91,15 @@ export function buildApiDocsAgentTools({
         }
 
         const match = findOperation(operations, { url, method, path });
-        if (!match) {
+        const item = match && itemOf.get(match);
+        if (!match || !item) {
           return agentErrorResult(
             'No such operation on this page. Call list_api_operations to see what is available.',
           );
         }
 
         const header = `# ${match.method} ${match.path ?? match.title}\n\nDocumentation: ${match.url}\n`;
-        const detail = await getOperationDetail?.(match, options);
+        const detail = await getOperationDetail?.(match, { item, signal: options?.signal });
 
         return agentTextResult(
           detail ? `${header}\n${detail}` : `${header}\n${JSON.stringify(match, null, 2)}`,

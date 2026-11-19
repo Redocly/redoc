@@ -51,5 +51,4 @@ describe('buildMcpItemContent', () => {
 
     expect(result.children[1]).toMatchObject({ nodeType: nodeTypes.MARKDOC });
   });
-
 });

@@ -113,9 +113,7 @@ export function CodeSampleItem({ node: specNode }: { node: CodeSamplePanelItem }
 
   const payloadForDisplay = useMemo(() => {
     return payload;
-  }, [
-    payload,
-  ]);
+  }, [payload]);
 
   const code = useMemo(() => {
     if (activeLanguage === 'payload') return '';
@@ -129,11 +127,7 @@ export function CodeSampleItem({ node: specNode }: { node: CodeSamplePanelItem }
     // oxlint-disable-next-line prefer-const -- CE strips the assignment below, leaving this undefined.
     let generated: string | undefined;
     return generated ?? `// ${translate('unsupportedLanguage', 'Language is not supported.')}`;
-  }, [
-    activeLanguage,
-    filteredDefinitionSamples,
-    translate,
-  ]);
+  }, [activeLanguage, filteredDefinitionSamples, translate]);
 
   const activeLang = languages.find((l) => l.key === activeLanguage) ?? languages[0];
   const defSampleForLang = node.definitionSamples?.find((ds) => getLangKey(ds) === activeLanguage);
