@@ -297,6 +297,25 @@ describe('SearchEngine', () => {
     expect(results.map((result) => result.document.id)).toEqual(['project', 'build', 'logs']);
   });
 
+  it('ranks a deprecated operation below the current one that matches equally', async () => {
+    const engine = new SearchEngine();
+    engine.addDocument(
+      makeDocument({
+        id: 'list-pets-v1',
+        title: 'List pets',
+        text: 'Returns all pets.',
+        deprecated: true,
+      }),
+    );
+    engine.addDocument(
+      makeDocument({ id: 'list-pets-v2', title: 'List pets', text: 'Returns all pets.' }),
+    );
+
+    const results = await engine.search('list pets');
+
+    expect(results.map((result) => result.document.id)).toEqual(['list-pets-v2', 'list-pets-v1']);
+  });
+
   it('prefers a parameter matched by name over one matched by its description', async () => {
     const engine = new SearchEngine();
     engine.addDocument(
